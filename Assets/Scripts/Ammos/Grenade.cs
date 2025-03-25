@@ -1,13 +1,16 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
    public GrenadeData grenadeData;
    private float countdown;
+   public float launchSpeed;
 
    void Start()
    {
       countdown = grenadeData.explosionDelay;
+      launchSpeed = grenadeData.speed;
    }
    
    void Update()

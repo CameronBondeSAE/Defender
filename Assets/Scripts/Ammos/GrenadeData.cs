@@ -5,4 +5,5 @@ public class GrenadeData : AmmoData
 {
     public float explosionRadius;
     public float explosionDelay;
+    public float speed;
 }
