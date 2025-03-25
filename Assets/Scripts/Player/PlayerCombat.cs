@@ -70,10 +70,9 @@ public class PlayerCombat : MonoBehaviour
 
     public void FireBullet()
     {
-        Debug.Log("bullet fired");
         if (bulletPrefab == null || firePosition == null) return;
         GameObject bullet = Instantiate(bulletPrefab, firePosition.position, firePosition.rotation);
-        Debug.Log("Bullet fired at: " + firePosition.forward);
+        //Debug.Log("Bullet fired at: " + firePosition.forward);
     }
 
     public void ThrowGrenade()

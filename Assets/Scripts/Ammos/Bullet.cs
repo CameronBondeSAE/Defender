@@ -26,6 +26,7 @@ public class Bullet : MonoBehaviour
         Health health = collision.gameObject.GetComponent<Health>();
         if (health != null)
         {
+            Debug.Log(collision.gameObject.name);
             health.TakeDamage(bulletData.damage); 
         }
 

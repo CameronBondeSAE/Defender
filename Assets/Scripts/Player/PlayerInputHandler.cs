@@ -14,6 +14,8 @@ public class PlayerInputHandler : MonoBehaviour
     public event Action onShootStart;
     public event Action onShootStop;
     public event Action onThrow;
+
+    private bool isShooting = false;
     
 
     void Awake()
@@ -71,7 +73,7 @@ public class PlayerInputHandler : MonoBehaviour
             throwAction.performed -= OnThrowPerformed;
         }
     }
-
+    
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -86,7 +88,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         onShootStart?.Invoke();
     }
-
+    
     private void OnShootStopped(InputAction.CallbackContext context)
     {
         onShootStop?.Invoke();
