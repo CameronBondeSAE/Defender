@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>PlayerInputHandler.cs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #6c95eb;}
+.s1 { color: #d0d0d0;}
+.s2 { color: #bdbdbd;}
+.s3 { color: #c9a26d;}
+.s4 { color: #85c46c; font-style: italic;}
+</style>
+</head>
+<body bgcolor="#262626">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+PlayerInputHandler.cs</font>
+</center></td></tr></table>
+<pre><span class="s0">using </span><span class="s1">UnityEngine</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">UnityEngine</span><span class="s2">.</span><span class="s1">InputSystem</span><span class="s2">;</span>
+<span class="s0">using </span><span class="s1">System</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">PlayerInputHandler : MonoBehaviour</span>
+<span class="s2">{</span>
+    <span class="s0">public static </span><span class="s1">PlayerInputHandler instance </span><span class="s2">{ </span><span class="s1">get</span><span class="s2">; </span><span class="s0">private </span><span class="s1">set</span><span class="s2">; }</span>
+    <span class="s2">[</span><span class="s1">Header</span><span class="s2">(</span><span class="s3">&quot;Input Actions&quot;</span><span class="s2">)]</span>
+    <span class="s0">public </span><span class="s1">InputAction moveAction</span><span class="s2">;</span>
+    <span class="s0">public </span><span class="s1">InputAction shootAction</span><span class="s2">;</span>
+    <span class="s0">public </span><span class="s1">InputAction throwAction</span><span class="s2">; </span>
+    <span class="s0">public </span><span class="s1">Vector2 moveInput </span><span class="s2">{ </span><span class="s1">get</span><span class="s2">; </span><span class="s0">private </span><span class="s1">set</span><span class="s2">; }</span>
+    
+    <span class="s0">public event </span><span class="s1">Action onShootStart</span><span class="s2">;</span>
+    <span class="s0">public event </span><span class="s1">Action onShootStop</span><span class="s2">;</span>
+    <span class="s0">public event </span><span class="s1">Action onThrow</span><span class="s2">;</span>
+    
+
+    <span class="s0">void </span><span class="s1">Awake</span><span class="s2">()</span>
+    <span class="s2">{</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">instance </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) </span><span class="s1">instance </span><span class="s2">= </span><span class="s0">this</span><span class="s2">;</span>
+        <span class="s0">else if </span><span class="s2">(</span><span class="s1">instance </span><span class="s2">!= </span><span class="s0">this</span><span class="s2">) </span><span class="s1">Destroy</span><span class="s2">(</span><span class="s1">gameObject</span><span class="s2">);</span>
+        <span class="s1">DontDestroyOnLoad</span><span class="s2">(</span><span class="s1">gameObject</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">OnEnable</span><span class="s2">()</span>
+    <span class="s2">{</span>
+        <span class="s4">// Move</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">moveAction </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s1">moveAction</span><span class="s2">.</span><span class="s1">Enable</span><span class="s2">();</span>
+            <span class="s1">moveAction</span><span class="s2">.</span><span class="s1">performed </span><span class="s2">+= </span><span class="s1">OnMovePerformed</span><span class="s2">;</span>
+            <span class="s1">moveAction</span><span class="s2">.</span><span class="s1">canceled </span><span class="s2">+= </span><span class="s1">OnMoveCanceled</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        
+        <span class="s4">// Shoot</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">shootAction </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s1">shootAction</span><span class="s2">.</span><span class="s1">Enable</span><span class="s2">();</span>
+            <span class="s1">shootAction</span><span class="s2">.</span><span class="s1">performed </span><span class="s2">+= </span><span class="s1">OnShootStarted</span><span class="s2">;</span>
+            <span class="s1">shootAction</span><span class="s2">.</span><span class="s1">performed </span><span class="s2">+= </span><span class="s1">OnShootStopped</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        
+        <span class="s4">// Throw (grenade)</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">throwAction </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s1">throwAction</span><span class="s2">.</span><span class="s1">Enable</span><span class="s2">();</span>
+            <span class="s1">throwAction</span><span class="s2">.</span><span class="s1">performed </span><span class="s2">+= </span><span class="s1">OnThrowPerformed</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+    
+    <span class="s0">private void </span><span class="s1">OnDisable</span><span class="s2">()</span>
+    <span class="s2">{</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">moveAction </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s1">moveAction</span><span class="s2">.</span><span class="s1">Enable</span><span class="s2">();</span>
+            <span class="s1">moveAction</span><span class="s2">.</span><span class="s1">performed </span><span class="s2">-= </span><span class="s1">OnMovePerformed</span><span class="s2">;</span>
+            <span class="s1">moveAction</span><span class="s2">.</span><span class="s1">canceled </span><span class="s2">-= </span><span class="s1">OnMoveCanceled</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">shootAction </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s1">shootAction</span><span class="s2">.</span><span class="s1">Disable</span><span class="s2">();</span>
+            <span class="s1">shootAction</span><span class="s2">.</span><span class="s1">performed </span><span class="s2">-= </span><span class="s1">OnShootStarted</span><span class="s2">;</span>
+            <span class="s1">shootAction</span><span class="s2">.</span><span class="s1">canceled </span><span class="s2">-= </span><span class="s1">OnShootStopped</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">throwAction </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">)</span>
+        <span class="s2">{</span>
+            <span class="s1">throwAction</span><span class="s2">.</span><span class="s1">Disable</span><span class="s2">();</span>
+            <span class="s1">throwAction</span><span class="s2">.</span><span class="s1">performed </span><span class="s2">-= </span><span class="s1">OnThrowPerformed</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">OnMovePerformed</span><span class="s2">(</span><span class="s1">InputAction</span><span class="s2">.</span><span class="s1">CallbackContext context</span><span class="s2">)</span>
+    <span class="s2">{</span>
+        <span class="s1">moveInput </span><span class="s2">= </span><span class="s1">context</span><span class="s2">.</span><span class="s1">ReadValue</span><span class="s2">&lt;</span><span class="s1">Vector2</span><span class="s2">&gt;();</span>
+    <span class="s2">}</span>
+    
+    <span class="s0">private void </span><span class="s1">OnMoveCanceled</span><span class="s2">(</span><span class="s1">InputAction</span><span class="s2">.</span><span class="s1">CallbackContext context</span><span class="s2">)</span>
+    <span class="s2">{</span>
+        <span class="s1">moveInput </span><span class="s2">= </span><span class="s1">Vector2</span><span class="s2">.</span><span class="s1">zero</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    
+    <span class="s0">private void </span><span class="s1">OnShootStarted</span><span class="s2">(</span><span class="s1">InputAction</span><span class="s2">.</span><span class="s1">CallbackContext context</span><span class="s2">)</span>
+    <span class="s2">{</span>
+        <span class="s1">onShootStart?</span><span class="s2">.</span><span class="s1">Invoke</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">OnShootStopped</span><span class="s2">(</span><span class="s1">InputAction</span><span class="s2">.</span><span class="s1">CallbackContext context</span><span class="s2">)</span>
+    <span class="s2">{</span>
+        <span class="s1">onShootStop?</span><span class="s2">.</span><span class="s1">Invoke</span><span class="s2">();</span>
+    <span class="s2">}</span>
+    
+    <span class="s0">private void </span><span class="s1">OnThrowPerformed</span><span class="s2">(</span><span class="s1">InputAction</span><span class="s2">.</span><span class="s1">CallbackContext context</span><span class="s2">)</span>
+    <span class="s2">{</span>
+        <span class="s1">onThrow?</span><span class="s2">.</span><span class="s1">Invoke</span><span class="s2">();</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

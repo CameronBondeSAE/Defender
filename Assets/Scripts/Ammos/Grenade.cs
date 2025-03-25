@@ -27,11 +27,11 @@ public class Grenade : MonoBehaviour
       Collider[] colliders = Physics.OverlapSphere(transform.position, grenadeData.explosionRadius);
       foreach (Collider collider in colliders)
       {
-         // Health health = collider.GetComponent<Health>();
-         // if (health != null)
-         // {
-         //    health.TakeDamage(grenadeData.damage); 
-         // }
+         Health health = collider.GetComponent<Health>();
+         if (health != null)
+         {
+            health.TakeDamage(grenadeData.damage); 
+         }
       }
 
       Destroy(gameObject);

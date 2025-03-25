@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -6,26 +7,82 @@ public class PlayerCombat : MonoBehaviour
     // public BulletData bulletData;
     // public GrenadeData grenadeData;
     
-    [Header("Ammo Paras")]
+    [Header("Ammo Params")]
     public Transform throwPosition;
     public Transform firePosition;
+    public float fireRate = 0.2f; 
+    private bool isShooting;
+    private Coroutine shootCoroutine;
     
-    [Header("Prefabs")]
+    [Header("Refs")]
     public GameObject bulletPrefab;
     public GameObject grenadePrefab;
+    private PlayerInputHandler playerInput;
+    
+    void Awake()
+    {
+        playerInput = FindObjectOfType<PlayerInputHandler>(); // Ensure we get the input handler
+        if (playerInput != null)
+        {
+            playerInput.onShootStart += StartShooting;
+            playerInput.onShootStop += StopShooting;
+            playerInput.onThrow += ThrowGrenade;
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (playerInput != null)
+        {
+            playerInput.onShootStart -= StartShooting;
+            playerInput.onShootStop -= StopShooting;
+            playerInput.onThrow -= ThrowGrenade;
+        }
+    }
+    
+    private void StartShooting()
+    {
+        if (!isShooting)
+        {
+            isShooting = true;
+            shootCoroutine = StartCoroutine(ShootContinuously());
+        }
+    }
+    private void StopShooting()
+    {
+        isShooting = false;
+        if (shootCoroutine != null)
+        {
+            StopCoroutine(shootCoroutine);
+            shootCoroutine = null;
+        }
+    }
+
+    private IEnumerator ShootContinuously()
+    {
+        while (isShooting)
+        {
+            PlayerEventManager.instance.events.onShoot.Invoke();
+            FireBullet();
+            yield return new WaitForSeconds(fireRate);
+        }
+    }
 
     public void FireBullet()
     {
+        Debug.Log("bullet fired");
+        if (bulletPrefab == null || firePosition == null) return;
         GameObject bullet = Instantiate(bulletPrefab, firePosition.position, firePosition.rotation);
-        //Bullet bulletScript = bullet.GetComponent<Bullet>();
+        Debug.Log("Bullet fired at: " + firePosition.forward);
     }
 
     public void ThrowGrenade()
     {
+        if (grenadePrefab == null || throwPosition == null) return;
         GameObject grenade = Instantiate(grenadePrefab, throwPosition.position, throwPosition.rotation);
         Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();
-        //Grenade grenadeScript = grenade.GetComponent<Grenade>();
+        Grenade grenadeScript = grenade.GetComponent<Grenade>();
         Vector3 launchDirection = throwPosition.forward + throwPosition.up * 0.2f;
-        //grenadeRb.AddForce(launchDirection * grenadeScript.launchSpeed, ForceMode.VelocityChange);
+        grenadeRb.AddForce(launchDirection * grenadeScript.launchSpeed, ForceMode.Impulse);
     }
 }

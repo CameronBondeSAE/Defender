@@ -3,16 +3,19 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public BulletData bulletData;
-    public Transform spawnPosition;
+    private Vector3 startPosition;
+    Rigidbody rb;
     void Start()
     {
-        GetComponent<Rigidbody>().linearVelocity = transform.forward * bulletData.speed;
+        rb = GetComponent<Rigidbody>();
+        startPosition = transform.position; 
+        rb.linearVelocity = transform.forward * bulletData.speed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(spawnPosition.position, transform.position) > bulletData.range)
+        if (Vector3.Distance(startPosition, transform.position) > bulletData.range)
         {
             Destroy(gameObject);
         }
@@ -20,11 +23,11 @@ public class Bullet : MonoBehaviour
     
     void OnCollisionEnter(Collision collision)
     {
-        // Health health = collision.gameObject.GetComponent<Health>();
-        // if (health != null)
-        // {
-        //     health.TakeDamage(bulletData.damage); 
-        // }
+        Health health = collision.gameObject.GetComponent<Health>();
+        if (health != null)
+        {
+            health.TakeDamage(bulletData.damage); 
+        }
 
         Destroy(gameObject); 
     }

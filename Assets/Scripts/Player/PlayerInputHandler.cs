@@ -1,8 +1,6 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -13,14 +11,16 @@ public class PlayerInputHandler : MonoBehaviour
     public InputAction throwAction; 
     public Vector2 moveInput { get; private set; }
     
-    PlayerCombat playerCombat;
+    public event Action onShootStart;
+    public event Action onShootStop;
+    public event Action onThrow;
+    
 
     void Awake()
     {
         if (instance == null) instance = this;
         else if (instance != this) Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
-        playerCombat = GetComponent<PlayerCombat>();
     }
 
     private void OnEnable()
@@ -37,7 +37,8 @@ public class PlayerInputHandler : MonoBehaviour
         if (shootAction != null)
         {
             shootAction.Enable();
-            shootAction.performed += OnShootPerformed;
+            shootAction.performed += OnShootStarted;
+            shootAction.performed += OnShootStopped;
         }
         
         // Throw (grenade)
@@ -60,7 +61,8 @@ public class PlayerInputHandler : MonoBehaviour
         if (shootAction != null)
         {
             shootAction.Disable();
-            shootAction.performed -= OnShootPerformed;
+            shootAction.performed -= OnShootStarted;
+            shootAction.canceled -= OnShootStopped;
         }
         
         if (throwAction != null)
@@ -80,13 +82,18 @@ public class PlayerInputHandler : MonoBehaviour
         moveInput = Vector2.zero;
     }
     
-    private void OnShootPerformed(InputAction.CallbackContext context)
+    private void OnShootStarted(InputAction.CallbackContext context)
     {
-        playerCombat.FireBullet();
+        onShootStart?.Invoke();
+    }
+
+    private void OnShootStopped(InputAction.CallbackContext context)
+    {
+        onShootStop?.Invoke();
     }
     
     private void OnThrowPerformed(InputAction.CallbackContext context)
     {
-        playerCombat.ThrowGrenade();
+        onThrow?.Invoke();
     }
 }

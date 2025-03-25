@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 8f;
     [SerializeField] private Camera gameCamera;
+    public Vector3 moveDirection;
 
 
     void Start()
@@ -18,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 inputVector = PlayerInputHandler.instance.moveInput;
-        Vector3 moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
+        moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
         
         // rotate relative to camera
         Quaternion cameraRotation = Quaternion.Euler(0, 0, 0);

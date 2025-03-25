@@ -4,5 +4,5 @@ using UnityEngine;
 public class BulletData : AmmoData
 {
     public float speed;
-    public GameObject bulletPrefab;
+    //public GameObject bulletPrefab;
 }
