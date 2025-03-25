@@ -2,41 +2,30 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
-    [Header("Bullet")]
-    public Ammo bullet;
+    // [Header("Ammo Data")]
+    // public BulletData bulletData;
+    // public GrenadeData grenadeData;
+    
+    [Header("Ammo Paras")]
+    public Transform throwPosition;
     public Transform firePosition;
     
-    [Header("Grenade")]
-    public Ammo grenade;
-    public Transform handPosition;
-    public float throwForce = 10f;
+    [Header("Prefabs")]
+    public GameObject bulletPrefab;
+    public GameObject grenadePrefab;
 
     public void FireBullet()
     {
-        // GameObject bullet = Instantiate(bulletPrefab, firePosition.position, Quaternion.identity);
-        // Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        // if (rb != null)
-        // {
-        //     rb.linearVelocity = firePosition.right * bulletSpeed; 
-        // }
-        if (bullet != null)
-        {
-            bullet.Hit(null);
-        }
+        GameObject bullet = Instantiate(bulletPrefab, firePosition.position, firePosition.rotation);
+        //Bullet bulletScript = bullet.GetComponent<Bullet>();
     }
 
     public void ThrowGrenade()
     {
-        // GameObject grenade = Instantiate(grenadePrefab, handPosition.position, Quaternion.identity);
-        // Rigidbody rb = grenade.GetComponent<Rigidbody>();
-        // if (rb != null)
-        // {
-        //     Vector2 throwDirection = firePosition.right + Vector3.up; 
-        //     rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
-        // }
-        if (grenade != null)
-        {
-            grenade.Hit(null);
-        }
+        GameObject grenade = Instantiate(grenadePrefab, throwPosition.position, throwPosition.rotation);
+        Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();
+        //Grenade grenadeScript = grenade.GetComponent<Grenade>();
+        Vector3 launchDirection = throwPosition.forward + throwPosition.up * 0.2f;
+        //grenadeRb.AddForce(launchDirection * grenadeData.speed, ForceMode.VelocityChange);
     }
 }
