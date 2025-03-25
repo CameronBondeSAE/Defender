@@ -15,7 +15,7 @@ public class PlayerCombat : MonoBehaviour
     public void FireBullet()
     {
         GameObject bullet = Instantiate(bulletPrefab, firePosition.position, Quaternion.identity);
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.linearVelocity = firePosition.right * bulletSpeed; 
@@ -25,11 +25,11 @@ public class PlayerCombat : MonoBehaviour
     public void ThrowGrenade()
     {
         GameObject grenade = Instantiate(grenadePrefab, handPosition.position, Quaternion.identity);
-        Rigidbody2D rb = grenade.GetComponent<Rigidbody2D>();
+        Rigidbody rb = grenade.GetComponent<Rigidbody>();
         if (rb != null)
         {
             Vector2 throwDirection = firePosition.right + Vector3.up; 
-            rb.AddForce(throwDirection * throwForce, ForceMode2D.Impulse);
+            rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
         }
     }
 }
