@@ -3,33 +3,40 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [Header("Bullet")]
-    public GameObject bulletPrefab;
-    [SerializeField] float bulletSpeed;
+    public Ammo bullet;
     public Transform firePosition;
     
     [Header("Grenade")]
-    public GameObject grenadePrefab;
+    public Ammo grenade;
     public Transform handPosition;
     public float throwForce = 10f;
 
     public void FireBullet()
     {
-        GameObject bullet = Instantiate(bulletPrefab, firePosition.position, Quaternion.identity);
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        if (rb != null)
+        // GameObject bullet = Instantiate(bulletPrefab, firePosition.position, Quaternion.identity);
+        // Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        // if (rb != null)
+        // {
+        //     rb.linearVelocity = firePosition.right * bulletSpeed; 
+        // }
+        if (bullet != null)
         {
-            rb.linearVelocity = firePosition.right * bulletSpeed; 
+            bullet.Hit(null);
         }
     }
 
     public void ThrowGrenade()
     {
-        GameObject grenade = Instantiate(grenadePrefab, handPosition.position, Quaternion.identity);
-        Rigidbody rb = grenade.GetComponent<Rigidbody>();
-        if (rb != null)
+        // GameObject grenade = Instantiate(grenadePrefab, handPosition.position, Quaternion.identity);
+        // Rigidbody rb = grenade.GetComponent<Rigidbody>();
+        // if (rb != null)
+        // {
+        //     Vector2 throwDirection = firePosition.right + Vector3.up; 
+        //     rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
+        // }
+        if (grenade != null)
         {
-            Vector2 throwDirection = firePosition.right + Vector3.up; 
-            rb.AddForce(throwDirection * throwForce, ForceMode.Impulse);
+            grenade.Hit(null);
         }
     }
 }
