@@ -26,6 +26,6 @@ public class PlayerCombat : MonoBehaviour
         Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();
         //Grenade grenadeScript = grenade.GetComponent<Grenade>();
         Vector3 launchDirection = throwPosition.forward + throwPosition.up * 0.2f;
-        //grenadeRb.AddForce(launchDirection * grenadeData.speed, ForceMode.VelocityChange);
+        //grenadeRb.AddForce(launchDirection * grenadeScript.launchSpeed, ForceMode.VelocityChange);
     }
 }
