@@ -7,7 +7,7 @@ public class PlayerHealth : Health
     protected override void Die()
     {
         base.Die();
-        PlayerEventManager.instance.events.onDeath.Invoke();
+        //PlayerEventManager.instance.events.onDeath.Invoke();
         StartCoroutine(RespawnPlayer());
         // respawn code
     }
@@ -18,7 +18,7 @@ public class PlayerHealth : Health
         currentHealth = maxHealth;
         isDead = false;
         base.Revive();
-        PlayerEventManager.instance.events.onIdle.Invoke();
+        //PlayerEventManager.instance.events.onIdle.Invoke();
         transform.position = new Vector3(0, 1, 0); // change to spawn position when that's been decided
     }
 }
