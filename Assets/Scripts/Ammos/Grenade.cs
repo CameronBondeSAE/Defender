@@ -1,12 +1,36 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Bullet", menuName = "Ammos/Grenade")]
-public class Grenade : Ammo
+public class Grenade : MonoBehaviour
 {
-    public float explosionRadius;
-    public float explosionForce;
-    public override void Hit(GameObject target)
-    {
-        
-    }
+   public GrenadeData grenadeData;
+   private float countdown;
+
+   void Start()
+   {
+      countdown = grenadeData.explosionDelay;
+   }
+   
+   void Update()
+   {
+      countdown -= Time.deltaTime;
+      if (countdown <= 0f)
+      {
+         Explode();
+      }
+   }
+   
+   void Explode()
+   {
+      Collider[] colliders = Physics.OverlapSphere(transform.position, grenadeData.explosionRadius);
+      foreach (Collider collider in colliders)
+      {
+         // Health health = collider.GetComponent<Health>();
+         // if (health != null)
+         // {
+         //    health.TakeDamage(grenadeData.damage); 
+         // }
+      }
+
+      Destroy(gameObject);
+   }
 }
