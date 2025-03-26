@@ -19,20 +19,20 @@ public class SpecialEffectsManager : MonoBehaviour
     public ParticleSystem metalParticles;
     public ParticleSystem fireParticles;
 
-    private Health health;
+    private TestHealth health;
 
     void Awake()
     {
-        health = GetComponent<Health>();
+        health = GetComponent<TestHealth>();
         if (health != null)
         {
-            health.OnHealthChanged += HandleDamageReceived;
+            //health.OnHealthChanged += HandleDamageReceived;
         }
     }
 
     void OnDestroy()
     {
-        health.OnHealthChanged -= HandleDamageReceived;
+        //health.OnHealthChanged -= HandleDamageReceived;
     }
 
     void HandleDamageReceived(float damageReceived)
