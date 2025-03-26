@@ -26,13 +26,13 @@ public class SpecialEffectsManager : MonoBehaviour
         health = GetComponent<TestHealth>();
         if (health != null)
         {
-            //health.OnHealthChanged += HandleDamageReceived;
+            health.OnHealthChanged += HandleDamageReceived;
         }
     }
 
     void OnDestroy()
     {
-        //health.OnHealthChanged -= HandleDamageReceived;
+        health.OnHealthChanged -= HandleDamageReceived;
     }
 
     void HandleDamageReceived(float damageReceived)
