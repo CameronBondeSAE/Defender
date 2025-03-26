@@ -13,7 +13,7 @@ public class Grenade : MonoBehaviour
    {
       countdown = grenadeData.explosionDelay;
       launchSpeed = grenadeData.launchSpeed;
-      startPosition.position = transform.position;
+      //startPosition.position = transform.position;
       rb = GetComponent<Rigidbody>();
       Launch();
    }
@@ -29,7 +29,7 @@ public class Grenade : MonoBehaviour
 
    public void Launch()
    {
-      Vector3 launchDirection = startPosition.forward +startPosition.up * 1f;
+      Vector3 launchDirection = transform.forward + transform.up * 1f;
       rb.AddForce(launchDirection * launchSpeed, ForceMode.VelocityChange);
    }
    
