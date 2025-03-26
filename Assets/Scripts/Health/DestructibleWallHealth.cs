@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DestructibleWall : Health
+public class DestructibleWallHealth : Health
 {
     protected override void Die()
     {
