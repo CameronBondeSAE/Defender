@@ -11,7 +11,7 @@ public class PlayerCombat : MonoBehaviour
     public Transform throwPosition;
     public Transform firePosition;
     public float fireRate = 0.2f; 
-    private bool isShooting;
+    public bool isShooting;
     private Coroutine shootCoroutine;
     
     [Header("Refs")]
@@ -79,9 +79,7 @@ public class PlayerCombat : MonoBehaviour
     {
         if (grenadePrefab == null || throwPosition == null) return;
         GameObject grenade = Instantiate(grenadePrefab, throwPosition.position, throwPosition.rotation);
-        Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();
-        Grenade grenadeScript = grenade.GetComponent<Grenade>();
-        Vector3 launchDirection = throwPosition.forward + throwPosition.up * 0.2f;
-        grenadeRb.AddForce(launchDirection * grenadeScript.launchSpeed, ForceMode.Impulse);
+        // Grenade grenadeScript = grenade.GetComponent<Grenade>();
+        // grenadeScript.Launch();
     }
 }

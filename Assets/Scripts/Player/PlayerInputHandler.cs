@@ -39,8 +39,8 @@ public class PlayerInputHandler : MonoBehaviour
         if (shootAction != null)
         {
             shootAction.Enable();
-            shootAction.performed += OnShootStarted;
-            shootAction.performed += OnShootStopped;
+            shootAction.started += OnShootStarted;
+            shootAction.canceled += OnShootStopped;
         }
         
         // Throw (grenade)
@@ -63,7 +63,7 @@ public class PlayerInputHandler : MonoBehaviour
         if (shootAction != null)
         {
             shootAction.Disable();
-            shootAction.performed -= OnShootStarted;
+            shootAction.started -= OnShootStarted;
             shootAction.canceled -= OnShootStopped;
         }
         

@@ -5,12 +5,17 @@ public class Grenade : MonoBehaviour
 {
    public GrenadeData grenadeData;
    private float countdown;
-   public float launchSpeed;
+   private float launchSpeed;
+   private Rigidbody rb;
+   private Transform startPosition;
 
    void Start()
    {
       countdown = grenadeData.explosionDelay;
-      launchSpeed = grenadeData.speed;
+      launchSpeed = grenadeData.launchSpeed;
+      startPosition.position = transform.position;
+      rb = GetComponent<Rigidbody>();
+      Launch();
    }
    
    void Update()
@@ -20,6 +25,12 @@ public class Grenade : MonoBehaviour
       {
          Explode();
       }
+   }
+
+   public void Launch()
+   {
+      Vector3 launchDirection = startPosition.forward +startPosition.up * 1f;
+      rb.AddForce(launchDirection * launchSpeed, ForceMode.VelocityChange);
    }
    
    void Explode()

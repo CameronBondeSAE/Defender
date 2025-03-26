@@ -8,12 +8,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float acceleration = 8f;
     [SerializeField] private Camera gameCamera;
     public Vector3 moveDirection;
+    private PlayerCombat playerCombat;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        playerCombat = GetComponent<PlayerCombat>();
     }
 
     void FixedUpdate()
@@ -35,6 +37,10 @@ public class PlayerMovement : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 8f);
             PlayerEventManager.instance.events.onMove.Invoke();
+        }
+        else if (playerCombat.isShooting)
+        {
+            PlayerEventManager.instance.events.onShoot.Invoke();
         }
         else
         {
