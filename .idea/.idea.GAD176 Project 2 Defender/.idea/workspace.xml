@@ -6,19 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ede24b97-680b-4656-9d08-e37e2b5e823f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GAD176 Project 2 Defender/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GAD176 Project 2 Defender/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Aliens/AlienRandomWanderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Aliens/AlienRandomWanderer.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Aliens/AlienWaypointPatrol.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Aliens/AlienWaypointPatrol.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/Player.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/Player.mat.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerInput.inputactions" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerInput.inputactions.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerInputHandler.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerInputHandler.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerMovement.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerMovement.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Aliens/State Machine/AlienStateMachine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Aliens/State Machine/AlienStateMachine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Aliens/State Machine/ChaseState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Aliens/State Machine/ChaseState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Aliens/State Machine/IAlienState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Aliens/State Machine/IAlienState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Aliens/State Machine/PatrolState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Aliens/State Machine/PatrolState.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +93,9 @@
       <workItem from="1741877635279" duration="2395000" />
       <workItem from="1742095038338" duration="1961000" />
       <workItem from="1742221192349" duration="1040000" />
-      <workItem from="1743434780222" duration="1026000" />
+      <workItem from="1743434780222" duration="1063000" />
+      <workItem from="1743435878500" duration="15000" />
+      <workItem from="1743435913781" duration="109000" />
     </task>
     <servers />
   </component>

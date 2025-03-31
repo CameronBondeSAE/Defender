@@ -14,7 +14,7 @@ public class PatrolState : IAlienState
         Transform target = alien.waypoints[alien.currentWaypointIndex];
 
         Vector3 direction = (target.position - alien.transform.position).normalized;
-        alien.rb.velocity = direction * alien.moveSpeed;
+        alien.rb.linearVelocity = direction * alien.moveSpeed;
 
         if (Vector3.Distance(alien.transform.position, target.position) < 1f)
         {
@@ -29,6 +29,6 @@ public class PatrolState : IAlienState
     {
         Transform nextWaypoint = alien.waypoints[alien.currentWaypointIndex];
         Vector3 direction = (nextWaypoint.position - alien.transform.position).normalized;
-        alien.rb.velocity = direction * alien.moveSpeed;
+        alien.rb.linearVelocity = direction * alien.moveSpeed;
     }
 }

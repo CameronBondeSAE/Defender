@@ -22,12 +22,19 @@ public class AlienStateMachine : MonoBehaviour
     public Rigidbody rb { get; private set; }
     private bool canAttack = true;
     
+    public void ChangeState(IAlienState newState)
+    {
+        if (currentState != null) currentState.ExitState();
+        currentState = newState;
+        currentState.EnterState(this);
+    }
+    
     /// <summary>
     /// Behaviour functions
     /// </summary>
     public void StopMovement()
     {
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
     }
     
     public void StartAttackCooldown()

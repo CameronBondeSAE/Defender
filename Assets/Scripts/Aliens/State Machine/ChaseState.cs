@@ -7,7 +7,7 @@ public class ChaseState : IAlienState
     public void UpdateState(AlienStateMachine alien)
     {
         Vector3 direction = (alien.player.position - alien.transform.position).normalized;
-        alien.rb.velocity = direction * alien.moveSpeed;
+        alien.rb.linearVelocity = direction * alien.moveSpeed;
     }
 
     public void ExitState() { }

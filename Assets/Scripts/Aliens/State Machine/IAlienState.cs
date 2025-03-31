@@ -2,9 +2,9 @@
 
 public class IAlienState
 {
-    void EnterState(AlienStateMachine alien) { }
+    public void EnterState(AlienStateMachine alien) { }
 
-    void UpdateState() { }
+    public void UpdateState() { }
 
-    void ExitState() { }
+    public void ExitState() { }
 }
