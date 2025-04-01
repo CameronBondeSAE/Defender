@@ -1,25 +1,31 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerInputHandler : MonoBehaviour
 {
     [Header("Input Actions")]
     public InputAction moveAction;
     public InputAction shootAction;
+    public InputAction laserAction;
     public InputAction throwAction; 
     public Vector2 moveInput { get; private set; }
     
-    PlayerCombat playerCombat;
-
+    public event Action onShootStart;
+    public event Action onShootStop;
+    
+    public event Action onLaserStart;
+    public event Action onLaserStop;
+    public event Action onThrow;
+    
+    private bool isShooting = false;
+    
+    
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        playerCombat = GetComponent<PlayerCombat>();
     }
-
+    
     private void OnEnable()
     {
         // Move
@@ -34,7 +40,16 @@ public class PlayerInputHandler : MonoBehaviour
         if (shootAction != null)
         {
             shootAction.Enable();
-            shootAction.performed += OnShootPerformed;
+            shootAction.started += OnShootStarted;
+            shootAction.canceled += OnShootStopped;
+        }
+        
+        // Laser
+        if (laserAction != null)
+        {
+            laserAction.Enable();
+            laserAction.started += OnShootStarted;
+            laserAction.canceled += OnShootStopped;
         }
         
         // Throw (grenade)
@@ -57,7 +72,15 @@ public class PlayerInputHandler : MonoBehaviour
         if (shootAction != null)
         {
             shootAction.Disable();
-            shootAction.performed -= OnShootPerformed;
+            shootAction.started -= OnShootStarted;
+            shootAction.canceled -= OnShootStopped;
+        }
+        
+        if (laserAction != null)
+        {
+            laserAction.Enable();
+            laserAction.started -= OnShootStarted;
+            laserAction.canceled -= OnShootStopped;
         }
         
         if (throwAction != null)
@@ -66,7 +89,7 @@ public class PlayerInputHandler : MonoBehaviour
             throwAction.performed -= OnThrowPerformed;
         }
     }
-
+    
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -77,13 +100,29 @@ public class PlayerInputHandler : MonoBehaviour
         moveInput = Vector2.zero;
     }
     
-    private void OnShootPerformed(InputAction.CallbackContext context)
+    private void OnShootStarted(InputAction.CallbackContext context)
     {
-        playerCombat.FireBullet();
+        Debug.Log("shooting");
+        onShootStart?.Invoke();
+    }
+    
+    private void OnShootStopped(InputAction.CallbackContext context)
+    {
+        onShootStop?.Invoke();
+    }
+    
+    private void OnLaserStarted(InputAction.CallbackContext context)
+    {
+        onLaserStart?.Invoke();
+    }
+    
+    private void OnLaserStopped(InputAction.CallbackContext context)
+    {
+        onLaserStop?.Invoke();
     }
     
     private void OnThrowPerformed(InputAction.CallbackContext context)
     {
-        playerCombat.ThrowGrenade();
+        onThrow?.Invoke();
     }
 }

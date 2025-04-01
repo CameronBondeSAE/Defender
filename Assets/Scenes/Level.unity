@@ -772,6 +772,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1452026855}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1452026858}
   m_SourcePrefab: {fileID: 100100000, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
 --- !u!1 &1147457857
 GameObject:
@@ -977,6 +980,33 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     m_Flags: 0
+  shootAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: bad4a4cc-d973-4359-a213-c09a42c7fe1e
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  laserAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: fb4bdc7b-6faa-4434-a7a2-4b96da12327f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  throwAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 104b13b4-7b35-4ed5-9e24-9c9e832ee146
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!54 &1147457865
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1150,6 +1180,57 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     m_Flags: 0
+  shootAction:
+    m_Name: Shoot
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 72f080c0-5dcd-461e-8d8a-68438c969bfd
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: e5fa69f8-1015-431c-9aa8-3075691ef333
+      m_Path: <Mouse>/leftButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Shoot
+      m_Flags: 0
+    m_Flags: 0
+  laserAction:
+    m_Name: Laser
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 7f6c1bb6-4810-4f11-8960-b97c98613fa1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 6ca041c5-75fe-4565-b04c-a9158e6507a4
+      m_Path: <Mouse>/rightButton
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Laser
+      m_Flags: 0
+    m_Flags: 0
+  throwAction:
+    m_Name: Throw
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 30ed108f-be85-4364-af78-a6c5b8e54fe4
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 21cfff9a-45f2-4131-8c97-98a7cc0df690
+      m_Path: <Keyboard>/e
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Throw
+      m_Flags: 0
+    m_Flags: 0
 --- !u!114 &1452026853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1232,6 +1313,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isReady: 0
+--- !u!114 &1452026858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452026848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7135a71de1c91e44f8d8729136beed43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwPosition: {fileID: 0}
+  firePosition: {fileID: 0}
+  fireRate: 0.2
+  isShooting: 0
+  bulletPrefab: {fileID: 0}
+  grenadePrefab: {fileID: 0}
 --- !u!1 &2065823503
 GameObject:
   m_ObjectHideFlags: 0

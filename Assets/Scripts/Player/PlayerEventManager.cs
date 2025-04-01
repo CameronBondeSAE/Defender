@@ -36,31 +36,31 @@ public class PlayerEventManager : MonoBehaviour
 
     private void OnIdle()
     {
-        Debug.Log("Player is idle.");
+        //Debug.Log("Player is idle.");
         SetAnimation("Idle");
     }
 
     private void OnMove()
     {
-        Debug.Log("Player is moving.");
+        //Debug.Log("Player is moving.");
         SetAnimation("Run");
     }
 
     private void OnShoot()
     {
-        Debug.Log("Player is aiming.");
+        //Debug.Log("Player is aiming.");
         SetAnimation("ReadyGun");
     }
 
     private void OnRunShoot()
     {
-        Debug.Log("Player is running and shooting.");
+        //Debug.Log("Player is running and shooting.");
         SetAnimation("RunShoot");
     }
 
     private void OnDeath()
     {
-        Debug.Log("Player has died.");
+        //Debug.Log("Player has died.");
         SetAnimation("Death");
     }
 
