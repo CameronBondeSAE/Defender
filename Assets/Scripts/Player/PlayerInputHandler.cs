@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    public static PlayerInputHandler instance { get; private set; }
     [Header("Input Actions")]
     public InputAction moveAction;
     public InputAction shootAction;
@@ -17,8 +16,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null) instance = this;
-        else if (instance != this) Destroy(gameObject);
         DontDestroyOnLoad(gameObject);
         playerCombat = GetComponent<PlayerCombat>();
     }

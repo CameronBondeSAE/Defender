@@ -8,22 +8,24 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float acceleration = 8f;
     [SerializeField] private Camera gameCamera;
 
+    private PlayerInputHandler inputHandler;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        inputHandler = GetComponent<PlayerInputHandler>();
     }
 
     void FixedUpdate()
     {
-        Vector2 inputVector = PlayerInputHandler.instance.moveInput;
+        Vector2 inputVector = inputHandler.moveInput;
         Vector3 moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
         
         // rotate relative to camera
         Quaternion cameraRotation = Quaternion.Euler(0, 0, 0);
         moveDirection = cameraRotation * moveDirection;
-
+    
         Vector3 targetVelocity = moveDirection * moveSpeed;
         // realistic movement
         rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
