@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Camera gameCamera;
     public Vector3 moveDirection;
     private PlayerCombat playerCombat;
+    private PlayerInputHandler inputHandler;
 
 
     void Start()
@@ -16,11 +17,12 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         playerCombat = GetComponent<PlayerCombat>();
+        inputHandler = GetComponent<PlayerInputHandler>();
     }
 
     void FixedUpdate()
     {
-        Vector2 inputVector = PlayerInputHandler.instance.moveInput;
+        Vector2 inputVector = inputHandler.moveInput;
         moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
         
         // rotate relative to camera
