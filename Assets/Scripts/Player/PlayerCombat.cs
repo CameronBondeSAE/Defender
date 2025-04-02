@@ -26,6 +26,8 @@ public class PlayerCombat : MonoBehaviour
         {
             playerInput.onShootStart += StartShooting;
             playerInput.onShootStop += StopShooting;
+            playerInput.onLaserStart += ActivateLaser;
+            playerInput.onLaserStop += DeactivateLaser;
             playerInput.onThrow += ThrowGrenade;
         }
     }
@@ -36,6 +38,8 @@ public class PlayerCombat : MonoBehaviour
         {
             playerInput.onShootStart -= StartShooting;
             playerInput.onShootStop -= StopShooting;
+            playerInput.onLaserStart -= ActivateLaser;
+            playerInput.onLaserStop -= DeactivateLaser;
             playerInput.onThrow -= ThrowGrenade;
         }
     }
@@ -66,6 +70,16 @@ public class PlayerCombat : MonoBehaviour
             FireBullet();
             yield return new WaitForSeconds(fireRate);
         }
+    }
+
+    private void ActivateLaser()
+    {
+        // laser logic
+    }
+    
+    private void DeactivateLaser()
+    {
+        // laser logic
     }
 
     public void FireBullet()

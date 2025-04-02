@@ -8,11 +8,15 @@ public class PlayerInputHandler : MonoBehaviour
     public InputAction moveAction;
     public InputAction shootAction;
     public InputAction throwAction; 
+    public InputAction laserAction;
     public Vector2 moveInput { get; private set; }
     
     public event Action onShootStart;
     public event Action onShootStop;
     public event Action onThrow;
+
+    public event Action onLaserStart;
+    public event Action onLaserStop;
 
     private bool isShooting = false;
     
@@ -40,6 +44,14 @@ public class PlayerInputHandler : MonoBehaviour
             shootAction.canceled += OnShootStopped;
         }
         
+        // Laser
+        if (laserAction != null)
+        {
+            laserAction.Enable();
+            laserAction.started += OnLaserActivated;
+            laserAction.canceled += OnLaserDeactivated;
+        }
+        
         // Throw (grenade)
         if (throwAction != null)
         {
@@ -62,6 +74,13 @@ public class PlayerInputHandler : MonoBehaviour
             shootAction.Disable();
             shootAction.started -= OnShootStarted;
             shootAction.canceled -= OnShootStopped;
+        }
+        
+        if (laserAction != null)
+        {
+            laserAction.Enable();
+            laserAction.started -= OnLaserActivated;
+            laserAction.canceled -= OnLaserDeactivated;
         }
         
         if (throwAction != null)
@@ -89,6 +108,16 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnShootStopped(InputAction.CallbackContext context)
     {
         onShootStop?.Invoke();
+    }
+    
+    private void OnLaserActivated(InputAction.CallbackContext context)
+    {
+        onLaserStart?.Invoke();
+    }
+    
+    private void OnLaserDeactivated(InputAction.CallbackContext context)
+    {
+        onLaserStop?.Invoke();
     }
     
     private void OnThrowPerformed(InputAction.CallbackContext context)
