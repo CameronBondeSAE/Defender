@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Mine_Script : MonoBehaviour
+public class Landmine : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,6 +14,3 @@ public class Mine_Script : MonoBehaviour
         
     }
 }
-
-
-// hows this mine gonna work? 
