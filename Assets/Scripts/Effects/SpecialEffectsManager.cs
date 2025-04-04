@@ -46,7 +46,8 @@ public class SpecialEffectsManager : MonoBehaviour
         if (chosenEffect == null) return;
         ParticleSystem effectInstance = Instantiate(chosenEffect, transform.position, Quaternion.identity);
         var emission = effectInstance.emission;
-        emission.rateOverTime = Mathf.Clamp(damage, 2f, 100f);
+        Debug.Log(damage);
+        emission.rateOverTime = damage;
         Destroy(effectInstance.gameObject, effectInstance.main.duration);
     }
 
