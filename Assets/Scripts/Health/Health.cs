@@ -26,7 +26,7 @@ public class Health : MonoBehaviour
    {
       currentHealth -= amount;
       if (isDead) return;
-      OnHealthChanged?.Invoke(currentHealth);
+      OnHealthChanged?.Invoke(amount);
       if (currentHealth <= 0) Die();
    }
 

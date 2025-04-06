@@ -66,7 +66,6 @@ public class PlayerCombat : MonoBehaviour
     {
         while (isShooting)
         {
-            PlayerEventManager.instance.events.onShoot.Invoke();
             FireBullet();
             yield return new WaitForSeconds(fireRate);
         }
