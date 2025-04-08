@@ -28,6 +28,11 @@ public class AlienStateMachine : MonoBehaviour
         currentState = newState;
         currentState.EnterState(this);
     }
+
+    public void Update()
+    {
+        if (currentState == null) ChangeState(new PatrolState());
+    }
     
     /// <summary>
     /// Behaviour functions
