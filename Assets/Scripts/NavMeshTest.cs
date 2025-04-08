@@ -6,9 +6,13 @@ public class NavMeshTest : MonoBehaviour
     public Transform target;
     private NavMeshAgent agent;
 
-    void Strat()
+    void Start()
     {
-        agent.GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    void Update()
+    {
         agent.SetDestination(target.position);
     }
 }
