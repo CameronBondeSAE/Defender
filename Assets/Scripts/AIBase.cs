@@ -12,6 +12,7 @@ public class AIBase : MonoBehaviour
    // rotation smoothing params
    public float rotationSpeed;
    public float acceleration;
+   public Transform[] patrolPoints;
    
    // temp?
    protected bool isDead = false;

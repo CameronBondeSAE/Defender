@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class PatrolState : IAIState
 {
-    private CivAI ai;
+    private AIBase ai;
     private int currentPatrolIndex = 0;
-    private Vector3[] patrolPoints;
+    private Transform[] patrolPoints;
     public void Enter()
     {
         ai.agent.isStopped = false; // resumes movement
-        ai.agent.SetDestination(ai.patrolPoints[currentPatrolIndex]);
+        patrolPoints = ai.patrolPoints;
+        ai.MoveTo(ai.patrolPoints[currentPatrolIndex].position);
     }
     
     public PatrolState(CivAI ai)
@@ -19,10 +20,11 @@ public class PatrolState : IAIState
     public void Stay()
     {
         // If close enough to the current patrol point, go to the next one
-        if (Vector3.Distance(ai.transform.position, ai.patrolPoints[currentPatrolIndex]) < 0.5f)
+        if (Vector3.Distance(ai.transform.position, ai.patrolPoints[currentPatrolIndex].position) < 3f)
         {
-            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length; // // Cycle through points
-            ai.agent.SetDestination(patrolPoints[currentPatrolIndex]); // go to next point
+            Debug.Log("ran");
+            currentPatrolIndex = (currentPatrolIndex + 1) % ai.patrolPoints.Length; // // Cycle through points
+            ai.MoveTo(ai.patrolPoints[currentPatrolIndex].position); // go to next point
         }
         ai.FaceDirection();
     }
@@ -33,5 +35,4 @@ public class PatrolState : IAIState
         ai.agent.isStopped = true;
     }
 
-    // stores the AI reference to this state
 }

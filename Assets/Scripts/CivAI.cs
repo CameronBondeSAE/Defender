@@ -5,8 +5,7 @@ using UnityEngine;
 /// </summary>
 public class CivAI : AIBase
 {
-    public Vector3[] patrolPoints;
-    protected override void Start()
+    public void Start()
     {
         base.Start();
         ChangeState(new PatrolState(this));
@@ -26,13 +25,13 @@ public class CivAI : AIBase
         }
     }
     
-    private Vector3[] GetPatrolPointsPositions()
-    {
-        Vector3[] points = new Vector3[patrolPoints.Length];
-        for (int i = 0; i < patrolPoints.Length; i++)
-        {
-            points[i] = patrolPoints[i];
-        }
-        return points;
-    }
+    // private Vector3[] GetPatrolPointsPositions()
+    // {
+    //     Vector3[] points = new Vector3[patrolPoints.Length];
+    //     for (int i = 0; i < patrolPoints.Length; i++)
+    //     {
+    //         points[i] = patrolPoints[i];
+    //     }
+    //     return points;
+    // }
 }
