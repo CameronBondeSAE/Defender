@@ -12,11 +12,12 @@ public class Landmine : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        Debug.Log("Landmine");
         if (other.gameObject.GetComponent<Health>())
         {
             Debug.Log("Kaboom"); // in polishing, we could add a UI which prints this // 
             other.gameObject.GetComponent<Health>().TakeDamage(100);
-            Destroy(other.gameObject);
+            Destroy(gameObject);
         }
     }
 }
