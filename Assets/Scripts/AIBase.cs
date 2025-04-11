@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class AIBase : MonoBehaviour
 {
    public NavMeshAgent agent;
-   public Transform player; // all AI acknowledges the player
+   private Transform player; // all AI acknowledges the player
    protected IAIState currentState; // stores current state information
    // rotation smoothing params
    public float rotationSpeed;
@@ -20,6 +20,7 @@ public class AIBase : MonoBehaviour
    protected virtual void Start()
    {
       agent = GetComponent<NavMeshAgent>();
+      //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
    }
 
    // Exit current state and goes into new state
