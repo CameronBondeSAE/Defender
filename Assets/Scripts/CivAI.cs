@@ -1,20 +1,25 @@
 using UnityEngine;
+using AIAnimation;
 
 /// <summary>
 /// Civ Controller
 /// </summary>
 public class CivAI : AIBase
 {
+    private AIAnimationController animController;
     public void Start()
     {
+        animController = GetComponent<AIAnimationController>();
         base.Start();
         ChangeState(new PatrolState(this));
+        animController.SetAnimation(AIAnimationController.AnimationState.Walk);
     }
     
     // Function when they are tagged
     public void OnTagged(Transform tagger) 
     {
         ChangeState(new FollowState(this, tagger));
+        animController.SetAnimation(AIAnimationController.AnimationState.Walk);
     }
 
     private void OnCollisionEnter(Collision other)
