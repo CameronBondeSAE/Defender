@@ -10,6 +10,7 @@ public class FollowState : IAIState
     private float timeSinceLastUpdate = 0f;
 
     private NavMeshObstacle tempObstacle; // Temporary NavMeshObstacle to prevent Civ walking into the target/block their way
+    private NavMeshAgent targetAgent;
 
     public FollowState(AIBase ai, Transform target)
     {
@@ -33,6 +34,11 @@ public class FollowState : IAIState
         {
             tempObstacle.enabled = true;
         }
+        targetAgent = target.GetComponent<NavMeshAgent>();
+        if (targetAgent != null && targetAgent.enabled)
+        {
+            targetAgent.enabled = false;
+        }
     }
     public void Stay()
     {
@@ -46,10 +52,18 @@ public class FollowState : IAIState
         Vector3 followPos = target.position + offsetDirection * followDistance;
         ai.MoveTo(followPos);
         ai.FaceDirection();
+        
+        if (target == null) return;
     }
     public void Exit()
     {
-        // Clean up the NavMeshObstacle on the target
+        // Re-enable target's NavMeshAgent
+        if (targetAgent != null)
+        {
+            targetAgent.enabled = true;
+        }
+
+        // Disable obstacle on the target
         if (tempObstacle != null)
         {
             tempObstacle.enabled = false;
