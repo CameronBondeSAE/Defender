@@ -7,11 +7,13 @@ public class ViewBlockHandler : MonoBehaviour
     [SerializeField] private Material transparentMaterial;
     [SerializeField] private float transparencyAlpha = 0.3f;
     [SerializeField] private LayerMask blockLayers;
+    [SerializeField] private float sphereCastRadius = 6f;
     private Transform mainCamera;
-    // couplets of material and renderers
+
+    // Dictionary to track currently transparent renderers and their original materials
     private Dictionary<Renderer, Material[]> originalMaterials = new();
-    // list to keep track of transparent materials and restore them
-    private List<Renderer> currentlyTransparent = new();
+    // Tracking original materials for EACH renderer (to avoid conflict with the above)
+    private HashSet<Renderer> currentlyTransparent = new();
 
     void Start()
     {
@@ -28,19 +30,11 @@ public class ViewBlockHandler : MonoBehaviour
         Vector3 directionToCamera = mainCamera.position - transform.position;
         float distance = Vector3.Distance(transform.position, mainCamera.position);
 
-        // Restore materials from previous frame
-        foreach (Renderer rend in currentlyTransparent)
-        {
-            if (rend != null && originalMaterials.ContainsKey(rend))
-            {
-                rend.materials = originalMaterials[rend];
-            }
-        }
+        // Store all renderers that were transparent in this frame
+        HashSet<Renderer> renderersToRestore = new HashSet<Renderer>(currentlyTransparent);
 
-        currentlyTransparent.Clear();
-
-        // Cast rays from player to camera
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, directionToCamera.normalized, distance, blockLayers);
+        // Cast big sphere rays from player to camera
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, sphereCastRadius, directionToCamera.normalized, distance, blockLayers);
 
         foreach (RaycastHit hit in hits)
         {
@@ -49,7 +43,7 @@ public class ViewBlockHandler : MonoBehaviour
             {
                 if (!originalMaterials.ContainsKey(rend))
                 {
-                    // stores original material if hit renderer hasn't been processed before
+                    // Store the original materials of the renderer if it hasn't been processed before
                     originalMaterials[rend] = rend.materials;
                 }
 
@@ -64,8 +58,21 @@ public class ViewBlockHandler : MonoBehaviour
                     newMats[i] = mat;
                 }
 
+                // Apply the new transparent materials
                 rend.materials = newMats;
                 currentlyTransparent.Add(rend);
+                renderersToRestore.Remove(rend);
+            }
+        }
+
+        // Restore materials for objects that are no longer transparent
+        foreach (Renderer rend in renderersToRestore)
+        {
+            if (rend != null && originalMaterials.ContainsKey(rend))
+            {
+                // Restore the original materials
+                rend.materials = originalMaterials[rend];
+                currentlyTransparent.Remove(rend);
             }
         }
     }
