@@ -5,10 +5,10 @@ public class FollowState : IAIState
 {
     private AIBase ai;
     private Transform target;
-    private float followDistance = 2f;
-    private float positionUpdateInterval = 1f; // How often the follow position updates
-    private float timeSinceLastUpdate = 0f;
-
+    private float followDistance = 5f;
+    private float reachThreshold = 0.2f; // determines 'reached'
+    private bool targetRestored = false; // Tracks if the obstacle/agent has been toggled back
+    
     private NavMeshObstacle tempObstacle; // Temporary NavMeshObstacle to prevent Civ walking into the target/block their way
     private NavMeshAgent targetAgent;
 
@@ -21,7 +21,7 @@ public class FollowState : IAIState
 
     public void Enter()
     {
-        timeSinceLastUpdate = 0f; // Reset update timer when enter state
+        targetRestored = false;
         // Try to get an existing NavMeshObstacle from the target
         tempObstacle = target.GetComponent<NavMeshObstacle>();
         if (tempObstacle == null)
@@ -43,30 +43,33 @@ public class FollowState : IAIState
     public void Stay()
     {
         if (target == null) return;
-        // Only update the follow position every positionUpdateInterval seconds
-        if (timeSinceLastUpdate < positionUpdateInterval) return;
-        timeSinceLastUpdate = 0f; // timer reset
-        // Get the direction behind the target (negative of its forward)
+
+        // Follow position calculation
         Vector3 offsetDirection = -target.forward.normalized;
-        // Calculate the follow position using the offset
         Vector3 followPos = target.position + offsetDirection * followDistance;
+
         ai.MoveTo(followPos);
         ai.FaceDirection();
-        
-        if (target == null) return;
+
+        // Check if civ has reached follow position
+        float distanceToFollowPos = Vector3.Distance(ai.transform.position, followPos);
+        if (!targetRestored && distanceToFollowPos <= reachThreshold)
+        {
+            // Restore target NavMeshAgent and disable its obstacle
+            if (targetAgent != null)
+            {
+                targetAgent.enabled = true;
+            }
+            if (tempObstacle != null)
+            {
+                tempObstacle.enabled = false;
+            }
+            targetRestored = true;
+        }
+
     }
     public void Exit()
     {
-        // Re-enable target's NavMeshAgent
-        if (targetAgent != null)
-        {
-            targetAgent.enabled = true;
-        }
-
-        // Disable obstacle on the target
-        if (tempObstacle != null)
-        {
-            tempObstacle.enabled = false;
-        }
+       
     }
 }
