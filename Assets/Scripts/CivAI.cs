@@ -22,7 +22,7 @@ public class CivAI : AIBase
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Alien")) 
         {
