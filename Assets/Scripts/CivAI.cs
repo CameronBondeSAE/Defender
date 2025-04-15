@@ -7,26 +7,34 @@ using AIAnimation;
 public class CivAI : AIBase
 {
     private AIAnimationController animController;
+    private bool isTagged;
+
     public void Start()
     {
         animController = GetComponent<AIAnimationController>();
         base.Start();
-        ChangeState(new PatrolState(this));
-        animController.SetAnimation(AIAnimationController.AnimationState.Walk);
+        if (!isTagged)
+        {
+            ChangeState(new PatrolState(this));
+            animController.SetAnimation(AIAnimationController.AnimationState.Walk);
+        }
     }
     
-    // Function when they are tagged
-    public void OnTagged(Transform tagger) 
+    public void OnTagged(GameObject tagger) 
     {
+        if (isTagged) return;
+
+        isTagged = true;
         ChangeState(new FollowState(this, tagger));
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Alien")) 
+        // For fallback self-tagging logic
+        if (!isTagged && (other.CompareTag("Player") || other.CompareTag("Alien")))
         {
-            OnTagged(other.transform);
+            OnTagged(other.gameObject);
         }
     }
     

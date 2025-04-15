@@ -3,53 +3,56 @@ using UnityEngine.AI;
 
 public class FollowState : IAIState
 {
-    
     private AIBase ai;
-    private Transform target;
+    private GameObject target;
     private NavMeshAgent agent;
-    [Header("Following Settings")]
-    private float followDistance = 0.5f;
-    private float followOffset = 0.3f;
-    private float updateInterval = 0.3f;
-    private float lastUpdateTime;
-    private Vector3 currentFollowPosition;
-    private bool isFollowing;
-    public FollowState(AIBase ai, Transform target)
+    private float followRange = 20f;
+    
+    // [Header("Following Settings")]
+    // private float followDistance = 0.5f;
+    // private float followOffset = 0.3f;
+    // private float updateInterval = 0.3f;
+    // private float lastUpdateTime;
+    // private Vector3 currentFollowPosition;
+    // private bool isFollowing;
+    public FollowState(AIBase ai, GameObject target)
     {
         this.ai = ai;
         this.target = target;
-        this.agent = ai.GetComponent<NavMeshAgent>();
-        if (agent == null)
-        {
-            Debug.LogError("needs NavMeshAgent component");
-        }
+        agent = ai.GetComponent<NavMeshAgent>();
     }
     public void Enter()
     {
-        isFollowing = true;
-        lastUpdateTime = Time.time;
-        agent.stoppingDistance = followDistance * 0.8f;
-        agent.autoBraking = true;
-        UpdateFollowPosition();
+        // isFollowing = true;
+        // lastUpdateTime = Time.time;
+        // agent.stoppingDistance = followDistance * 0.8f;
+        // agent.autoBraking = true;
+        // UpdateFollowPosition();
     }
     public void Stay()
     {
-        if (!isFollowing || target == null) return;
-        // Update at intervals for performance
-        if (Time.time - lastUpdateTime > updateInterval)
+        // if (!isFollowing || target == null) return;
+        // // Update at intervals for performance
+        // if (Time.time - lastUpdateTime > updateInterval)
+        // {
+        //     UpdateFollowPosition();
+        //     lastUpdateTime = Time.time;
+        // } 
+        float distance = Vector3.Distance(ai.transform.position, target.transform.position);
+        if (distance < followRange)
         {
-            UpdateFollowPosition();
-            lastUpdateTime = Time.time;
-        } 
+            agent.SetDestination(target.transform.position);
+            //agent.destination = target.transform.position;
+        }
         ai.FaceDirection();
-        
+        Debug.Log($"Velocity: {agent.velocity}, PathPending: {agent.pathPending}, HasPath: {agent.hasPath}, Stopped: {agent.isStopped}");
     }
     public void Exit()
     {
-        isFollowing = false;
-        agent.ResetPath();
+        // isFollowing = false;
+        // agent.ResetPath();
     }
-    private void UpdateFollowPosition()
+    /*private void UpdateFollowPosition()
     {
         if (target == null) return;
         // Calculate position behind target 
@@ -75,7 +78,7 @@ public class FollowState : IAIState
             isFollowing = true;
             Enter();
         }
-    }
+    }*/
     /*private AIBase ai;
     private Transform target;
     private float followDistance = .2f;
