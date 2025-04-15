@@ -3,12 +3,85 @@ using UnityEngine.AI;
 
 public class FollowState : IAIState
 {
+    
     private AIBase ai;
     private Transform target;
-    private float followDistance = 2f;
-    private float reachThreshold = .5f; // determines 'reached'
+    private NavMeshAgent agent;
+    [Header("Following Settings")]
+    private float followDistance = 0.5f;
+    private float followOffset = 0.3f;
+    private float updateInterval = 0.3f;
+    private float lastUpdateTime;
+    private Vector3 currentFollowPosition;
+    private bool isFollowing;
+    public FollowState(AIBase ai, Transform target)
+    {
+        this.ai = ai;
+        this.target = target;
+        this.agent = ai.GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.LogError("needs NavMeshAgent component");
+        }
+    }
+    public void Enter()
+    {
+        isFollowing = true;
+        lastUpdateTime = Time.time;
+        agent.stoppingDistance = followDistance * 0.8f;
+        agent.autoBraking = true;
+        UpdateFollowPosition();
+    }
+    public void Stay()
+    {
+        if (!isFollowing || target == null) return;
+        // Update at intervals for performance
+        if (Time.time - lastUpdateTime > updateInterval)
+        {
+            UpdateFollowPosition();
+            lastUpdateTime = Time.time;
+        } 
+        ai.FaceDirection();
+        
+    }
+    public void Exit()
+    {
+        isFollowing = false;
+        agent.ResetPath();
+    }
+    private void UpdateFollowPosition()
+    {
+        if (target == null) return;
+        // Calculate position behind target 
+        Vector3 targetForward = target.forward;
+        currentFollowPosition = target.position - targetForward * followDistance
+                            + target.right * followOffset;
+        // Validate position is on NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(currentFollowPosition, out hit, 2f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
+        else
+        {
+            // Fallback to simple position if NavMesh sampling fails
+            agent.SetDestination(currentFollowPosition);
+        }
+    }
+    public void OnCollisionWithTarget(Collision collision)
+    {
+        if (collision.transform == target && !isFollowing)
+        {
+            isFollowing = true;
+            Enter();
+        }
+    }
+    /*private AIBase ai;
+    private Transform target;
+    private float followDistance = .2f;
+    //private float reachThreshold = .5f; // determines 'reached'
     private bool targetRestored = false; // Tracks if the obstacle/agent has been toggled back
-    private float updateFollowPosThreshold = 1f; 
+    private float updateFollowPosThreshold = 0.5f; 
     private Vector3 currentFollowPos;
     
    // private NavMeshObstacle tempObstacle; // Temporary NavMeshObstacle to prevent Civ walking into the target/block their way
@@ -16,7 +89,6 @@ public class FollowState : IAIState
 
     public FollowState(AIBase ai, Transform target)
     {
-        Debug.Log("Entering FollowState");
         // Stores this AI and its target to this state
         this.ai = ai;
         this.target = target;
@@ -29,10 +101,17 @@ public class FollowState : IAIState
     public void Stay()
     {
         if (target == null) return;
-        Debug.Log($"Remaining agent distance: {ai.agent.remainingDistance}, PathPending: {ai.agent.pathPending}, HasPath: {ai.agent.hasPath}");
-        UpdateFollowPos();
-        // Calculate desired follow pos
-        ai.MoveTo(currentFollowPos);
+
+        Vector3 newFollowPos = target.position - target.forward.normalized * followDistance;
+
+        // Check if the target moved enough to justify updating follow pos
+        if (Vector3.Distance(newFollowPos, currentFollowPos) > updateFollowPosThreshold)
+        {
+            Debug.Log("check");
+            currentFollowPos = newFollowPos;
+            ai.MoveTo(currentFollowPos);
+        }
+
         ai.FaceDirection();
     }
     public void Exit()
@@ -42,5 +121,5 @@ public class FollowState : IAIState
     private void UpdateFollowPos()
     {
         currentFollowPos = target.position - target.forward.normalized * followDistance;
-    }
+    }*/
 }
