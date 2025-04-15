@@ -86,7 +86,7 @@ public class CivBehaviour : MonoBehaviour
     {
         isWaitingToFollow = true;
         rb.linearVelocity = Vector3.zero;
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
         isWaitingToFollow = false;
     }
 
@@ -97,6 +97,10 @@ public class CivBehaviour : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(rb.linearVelocity.normalized);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime);
             animController.SetAnimation(AIAnimationController.AnimationState.Walk);
+        }
+        else
+        {
+            animController.SetAnimation(AIAnimationController.AnimationState.Idle);
         }
     }
     }
