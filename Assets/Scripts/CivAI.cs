@@ -7,7 +7,7 @@ using UnityEngine.AI;
 /// </summary>
 public class CivAI : AIBase
 {
-    private AIAnimationController animController;
+    /*private AIAnimationController animController;
     private bool isTagged;
     private NavMeshTest alienScript;
 
@@ -39,7 +39,7 @@ public class CivAI : AIBase
         {
             OnTagged(other.gameObject);
         }
-    }
+    }*/
     
     // private Vector3[] GetPatrolPointsPositions()
     // {

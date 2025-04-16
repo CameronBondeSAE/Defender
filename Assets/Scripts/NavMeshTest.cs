@@ -99,7 +99,7 @@ public class NavMeshTest : MonoBehaviour
                 CivAI civAI = civ.GetComponent<CivAI>();
                 if (civAI != null)
                 {
-                    civAI.OnTagged(this.gameObject);
+                    //civAI.OnTagged(this.gameObject);
                 }
 
                 StartCoroutine(ResumeAfterDelay());

@@ -3,7 +3,30 @@ using UnityEngine.AI;
 
 public class FollowState : IAIState
 {
-    private AIBase ai;
+    
+    private CivilianAI ai;
+    private Transform target;
+
+    public FollowState(CivilianAI ai, Transform target)
+    {
+        this.ai = ai;
+        this.target = target;
+    }
+
+    public void Enter() { }
+
+    public void Stay()
+    {
+        if (Vector3.Distance(ai.transform.position, target.position) > ai.followDistance)
+        {
+            ai.MoveTo(target.position);
+        }
+
+        ai.FaceDirection();
+    }
+
+    public void Exit() { }
+    /*private AIBase ai;
     private GameObject target;
     private NavMeshAgent agent;
     private float followRange = 2f;
@@ -54,7 +77,9 @@ public class FollowState : IAIState
     {
         // isFollowing = false;
         // agent.ResetPath();
-    }
+    }*/
+    
+    
     /*private void UpdateFollowPosition()
     {
         if (target == null) return;
