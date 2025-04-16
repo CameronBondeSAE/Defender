@@ -1,9 +1,10 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 public class PlayerHealth : Health
 {
     [SerializeField] private float reviveAnimDuration;
+
     protected override void Die()
     {
         base.Die();

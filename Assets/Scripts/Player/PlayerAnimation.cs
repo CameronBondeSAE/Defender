@@ -11,18 +11,19 @@ public class PlayerAnimation : MonoBehaviour
         Death
     }
 
-    private PlayerState currentState;
     private Animator animator;
 
-    void Start()
+    private PlayerState currentState;
+
+    private void Start()
     {
         animator = GetComponent<Animator>();
-        SetAnimationState(PlayerState.Idle); 
+        SetAnimationState(PlayerState.Idle);
     }
 
     public void SetAnimationState(PlayerState newState)
     {
-        if (currentState == newState) return; 
+        if (currentState == newState) return;
         currentState = newState;
         HandleAnimation();
     }

@@ -1,15 +1,19 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerEventManager : MonoBehaviour
 {
-   public static PlayerEventManager instance;
+    public static PlayerEventManager instance;
+    [HideInInspector] public bool isReady;
 
-    public PlayerEvents events = new PlayerEvents();
-    [HideInInspector] public bool isReady = false;
+    public PlayerEvents events = new();
 
-    void OnEnable()
+    private void Start()
+    {
+        isReady = true;
+    }
+
+    private void OnEnable()
     {
         instance = this;
         events = new PlayerEvents();
@@ -20,18 +24,13 @@ public class PlayerEventManager : MonoBehaviour
         events.onDeath.AddListener(OnDeath);
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         events.onIdle.RemoveListener(OnIdle);
         events.onMove.RemoveListener(OnMove);
         events.onShoot.RemoveListener(OnShoot);
         events.onRunShoot.RemoveListener(OnRunShoot);
         events.onDeath.RemoveListener(OnDeath);
-    }
-
-    void Start()
-    {
-        isReady = true; 
     }
 
     private void OnIdle()
@@ -61,11 +60,8 @@ public class PlayerEventManager : MonoBehaviour
 
     private void SetAnimation(string animationName)
     {
-        Animator animator = GetComponent<Animator>();
-        if (animator != null)
-        {
-            animator.Play(animationName);
-        }
+        var animator = GetComponent<Animator>();
+        if (animator != null) animator.Play(animationName);
     }
 
     // private void PlayAudio(string audioName)
@@ -73,11 +69,12 @@ public class PlayerEventManager : MonoBehaviour
     //     Debug.Log($"Playing video: {audioName}");
     // }
 }
+
 public class PlayerEvents
 {
-    public UnityEvent onIdle = new UnityEvent();
-    public UnityEvent onMove = new UnityEvent();
-    public UnityEvent onShoot = new UnityEvent();
-    public UnityEvent onRunShoot = new UnityEvent();
-    public UnityEvent onDeath = new UnityEvent();
+    public UnityEvent onDeath = new();
+    public UnityEvent onIdle = new();
+    public UnityEvent onMove = new();
+    public UnityEvent onRunShoot = new();
+    public UnityEvent onShoot = new();
 }

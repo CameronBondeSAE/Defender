@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class SpecialEffectsManager : MonoBehaviour
 {
-    [Header("Effect Types")]
-    public EffectType effectType;
     public enum EffectType
     {
         Blood,
@@ -12,8 +10,11 @@ public class SpecialEffectsManager : MonoBehaviour
         Metal,
         Fire
     }
-    [Header("Particle Systems")]
-    public ParticleSystem bloodParticles;
+
+    [Header("Effect Types")] public EffectType effectType;
+
+    [Header("Particle Systems")] public ParticleSystem bloodParticles;
+
     public ParticleSystem alienBloodParticles;
     public ParticleSystem woodParticles;
     public ParticleSystem metalParticles;
@@ -21,30 +22,27 @@ public class SpecialEffectsManager : MonoBehaviour
 
     private Health health;
 
-    void Awake()
+    private void Awake()
     {
         health = GetComponent<Health>();
-        if (health != null)
-        {
-            health.OnHealthChanged += HandleDamageReceived;
-        }
+        if (health != null) health.OnHealthChanged += HandleDamageReceived;
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         health.OnHealthChanged -= HandleDamageReceived;
     }
 
-    void HandleDamageReceived(float damageReceived)
+    private void HandleDamageReceived(float damageReceived)
     {
         PlayEffect(damageReceived);
     }
 
-    void PlayEffect(float damage)
+    private void PlayEffect(float damage)
     {
-        ParticleSystem chosenEffect = GetEffectForType(effectType);
+        var chosenEffect = GetEffectForType(effectType);
         if (chosenEffect == null) return;
-        ParticleSystem effectInstance = Instantiate(chosenEffect, transform.position, Quaternion.identity);
+        var effectInstance = Instantiate(chosenEffect, transform.position, Quaternion.identity);
         var emission = effectInstance.emission;
         emission.rateOverTime = Mathf.Clamp(damage, 2f, 100f);
         Destroy(effectInstance.gameObject, effectInstance.main.duration);
@@ -54,13 +52,12 @@ public class SpecialEffectsManager : MonoBehaviour
     {
         switch (effectType)
         {
-            case EffectType.Blood:return bloodParticles;
-            case EffectType.AlienBlood:return alienBloodParticles;
-            case EffectType.Wood:return woodParticles;
-            case EffectType.Metal:return metalParticles;
-            case EffectType.Fire:return fireParticles;
-            default:return null;
+            case EffectType.Blood: return bloodParticles;
+            case EffectType.AlienBlood: return alienBloodParticles;
+            case EffectType.Wood: return woodParticles;
+            case EffectType.Metal: return metalParticles;
+            case EffectType.Fire: return fireParticles;
+            default: return null;
         }
     }
-   
 }

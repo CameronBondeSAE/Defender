@@ -1,6 +1,5 @@
-using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
+using UnityEngine;
 
 public class UseAudioExamples : MonoBehaviour
 {
@@ -10,20 +9,22 @@ public class UseAudioExamples : MonoBehaviour
         // you can pass in a desired volume at the end
         AudioManager.Instance.PlayAudio(AudioManager.AudioType.Explosion, 0.7f);
     }
-    
+
     public void PlayAlienDeathAudio()
     {
         AudioManager.Instance.PlayAudio(AudioManager.AudioType.AlienDeath, 0.8f);
     }
+
     // Lopping sounds
     public void PlayWalkAudio()
     {
         StartCoroutine(Walkaudio());
     }
-    IEnumerator Walkaudio() // Coroutine just to demonstrate. When use just copy what's inside of it.
+
+    private IEnumerator Walkaudio() // Coroutine just to demonstrate. When use just copy what's inside of it.
     {
         // you need to store this sound when you call it because these sounds needs to be manually stopped.
-        AudioSource loopingWalkSound = AudioManager.Instance.PlayLoopingAudio(AudioManager.AudioType.Walk);
+        var loopingWalkSound = AudioManager.Instance.PlayLoopingAudio(AudioManager.AudioType.Walk);
         yield return new WaitForSeconds(5f);
         AudioManager.Instance.StopLoopingAudio(loopingWalkSound);
     }
@@ -47,8 +48,7 @@ public class UseAudioExamples : MonoBehaviour
 
     public void GetCurrentVolume()
     {
-        float currentVolume = AudioManager.Instance.GetCurrentVolume();
+        var currentVolume = AudioManager.Instance.GetCurrentVolume();
         Debug.Log("Current Volume: " + currentVolume);
     }
-    
 }

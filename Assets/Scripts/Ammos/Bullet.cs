@@ -3,33 +3,31 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public BulletData bulletData;
+    private Rigidbody rb;
     private Vector3 startPosition;
-    Rigidbody rb;
-    void Start()
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        startPosition = transform.position; 
+        startPosition = transform.position;
         rb.linearVelocity = transform.forward * bulletData.speed;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Vector3.Distance(startPosition, transform.position) > bulletData.range)
-        {
-            Destroy(gameObject);
-        }
+        if (Vector3.Distance(startPosition, transform.position) > bulletData.range) Destroy(gameObject);
     }
-    
-    void OnCollisionEnter(Collision collision)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        Health health = collision.gameObject.GetComponent<Health>();
+        var health = collision.gameObject.GetComponent<Health>();
         if (health != null)
         {
             Debug.Log(collision.gameObject.name);
-            health.TakeDamage(bulletData.damage); 
+            health.TakeDamage(bulletData.damage);
         }
 
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
 }

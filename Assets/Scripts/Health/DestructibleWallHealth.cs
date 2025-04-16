@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class DestructibleWallHealth : Health
 {
     protected override void Die()

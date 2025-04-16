@@ -4,17 +4,13 @@ using UnityEngine.InputSystem;
 public class SimpleInput : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-	    if (InputSystem.GetDevice<Keyboard>().wKey.wasPressedThisFrame)
-	    {
-		    Debug.Log("Was pressed this frame");
-	    }
+        if (InputSystem.GetDevice<Keyboard>().wKey.wasPressedThisFrame) Debug.Log("Was pressed this frame");
     }
 }
