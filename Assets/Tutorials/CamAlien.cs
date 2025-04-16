@@ -7,7 +7,7 @@ public class CamAlien : MonoBehaviour
 	
 
 	public float rng;
-	public CamCivilian[] camCivilians;
+	public CamSpawn[] camSpawns;
 	NavMeshAgent navMeshAgent;
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,7 +15,7 @@ public class CamAlien : MonoBehaviour
 	{
 		rng = Random.Range(4f, 13f);
 
-		camCivilians = FindObjectsByType<CamCivilian>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+		camSpawns = FindObjectsByType<CamSpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
 		navMeshAgent = GetComponent<NavMeshAgent>();
 
@@ -39,7 +39,7 @@ public class CamAlien : MonoBehaviour
 
 	private void FindCiv()
 	{
-		CamCivilian camCivilian = camCivilians[Random.Range(0, camCivilians.Length)];
-		navMeshAgent.SetDestination(camCivilian.transform.position);
+		CamSpawn camSpawn = camSpawns[Random.Range(0, camSpawns.Length)];
+		navMeshAgent.SetDestination(camSpawn.transform.position);
 	}
 }
