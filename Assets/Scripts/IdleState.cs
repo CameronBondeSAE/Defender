@@ -1,15 +1,23 @@
+using AIAnimation;
 using UnityEngine;
+using AIAnimation;
 
 public class IdleState : IAIState
 {
     private AIBase ai;
+    private AIAnimationController animController;
 
     public IdleState(AIBase ai) => this.ai = ai;
 
-    public void Enter() => ai.agent.isStopped = true;
+    public void Enter()
+    {
+        ai.agent.isStopped = true;
+        animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+    }
 
     public void Stay()
     {
+        animController.SetAnimation(AIAnimationController.AnimationState.Idle);
     }
 
     public void Exit() => ai.agent.isStopped = false;

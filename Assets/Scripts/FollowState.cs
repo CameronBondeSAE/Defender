@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
+using AIAnimation;
 
 public class FollowState : IAIState
 {
     
     private CivilianAI ai;
     private Transform target;
+    private AIAnimationController animController;
 
     public FollowState(CivilianAI ai, Transform target)
     {
@@ -13,16 +15,20 @@ public class FollowState : IAIState
         this.target = target;
     }
 
-    public void Enter() { }
+    public void Enter()
+    {
+        animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+    }
 
     public void Stay()
     {
+        animController.SetAnimation(AIAnimationController.AnimationState.Walk);
         if (Vector3.Distance(ai.transform.position, target.position) > ai.followDistance)
         {
             ai.MoveTo(target.position);
         }
 
-        ai.FaceDirection();
+        //ai.FaceDirection();
     }
 
     public void Exit() { }
