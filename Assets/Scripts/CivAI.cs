@@ -1,5 +1,6 @@
 using UnityEngine;
 using AIAnimation;
+using UnityEngine.AI;
 
 /// <summary>
 /// Civ Controller
@@ -8,6 +9,7 @@ public class CivAI : AIBase
 {
     private AIAnimationController animController;
     private bool isTagged;
+    private NavMeshTest alienScript;
 
     public void Start()
     {
@@ -23,8 +25,9 @@ public class CivAI : AIBase
     public void OnTagged(GameObject tagger) 
     {
         if (isTagged) return;
-
         isTagged = true;
+        alienScript = tagger.GetComponent<NavMeshTest>();
+        alienScript.onWayToMothership = true;
         ChangeState(new FollowState(this, tagger));
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
     }

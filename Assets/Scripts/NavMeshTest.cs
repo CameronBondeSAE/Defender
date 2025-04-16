@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using AIAnimation;
+using Unity.VisualScripting;
 
 public class NavMeshTest : MonoBehaviour
 {
@@ -40,8 +41,12 @@ public class NavMeshTest : MonoBehaviour
         if (!agent.isStopped)
         {
             SetNextTarget();
-            FaceDirection();
+            //FaceDirection();
             animController.SetAnimation(AIAnimationController.AnimationState.Walk);
+        }
+        if(onWayToMothership)
+        {
+            agent.SetDestination(mothership.position);
         }
     }
 

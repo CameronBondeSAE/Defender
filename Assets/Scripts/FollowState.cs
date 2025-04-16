@@ -6,7 +6,8 @@ public class FollowState : IAIState
     private AIBase ai;
     private GameObject target;
     private NavMeshAgent agent;
-    private float followRange = 20f;
+    private float followRange = 2f;
+    private float followOffset = 1f;
     
     // [Header("Following Settings")]
     // private float followDistance = 0.5f;
@@ -15,7 +16,7 @@ public class FollowState : IAIState
     // private float lastUpdateTime;
     // private Vector3 currentFollowPosition;
     // private bool isFollowing;
-    public FollowState(AIBase ai, GameObject target)
+    public FollowState(CivAI ai, GameObject target)
     {
         this.ai = ai;
         this.target = target;
@@ -39,12 +40,14 @@ public class FollowState : IAIState
         //     lastUpdateTime = Time.time;
         // } 
         float distance = Vector3.Distance(ai.transform.position, target.transform.position);
-        if (distance < followRange)
+        // Vector3 followPos = target.transform.position - target.transform.forward * followOffset
+        //     + target.transform.right * followOffset;
+        if (distance > followRange)
         {
             agent.SetDestination(target.transform.position);
             //agent.destination = target.transform.position;
         }
-        ai.FaceDirection();
+        //ai.FaceDirection();
         Debug.Log($"Velocity: {agent.velocity}, PathPending: {agent.pathPending}, HasPath: {agent.hasPath}, Stopped: {agent.isStopped}");
     }
     public void Exit()
