@@ -19,6 +19,7 @@ public class PlayerCombat : MonoBehaviour
     public GameObject grenadePrefab;
     private PlayerInputHandler playerInput;
     
+    public GrenadeAim grenadeAim;
     void Awake()
     {
         playerInput = FindObjectOfType<PlayerInputHandler>(); // Ensure we get the input handler

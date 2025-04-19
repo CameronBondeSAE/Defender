@@ -7,8 +7,9 @@ public class PlayerInputHandler : MonoBehaviour
     [Header("Input Actions")]
     public InputAction moveAction;
     public InputAction shootAction;
-    public InputAction throwAction; 
+    public InputAction throwAction;
     public InputAction laserAction;
+    public InputAction aimGrenadeAction;
     public Vector2 moveInput { get; private set; }
     
     public event Action onShootStart;
@@ -17,6 +18,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public event Action onLaserStart;
     public event Action onLaserStop;
+    public event Action onAimGrenadeStart;
+    public event Action onAimGrenadeStop;
 
     private bool isShooting = false;
     
@@ -58,6 +61,14 @@ public class PlayerInputHandler : MonoBehaviour
             throwAction.Enable();
             throwAction.performed += OnThrowPerformed;
         }
+       
+        // Aim Grenade
+        if (aimGrenadeAction != null)
+        {
+            aimGrenadeAction.Enable();
+            aimGrenadeAction.started += OnAimGrenadeStarted;
+            aimGrenadeAction.canceled += OnAimGrenadeStopped;
+        }
     }
     
     private void OnDisable()
@@ -87,6 +98,13 @@ public class PlayerInputHandler : MonoBehaviour
         {
             throwAction.Disable();
             throwAction.performed -= OnThrowPerformed;
+        }
+        
+        if (aimGrenadeAction != null)
+        {
+            aimGrenadeAction.Disable();
+            aimGrenadeAction.started -= OnAimGrenadeStarted;
+            aimGrenadeAction.canceled -= OnAimGrenadeStopped;
         }
     }
     
@@ -123,5 +141,15 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnThrowPerformed(InputAction.CallbackContext context)
     {
         onThrow?.Invoke();
+    }
+    
+    private void OnAimGrenadeStarted(InputAction.CallbackContext context)
+    {
+        onAimGrenadeStart?.Invoke();
+    }
+
+    private void OnAimGrenadeStopped(InputAction.CallbackContext context)
+    {
+        onAimGrenadeStop?.Invoke();
     }
 }
