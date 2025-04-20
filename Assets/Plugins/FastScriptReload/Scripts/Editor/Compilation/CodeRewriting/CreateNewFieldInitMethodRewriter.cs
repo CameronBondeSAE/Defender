@@ -13,7 +13,7 @@ namespace FastScriptReload.Editor.Compilation.CodeRewriting
 		private readonly Dictionary<string, List<string>> _typeToNewFieldDeclarations;
 		private static readonly string NewFieldsToCreateValueFnDictionaryFieldName = "__Patched_NewFieldNameToInitialValueFn";
 		private static readonly string NewFieldsToGetTypeFnDictionaryFieldName = "__Patched_NewFieldsToGetTypeFnDictionaryFieldName";
-		private static readonly string DictionaryFullNamespaceTypeName = "System.Collections.Generic.Dictionary";
+		private static readonly string DictionaryFullNamespaceTypeName = "global::System.Collections.Generic.Dictionary";
 
 		public static Dictionary<string, Func<object>> ResolveNewFieldsToCreateValueFn(Type forType)
 		{
@@ -43,6 +43,10 @@ namespace FastScriptReload.Editor.Compilation.CodeRewriting
 			                                            ?? SyntaxFactory.DefaultExpression(SyntaxFactory.IdentifierName(fieldDeclarationNode.Declaration.Type.ToString()));
 			var withDictionaryFieldNameToInitFieldValue = CreateNewFieldNameToGetObjectFnDictionary(node, newClassFields, getObjectFnSyntax, NewFieldsToCreateValueFnDictionaryFieldName);
 
+			//TODO: slightly odd scenario 'When explicit #nullable enable is used, reference types should be rewritten to typeof(type) for initialization and value types should remain typeof(type?)'
+			// Func<FieldDeclarationSyntax, ExpressionSyntax> getObjectTypeFnSyntax = fieldDeclarationNode => SyntaxFactory.TypeOfExpression(
+			// 	SyntaxFactory.ParseTypeName(fieldDeclarationNode.Declaration.Type.ToFullString().Replace("?", ""))
+			// );
 			Func<FieldDeclarationSyntax, ExpressionSyntax> getObjectTypeFnSyntax = fieldDeclarationNode => SyntaxFactory.TypeOfExpression(fieldDeclarationNode.Declaration.Type);
 			return CreateNewFieldNameToGetObjectFnDictionary(withDictionaryFieldNameToInitFieldValue, newClassFields, getObjectTypeFnSyntax, NewFieldsToGetTypeFnDictionaryFieldName);
 		}
@@ -95,7 +99,7 @@ namespace FastScriptReload.Editor.Compilation.CodeRewriting
 														SyntaxFactory.Token(SyntaxKind.StringKeyword)),
 													SyntaxFactory.Token(SyntaxKind.CommaToken),
 													SyntaxFactory.GenericName(
-															SyntaxFactory.Identifier("System.Func"))
+															SyntaxFactory.Identifier("global::System.Func"))
 														.WithTypeArgumentList(
 															SyntaxFactory.TypeArgumentList(
 																SyntaxFactory.SingletonSeparatedList<TypeSyntax>(
@@ -120,7 +124,7 @@ namespace FastScriptReload.Editor.Compilation.CodeRewriting
 																				SyntaxFactory.Token(SyntaxKind.StringKeyword)),
 																			SyntaxFactory.Token(SyntaxKind.CommaToken),
 																			SyntaxFactory.QualifiedName(
-																				SyntaxFactory.IdentifierName("System"),
+																				SyntaxFactory.IdentifierName("global::System"),
 																				SyntaxFactory.GenericName(
 																						SyntaxFactory.Identifier("Func"))
 																					.WithTypeArgumentList(
@@ -135,7 +139,6 @@ namespace FastScriptReload.Editor.Compilation.CodeRewriting
 																													.ObjectKeyword))))))
 																		}))))
 													.WithInitializer(dictionaryInitializer))))))
-					.WithTriviaFrom(node)
 					.WithModifiers(
 						SyntaxFactory.TokenList(
 							SyntaxFactory.Token(SyntaxKind.PrivateKeyword),
