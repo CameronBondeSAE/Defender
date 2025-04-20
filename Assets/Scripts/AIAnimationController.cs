@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 namespace AIAnimation
 {
@@ -10,6 +11,7 @@ namespace AIAnimation
             Walk,
             GetHit,
             Attack,
+            Grab,
             Dead
         }
 
@@ -38,10 +40,26 @@ namespace AIAnimation
                 case AnimationState.Attack:
                     animator.Play("Attack");
                     break;
+                case AnimationState.Grab:
+                    animator.Play("Grab");
+                    break;
                 case AnimationState.Dead:
                     animator.Play("Dead");
                     break;
             }
+        }
+
+        public void PlayGrabAnimation()
+        {
+            StartCoroutine(PlayAnimationForDuration(AnimationState.Grab));
+        }
+        
+        private IEnumerator PlayAnimationForDuration(AnimationState state)
+        {
+            string animationName = state.ToString();// please don't make spelling errors:)
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            // Wait for the full length of the animation to be played
+            yield return new WaitForSeconds(stateInfo.length);
         }
     }
 }

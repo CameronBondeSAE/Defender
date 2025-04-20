@@ -1,11 +1,13 @@
 using UnityEngine;
+using AIAnimation;
 
 public class AlienAI : AIBase
 {
-    public float searchRange;
     public float tagDistance;
     public Transform mothership;
     public bool isReached = false;
+    
+    private AIAnimationController animController;
 
     [HideInInspector] public CivilianAI currentTargetCiv;
 
@@ -13,6 +15,7 @@ public class AlienAI : AIBase
     {
         base.Start();
         ChangeState(new SearchState(this));
+        animController = GetComponent<AIAnimationController>();
     }
 
      void Update()
@@ -22,5 +25,14 @@ public class AlienAI : AIBase
         {
             ChangeState(new SearchState(this));
         }
+    }
+    public void StopMoving()
+    {
+        agent.isStopped = true;
+    }
+
+    public void ResumeMoving()
+    {
+        agent.isStopped = false;
     }
 }

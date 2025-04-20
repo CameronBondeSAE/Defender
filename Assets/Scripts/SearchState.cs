@@ -1,10 +1,12 @@
 using UnityEngine;
 using AIAnimation;
+using System.Collections;
 
-public class SearchState : IAIState
+public class SearchState : MonoBehaviour, IAIState
 {
     private AlienAI ai;
     private AIAnimationController animController;
+    private bool isGrabbing = false;
 
     public SearchState(AlienAI ai)
     {
@@ -18,6 +20,7 @@ public class SearchState : IAIState
 
     public void Stay()
     {
+        if (isGrabbing) return;
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
         GameObject[] civObjects = GameObject.FindGameObjectsWithTag("Civilian");
 
@@ -32,9 +35,10 @@ public class SearchState : IAIState
                 {
                     ai.currentTargetCiv = civ;
                     ai.isReached = false;
-                    ai.ChangeState(new ReturnState(ai));
+                    isGrabbing = true;
                     civ.ChangeState(new FollowState(civ, ai.transform));
-                    return;
+                    ai.StopMoving(); 
+                    ai.StartCoroutine(GrabThenReturn());
                 }
                 else
                 {
@@ -42,9 +46,19 @@ public class SearchState : IAIState
                 }
         }
     }
-
+    
     public void Exit()
     {
+        isGrabbing = false;
+        ai.ResumeMoving();
+    }
 
+    private IEnumerator GrabThenReturn()
+    {
+        yield return null;
+        animController.SetAnimation(AIAnimationController.AnimationState.Grab);
+        Debug.Log("is grabbing");
+        yield return new WaitForSeconds(.8f); 
+        ai.ChangeState(new ReturnState(ai));
     }
 }
