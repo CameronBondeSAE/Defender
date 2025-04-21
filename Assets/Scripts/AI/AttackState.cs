@@ -70,6 +70,7 @@ public class AttackState : MonoBehaviour, IAIState
 
         isAttacking = false;
         ai.StopAllCoroutines();
+        ai.ResumeMoving();
     }
 
     // consecutive attack coroutine

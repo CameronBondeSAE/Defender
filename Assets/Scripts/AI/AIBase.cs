@@ -20,6 +20,7 @@ public class AIBase : MonoBehaviour
    protected virtual void Start()
    {
       agent = GetComponent<NavMeshAgent>();
+      patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(3);
       //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
    }
 
