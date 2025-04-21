@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryPage : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class InventoryPage : MonoBehaviour
     private InventoryDescription itemDescription;
 
     List<InventoryItem> listofItems = new List<InventoryItem>();
+
+    public Sprite itemImage;
+    public int quantity;
+    public string title, description;
 
     private void Awake()
     {
@@ -59,13 +64,16 @@ public class InventoryPage : MonoBehaviour
 
     private void HandleItemSelection(InventoryItem item)
     {
-        Debug.Log(item.name);
+        itemDescription.SetDescription(itemImage, title, description);
+        listofItems[0].Select();
     }
 
     public void Show()
     {
         gameObject.SetActive(true);
         itemDescription.ResetDescription();
+
+        listofItems[0].SetData(itemImage, quantity);
     }
 
     public void Hide()
