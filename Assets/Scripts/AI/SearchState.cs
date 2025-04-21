@@ -30,7 +30,7 @@ public class SearchState : MonoBehaviour, IAIState
             if (civ == null || civ == ai.currentTargetCiv)
                 continue;
                 float distance = Vector3.Distance(ai.transform.position, civ.transform.position);
-                Debug.Log(distance);
+                //Debug.Log(distance);
                 if (distance < ai.tagDistance)
                 {
                     ai.currentTargetCiv = civ;

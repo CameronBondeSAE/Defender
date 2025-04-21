@@ -9,8 +9,8 @@ public class AgroAlienAI : AIBase
 
     [Header("Detection")]
     public float alertRange = 10f;
-    public float fieldOfViewAngle = 90f; // Degrees
-    public int rayCount = 5; // Number of rays in FOV
+    public float fieldOfViewAngle = 90f; // fov angle
+    public int rayCount = 5;
     public LayerMask detectionMask;
 
     [HideInInspector] public Transform detectedPlayer;
@@ -24,19 +24,19 @@ public class AgroAlienAI : AIBase
         base.Start();
         animController = GetComponent<AIAnimationController>();
         patrolState = new PatrolState(this);
+        attackState = new AttackState(this);
         ChangeState(patrolState);
     }
 
     void Update()
     {
         base.Update();
-
-        // Only scan for player while patrolling...?
+       // Only scan for player while patrolling...?
         if (currentState == patrolState)
         {
             if (ScanForPlayer())
             {
-                ChangeState(new AttackState(this));
+                ChangeState(attackState);
             }
         }
     }
@@ -44,7 +44,7 @@ public class AgroAlienAI : AIBase
     // FoV code
     public bool ScanForPlayer()
     {
-        Vector3 origin = transform.position + Vector3.up * 1.5f; // Slightly above ground
+        Vector3 origin = transform.position + Vector3.up * 1.1f; // Slightly above ground
         float halfAngle = fieldOfViewAngle / 2f;
 
         for (int i = 0; i < rayCount; i++)

@@ -10,8 +10,8 @@ public class AttackState : MonoBehaviour, IAIState
     [Header("Attack Settings")]
     public float attackDistance = 2f;
     public float alertDistance = 10f;
-    public float attackCooldown = 2f;
-    public float attackDuration = 0.5f;
+    public float attackCooldown = 5f;
+    public float attackDuration = 1f;
 
     private GameObject attackHitbox;
     private Transform player;
@@ -40,6 +40,7 @@ public class AttackState : MonoBehaviour, IAIState
 
     public void Stay()
     {
+        Debug.Log("in attack state");
         if (player == null || attackHitbox == null)
             return;
 
@@ -50,8 +51,6 @@ public class AttackState : MonoBehaviour, IAIState
             ai.ChangeState(new PatrolState(ai));
             return;
         }
-
-        ai.FaceDirection();
 
         if (!isAttacking && Time.time >= nextAttackTime && distanceToPlayer <= attackDistance)
         {
