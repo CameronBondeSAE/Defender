@@ -3,11 +3,11 @@ using AIAnimation;
 
 public class PatrolState : IAIState
 {
-    private CivilianAI ai;
+    private AIBase ai;
     private int currentPoint = 0;
     private AIAnimationController animController;
 
-    public PatrolState(CivilianAI ai) => this.ai = ai;
+    public PatrolState(AIBase ai) => this.ai = ai;
 
     public void Enter()
     {
