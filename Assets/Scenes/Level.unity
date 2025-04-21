@@ -922,35 +922,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1452026848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4f42fbd39678c64dbb2b65286c6b10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  acceleration: 8
-  gameCamera: {fileID: 0}
-  moveDirection: {x: 0, y: 0, z: 0}
---- !u!114 &1452026852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1452026848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375dd35e8eacc8449bf4af4113816441, type: 3}
+  m_Script: {fileID: 11500000, guid: 991008c90a02ebf44a6e4005158e3aae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveAction:
     m_Name: Move
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 0d8d3dfe-3934-4d16-9f34-bfcdddceefc4
+    m_Id: d120348d-9763-438c-bda5-544158deb23b
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 2D Vector
-      m_Id: 6fab1e5a-d78e-4e2c-9ca9-e527065bc8f1
+      m_Id: 9ee389a5-252d-49da-8ccb-cb505027cd92
       m_Path: 2DVector
       m_Interactions: 
       m_Processors: 
@@ -958,7 +942,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 4
     - m_Name: up
-      m_Id: ae30ba0b-12aa-438e-b212-700c6370d54d
+      m_Id: 4fe903ad-5c8c-4c6d-b5bd-24ec2c9ac2f4
       m_Path: <Keyboard>/w
       m_Interactions: 
       m_Processors: 
@@ -966,7 +950,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     - m_Name: down
-      m_Id: 2f49ed10-c7e2-4351-b061-26667c594f60
+      m_Id: 1a26e588-df75-4988-8215-fc7f27d16563
       m_Path: <Keyboard>/s
       m_Interactions: 
       m_Processors: 
@@ -974,7 +958,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     - m_Name: left
-      m_Id: 90ac4305-37c3-4279-81b4-a4d62442ec70
+      m_Id: 9d708060-08f6-4a6b-a153-4bdde8e5ec6e
       m_Path: <Keyboard>/a
       m_Interactions: 
       m_Processors: 
@@ -982,7 +966,7 @@ MonoBehaviour:
       m_Action: Move
       m_Flags: 8
     - m_Name: right
-      m_Id: 52cc1248-90e3-40e0-91b3-988edc023325
+      m_Id: 12373de8-126b-46e1-a4cc-1bbd0322afad
       m_Path: <Keyboard>/d
       m_Interactions: 
       m_Processors: 
@@ -994,12 +978,12 @@ MonoBehaviour:
     m_Name: Shoot
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 171210a6-205b-4232-9ec9-2c5b726eec7f
+    m_Id: 4fa7bcc6-3e67-4555-81c8-b84edcdd6bdc
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 61bc2f4b-2ed1-4e09-99de-f105779a2f67
+      m_Id: 124fc7aa-ed73-444b-af28-d813665ee1ad
       m_Path: <Mouse>/leftButton
       m_Interactions: 
       m_Processors: 
@@ -1011,13 +995,13 @@ MonoBehaviour:
     m_Name: Throw
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 93550c91-b2a0-45c8-ba3b-64b1035ebd19
+    m_Id: cf6d4b03-b635-4554-b07b-cd27582ac1c0
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 5d88f90c-ca42-41b8-8ade-001cea0893e9
-      m_Path: <Keyboard>/e
+      m_Id: eb091dc4-4e83-4cc8-8dca-7e60973fe104
+      m_Path: <Keyboard>/space
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -1028,11 +1012,27 @@ MonoBehaviour:
     m_Name: Laser
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 704129ad-fedb-4e17-823d-d01c2b5562ec
+    m_Id: 88203799-dd9f-44ec-a2ab-a4d7a092065d
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+--- !u!114 &1452026852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452026848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9cbf9e69fcfd524b91789837fb1b301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  acceleration: 8
+  gameCamera: {fileID: 0}
+  moveDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &1452026853
 MonoBehaviour:
   m_ObjectHideFlags: 0
