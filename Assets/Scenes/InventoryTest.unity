@@ -681,6 +681,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryUI: {fileID: 763649170}
   inventoryData: {fileID: 11400000, guid: 3bf69888ad86ef84b85a8382e7d4d8de, type: 2}
+  initialItems:
+  - quantity: 5
+    item: {fileID: 11400000, guid: a532ea8b35546d44aa5a1fe35dbefd63, type: 2}
+  - quantity: 0
+    item: {fileID: 0}
+  - quantity: 1
+    item: {fileID: 11400000, guid: 632ce10301375d746b0d6f60d9187086, type: 2}
+  - quantity: 2
+    item: {fileID: 11400000, guid: a532ea8b35546d44aa5a1fe35dbefd63, type: 2}
 --- !u!114 &763649170 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2128154921018505293, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
@@ -806,6 +815,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2096282186332338865, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3059117745066100844, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
