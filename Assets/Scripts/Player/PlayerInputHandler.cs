@@ -61,6 +61,12 @@ public class PlayerInputHandler : MonoBehaviour
             throwAction.Enable();
             throwAction.performed += OnThrowPerformed;
         }
+        
+        if (interactAction != null)
+        {
+            interactAction.Enable();
+            interactAction.performed += OnInteractPerformed;
+        }
     }
     
     private void OnDisable()
@@ -90,6 +96,12 @@ public class PlayerInputHandler : MonoBehaviour
         {
             throwAction.Disable();
             throwAction.performed -= OnThrowPerformed;
+        }
+        
+        if (interactAction != null)
+        {
+            interactAction.Disable();
+            interactAction.performed -= OnInteractPerformed;
         }
     }
     
@@ -126,5 +138,10 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnThrowPerformed(InputAction.CallbackContext context)
     {
         onThrow?.Invoke();
+    }
+    
+    private void OnInteractPerformed(InputAction.CallbackContext context)
+    {
+        onInteract?.Invoke();
     }
 }

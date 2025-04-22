@@ -80,7 +80,8 @@ public class FloatingUI : MonoBehaviour
                 break;
 
             case UIInteractionType.PickUpItem:
-                //PromptUI.Instance.ShowPrompt(interactionData.promptText, interactionData.sceneToLoad);
+                Debug.Log("picked up " + interactionData.name);
+                Destroy(gameObject);
                 break;
 
             case UIInteractionType.CustomAction:
@@ -102,8 +103,6 @@ public class FloatingUI : MonoBehaviour
             {
                 playerInput.interactAction.performed += OnInteractPerformed;
             }
-
-            // Optional: Show "Press E" UI
         }
     }
 
