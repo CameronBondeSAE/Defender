@@ -7,9 +7,7 @@ public class WaypointManager : MonoBehaviour
     public static WaypointManager Instance;
 
     public int totalWaypoints = 24;
-    public float waypointSpacing = 10f;
-    public float checkRadius = 1f;
-    public LayerMask blockLayer;
+    public float waypointSpacing = 6f;
     public Vector3 areaCenter;
     public Vector3 areaSize;
     
@@ -19,21 +17,18 @@ public class WaypointManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-
         GenerateWaypoints();
     }
-
     void GenerateWaypoints()
     {
         int attempts = 0;
-
-        while (allWaypoints.Count < totalWaypoints && attempts < totalWaypoints * 10)
+        while (allWaypoints.Count < totalWaypoints && attempts < totalWaypoints * 10) // fail-proof check
         {
             // Generate a random point within the area bounds
             Vector3 randomOffset = new Vector3(
-                Random.Range(-areaSize.x / 2f, areaSize.x / 2f),
+                Random.Range(-areaSize.x, areaSize.x),
                 0,
-                Random.Range(-areaSize.z / 2f, areaSize.z / 2f)
+                Random.Range(-areaSize.z, areaSize.z)
             );
 
             Vector3 randomPos = areaCenter + randomOffset;
@@ -42,11 +37,8 @@ public class WaypointManager : MonoBehaviour
             if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, 2f, NavMesh.AllAreas))
             {
                 Vector3 validPos = hit.position;
-
-                // Check there's no object in the blocking layer at this point
-                if (!Physics.CheckSphere(validPos, checkRadius, blockLayer))
-                {
-                    // Extra check to make sure this isn't too close to any existing waypoint
+               
+                    // check to make sure this isn't too close to any existing waypoint
                     bool tooClose = false;
                     foreach (var waypoint in allWaypoints)
                     {
@@ -67,11 +59,10 @@ public class WaypointManager : MonoBehaviour
 
                         Debug.DrawRay(validPos + Vector3.up * 1f, Vector3.up * 0.5f, Color.green, 5f); // visible ray
                     }
-                }
             }
-
             attempts++;
             Debug.Log($"Generated {allWaypoints.Count} unique waypoints.");
+            
         }
     }
     void OnDrawGizmos()

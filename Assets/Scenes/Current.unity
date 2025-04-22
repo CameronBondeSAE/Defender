@@ -533,8 +533,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.33260044, y: 0.000000017818799, z: -0.00000000628432, w: 0.94306785}
-  m_LocalPosition: {x: 2.529, y: 7.683419, z: -7.0030003}
+  m_LocalRotation: {x: 0.35172665, y: -0.0000000023484334, z: 8.823889e-10, w: 0.93610275}
+  m_LocalPosition: {x: 2.4387949, y: 6.49, z: -6.960209}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1679,10 +1679,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalWaypoints: 10
   waypointSpacing: 10
-  checkRadius: 2
-  blockLayer:
-    serializedVersion: 2
-    m_Bits: 8
   areaCenter: {x: 0, y: 0, z: 0}
   areaSize: {x: 0, y: 0, z: 0}
 --- !u!4 &957149511
@@ -2847,7 +2843,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_TagString
@@ -3136,6 +3132,15 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 88203799-dd9f-44ec-a2ab-a4d7a092065d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  interactAction:
+    m_Name: Interact
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: b843b465-363d-4e90-91d6-6c6aada57211
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -3579,6 +3584,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178d3cd671b20ee42a8d706677018800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!65 &2053580791
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3863,7 +3873,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: e871daee530bbd14e8ee56969abe75d8, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 607d7b6968379a54f8f889d5c454321a, type: 2}
   m_BuildHeightMesh: 0
 --- !u!65 &2065823510
 BoxCollider:

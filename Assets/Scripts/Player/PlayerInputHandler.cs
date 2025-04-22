@@ -9,11 +9,14 @@ public class PlayerInputHandler : MonoBehaviour
     public InputAction shootAction;
     public InputAction throwAction; 
     public InputAction laserAction;
+    public InputAction interactAction;
     public Vector2 moveInput { get; private set; }
     
     public event Action onShootStart;
     public event Action onShootStop;
     public event Action onThrow;
+    
+    public event Action onInteract;
 
     public event Action onLaserStart;
     public event Action onLaserStop;
