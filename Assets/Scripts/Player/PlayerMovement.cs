@@ -40,10 +40,10 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 8f);
             PlayerEventManager.instance.events.onMove.Invoke();
         }
-        else if (playerCombat.isShooting)
-        {
-            PlayerEventManager.instance.events.onShoot.Invoke();
-        }
+        // else if (playerCombat.isShooting)
+        // {
+        //     PlayerEventManager.instance.events.onShoot.Invoke();
+        // }
         else
         {
             PlayerEventManager.instance.events.onIdle.Invoke();
