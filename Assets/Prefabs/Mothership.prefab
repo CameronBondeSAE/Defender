@@ -127,8 +127,11 @@ MonoBehaviour:
   alienPrefab: {fileID: 9221107206343358144, guid: b082e6df53701df448358a796255e25b, type: 3}
   blueBeam: {fileID: 5310668164594011570}
   waypoints: []
-  alienSpawnCount: 5
-  spawnDelay: 3
+  alienSpawnCount: 3
+  spawnDelay: 1.5
+  blueBeamDuration: 0.5
+  isSpawningAliens: 0
+  moveSpeed: 2.5
   raycastLength: 1696.8
   raycastPhysicsLayerMasks:
     serializedVersion: 2

@@ -10,8 +10,13 @@ public class MothershipBase : MonoBehaviour
     [SerializeField] protected GameObject[] waypoints;
     
     [SerializeField] protected int alienSpawnCount; //number of aliens that spawn at a time
-    [SerializeField] protected int spawnDelay; //the time in seconds it takes to spawn aliens again
+    [SerializeField] protected float spawnDelay; //the time in seconds it takes to spawn aliens again
+
+    [SerializeField] protected float blueBeamDuration;
     //[SerializeField] protected float spawnTimer;
+    [SerializeField] protected bool isSpawningAliens;
+
+    [SerializeField] protected float moveSpeed;
 
     [SerializeField] protected float raycastLength;
     [SerializeField] protected LayerMask raycastPhysicsLayerMasks;
@@ -21,7 +26,7 @@ public class MothershipBase : MonoBehaviour
     void Start()
     {
         //StartCoroutine(SpawnTimer());
-
+        isSpawningAliens = false;
     }
 
     void Update()
@@ -30,20 +35,26 @@ public class MothershipBase : MonoBehaviour
         {
             SpawnAliens(alienSpawnCount);
         }
+
+        if (isSpawningAliens == false)
+        {
+            MoveToAWaypoint();
+        }
     }
 
     protected void SpawnAliens(int numberOfAliens)
     {
-        
-        Debug.Log("wave of aliens spawning");
-
-        
-        StartCoroutine(SpawnTimer());
+        if (isSpawningAliens == false)
+        {
+            StartCoroutine(SpawnTimer());
+        }
         
     }
 
     IEnumerator SpawnTimer()
     {
+        isSpawningAliens = true;
+        yield return StartCoroutine(MoveToAWaypoint());
         
         RaycastHit hit;
         if (Physics.Raycast(transform.position, new Vector3(0, -1, 0), out hit, raycastLength,
@@ -51,14 +62,30 @@ public class MothershipBase : MonoBehaviour
         {
             alienSpawnPosition = hit.point;
         }
-        
+        Debug.Log("wave of aliens spawning");
         for (int i = 0; i < alienSpawnCount; i++)
         {
             blueBeam.SetActive(true);
             Instantiate(alienPrefab, alienSpawnPosition + new Vector3(0,1,0), Quaternion.identity);
-            yield return new WaitForSeconds(spawnDelay);
+            yield return new WaitForSeconds(blueBeamDuration);
             blueBeam.SetActive(false);
+            yield return new WaitForSeconds(spawnDelay);
+            //MoveToAWaypoint();
         }
+        isSpawningAliens = false;
+    }
+
+    IEnumerator MoveToAWaypoint()
+    {
+        int randomIndex = Random.Range(0, waypoints.Length - 1);
+        Debug.Log(randomIndex);
+        while ((waypoints[randomIndex].transform.position - transform.position).magnitude > 0.01f)
+        {
+            transform.position = Vector3.Lerp(transform.position, waypoints[randomIndex].transform.position, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        transform.position = waypoints[randomIndex].transform.position;
+        
     }
     
 }
