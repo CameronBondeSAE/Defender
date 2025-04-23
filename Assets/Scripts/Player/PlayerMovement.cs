@@ -1,17 +1,18 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private Rigidbody rb;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 8f;
     [SerializeField] private Camera gameCamera;
     public Vector3 moveDirection;
-    private PlayerInputHandler inputHandler;
     private PlayerCombat playerCombat;
-    private Rigidbody rb;
+    private PlayerInputHandler inputHandler;
 
 
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -19,23 +20,23 @@ public class PlayerMovement : MonoBehaviour
         inputHandler = GetComponent<PlayerInputHandler>();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        var inputVector = inputHandler.moveInput;
+        Vector2 inputVector = inputHandler.moveInput;
         moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
-
+        
         // rotate relative to camera
-        var cameraRotation = Quaternion.Euler(0, 0, 0);
+        Quaternion cameraRotation = Quaternion.Euler(0, 0, 0);
         moveDirection = cameraRotation * moveDirection;
 
-        var targetVelocity = moveDirection * moveSpeed;
+        Vector3 targetVelocity = moveDirection * moveSpeed;
         // realistic movement
         rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
-
+        
         // player to face direction of his movement actually
-        if (moveDirection.magnitude > 0.1 || (moveDirection.magnitude > 0.1 && playerCombat.isShooting))
+        if (moveDirection.magnitude > 0.1 || moveDirection.magnitude > 0.1 && playerCombat.isShooting)
         {
-            var targetRotation = Quaternion.LookRotation(moveDirection);
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 8f);
             PlayerEventManager.instance.events.onMove.Invoke();
         }
@@ -48,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
             PlayerEventManager.instance.events.onIdle.Invoke();
         }
     }
-
+    
     /// <summary>
     /// If we want player to face the direction of mouse
     /// </summary>
