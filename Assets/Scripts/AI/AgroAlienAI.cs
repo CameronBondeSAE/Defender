@@ -18,6 +18,20 @@ public class AgroAlienAI : AIBase
     private AIAnimationController animController;
     private PatrolState patrolState;
     private AttackState attackState;
+    
+    private Health health;
+    
+    void Awake()
+    {
+        health = GetComponent<Health>();
+        health.OnHealthChanged += OnDamaged;
+    }
+
+    private void OnDestroy()
+    {
+        if (health != null)
+            health.OnHealthChanged -= OnDamaged;
+    }
 
     protected override void Start()
     {
@@ -69,7 +83,13 @@ public class AgroAlienAI : AIBase
 
         return false;
     }
+    
+    private void OnDamaged(float damageAmount)
+    {
+        if (!(currentState is HitState))
+        {
+            ChangeState(new HitState(this, currentState));
+        }
+    }
 
-    public void StopMoving() => agent.isStopped = true;
-    public void ResumeMoving() => agent.isStopped = false;
 }

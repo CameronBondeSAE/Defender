@@ -20,7 +20,7 @@ public class AIBase : MonoBehaviour
    protected virtual void Start()
    {
       agent = GetComponent<NavMeshAgent>();
-      patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(3);
+      //patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(3);
       //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
    }
 
@@ -53,7 +53,10 @@ public class AIBase : MonoBehaviour
       agent.acceleration = acceleration;
       agent.SetDestination(destination);
    }
-
+   public void StopMoving() => agent.isStopped = true;
+   public void ResumeMoving() => agent.isStopped = false;
+   
+   
    // public void Die()
    // {
    //    if (isDead) return;

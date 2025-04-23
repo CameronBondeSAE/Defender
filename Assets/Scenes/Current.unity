@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_TagString
@@ -221,6 +221,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 174598720}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 174598729}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 174598728}
   m_SourcePrefab: {fileID: 100100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
 --- !u!1 &174598719 stripped
 GameObject:
@@ -265,9 +271,9 @@ MonoBehaviour:
   rotationSpeed: 10
   acceleration: 100
   patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1934849493}
+  - {fileID: 1302232898}
+  - {fileID: 913398387}
   damageMin: 5
   damageMax: 10
   alertRange: 10
@@ -344,6 +350,41 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
   m_PrefabInstance: {fileID: 174598718}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &174598728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174598719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 1
+  deathAnimDuration: 0
+--- !u!114 &174598729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 174598719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11415d2bca28804e9d4ad9a24a5023c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 0
+  bloodParticles: {fileID: 1232413080505766151, guid: c2cddf449a534364c816cae1645080a0, type: 3}
+  alienBloodParticles: {fileID: 0}
+  woodParticles: {fileID: 0}
+  metalParticles: {fileID: 0}
+  fireParticles: {fileID: 0}
 --- !u!1 &255480829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1652,7 +1693,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_TagString
@@ -2458,9 +2499,9 @@ MonoBehaviour:
   rotationSpeed: 10
   acceleration: 10
   patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 288973254}
+  - {fileID: 1021221506}
+  - {fileID: 1593027159}
   followTarget: {fileID: 0}
   followDistance: 2
 --- !u!1 &1275060579 stripped
@@ -2827,7 +2868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_TagString

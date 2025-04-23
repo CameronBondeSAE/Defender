@@ -4,7 +4,7 @@ using System.Collections;
 
 public class AttackState : MonoBehaviour, IAIState
 {
-    private AgroAlienAI ai;
+    private AIBase ai;
     private AIAnimationController animController;
 
     [Header("Attack Settings")]
@@ -70,7 +70,6 @@ public class AttackState : MonoBehaviour, IAIState
 
         isAttacking = false;
         ai.StopAllCoroutines();
-        ai.ResumeMoving();
     }
 
     // consecutive attack coroutine
