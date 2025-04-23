@@ -12,11 +12,10 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     private PlayerState currentState;
-    private Animator animator;
+    public Animator animator;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
         SetAnimationState(PlayerState.Idle); 
     }
 
@@ -34,15 +33,15 @@ public class PlayerAnimation : MonoBehaviour
             case PlayerState.Idle:
                 animator.Play("Idle");
                 break;
-            case PlayerState.ReadyGun:
-                animator.Play("ReadyGun");
-                break;
+            // case PlayerState.ReadyGun:
+            //     animator.Play("ReadyGun");
+            //     break;
             case PlayerState.Run:
                 animator.Play("Run");
                 break;
-            case PlayerState.RunShoot:
-                animator.Play("RunShoot");
-                break;
+            // case PlayerState.RunShoot:
+            //     animator.Play("RunShoot");
+            //     break;
             case PlayerState.Death:
                 animator.Play("Death");
                 break;

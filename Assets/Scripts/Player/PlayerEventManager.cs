@@ -15,8 +15,8 @@ public class PlayerEventManager : MonoBehaviour
         events = new PlayerEvents();
         events.onIdle.AddListener(OnIdle);
         events.onMove.AddListener(OnMove);
-        events.onShoot.AddListener(OnShoot);
-        events.onRunShoot.AddListener(OnRunShoot);
+        // events.onShoot.AddListener(OnShoot);
+        // events.onRunShoot.AddListener(OnRunShoot);
         events.onDeath.AddListener(OnDeath);
     }
 
@@ -24,8 +24,8 @@ public class PlayerEventManager : MonoBehaviour
     {
         events.onIdle.RemoveListener(OnIdle);
         events.onMove.RemoveListener(OnMove);
-        events.onShoot.RemoveListener(OnShoot);
-        events.onRunShoot.RemoveListener(OnRunShoot);
+        // events.onShoot.RemoveListener(OnShoot);
+        // events.onRunShoot.RemoveListener(OnRunShoot);
         events.onDeath.RemoveListener(OnDeath);
     }
 
@@ -44,16 +44,16 @@ public class PlayerEventManager : MonoBehaviour
         SetAnimation("Run");
     }
 
-    private void OnShoot()
-    {
-        SetAnimation("ReadyGun");
-    }
-
-    private void OnRunShoot()
-    {
-        SetAnimation("RunShoot");
-    }
-
+    // private void OnShoot()
+    // {
+    //     SetAnimation("ReadyGun");
+    // }
+    //
+    // private void OnRunShoot()
+    // {
+    //     SetAnimation("RunShoot");
+    // }
+    //
     private void OnDeath()
     {
         SetAnimation("Death");
@@ -61,7 +61,7 @@ public class PlayerEventManager : MonoBehaviour
 
     private void SetAnimation(string animationName)
     {
-        Animator animator = GetComponent<Animator>();
+        Animator animator = GetComponentInChildren<Animator>();
         if (animator != null)
         {
             animator.Play(animationName);
@@ -77,7 +77,7 @@ public class PlayerEvents
 {
     public UnityEvent onIdle = new UnityEvent();
     public UnityEvent onMove = new UnityEvent();
-    public UnityEvent onShoot = new UnityEvent();
-    public UnityEvent onRunShoot = new UnityEvent();
+    // public UnityEvent onShoot = new UnityEvent();
+    // public UnityEvent onRunShoot = new UnityEvent();
     public UnityEvent onDeath = new UnityEvent();
 }
