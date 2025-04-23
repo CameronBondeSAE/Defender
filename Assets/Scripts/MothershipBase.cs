@@ -33,7 +33,7 @@ public class MothershipBase : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            SpawnAliens(alienSpawnCount);
+            SpawnAliens();
         }
 
         if (isSpawningAliens == false)
@@ -42,7 +42,7 @@ public class MothershipBase : MonoBehaviour
         }
     }
 
-    protected void SpawnAliens(int numberOfAliens)
+    protected virtual void SpawnAliens()
     {
         if (isSpawningAliens == false)
         {
@@ -51,7 +51,7 @@ public class MothershipBase : MonoBehaviour
         
     }
 
-    IEnumerator SpawnTimer()
+    protected virtual IEnumerator SpawnTimer()
     {
         isSpawningAliens = true;
         yield return StartCoroutine(MoveToAWaypoint());
@@ -75,7 +75,7 @@ public class MothershipBase : MonoBehaviour
         isSpawningAliens = false;
     }
 
-    IEnumerator MoveToAWaypoint()
+    protected virtual IEnumerator MoveToAWaypoint()
     {
         int randomIndex = Random.Range(0, waypoints.Length - 1);
         Debug.Log(randomIndex);
