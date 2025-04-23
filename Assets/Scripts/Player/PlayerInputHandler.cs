@@ -10,11 +10,14 @@ public class PlayerInputHandler : MonoBehaviour
     public InputAction throwAction;
     public InputAction laserAction;
     public InputAction aimGrenadeAction;
+    public InputAction interactAction;
     public Vector2 moveInput { get; private set; }
     
     public event Action onShootStart;
     public event Action onShootStop;
     public event Action onThrow;
+    
+    public event Action onInteract;
 
     public event Action onLaserStart;
     public event Action onLaserStop;
@@ -69,6 +72,12 @@ public class PlayerInputHandler : MonoBehaviour
             aimGrenadeAction.started += OnAimGrenadeStarted;
             aimGrenadeAction.canceled += OnAimGrenadeStopped;
         }
+        
+        if (interactAction != null)
+        {
+	        interactAction.Enable();
+	        interactAction.performed += OnInteractPerformed;
+        }
     }
     
     private void OnDisable()
@@ -105,6 +114,12 @@ public class PlayerInputHandler : MonoBehaviour
             aimGrenadeAction.Disable();
             aimGrenadeAction.started -= OnAimGrenadeStarted;
             aimGrenadeAction.canceled -= OnAimGrenadeStopped;
+        }
+        
+        if (interactAction != null)
+        {
+	        interactAction.Disable();
+	        interactAction.performed -= OnInteractPerformed;
         }
     }
     
@@ -151,5 +166,10 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnAimGrenadeStopped(InputAction.CallbackContext context)
     {
         onAimGrenadeStop?.Invoke();
+    }
+    
+    private void OnInteractPerformed(InputAction.CallbackContext context)
+    {
+	    onInteract?.Invoke();
     }
 }
