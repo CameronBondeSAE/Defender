@@ -1,0 +1,34 @@
+{
+    "name": "InventoryInputs",
+    "maps": [
+        {
+            "name": "Inventory",
+            "id": "8c2ec90e-82ec-4fd3-86ca-e3c7f66ed511",
+            "actions": [
+                {
+                    "name": "confirm",
+                    "type": "Button",
+                    "id": "f2a2bf39-2ab9-4773-a2bb-9b2b5fc35992",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "089e70e3-6601-4bc9-a81e-dafec36ef77b",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "confirm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
