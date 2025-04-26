@@ -930,8 +930,12 @@ PrefabInstance:
       value: MoveableMothership
       objectReference: {fileID: 0}
     - target: {fileID: 4261932001835839538, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.65403074
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261932001835839538, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 26.664303
+      value: 32.9
       objectReference: {fileID: 0}
     - target: {fileID: 4261932001835839538, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
       propertyPath: m_LocalPosition.y
@@ -939,7 +943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4261932001835839538, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -42.3
+      value: -44
       objectReference: {fileID: 0}
     - target: {fileID: 4261932001835839538, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
       propertyPath: m_LocalRotation.w
@@ -969,10 +973,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8620849587009008872, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
-      propertyPath: alienSpawnOffset.y
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 5037318845867164834, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ec54f55f872de914c9b1c61bba949d3d, type: 2}
     - target: {fileID: 8620849587009008872, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
       propertyPath: waypoints.Array.size
       value: 7
@@ -1000,13 +1004,9 @@ PrefabInstance:
     - target: {fileID: 8620849587009008872, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
       propertyPath: 'waypoints.Array.data[5]'
       value: 
-      objectReference: {fileID: 871553849}
+      objectReference: {fileID: 1467307581}
     - target: {fileID: 8620849587009008872, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
       propertyPath: 'waypoints.Array.data[6]'
-      value: 
-      objectReference: {fileID: 523683605}
-    - target: {fileID: 8620849587009008872, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
-      propertyPath: 'waypoints.Array.data[7]'
       value: 
       objectReference: {fileID: 871553849}
     m_RemovedComponents: []

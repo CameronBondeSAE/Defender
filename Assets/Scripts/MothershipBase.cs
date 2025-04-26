@@ -19,15 +19,24 @@ public class MothershipBase : MonoBehaviour
 
     private Vector3 alienSpawnPosition; //The position where the alien will spawn on the map
     [SerializeField] protected Vector3 alienSpawnOffset;
-    
+
+    [SerializeField] protected float rotationSpeed;
+
+    //audio stuff
+    [SerializeField] private AudioClip[] beamSounds;
+    private AudioSource audioSource;
+
     protected virtual void Start()
     {
         //StartCoroutine(SpawnTimer());
         isSpawningAliens = false;
+        audioSource = GetComponent<AudioSource>();
     }
 
     protected virtual void Update()
     {
+        Spin();
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             SpawnAliens();
@@ -58,6 +67,7 @@ public class MothershipBase : MonoBehaviour
         for (int i = 0; i < alienSpawnCount; i++)
         {
             blueBeam.SetActive(true);
+            PlayRandomBeamSound();
             Instantiate(alienPrefab, alienSpawnPosition + alienSpawnOffset, Quaternion.identity);
             yield return new WaitForSeconds(blueBeamDuration);
             blueBeam.SetActive(false);
@@ -68,11 +78,23 @@ public class MothershipBase : MonoBehaviour
     }
     
     /// <summary>
-    /// function to be used by GameManager script to activate waves.
+    /// function to be used by GameManager script to activate waves without having to change code here.
     /// </summary>
     public void StartWave()
     {
         SpawnAliens();
+    }
+
+    private void Spin()
+    {
+        transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
+    }
+
+    private void PlayRandomBeamSound()
+    {
+        int randomIndex = Random.Range(0, beamSounds.Length - 1);
+        audioSource.clip = beamSounds[randomIndex];
+        audioSource.Play();
     }
 
 }
