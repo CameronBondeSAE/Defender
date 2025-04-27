@@ -1028,13 +1028,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d4253fbb71a70749a53bb3b8736174b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 10
-  angleRange: 45
-  swingSpeed: 2
-  pushZone: {fileID: 5190403731297210969}
-  pushableLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  pushForce: 20
+  rotationSpeed: 1.5
+  angleRange: 90
 --- !u!65 &5190403731297210969
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1054,8 +1050,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.62, y: 1, z: 2.31}
-  m_Center: {x: 0, y: 0, z: 2.66}
+  m_Size: {x: 2.62, y: 2.23, z: 4.2}
+  m_Center: {x: 0, y: 0.25, z: 3.26}
 --- !u!1 &5530247674198695640
 GameObject:
   m_ObjectHideFlags: 0
