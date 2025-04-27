@@ -13,7 +13,7 @@ namespace Inventory
         private UIInventoryPage inventoryUI;
 
         [SerializeField]
-        private InventorySO inventoryData;
+        public InventorySO inventoryData;
         private InventoryInputs inventoryInputs;
 
         public List<InventoryItem> initialItems = new List<InventoryItem> ();
@@ -38,6 +38,16 @@ namespace Inventory
                 }
                 inventoryData.AddItem(item);
             }
+        }
+        
+        public void AddItemToInventory(ItemSO itemSO)
+        {
+            InventoryItem newItem = new InventoryItem
+            {
+                item = itemSO,
+                quantity = 1
+            };
+            inventoryData.AddItem(newItem);
         }
 
         private void UpdateInventoryUI(Dictionary<int, InventoryItem> inventoryState)
