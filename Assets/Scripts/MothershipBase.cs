@@ -85,12 +85,12 @@ public class MothershipBase : MonoBehaviour
         SpawnAliens();
     }
 
-    private void Spin()
+    protected void Spin()
     {
         transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
     }
 
-    private void PlayRandomBeamSound()
+    protected void PlayRandomBeamSound()
     {
         int randomIndex = Random.Range(0, beamSounds.Length - 1);
         audioSource.clip = beamSounds[randomIndex];

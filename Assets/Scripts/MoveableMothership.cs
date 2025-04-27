@@ -7,16 +7,16 @@ public class MoveableMothership : MothershipBase
 
     [SerializeField] protected GameObject[] waypoints;
 
-    [SerializeField] private AudioClip[] engineSounds;
+    [SerializeField] protected AudioClip[] engineSounds;
 
     protected override void Update()
     {
         base.Update();
 
-        if (isSpawningAliens == false)
-        {
-            MoveToAWaypoint();
-        }
+        //if (isSpawningAliens == false)
+        //{
+        //    MoveToAWaypoint();
+        //}
     }
 
     protected override void SpawnAliens()
@@ -31,7 +31,7 @@ public class MoveableMothership : MothershipBase
         yield return StartCoroutine(base.SpawnTimer());
     }
 
-    protected IEnumerator MoveToAWaypoint()
+    protected virtual IEnumerator MoveToAWaypoint()
     {
         int randomIndex = Random.Range(0, waypoints.Length - 1);
         Debug.Log(randomIndex);
@@ -45,7 +45,7 @@ public class MoveableMothership : MothershipBase
         audioSource.Stop();
     }
 
-    private void PlayRandomEngineSound()
+    protected void PlayRandomEngineSound()
     {
         int randomIndex = Random.Range(0, engineSounds.Length - 1);
         audioSource.clip = engineSounds[randomIndex];
