@@ -332,7 +332,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8904d2c986f794949802efc1220915b9, type: 3}
   - {fileID: 8300000, guid: 364814694e2f2d2459fdd27488ec9e65, type: 3}
   - {fileID: 8300000, guid: f1cf8ee9c23e22d43b8f6a1d2b95bcd5, type: 3}
-  moveSpeed: 2.5
+  moveSpeed: 1.5
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -341,6 +341,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  engineSounds:
+  - {fileID: 8300000, guid: 52ff8c4f7419a7e489ce5f73db3782ad, type: 3}
+  - {fileID: 8300000, guid: ea474b444eef8b041b9d906252c5712c, type: 3}
+  - {fileID: 8300000, guid: 827a2358650c97048946960c2184cc8f, type: 3}
 --- !u!82 &-2467341121392268905
 AudioSource:
   m_ObjectHideFlags: 0
@@ -353,7 +357,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

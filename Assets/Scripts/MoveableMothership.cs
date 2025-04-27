@@ -7,6 +7,8 @@ public class MoveableMothership : MothershipBase
 
     [SerializeField] protected GameObject[] waypoints;
 
+    [SerializeField] private AudioClip[] engineSounds;
+
     protected override void Update()
     {
         base.Update();
@@ -33,13 +35,21 @@ public class MoveableMothership : MothershipBase
     {
         int randomIndex = Random.Range(0, waypoints.Length - 1);
         Debug.Log(randomIndex);
+        PlayRandomEngineSound();
         while ((waypoints[randomIndex].transform.position - transform.position).magnitude > 0.01f)
         {
             transform.position = Vector3.Lerp(transform.position, waypoints[randomIndex].transform.position, moveSpeed * Time.deltaTime);
             yield return null;
         }
         transform.position = waypoints[randomIndex].transform.position;
+        audioSource.Stop();
+    }
 
+    private void PlayRandomEngineSound()
+    {
+        int randomIndex = Random.Range(0, engineSounds.Length - 1);
+        audioSource.clip = engineSounds[randomIndex];
+        audioSource.Play();
     }
 
 }

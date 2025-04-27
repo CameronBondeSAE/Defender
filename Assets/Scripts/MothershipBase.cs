@@ -23,8 +23,8 @@ public class MothershipBase : MonoBehaviour
     [SerializeField] protected float rotationSpeed;
 
     //audio stuff
-    [SerializeField] private AudioClip[] beamSounds;
-    private AudioSource audioSource;
+    [SerializeField] protected AudioClip[] beamSounds;
+    protected AudioSource audioSource;
 
     protected virtual void Start()
     {
