@@ -1,20 +1,21 @@
 using UnityEngine;
 
-
 namespace Brad
 {
     public class TimeNade : Nades
     {
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-       public override void Start()
+        public override void Start()
         {
-            Launch();
-        }
+            base.Start();
 
-        // Update is called once per frame
-     public override  void Update()
-        {
-
+            
+            if (!hasLaunched) // Only launch if not already launched
+            {
+               
+                Vector3 launchDirection = transform.forward; // Direction of launch 
+                Launch(launchDirection); // Launch function from base class 
+            }
         }
     }
 }

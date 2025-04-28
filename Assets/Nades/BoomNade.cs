@@ -8,40 +8,45 @@ namespace Brad
     {
       
 
-      public override void Start()
+        public override void Start()
         {
-            countdown = grenadeData.explosionDelay;
-            launchSpeed = grenadeData.launchSpeed;
-            //startPosition.position = transform.position;
-            rb = GetComponent<Rigidbody>();
-            Launch();
-        }
+            base.Start();
 
-       public override void Update()
-        {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0f)
+            
+            if (!hasLaunched) // Only launch if not already launched
             {
-                Explode();
+               
+                Vector3 launchDirection = transform.forward; // Direction of launch 
+                Launch(launchDirection); // Launch function from base class 
             }
         }
-       
 
-        void Explode()
-        {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, grenadeData.explosionRadius);
-            foreach (Collider collider in colliders)
-            {
-                Health health = collider.GetComponent<Health>();
-                if (health != null)
-                {
-                    health.TakeDamage(grenadeData.damage);
-                }
-            }
-
-            Destroy(gameObject);
-        }
+       // public override void Update()
+       //  {
+       //      countdown -= Time.deltaTime;
+       //      if (countdown <= 0f)
+       //      {
+       //          Explode();
+       //      }
+       //  }
+       //
+       //
+       //  void Explode()
+       //  {
+       //      Collider[] colliders = Physics.OverlapSphere(transform.position, grenadeData.explosionRadius);
+       //      foreach (Collider collider in colliders)
+       //      {
+       //          Health health = collider.GetComponent<Health>();
+       //          if (health != null)
+       //          {
+       //              health.TakeDamage(grenadeData.damage);
+       //          }
+       //      }
+       //
+       //      Destroy(gameObject);
+       //  }
 
 
     }
 }
+
