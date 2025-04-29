@@ -45,16 +45,6 @@ public class AIBase : MonoBehaviour
       if (currentState != null) currentState.Stay();
    }
    
-   // Makes sure AI always faces direction of movement
-   public void FaceDirection()
-   {
-      if (agent.velocity.magnitude > 0.1f)
-      {
-         Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
-         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-      }
-   }
-   
    // Method that smoothly moves towards a target 
    public void MoveTo(Vector3 destination) {
       agent.acceleration = acceleration;
