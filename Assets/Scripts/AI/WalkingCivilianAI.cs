@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CivilianAI : AIBase
+public class WalkingCivilianAI : AIBase
 {
     [HideInInspector] public Transform followTarget;
     public float followDistance;

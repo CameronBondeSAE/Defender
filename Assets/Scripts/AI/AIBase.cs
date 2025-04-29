@@ -13,6 +13,7 @@ public class AIBase : MonoBehaviour
    public float rotationSpeed;
    public float acceleration;
    public Transform[] patrolPoints;
+   public int patrolPointsCount;
    private Health health;
    
    // temp?
@@ -20,13 +21,12 @@ public class AIBase : MonoBehaviour
 
    protected virtual void Start()
    {
-      health = GetComponent<AlienHealth>();
+      health = GetComponent<AIHealth>();
       agent = GetComponent<NavMeshAgent>();
-      //patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(3);
+      patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(patrolPointsCount);
       //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
       health.OnHealthChanged += HandleHit;
       health.OnDeath += HandleDeath;
-
    }
 
    // Exit current state and goes into new state
@@ -82,15 +82,4 @@ public class AIBase : MonoBehaviour
    }
    public void StopMoving() => agent.isStopped = true;
    public void ResumeMoving() => agent.isStopped = false;
-   
-   
-   // public void Die()
-   // {
-   //    if (isDead) return;
-   //    if (!isDead)
-   //    {
-   //       isDead = true;
-   //       ChangeState(new DeathState(this));
-   //    }
-   // }
 }

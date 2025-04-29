@@ -270,10 +270,8 @@ MonoBehaviour:
   agent: {fileID: 0}
   rotationSpeed: 10
   acceleration: 100
-  patrolPoints:
-  - {fileID: 1934849493}
-  - {fileID: 1302232898}
-  - {fileID: 913398387}
+  patrolPoints: []
+  patrolPointsCount: 3
   damageMin: 5
   damageMax: 10
   alertRange: 10
@@ -365,8 +363,8 @@ MonoBehaviour:
   maxHealth: 50
   revivedHealth: 0
   currentHealth: 0
-  isDead: 1
-  deathAnimDuration: 0
+  isDead: 0
+  deathAnimDuration: 2
 --- !u!114 &174598732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,27 +496,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 282655393469865175, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMax.x
@@ -895,7 +893,7 @@ GameObject:
   - component: {fileID: 288973254}
   m_Layer: 0
   m_Name: waypoint
-  m_TagString: Untagged
+  m_TagString: waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1113,6 +1111,10 @@ PrefabInstance:
     - target: {fileID: 100004, guid: 45099bfd0541d0447aea9c084904c6ec, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 45099bfd0541d0447aea9c084904c6ec, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 45099bfd0541d0447aea9c084904c6ec, type: 3}
       propertyPath: m_LocalScale.x
@@ -2074,7 +2076,7 @@ GameObject:
   - component: {fileID: 913398387}
   m_Layer: 0
   m_Name: alienwaypoint (2)
-  m_TagString: Untagged
+  m_TagString: waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2123,10 +2125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9b7d901b26811409e6e616a95e8117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalWaypoints: 10
-  waypointSpacing: 10
-  areaCenter: {x: 0, y: 0, z: 0}
-  areaSize: {x: 0, y: 0, z: 0}
 --- !u!4 &957149511
 Transform:
   m_ObjectHideFlags: 0
@@ -2297,7 +2295,7 @@ GameObject:
   - component: {fileID: 1021221506}
   m_Layer: 0
   m_Name: waypoint (1)
-  m_TagString: Untagged
+  m_TagString: waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2758,12 +2756,27 @@ MonoBehaviour:
   agent: {fileID: 0}
   rotationSpeed: 10
   acceleration: 10
-  patrolPoints:
-  - {fileID: 288973254}
-  - {fileID: 1021221506}
-  - {fileID: 1593027159}
+  patrolPoints: []
+  patrolPointsCount: 3
   followTarget: {fileID: 0}
   followDistance: 2
+--- !u!114 &1219769407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219769396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0857dd96c3c7cb14e80aa4650dfd9ab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 2
 --- !u!1 &1275060579 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
@@ -2869,6 +2882,7 @@ MonoBehaviour:
   rotationSpeed: 10
   acceleration: 100
   patrolPoints: []
+  patrolPointsCount: 3
   tagDistance: 1.5
   mothership: {fileID: 1295785231}
   isReached: 0
@@ -2889,7 +2903,7 @@ MonoBehaviour:
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
-  deathAnimDuration: 0
+  deathAnimDuration: 2
 --- !u!114 &1275060594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3029,7 +3043,7 @@ GameObject:
   - component: {fileID: 1302232898}
   m_Layer: 0
   m_Name: alienwaypoint (1)
-  m_TagString: Untagged
+  m_TagString: waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3103,7 +3117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2563297373110213474, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -40.4
+      value: -3.2
       objectReference: {fileID: 0}
     - target: {fileID: 2563297373110213474, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3111,7 +3125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2563297373110213474, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.2900543
+      value: -14.9
       objectReference: {fileID: 0}
     - target: {fileID: 2563297373110213474, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3344,6 +3358,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1219769403}
+    - targetCorrespondingSourceObject: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1219769407}
   m_SourcePrefab: {fileID: 100100000, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
 --- !u!4 &1452026854 stripped
 Transform:
@@ -3556,7 +3573,7 @@ GameObject:
   - component: {fileID: 1593027159}
   m_Layer: 0
   m_Name: waypoint (2)
-  m_TagString: Untagged
+  m_TagString: waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3747,7 +3764,7 @@ GameObject:
   - component: {fileID: 1934849493}
   m_Layer: 0
   m_Name: alienwaypoint
-  m_TagString: Untagged
+  m_TagString: waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
