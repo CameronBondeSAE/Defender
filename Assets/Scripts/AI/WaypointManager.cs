@@ -34,15 +34,15 @@ public class WaypointManager : MonoBehaviour
         Debug.Log($"Found {allWaypoints.Count} waypoints in the scene.");
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        foreach (var wp in allWaypoints)
-        {
-            if (wp != null)
-                Gizmos.DrawSphere(wp.position, 0.3f);
-        }
-    }
+    // void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.blue;
+    //     foreach (var wp in allWaypoints)
+    //     {
+    //         if (wp != null)
+    //             Gizmos.DrawSphere(wp.position, 0.3f);
+    //     }
+    // }
 
     // Returns a list of unique waypoints for a single AI
     public Transform[] GetUniqueWaypoints(int count)
