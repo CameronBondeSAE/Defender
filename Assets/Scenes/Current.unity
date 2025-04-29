@@ -293,7 +293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_TagString
@@ -1018,7 +1018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3580954379507441547, guid: a58dd32ac24738f4bb2d6b145b5b6f0d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3580954379507441547, guid: a58dd32ac24738f4bb2d6b145b5b6f0d, type: 3}
       propertyPath: m_TagString
@@ -1249,27 +1249,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -40
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 282655393469865175, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1578,7 +1578,7 @@ GameObject:
   m_Layer: 0
   m_Name: Mothership
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1809,7 +1809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_TagString
@@ -2581,7 +2581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_TagString
@@ -3581,7 +3581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_TagString
@@ -3748,7 +3748,7 @@ MonoBehaviour:
   rotationSpeed: 10
   acceleration: 10
   patrolPoints: []
-  patrolPointsCount: 3
+  patrolPointsCount: 5
   followDistance: 2
   followTarget: {fileID: 0}
 --- !u!114 &1047894229
@@ -3971,7 +3971,7 @@ MonoBehaviour:
   rotationSpeed: 10
   acceleration: 10
   patrolPoints: []
-  patrolPointsCount: 0
+  patrolPointsCount: 5
   followDistance: 2
   followTarget: {fileID: 0}
 --- !u!114 &1219769407
@@ -4058,8 +4058,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 1275060579}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 5
+  m_Radius: 1
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 600
@@ -4089,7 +4089,7 @@ MonoBehaviour:
   patrolPoints: []
   patrolPointsCount: 3
   followDistance: 0
-  tagDistance: 1.5
+  tagDistance: 2.5
   mothership: {fileID: 1295785231}
   isReached: 0
   currentTargetCiv: {fileID: 0}
@@ -4443,7 +4443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_TagString
@@ -5648,7 +5648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_TagString

@@ -20,6 +20,7 @@ public class FollowState : IAIState
     {
         animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
         //ai.StartCoroutine(StunnedDelay());
+        ai.ResumeMoving();
     }
 
     public void Stay()
