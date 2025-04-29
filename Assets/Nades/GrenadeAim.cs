@@ -109,7 +109,7 @@ public class GrenadeAim : MonoBehaviour
 
         int pointsCount = trajectory.arcPoints;
 
-        // Array initialized and set to correct size 
+        // Array initialized and set to correct size
         if (trajectory.calculatedPoints == null || trajectory.calculatedPoints.Length != pointsCount)
         {
             trajectory.calculatedPoints = new Vector3[pointsCount];
@@ -120,8 +120,7 @@ public class GrenadeAim : MonoBehaviour
         float verticalRad = Mathf.Deg2Rad * verticalAngle; // Converts vertical aim angle from degrees to radians
         float horizontalRad = Mathf.Deg2Rad * horizontalAngle; // Converts horizontal aim angle from degrees to radians
 
-
-        Vector3 startVel = new Vector3 //Calculates the direction of the grenade throw
+        Vector3 startVel = new Vector3 // Calculates the direction of the grenade throw
         (
             Mathf.Sin(horizontalRad) * Mathf.Cos(verticalRad) *
             trajectory.launchForce, // Velocity in left/right direction
@@ -131,6 +130,13 @@ public class GrenadeAim : MonoBehaviour
         );
 
         Vector3 gravity = Physics.gravity; // Gets the gravity of the game world 
+
+        Vector3 lastPosition = startPos;
+        bool hitDetected = false; // Flag to detect if a hit occurs
+
+        // Raycasting variables
+        RaycastHit hit;
+        float maxRayDistance = trajectory.launchForce * 2f; // Maximum distance to check for obstacles
 
         for (int i = 0; i < pointsCount; i++) // Loop through each point in the arc
         {
@@ -145,13 +151,29 @@ public class GrenadeAim : MonoBehaviour
             // Adjusts the grenade's position on "X" axis (left/right)
             point.x = startPos.x + startVel.x * time;
 
-            // Adjusts the grenade's position on the z-axis (forward/backward) 
+            // Adjusts the grenade's position on the z-axis (forward/backward)
             point.z = startPos.z + startVel.z * time;
 
-            trajectory.calculatedPoints[i] = point; // Store the calculated point
+
+            if (!hitDetected)
+            {
+                if (Physics.Raycast(lastPosition, (point - lastPosition).normalized, out hit,
+                        (point - lastPosition).magnitude))
+                {
+                    trajectory.calculatedPoints[i] = hit.point;
+                    hitDetected = true;
+                    lineRenderer.positionCount = i + 1;
+                    lineRenderer.SetPositions(trajectory.calculatedPoints);
+                    return;
+                }
+            }
+
+            // If no collision, store the calculated point in the trajectory SO
+            trajectory.calculatedPoints[i] = point;
+            lastPosition = point; // Update the last position
         }
 
-        // Updates scriptable object containing points  
+        // If no hit detected, just draw the full trajectory
         lineRenderer.positionCount = pointsCount;
         lineRenderer.SetPositions(trajectory.calculatedPoints);
     }

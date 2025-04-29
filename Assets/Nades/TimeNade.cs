@@ -9,13 +9,18 @@ namespace Brad
         {
             base.Start();
 
-            
+
             if (!hasLaunched) // Only launch if not already launched
             {
-               
                 Vector3 launchDirection = transform.forward; // Direction of launch 
                 Launch(launchDirection); // Launch function from base class 
             }
+        }
+        
+        protected override void GrenadeLanded()
+        {
+            base.GrenadeLanded();
+            Debug.Log("Slow Grenade triggered.");
         }
     }
 }
