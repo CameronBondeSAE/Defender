@@ -6,11 +6,11 @@ using AIAnimation;
 public class FollowState : IAIState
 {
     
-    private WalkingCivilianAI ai;
+    private AIBase ai;
     private Transform target;
     private AIAnimationController animController;
 
-    public FollowState(WalkingCivilianAI ai, Transform target)
+    public FollowState(AIBase ai, Transform target)
     {
         this.ai = ai;
         this.target = target;
@@ -42,7 +42,7 @@ public class FollowState : IAIState
     {
         animController.SetAnimation(AIAnimationController.AnimationState.Idle);
         ai.StopMoving();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
         ai.ResumeMoving();
     }
     

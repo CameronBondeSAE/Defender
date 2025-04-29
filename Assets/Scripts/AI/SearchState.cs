@@ -26,7 +26,7 @@ public class SearchState : MonoBehaviour, IAIState
 
         for (int i = 0; i < civObjects.Length; i++)
         {
-            WalkingCivilianAI civ = civObjects[i].GetComponent<WalkingCivilianAI>();
+            AIBase civ = civObjects[i].GetComponent<AIBase>();
             if (civ == null || civ == ai.currentTargetCiv)
                 continue;
                 float distance = Vector3.Distance(ai.transform.position, civ.transform.position);

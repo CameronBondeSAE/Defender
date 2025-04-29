@@ -11,7 +11,7 @@ public class IdleState : IAIState
 
     public void Enter()
     {
-        ai.agent.isStopped = true;
+        ai.StopMoving();
         animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
     }
 

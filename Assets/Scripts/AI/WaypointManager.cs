@@ -63,4 +63,9 @@ public class WaypointManager : MonoBehaviour
 
         return result.ToArray();
     }
+    
+    public Transform[] GetAllWaypoints()
+    {
+        return allWaypoints.ToArray();
+    }
 }

@@ -15,6 +15,7 @@ public class AIBase : MonoBehaviour
    public Transform[] patrolPoints;
    public int patrolPointsCount;
    private Health health;
+   public float followDistance;
    
    // temp?
    protected bool isDead = false;
@@ -24,6 +25,7 @@ public class AIBase : MonoBehaviour
       health = GetComponent<AIHealth>();
       agent = GetComponent<NavMeshAgent>();
       patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(patrolPointsCount);
+      //patrolPoints = WaypointManager.Instance.GetAllWaypoints();
       //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
       health.OnHealthChanged += HandleHit;
       health.OnDeath += HandleDeath;
