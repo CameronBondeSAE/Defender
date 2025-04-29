@@ -214,6 +214,9 @@ PrefabInstance:
       addedObject: {fileID: 174598723}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 174598732}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 174598722}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       insertIndex: -1
@@ -221,9 +224,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 174598720}
-    - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 174598729}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       insertIndex: -1
       addedObject: {fileID: 174598728}
@@ -367,7 +367,7 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 1
   deathAnimDuration: 0
---- !u!114 &174598729
+--- !u!114 &174598732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,9 +379,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c11415d2bca28804e9d4ad9a24a5023c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectType: 0
-  bloodParticles: {fileID: 1232413080505766151, guid: c2cddf449a534364c816cae1645080a0, type: 3}
-  alienBloodParticles: {fileID: 0}
+  effectType: 1
+  bloodParticles: {fileID: 0}
+  alienBloodParticles: {fileID: 7003437534623348851, guid: c77e74438bf4f9245a769b623ec023cb, type: 3}
   woodParticles: {fileID: 0}
   metalParticles: {fileID: 0}
   fireParticles: {fileID: 0}
@@ -498,27 +498,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 118277793143729942, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 282655393469865175, guid: 81cf319a2ae0cfd41a782bccb8fc3829, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1199,6 +1199,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178d3cd671b20ee42a8d706677018800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!1 &358269667
 GameObject:
   m_ObjectHideFlags: 0
@@ -2404,6 +2409,12 @@ PrefabInstance:
       addedObject: {fileID: 1275060582}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1275060593}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1275060594}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1275060580}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       insertIndex: -1
@@ -2862,6 +2873,41 @@ MonoBehaviour:
   mothership: {fileID: 1295785231}
   isReached: 0
   currentTargetCiv: {fileID: 0}
+--- !u!114 &1275060593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275060579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
+--- !u!114 &1275060594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275060579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11415d2bca28804e9d4ad9a24a5023c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 1
+  bloodParticles: {fileID: 0}
+  alienBloodParticles: {fileID: 7003437534623348851, guid: c77e74438bf4f9245a769b623ec023cb, type: 3}
+  woodParticles: {fileID: 0}
+  metalParticles: {fileID: 0}
+  fireParticles: {fileID: 0}
 --- !u!1 &1295785230
 GameObject:
   m_ObjectHideFlags: 0
@@ -3858,6 +3904,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 178d3cd671b20ee42a8d706677018800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!65 &2053580791
 BoxCollider:
   m_ObjectHideFlags: 0

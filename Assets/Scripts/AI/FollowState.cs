@@ -23,12 +23,15 @@ public class FollowState : IAIState
     public void Stay()
     {
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
-        if (Vector3.Distance(ai.transform.position, target.position) > ai.followDistance)
+        if (target != null && Vector3.Distance(ai.transform.position, target.position) > ai.followDistance)
         {
             ai.MoveTo(target.position);
         }
 
-        //ai.FaceDirection();
+        if (target == null)
+        {
+            ai. ChangeState(new IdleState(ai));
+        }
     }
 
     public void Exit() { }
