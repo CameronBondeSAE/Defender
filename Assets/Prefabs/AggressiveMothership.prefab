@@ -358,6 +358,7 @@ GameObject:
   - component: {fileID: 1294038488148368138}
   - component: {fileID: 3060649665187118707}
   - component: {fileID: 3486413179113126749}
+  - component: {fileID: -663322856983429174}
   m_Layer: 0
   m_Name: AggressiveMothership
   m_TagString: Untagged
@@ -601,8 +602,23 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8904d2c986f794949802efc1220915b9, type: 3}
   - {fileID: 8300000, guid: 364814694e2f2d2459fdd27488ec9e65, type: 3}
   - {fileID: 8300000, guid: f1cf8ee9c23e22d43b8f6a1d2b95bcd5, type: 3}
-  moveSpeed: 1.5
   waypoints: []
+  movement: {fileID: -663322856983429174}
+  detectionSphereRadius: 31.27
+  yPosition: 0
+--- !u!114 &-663322856983429174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950303260782308162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319fdc8287d8b5e428733c23ee5d3d9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
   engineSounds:
   - {fileID: 8300000, guid: 52ff8c4f7419a7e489ce5f73db3782ad, type: 3}
   - {fileID: 8300000, guid: ea474b444eef8b041b9d906252c5712c, type: 3}

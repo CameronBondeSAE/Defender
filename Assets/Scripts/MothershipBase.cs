@@ -2,6 +2,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+/// <summary>
+/// This motherhship doesnt move at all, it jsut spawns aliens below it
+/// </summary>
+
 public class MothershipBase : MonoBehaviour
 {
     [SerializeField] protected GameObject alienPrefab;
@@ -30,7 +34,7 @@ public class MothershipBase : MonoBehaviour
     {
         //StartCoroutine(SpawnTimer());
         isSpawningAliens = false;
-        audioSource = GetComponent<AudioSource>();
+        audioSource = transform.GetComponent<AudioSource>();
     }
 
     protected virtual void Update()
@@ -78,7 +82,7 @@ public class MothershipBase : MonoBehaviour
     }
     
     /// <summary>
-    /// function to be used by GameManager script to activate waves without having to change code here.
+    /// this function can be used by a GameManager script to activate waves
     /// </summary>
     public void StartWave()
     {

@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 6070059877535135143}
   - component: {fileID: 8620849587009008872}
   - component: {fileID: -2467341121392268905}
+  - component: {fileID: -7425878580716934115}
   m_Layer: 0
   m_Name: MoveableMothership
   m_TagString: Untagged
@@ -332,19 +333,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8904d2c986f794949802efc1220915b9, type: 3}
   - {fileID: 8300000, guid: 364814694e2f2d2459fdd27488ec9e65, type: 3}
   - {fileID: 8300000, guid: f1cf8ee9c23e22d43b8f6a1d2b95bcd5, type: 3}
-  moveSpeed: 1.5
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  engineSounds:
-  - {fileID: 8300000, guid: 52ff8c4f7419a7e489ce5f73db3782ad, type: 3}
-  - {fileID: 8300000, guid: ea474b444eef8b041b9d906252c5712c, type: 3}
-  - {fileID: 8300000, guid: 827a2358650c97048946960c2184cc8f, type: 3}
+  waypoints: []
+  movement: {fileID: -7425878580716934115}
 --- !u!82 &-2467341121392268905
 AudioSource:
   m_ObjectHideFlags: 0
@@ -442,6 +432,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7425878580716934115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320570501020182109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319fdc8287d8b5e428733c23ee5d3d9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  engineSounds:
+  - {fileID: 8300000, guid: 52ff8c4f7419a7e489ce5f73db3782ad, type: 3}
+  - {fileID: 8300000, guid: ea474b444eef8b041b9d906252c5712c, type: 3}
+  - {fileID: 8300000, guid: 827a2358650c97048946960c2184cc8f, type: 3}
 --- !u!1 &1410984371549778070
 GameObject:
   m_ObjectHideFlags: 0
