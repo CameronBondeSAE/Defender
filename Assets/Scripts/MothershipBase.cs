@@ -13,7 +13,7 @@ namespace mothershipScripts
         [SerializeField] protected GameObject alienPrefab;
         [SerializeField] protected GameObject blueBeam;
 
-        [SerializeField] protected int alienSpawnCount; //number of aliens that spawn at a time
+        [SerializeField] protected int alienSpawnCountForEachWave; //number of aliens that spawn at a time
         [SerializeField] protected float spawnDelay; //the time in seconds it takes to spawn aliens again
         [SerializeField] protected int maxWaves;
         [SerializeField] protected float currentWaveNumber;
@@ -50,16 +50,16 @@ namespace mothershipScripts
         {
             Spin();
 
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                //SpawnAliens();
-                StartWaves(maxWaves);
-            }
+            // if (Input.GetKeyDown(KeyCode.E))
+            // {
+            //     //SpawnAliens();
+            //     StartWaves();
+            // }
         }
 
-        protected virtual IEnumerator SpawnAliens(int numberOfWaves)
+        protected virtual IEnumerator SpawnAliens()
         {
-            for (int i = 0; i < numberOfWaves; i++)
+            for (int i = 0; i < maxWaves; i++)
             {
                 if (isSpawningAliens == false)
                 {
@@ -70,6 +70,7 @@ namespace mothershipScripts
             Debug.Log("Waves finished");
             blueBeam.SetActive(true);
             blueBeam.transform.GetComponent<Collider>().enabled = true;
+            blueBeam.transform.GetComponent<Collider>().isTrigger = true;
         }
 
         protected virtual IEnumerator SpawnTimer()
@@ -85,7 +86,7 @@ namespace mothershipScripts
             }
 
             Debug.Log("wave of aliens spawning");
-            for (int i = 0; i < alienSpawnCount; i++)
+            for (int i = 0; i < alienSpawnCountForEachWave; i++)
             {
                 blueBeam.SetActive(true);
                 PlayRandomBeamSound();
@@ -103,9 +104,9 @@ namespace mothershipScripts
         /// <summary>
         /// this function can be used by a GameManager script to activate waves
         /// </summary>
-        public void StartWaves(int numberOfWaves)
+        public void StartWaves()
         { 
-            StartCoroutine(SpawnAliens(numberOfWaves));
+            StartCoroutine(SpawnAliens());
         }
 
         protected void Spin()

@@ -313,9 +313,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alienPrefab: {fileID: 9221107206343358144, guid: b082e6df53701df448358a796255e25b, type: 3}
   blueBeam: {fileID: 5310668164594011570}
-  alienSpawnCount: 3
+  alienSpawnCountForEachWave: 1
   spawnDelay: 1.5
-  maxWaves: 5
+  maxWaves: 1
   currentWaveNumber: 0
   blueBeamDuration: 0.5
   isSpawningAliens: 0
@@ -1067,7 +1067,7 @@ GameObject:
   - component: {fileID: 2090531790102120514}
   - component: {fileID: 2137638512289167287}
   m_Layer: 0
-  m_Name: Cylinder
+  m_Name: Beam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1177,6 +1177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alienKillDelay: 3
+  shipPosition: {fileID: 4261932001835839538}
+  abductionSpeed: 4
 --- !u!1 &5354032933480273711
 GameObject:
   m_ObjectHideFlags: 0
