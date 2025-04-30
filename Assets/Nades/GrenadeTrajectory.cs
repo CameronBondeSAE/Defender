@@ -8,6 +8,6 @@ public class GrenadeTrajectory : ScriptableObject
     public float timeBetweenPoints = 0.1f;   // Time gap between points on the line
     public int arcPoints = 30;               // Number of points on the line
 
-    [HideInInspector]
+
     public Vector3[] calculatedPoints;      // Store calculated trajectory points
 }

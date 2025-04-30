@@ -17,29 +17,32 @@ namespace Brad
         private int storedArcPoints;
         private Vector3[] storedCalculatedPoints;
 
+        private Coroutine trajectoryCoroutine; // Reference to the trajectory coroutine
+
         public virtual void Start()
         {
             rb = GetComponent<Rigidbody>();
 
-            // Initial values for the scriptable objecta
-            storedLaunchForce = grenadeTrajectory.launchForce; // Stores the launch force
-            storedTimeBetweenPoints = grenadeTrajectory.timeBetweenPoints; // Stores the time between points
-            storedArcPoints = grenadeTrajectory.arcPoints; // Stores the arc points
-            storedCalculatedPoints = new Vector3[grenadeTrajectory.calculatedPoints.Length]; // Makes a copy of the calculated points
-            grenadeTrajectory.calculatedPoints.CopyTo(storedCalculatedPoints, 0); // Copy trajectory points to an array
+            // Initialize values from the ScriptableObject
+            if (grenadeTrajectory != null)
+            {
+                storedLaunchForce = grenadeTrajectory.launchForce;
+                storedTimeBetweenPoints = grenadeTrajectory.timeBetweenPoints;
+                storedArcPoints = grenadeTrajectory.arcPoints;
+                storedCalculatedPoints = new Vector3[grenadeTrajectory.calculatedPoints.Length];
+                grenadeTrajectory.calculatedPoints.CopyTo(storedCalculatedPoints, 0);
+            }
+            else
+            {
+                Debug.LogWarning("GrenadeTrajectory not assigned!");
+            }
         }
 
         public void Launch(Vector3 launchDirection)
         {
-            if (grenadeTrajectory == null)
+            if (grenadeTrajectory == null || storedCalculatedPoints == null || storedCalculatedPoints.Length < 2)
             {
-                Debug.LogWarning("GrenadeTrajectory not assigned!");
-                return;
-            }
-
-            if (storedCalculatedPoints == null || storedCalculatedPoints.Length < 2)
-            {
-                Debug.LogWarning("Not enough trajectory points");
+                Debug.LogWarning("GrenadeTrajectory is invalid or not enough trajectory points.");
                 return;
             }
 
@@ -47,11 +50,14 @@ namespace Brad
             {
                 hasLaunched = true;
 
-                // Stop any existing trajectory coroutines
-                StopCoroutine("FollowTrajectory");
+                // Stop any existing trajectory coroutine
+                if (trajectoryCoroutine != null)
+                {
+                    StopCoroutine(trajectoryCoroutine);
+                }
 
                 // Launch grenade and follow the trajectory
-                StartCoroutine(FollowTrajectory(launchDirection));
+                trajectoryCoroutine = StartCoroutine(FollowTrajectory(launchDirection));
             }
         }
 
@@ -60,7 +66,7 @@ namespace Brad
             int currentPoint = 0;
             Vector3 startPos = transform.position;
 
-            // Stop following the trajectory if collision happens
+            // Follow the trajectory points
             while (currentPoint < storedCalculatedPoints.Length - 1 && !hasCollided)
             {
                 Vector3 currentTarget = storedCalculatedPoints[currentPoint + 1];
@@ -74,48 +80,63 @@ namespace Brad
                     yield return null;
                 }
 
-                
                 transform.position = currentTarget;
                 startPos = currentTarget;
                 currentPoint++;
             }
 
-            // When the grenade reaches the end of the trajectory or hits something
+            // Enable gravity after the trajectory is completed
             rb.useGravity = true;
+            trajectoryCoroutine = null; // Clear the reference
         }
 
         protected virtual void OnCollisionEnter(Collision collision)
         {
             if (hasLanded || hasCollided) return;
 
-          
             if (collision.gameObject.CompareTag("Player"))
             {
                 return; // Ignore collision with Player
             }
 
-            // Stop the trajectory following when collision occurs
+            // Stop the trajectory when a collision occurs
             hasCollided = true;
-            StopCoroutine("FollowTrajectory");
-            
-          
-            if (collision.gameObject.CompareTag("Ground")) 
+            if (trajectoryCoroutine != null)
+            {
+                StopCoroutine(trajectoryCoroutine);
+                trajectoryCoroutine = null;
+            }
+
+            if (collision.gameObject.CompareTag("Ground"))
             {
                 hasLanded = true;
                 GrenadeLanded();
             }
             else
             {
-               
-                Debug.Log("Grenade bounced off: " + collision.gameObject.name);
-                
+                Debug.Log($"Grenade bounced off: {collision.gameObject.name}");
+                StartCoroutine(DelayedLand());
             }
+        }
+
+        private IEnumerator DelayedLand()
+        {
+            yield return new WaitForSeconds(1f);
+            GrenadeLanded();
         }
 
         protected virtual void GrenadeLanded()
         {
             Debug.Log("Base class check - Grenade landed!");
-          
+        }
+
+        private void OnDestroy()
+        {
+            // Ensure coroutines are stopped when the object is destroyed
+            if (trajectoryCoroutine != null)
+            {
+                StopCoroutine(trajectoryCoroutine);
+            }
         }
     }
 }

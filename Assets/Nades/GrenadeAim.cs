@@ -70,7 +70,18 @@ public class GrenadeAim : MonoBehaviour
         if (lineRenderer != null) lineRenderer.enabled = false; // Disables the LineRenderer 
         Cursor.lockState = CursorLockMode.None; // Unlocks the cursor
         // Cursor.visible = false; // Hides cursor <--------- KEEP OR DELETE?? 
+
+        if (trajectory != null && trajectory.calculatedPoints != null)
+        {
+            trajectory.calculatedPoints = new Vector3[0]; // Reinitialize the array
+        }
+        else
+        {
+            Debug.LogWarning("Trajectory or calculatedPoints is null and cannot be cleared.");
+        }
     }
+
+
 
     private void Update()
     {
