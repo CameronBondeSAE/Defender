@@ -29,8 +29,6 @@ public class ReturnState : IAIState
             ai.currentTargetCiv = null;
             ai.ChangeState(new SearchState(ai));
         }
-
-        ai.FaceDirection();
     }
 
     public void Exit() { }

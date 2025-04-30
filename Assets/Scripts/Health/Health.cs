@@ -49,8 +49,8 @@ public class Health : MonoBehaviour
 
    protected virtual void Die()
    {
-      isDead = true;
       if(isDead) return;
+      isDead = true;
       OnDeath?.Invoke();
    }
 }

@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class CivilianAI : AIBase
+public class IdleCivilianAI : AIBase
 {
     [HideInInspector] public Transform followTarget;
-    public float followDistance;
+
     //public bool isCaptured = false;
     protected override void Start()
     {
         base.Start();
-        ChangeState(new PatrolState(this));
+        ChangeState(new IdleState(this));
     }
 }

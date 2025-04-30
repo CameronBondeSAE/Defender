@@ -13,15 +13,22 @@ public class AIBase : MonoBehaviour
    public float rotationSpeed;
    public float acceleration;
    public Transform[] patrolPoints;
+   public int patrolPointsCount;
+   private Health health;
+   public float followDistance;
    
    // temp?
    protected bool isDead = false;
 
    protected virtual void Start()
    {
+      health = GetComponent<AIHealth>();
       agent = GetComponent<NavMeshAgent>();
-      //patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(3);
+      patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(patrolPointsCount);
+      //patrolPoints = WaypointManager.Instance.GetAllWaypoints();
       //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+      health.OnHealthChanged += HandleHit;
+      health.OnDeath += HandleDeath;
    }
 
    // Exit current state and goes into new state
@@ -38,32 +45,33 @@ public class AIBase : MonoBehaviour
       if (currentState != null) currentState.Stay();
    }
    
-   // Makes sure AI always faces direction of movement
-   public void FaceDirection()
-   {
-      if (agent.velocity.magnitude > 0.1f)
-      {
-         Quaternion targetRotation = Quaternion.LookRotation(agent.velocity.normalized);
-         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-      }
-   }
-   
    // Method that smoothly moves towards a target 
    public void MoveTo(Vector3 destination) {
       agent.acceleration = acceleration;
       agent.SetDestination(destination);
    }
+   
+   private void HandleHit(float amount)
+   {
+      if (health.currentHealth > 0)
+      {
+         ChangeState(new HitState(this, currentState)); // Switch to HitState if still alive
+      }
+   }
+
+   private void HandleDeath()
+   {
+      ChangeState(new DeathState(this)); // Switch to DeathState when dead
+   }
+
+   private void OnDestroy()
+   {
+      if (health != null)
+      {
+         health.OnHealthChanged -= HandleHit;
+         health.OnDeath -= HandleDeath;
+      }
+   }
    public void StopMoving() => agent.isStopped = true;
    public void ResumeMoving() => agent.isStopped = false;
-   
-   
-   // public void Die()
-   // {
-   //    if (isDead) return;
-   //    if (!isDead)
-   //    {
-   //       isDead = true;
-   //       ChangeState(new DeathState(this));
-   //    }
-   // }
 }

@@ -1109,8 +1109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b073e2725ee06df429828e99cc75a2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 0}
-  item: {fileID: 0}
+  canvas: {fileID: 181264145}
+  item: {fileID: 2073106480}
 --- !u!114 &1471448447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1270,6 +1270,17 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2073106480 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8203012134596924686, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
+  m_PrefabInstance: {fileID: 962661291}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073106477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c63778d6fa925641b03368fd56fc833, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

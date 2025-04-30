@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using AIAnimation;
@@ -5,11 +6,11 @@ using AIAnimation;
 public class FollowState : IAIState
 {
     
-    private CivilianAI ai;
+    private AIBase ai;
     private Transform target;
     private AIAnimationController animController;
 
-    public FollowState(CivilianAI ai, Transform target)
+    public FollowState(AIBase ai, Transform target)
     {
         this.ai = ai;
         this.target = target;
@@ -18,20 +19,35 @@ public class FollowState : IAIState
     public void Enter()
     {
         animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+        //ai.StartCoroutine(StunnedDelay());
+        ai.ResumeMoving();
     }
 
     public void Stay()
     {
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
-        if (Vector3.Distance(ai.transform.position, target.position) > ai.followDistance)
+        if (target != null && Vector3.Distance(ai.transform.position, target.position) > ai.followDistance)
         {
             ai.MoveTo(target.position);
         }
 
-        //ai.FaceDirection();
+        if (target == null)
+        {
+            ai. ChangeState(new IdleState(ai));
+        }
     }
 
     public void Exit() { }
+
+    private IEnumerator StunnedDelay()
+    {
+        animController.SetAnimation(AIAnimationController.AnimationState.Idle);
+        ai.StopMoving();
+        yield return new WaitForSeconds(5f);
+        ai.ResumeMoving();
+    }
+    
+    #region Drafts
     /*private AIBase ai;
     private GameObject target;
     private NavMeshAgent agent;
@@ -159,4 +175,5 @@ public class FollowState : IAIState
     {
         currentFollowPos = target.position - target.forward.normalized * followDistance;
     }*/
+    #endregion
 }

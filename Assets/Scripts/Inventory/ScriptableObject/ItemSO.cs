@@ -22,5 +22,19 @@ namespace Inventory.SO
 
         [field: SerializeField]
         public Sprite ItemImage { get; set; }
+        
+        // for UI functionalities:
+        public UIInteractionType interactionType;
+        public string promptText;
+        public string sceneToLoad;
+        public Sprite icon;
     }
 }
+
+public enum UIInteractionType
+{
+    TransitionScene,
+    PickUpItem,
+    CustomAction
+}
+

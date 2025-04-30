@@ -40,7 +40,6 @@ public class AttackState : MonoBehaviour, IAIState
 
     public void Stay()
     {
-        Debug.Log("in attack state");
         if (player == null || attackHitbox == null)
             return;
 

@@ -9,7 +9,7 @@ public class AlienAI : AIBase
     
     private AIAnimationController animController;
 
-    [HideInInspector] public CivilianAI currentTargetCiv;
+    [HideInInspector] public AIBase currentTargetCiv;
 
     protected override void Start()
     {

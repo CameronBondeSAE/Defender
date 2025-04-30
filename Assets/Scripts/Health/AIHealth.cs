@@ -1,4 +1,4 @@
-public class AlienHealth : Health
+public class AIHealth : Health
 {
     protected override void Die()
     {

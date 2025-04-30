@@ -4,11 +4,13 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Inventory.SO;
+using Inventory;
 
 [RequireComponent(typeof(Collider))]
 public class FloatingUI : MonoBehaviour
 {
-    public UIInteractionData interactionData;
+    public ItemSO itemData;
     private PlayerInputHandler playerInput;
     public Transform iconHolder;
     public Camera mainCamera;
@@ -18,11 +20,13 @@ public class FloatingUI : MonoBehaviour
     private bool playerInRange = false;
     private bool hasInteracted = false;
     private Image uiIcon;
+    
+    private InventoryController inventoryController;
 
     void Start()
     {
         if (!mainCamera) mainCamera = Camera.main;
-
+        inventoryController = FindObjectOfType<Inventory.InventoryController>();
         AnimateFloating();
         SetupIcon();
     }
@@ -34,14 +38,14 @@ public class FloatingUI : MonoBehaviour
 
     private void SetupIcon()
     {
-        if (interactionData && interactionData.icon && iconHolder)
+        if (itemData && itemData.icon && iconHolder)
         {
             var iconGO = new GameObject("UIIcon");
             iconGO.transform.SetParent(iconHolder);
             iconGO.transform.localPosition = Vector3.zero;
 
             uiIcon = iconGO.AddComponent<Image>();
-            uiIcon.sprite = interactionData.icon;
+            uiIcon.sprite = itemData.icon;
 
             var canvas = iconGO.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.WorldSpace;
@@ -68,19 +72,22 @@ public class FloatingUI : MonoBehaviour
 
     private void HandleInteraction()
     {
-        if (interactionData == null) return;
+        if (itemData == null) return;
 
-        switch (interactionData.interactionType)
+        switch (itemData.interactionType)
         {
             case UIInteractionType.TransitionScene:
-                if (!string.IsNullOrEmpty(interactionData.sceneToLoad))
+                if (!string.IsNullOrEmpty(itemData.sceneToLoad))
                 {
-                    SceneManager.LoadScene(interactionData.sceneToLoad);
+                    SceneManager.LoadScene(itemData.sceneToLoad);
                 }
                 break;
 
             case UIInteractionType.PickUpItem:
-                Debug.Log("picked up " + interactionData.name);
+                if (inventoryController != null && itemData != null)
+                {
+                    inventoryController.AddItemToInventory(itemData);
+                }
                 Destroy(gameObject);
                 break;
 
@@ -91,7 +98,7 @@ public class FloatingUI : MonoBehaviour
 
         hasInteracted = true;
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

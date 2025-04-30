@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MothershipZone : MonoBehaviour
@@ -23,6 +24,14 @@ public class MothershipZone : MonoBehaviour
             {
                 civ.SetActive(false);
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Civilian"))
+        {
+            other.gameObject.SetActive(false);
         }
     }
 
