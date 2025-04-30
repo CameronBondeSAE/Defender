@@ -21,7 +21,7 @@ public class CivBehaviour : MonoBehaviour
 
     void Start()
     {
-        animController = GetComponent<AIAnimationController>();
+        animController = GetComponentInChildren<AIAnimationController>();
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         rb.useGravity = true;

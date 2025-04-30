@@ -11,7 +11,7 @@ public class PatrolState : IAIState
 
     public void Enter()
     {
-        animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
         ai.ResumeMoving();
         ai.MoveTo(ai.patrolPoints[currentPoint].position);
     } 

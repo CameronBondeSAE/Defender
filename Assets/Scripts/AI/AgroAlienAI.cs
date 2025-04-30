@@ -23,7 +23,7 @@ public class AgroAlienAI : AIBase
     protected override void Start()
     {
         base.Start();
-        animController = GetComponent<AIAnimationController>();
+        animController = GetComponentInChildren<AIAnimationController>();
         patrolState = new PatrolState(this);
         attackState = new AttackState(this);
         ChangeState(patrolState);

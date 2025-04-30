@@ -28,6 +28,8 @@ namespace Inventory.SO
         public string promptText;
         public string sceneToLoad;
         public Sprite icon;
+        
+        public GameObject prefab;
     }
 }
 

@@ -29,7 +29,7 @@ public class AlienBehaviour : MonoBehaviour
         rb.freezeRotation = true;
         rb.useGravity = true;
 
-        animController = GetComponent<AIAnimationController>();
+        animController = GetComponentInChildren<AIAnimationController>();
         FindNearestCiv();
     }
 

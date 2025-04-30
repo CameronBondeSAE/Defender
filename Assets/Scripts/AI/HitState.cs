@@ -16,7 +16,7 @@ public class HitState : MonoBehaviour, IAIState
 
     public void Enter()
     {
-        animController = ai.gameObject.GetComponent<AIAnimationController>();
+        animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
         ai.StopMoving();
         animController.SetAnimation(AIAnimationController.AnimationState.GetHit);
         ai.StartCoroutine(ReturnToPreviousState());

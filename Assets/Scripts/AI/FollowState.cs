@@ -18,7 +18,7 @@ public class FollowState : IAIState
 
     public void Enter()
     {
-        animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
         //ai.StartCoroutine(StunnedDelay());
         ai.ResumeMoving();
     }

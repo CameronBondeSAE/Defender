@@ -22,7 +22,7 @@ public class NavMeshTest : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        animController = GetComponent<AIAnimationController>();
+        animController = GetComponentInChildren<AIAnimationController>();
 
         // Randomize avoidance priority to help prevent pathing deadlocks
         agent.avoidancePriority = Random.Range(30, 70);

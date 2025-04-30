@@ -24,7 +24,7 @@ public class SpecialEffectsManager : MonoBehaviour
 
     private void Awake()
     {
-        health = GetComponent<Health>();
+        health = GetComponentInParent<Health>();
         if (health != null) health.OnHealthChanged += HandleDamageReceived;
     }
 

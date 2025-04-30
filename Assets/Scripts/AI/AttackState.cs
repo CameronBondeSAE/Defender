@@ -23,7 +23,7 @@ public class AttackState : MonoBehaviour, IAIState
     public void Enter()
     {
         if (animController == null)
-            animController = ai.GetComponent<AIAnimationController>();
+            animController = ai.GetComponentInChildren<AIAnimationController>();
 
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player")?.transform;

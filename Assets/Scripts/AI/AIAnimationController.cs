@@ -19,7 +19,7 @@ namespace AIAnimation
 
         private void Awake()
         {
-            animator = GetComponent<Animator>();
+            animator = GetComponentInChildren<Animator>();
         }
 
         public void SetAnimation(AnimationState state)

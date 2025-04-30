@@ -15,7 +15,7 @@ public class AlienAI : AIBase
     {
         base.Start();
         ChangeState(new SearchState(this));
-        animController = GetComponent<AIAnimationController>();
+        animController = GetComponentInChildren<AIAnimationController>();
     }
 
      void Update()

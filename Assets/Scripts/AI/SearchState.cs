@@ -21,7 +21,7 @@ public class SearchState : MonoBehaviour, IAIState
 
     public void Enter()
     {
-        animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
         isGrabbing = false;
         isBusy = false;
 

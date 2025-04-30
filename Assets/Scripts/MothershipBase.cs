@@ -46,11 +46,11 @@ namespace mothershipScripts
         {
             Spin();
 
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                //SpawnAliens();
-                StartWaves(maxWaves);
-            }
+            // if (Input.GetKeyDown(KeyCode.E))
+            // {
+            //     //SpawnAliens();
+            //     StartWaves(maxWaves);
+            // }
         }
 
         protected virtual IEnumerator SpawnAliens(int numberOfWaves)

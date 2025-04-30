@@ -10,7 +10,7 @@ public class ReturnState : IAIState
 
     public void Enter()
     {
-        animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
         if (ai.mothership != null)
             ai.MoveTo(ai.mothership.position);
     }
