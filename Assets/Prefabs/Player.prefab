@@ -606,6 +606,15 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  aimGrenadeAction:
+    m_Name: Aim Grenade
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 72e1ab45-32c2-4ec7-94a5-edd906ba5641
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   interactAction:
     m_Name: Interact
     m_Type: 0
@@ -792,6 +801,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: c18e2e136aa9efc41afb4d14ceda18ae, type: 2}
+    - target: {fileID: 6614176577886102763, guid: c161c997c07308740af96a685231f764, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6513fc89679ca294e834f6b2fd49350b, type: 2}
     - target: {fileID: 7542169663851219856, guid: c161c997c07308740af96a685231f764, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
