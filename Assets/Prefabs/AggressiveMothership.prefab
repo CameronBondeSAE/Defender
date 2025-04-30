@@ -584,6 +584,8 @@ MonoBehaviour:
   blueBeam: {fileID: 8051612008158297876}
   alienSpawnCount: 3
   spawnDelay: 1.5
+  maxWaves: 5
+  currentWaveNumber: 0
   blueBeamDuration: 0.5
   isSpawningAliens: 0
   raycastLength: 1696.8
@@ -602,10 +604,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8904d2c986f794949802efc1220915b9, type: 3}
   - {fileID: 8300000, guid: 364814694e2f2d2459fdd27488ec9e65, type: 3}
   - {fileID: 8300000, guid: f1cf8ee9c23e22d43b8f6a1d2b95bcd5, type: 3}
-  waypoints: []
-  movement: {fileID: -663322856983429174}
   detectionSphereRadius: 31.27
   yPosition: 0
+  movement: {fileID: -663322856983429174}
 --- !u!114 &-663322856983429174
 MonoBehaviour:
   m_ObjectHideFlags: 0
