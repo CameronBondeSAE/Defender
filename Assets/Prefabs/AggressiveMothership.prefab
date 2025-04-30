@@ -463,7 +463,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1237,6 +1237,7 @@ GameObject:
   - component: {fileID: 7969818896040931154}
   - component: {fileID: 6457783978554888104}
   - component: {fileID: 8124062842020431078}
+  - component: {fileID: 5205761176312450085}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -1312,6 +1313,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5205761176312450085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8051612008158297876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 686cc9422f306604093dcf6cff7dafea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alienKillDelay: 3
 --- !u!1 &8263852944694023897
 GameObject:
   m_ObjectHideFlags: 0

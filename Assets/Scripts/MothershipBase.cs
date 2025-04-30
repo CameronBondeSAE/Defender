@@ -33,6 +33,10 @@ namespace mothershipScripts
 
         //audio stuff
         [SerializeField] protected AudioClip[] beamSounds;
+        
+        public delegate void AlienSpawned(GameObject alien);
+        public event AlienSpawned OnAlienSpawned;
+        
         protected AudioSource audioSource;
 
         protected virtual void Start()
@@ -64,6 +68,8 @@ namespace mothershipScripts
                 }
             }
             Debug.Log("Waves finished");
+            blueBeam.SetActive(true);
+            blueBeam.transform.GetComponent<Collider>().enabled = true;
         }
 
         protected virtual IEnumerator SpawnTimer()
@@ -83,7 +89,8 @@ namespace mothershipScripts
             {
                 blueBeam.SetActive(true);
                 PlayRandomBeamSound();
-                Instantiate(alienPrefab, alienSpawnPosition + alienSpawnOffset, Quaternion.identity);
+                GameObject alienSpawned = Instantiate(alienPrefab, alienSpawnPosition + alienSpawnOffset, Quaternion.identity);
+                OnAlienSpawned?.Invoke(alienSpawned);
                 yield return new WaitForSeconds(blueBeamDuration);
                 blueBeam.SetActive(false);
                 yield return new WaitForSeconds(spawnDelay);
@@ -99,7 +106,7 @@ namespace mothershipScripts
         public void StartWaves(int numberOfWaves)
         { 
             StartCoroutine(SpawnAliens(numberOfWaves));
-         }
+        }
 
         protected void Spin()
         {

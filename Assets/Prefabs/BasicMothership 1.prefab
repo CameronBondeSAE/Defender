@@ -957,6 +957,8 @@ GameObject:
   - component: {fileID: 1423937445282961852}
   - component: {fileID: 8186616131625412709}
   - component: {fileID: 4861690245408930415}
+  - component: {fileID: 4462939408222429996}
+  - component: {fileID: 206649068267551710}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -1032,6 +1034,42 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &4462939408222429996
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582087031567048020}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5000002
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.000000089406974, y: 0.00000011920929, z: 0.00000086426735}
+--- !u!114 &206649068267551710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6582087031567048020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 686cc9422f306604093dcf6cff7dafea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alienKillDelay: 3
 --- !u!1 &7993022979028187161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,7 +1360,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1443,6 +1481,8 @@ MonoBehaviour:
   blueBeam: {fileID: 6582087031567048020}
   alienSpawnCount: 3
   spawnDelay: 1.5
+  maxWaves: 0
+  currentWaveNumber: 0
   blueBeamDuration: 0.5
   isSpawningAliens: 0
   raycastLength: 1696.8
