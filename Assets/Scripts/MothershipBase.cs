@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace mothershipScripts
 {
@@ -13,7 +15,8 @@ namespace mothershipScripts
         [SerializeField] protected GameObject alienPrefab;
         [SerializeField] protected GameObject blueBeam;
 
-        [SerializeField] protected int alienSpawnCount; //number of aliens that spawn at a time
+        [SerializeField]
+        public int alienSpawnCount; //number of aliens that spawn at a time
         [SerializeField] protected float spawnDelay; //the time in seconds it takes to spawn aliens again
         [SerializeField] protected int maxWaves;
         [SerializeField] protected float currentWaveNumber;
@@ -35,11 +38,15 @@ namespace mothershipScripts
         [SerializeField] protected AudioClip[] beamSounds;
         protected AudioSource audioSource;
 
+        public event Action<GameObject> AlienSpawned_Event;
+
         protected virtual void Start()
         {
             //StartCoroutine(SpawnTimer());
             isSpawningAliens = false;
             audioSource = transform.GetComponent<AudioSource>();
+            
+            // FindAnyObjectByType<GameManager>().
         }
 
         protected virtual void Update()
@@ -83,7 +90,10 @@ namespace mothershipScripts
             {
                 blueBeam.SetActive(true);
                 PlayRandomBeamSound();
-                Instantiate(alienPrefab, alienSpawnPosition + alienSpawnOffset, Quaternion.identity);
+                GameObject newAlien = Instantiate(alienPrefab, alienSpawnPosition + alienSpawnOffset, Quaternion.identity);
+                // Cam added
+                AlienSpawned_Event?.Invoke(newAlien);
+                
                 yield return new WaitForSeconds(blueBeamDuration);
                 blueBeam.SetActive(false);
                 yield return new WaitForSeconds(spawnDelay);
