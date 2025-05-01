@@ -27,6 +27,8 @@ namespace Inventory.UI
         public event Action<int> OnDescriptionRequested, OnItemActionRequested, OnStartDragging;
 
         public event Action<int, int> OnSwapItems;
+        
+        public bool inventoryActive;
 
         private void Awake()
         {
@@ -124,6 +126,7 @@ namespace Inventory.UI
         public void Show()
         {
             gameObject.SetActive(true);
+            inventoryActive = true;
             ResetSelection();
         }
 
@@ -144,6 +147,7 @@ namespace Inventory.UI
         public void Hide()
         {
             gameObject.SetActive(false);
+            inventoryActive = false;
             ResetDraggedItem();
         }
 

@@ -114,15 +114,12 @@ namespace Inventory
             InventoryItem selectedItem = inventoryData.GetItemAt(currentlySelectedIndex);
             if (selectedItem.IsEmpty || selectedItem.item.itemPrefab == null) return;
 
-            // spawn the item slightly in front of the player?
-            Vector3 spawnPosition = playerTransform.position + playerTransform.forward * 1.5f;
-            Quaternion spawnRotation = playerTransform.rotation;
-
             // or asl player's child...?
-            //GameObject instance = Instantiate(selectedItem.item.itemPrefab, playerTransform);
-            //instance.transform.localPosition = Vector3.zero;
+            GameObject instance = Instantiate(selectedItem.item.itemPrefab, playerTransform);
+            instance.transform.localPosition = new Vector3(0, 0, 1.5f);
+            inventoryData.RemoveItemAt(currentlySelectedIndex);
+            currentlySelectedIndex = -1;
 
-            Instantiate(selectedItem.item.itemPrefab, spawnPosition, spawnRotation);
         }
 
         public void Update()
@@ -131,19 +128,18 @@ namespace Inventory
             {
                 if (inventoryInputs.Inventory.confirm.triggered)
                 {
-                    inventoryUI.Show();
-                    foreach (var item in inventoryData.GetCurrentInventoryState())
-                    {
-                        inventoryUI.UpdateData(item.Key,
-                            item.Value.item.ItemImage,
-                            item.Value.quantity);
-                    }
+                        inventoryUI.Show();
+                        foreach (var item in inventoryData.GetCurrentInventoryState())
+                        {
+                            inventoryUI.UpdateData(item.Key,
+                                item.Value.item.ItemImage,
+                                item.Value.quantity);
+                        }
                 }
                 else
                 {
                     inventoryUI.Hide();
                 }
-
             }
         }
     }

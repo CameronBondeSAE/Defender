@@ -1,11 +1,12 @@
 using UnityEngine;
+using Inventory.SO;
 
 
 namespace Brad
 {
     public class Nades : MonoBehaviour
     {
-        public GrenadeData grenadeData;
+        public ItemSO grenadeData;
         protected float countdown;
         protected float launchSpeed;
         protected Rigidbody rb;

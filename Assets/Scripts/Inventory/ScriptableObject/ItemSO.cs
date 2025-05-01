@@ -33,6 +33,12 @@ namespace Inventory.SO
 
         [Header("The Item prefab")]
         public GameObject itemPrefab;
+        
+        [Header("Grenade Stats")]
+        public float explosionRadius;
+        public float explosionDelay;
+        public float launchSpeed;
+        public float damage;
     }
 }
 

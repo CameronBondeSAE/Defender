@@ -2,7 +2,7 @@ using UnityEngine;
 using Inventory.SO;
 using UnityEngine.InputSystem;
 
-public class Grenade : MonoBehaviour
+public class BasicGrenade : MonoBehaviour
 {
     public ItemSO grenadeData;
     private float countdown;
@@ -16,17 +16,16 @@ public class Grenade : MonoBehaviour
         launchSpeed = grenadeData.launchSpeed;
         //startPosition.position = transform.position;
         rb = GetComponent<Rigidbody>();
-        Launch();
     }
 
     private void Update()
     {
         countdown -= Time.deltaTime;
         if (countdown <= 0f) Explode();
-        // if (Mouse.current.leftButton.wasPressedThisFrame)
-        // {
-        //     Launch();
-        // }
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Launch();
+        }
     }
 
     public void Launch()

@@ -123,6 +123,9 @@ GameObject:
   - component: {fileID: 2058038175190956768}
   - component: {fileID: 7257336100249585850}
   - component: {fileID: 1037977098375146941}
+  - component: {fileID: 4638420518047162639}
+  - component: {fileID: 1769863027275978531}
+  - component: {fileID: 3536397080695100442}
   m_Layer: 0
   m_Name: AgroAlien
   m_TagString: Alien
@@ -236,6 +239,58 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   deathAnimDuration: 2
+--- !u!95 &4638420518047162639
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648060442026450375}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e447f4a07ae4c7e4da78dda5af84429f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1769863027275978531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648060442026450375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3536397080695100442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648060442026450375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11415d2bca28804e9d4ad9a24a5023c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 1
+  bloodParticles: {fileID: 0}
+  alienBloodParticles: {fileID: 7003437534623348851, guid: c77e74438bf4f9245a769b623ec023cb, type: 3}
+  woodParticles: {fileID: 0}
+  metalParticles: {fileID: 0}
+  fireParticles: {fileID: 0}
 --- !u!1001 &239570271543353088
 PrefabInstance:
   m_ObjectHideFlags: 0

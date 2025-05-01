@@ -79,6 +79,14 @@ namespace Inventory.SO
         {
             OnInventoryUpdated?.Invoke(GetCurrentInventoryState());
         }
+
+        public void RemoveItemAt(int itemIndex)
+        {
+            if (itemIndex < 0 || itemIndex >= inventoryItems.Count)
+                return;
+            inventoryItems[itemIndex] = InventoryItem.GetEmptyItem();
+            InformAboutChange();
+        }
     }
 
     [Serializable]
