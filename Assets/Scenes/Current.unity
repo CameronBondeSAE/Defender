@@ -257,6 +257,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!195 &43367682
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -743,6 +748,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!114 &174598732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3891,6 +3901,7 @@ MonoBehaviour:
     item: {fileID: 11400000, guid: 632ce10301375d746b0d6f60d9187086, type: 2}
   - quantity: 2
     item: {fileID: 11400000, guid: a532ea8b35546d44aa5a1fe35dbefd63, type: 2}
+  playerTransform: {fileID: 0}
 --- !u!1 &721139758
 GameObject:
   m_ObjectHideFlags: 0
@@ -4105,6 +4116,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!114 &763717277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4525,19 +4541,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4683,6 +4699,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!114 &987894739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4884,6 +4905,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!195 &1047894227
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4918,6 +4944,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ad9e77487a66748b9f8fc1851a974d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  rotationSpeed: 0
+  acceleration: 0
+  patrolPoints: []
+  patrolPointsCount: 0
+  followDistance: 0
+  followTarget: {fileID: 0}
 --- !u!114 &1047894229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5134,6 +5167,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ad9e77487a66748b9f8fc1851a974d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  rotationSpeed: 0
+  acceleration: 0
+  patrolPoints: []
+  patrolPointsCount: 0
+  followDistance: 0
+  followTarget: {fileID: 0}
 --- !u!114 &1219769407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5146,6 +5186,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!114 &1219769408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5393,6 +5438,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!114 &1275060594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6356,6 +6406,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  revivedHealth: 0
+  currentHealth: 0
+  isDead: 0
+  deathAnimDuration: 0
 --- !u!195 &1566644025
 NavMeshAgent:
   m_ObjectHideFlags: 0

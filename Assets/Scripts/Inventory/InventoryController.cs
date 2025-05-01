@@ -18,6 +18,9 @@ namespace Inventory
 
         public List<InventoryItem> initialItems = new List<InventoryItem> ();
 
+        private int currentlySelectedIndex = -1; // reference to curently selected item
+        [SerializeField] private Transform playerTransform;
+
         private void Start()
         {
             inventoryInputs = new InventoryInputs();
@@ -96,9 +99,30 @@ namespace Inventory
                 inventoryUI.ResetSelection();
                 return;
             }
+
+            currentlySelectedIndex = itemIndex; // adding currently selected item to reference (recognizing it)
+
             ItemSO item = inventoryItem.item;
             inventoryUI.UpdateDescription(itemIndex, item.ItemImage,
                 item.name, item.Description);
+        }
+
+        public void ActivateSelectedItem()
+        {
+            if (currentlySelectedIndex == -1) return;
+
+            InventoryItem selectedItem = inventoryData.GetItemAt(currentlySelectedIndex);
+            if (selectedItem.IsEmpty || selectedItem.item.itemPrefab == null) return;
+
+            // spawn the item slightly in front of the player?
+            Vector3 spawnPosition = playerTransform.position + playerTransform.forward * 1.5f;
+            Quaternion spawnRotation = playerTransform.rotation;
+
+            // or asl player's child...?
+            //GameObject instance = Instantiate(selectedItem.item.itemPrefab, playerTransform);
+            //instance.transform.localPosition = Vector3.zero;
+
+            Instantiate(selectedItem.item.itemPrefab, spawnPosition, spawnRotation);
         }
 
         public void Update()

@@ -5,6 +5,7 @@ namespace Inventory.SO
     [CreateAssetMenu]
     public class ItemSO : ScriptableObject
     {
+        [Header("Inventory References")]
         [field: SerializeField]
         public bool IsStackable { get; set; }
 
@@ -22,12 +23,16 @@ namespace Inventory.SO
 
         [field: SerializeField]
         public Sprite ItemImage { get; set; }
-        
+
+        [Header("UI References")]
         // for UI functionalities:
         public UIInteractionType interactionType;
         public string promptText;
         public string sceneToLoad;
         public Sprite icon;
+
+        [Header("The Item prefab")]
+        public GameObject itemPrefab;
     }
 }
 
