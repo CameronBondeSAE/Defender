@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Camera gameCamera;
     public Vector3 moveDirection;
     private PlayerCombat playerCombat;
-    private PlayerInputHandler inputHandler;
+    private PlayerInputHandler2 inputHandler;
 
 
     void Start()
@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         playerCombat = GetComponent<PlayerCombat>();
-        inputHandler = GetComponent<PlayerInputHandler>();
+        inputHandler = GetComponent<PlayerInputHandler2>();
     }
 
     void FixedUpdate()
@@ -26,8 +26,8 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
         
         // rotate relative to camera
-        Quaternion cameraRotation = Quaternion.Euler(0, 0, 0);
-        moveDirection = cameraRotation * moveDirection;
+        // Quaternion cameraRotation = Quaternion.Euler(0, 0, 0);
+        // moveDirection = cameraRotation * moveDirection;
 
         Vector3 targetVelocity = moveDirection * moveSpeed;
         // realistic movement
@@ -38,7 +38,13 @@ public class PlayerMovement : MonoBehaviour
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 8f);
-            PlayerEventManager.instance.events.onMove.Invoke();
+            // PlayerEventManager.instance.events.onMove.Invoke();
+            
+            Animator animator = GetComponentInChildren<Animator>();
+            if (animator != null)
+            {
+	            animator.Play("Run");
+            }
         }
         // else if (playerCombat.isShooting)
         // {
@@ -46,7 +52,12 @@ public class PlayerMovement : MonoBehaviour
         // }
         else
         {
-            PlayerEventManager.instance.events.onIdle.Invoke();
+            // PlayerEventManager.instance.events.onIdle.Invoke();
+            Animator animator = GetComponentInChildren<Animator>();
+            if (animator != null)
+            {
+	            animator.Play("Idle");
+            }
         }
     }
     
