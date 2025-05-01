@@ -7,6 +7,7 @@ namespace Brad
     public class TimeNade : Nades
     {
         private float originalDrag = 0.0f;
+        private Coroutine exitTriggerCoroutine;
 
         public override void Start()
         {
@@ -24,7 +25,7 @@ namespace Brad
         {
             Debug.Log("Slow Grenade triggered.");
 
-            transform.localScale *= 13f;
+            transform.localScale *= 11f;
             rb.useGravity = false;
             rb.isKinematic = true;
 
@@ -35,32 +36,21 @@ namespace Brad
                 collider.isTrigger = true;
             }
 
-            // Destroy the grenade after 7 seconds
-            Destroy(gameObject, 7f);
+            //Drop & Destroy the grenade after 5 seconds
+            if (exitTriggerCoroutine != null)
+            {
+                StopCoroutine(exitTriggerCoroutine);
+            }
+            
+            exitTriggerCoroutine = StartCoroutine(DeleteTimeGrenade());
         }
 
-        private void OnTriggerEnter(Collider other)
+        private IEnumerator DeleteTimeGrenade()
         {
-            Debug.Log($"{other.name} entered the grenade trigger.");
-            Rigidbody rb = other.GetComponentInParent<Rigidbody>();
-
-            if (rb != null)
-            {
-                originalDrag = rb.linearDamping;
-                rb.linearDamping = 10f; // Apply drag
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            Debug.Log($"{other.name} left the grenade trigger.");
-            Rigidbody rb = other.GetComponentInParent<Rigidbody>();
-            if (rb != null)
-            {
-               
-                    rb.linearDamping = originalDrag;
-                
-            }
+          transform.localPosition = new Vector3(0.0f, transform.localPosition.y, transform.localPosition.z);
+          Destroy(this.gameObject);
+          yield return null;
+          Debug.Log("Delete time grenade.");
         }
     }
 }

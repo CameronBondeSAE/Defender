@@ -38,6 +38,11 @@ namespace Brad
             }
         }
 
+        // public virtual void FixedUpdate()
+        // {
+        //     if (coll)
+        // }
+
         public void Launch(Vector3 launchDirection)
         {
             if (grenadeTrajectory == null || storedCalculatedPoints == null || storedCalculatedPoints.Length < 2)
@@ -92,7 +97,12 @@ namespace Brad
 
         protected virtual void OnCollisionEnter(Collision collision)
         {
-            if (hasLanded || hasCollided) return;
+            if (collision.gameObject.CompareTag("Wall"))
+            {
+                Vector3 wallBounce = transform.position - collision.transform.position;
+                float forceMagnituder = 70f;
+                rb.AddForce(wallBounce.normalized * forceMagnituder, ForceMode.Impulse);
+            }
 
             if (collision.gameObject.CompareTag("Player"))
             {
@@ -112,18 +122,19 @@ namespace Brad
                 hasLanded = true;
                 GrenadeLanded();
             }
-            else
-            {
-                Debug.Log($"Grenade bounced off: {collision.gameObject.name}");
-                StartCoroutine(DelayedLand());
-            }
         }
-
-        private IEnumerator DelayedLand()
-        {
-            yield return new WaitForSeconds(1f);
-            GrenadeLanded();
-        }
+        //     else
+        //     {
+        //         Debug.Log($"Grenade bounced off: {collision.gameObject.name}");
+        //         StartCoroutine(DelayedLand());
+        //     }
+        // }
+        //
+        // private IEnumerator DelayedLand()
+        // {
+        //     yield return new WaitForSeconds(1f);
+        //     GrenadeLanded();
+        // }
 
         protected virtual void GrenadeLanded()
         {
@@ -140,3 +151,54 @@ namespace Brad
         }
     }
 }
+
+//         protected virtual void OnCollisionEnter(Collision collision)
+//         {
+//             if (hasLanded || hasCollided) return;
+//
+//             if (collision.gameObject.CompareTag("Player"))
+//             {
+//                 return; // Ignore collision with Player
+//             }
+//
+//             // Stop the trajectory when a collision occurs
+//             hasCollided = true;
+//             if (trajectoryCoroutine != null)
+//             {
+//                 StopCoroutine(trajectoryCoroutine);
+//                 trajectoryCoroutine = null;
+//             }
+//
+//             if (collision.gameObject.CompareTag("Ground"))
+//             {
+//                 hasLanded = true;
+//                 GrenadeLanded();
+//             }
+//             else
+//             {
+//                 Debug.Log($"Grenade bounced off: {collision.gameObject.name}");
+//                 StartCoroutine(DelayedLand());
+//             }
+//         }
+//
+//         private IEnumerator DelayedLand()
+//         {
+//             yield return new WaitForSeconds(0.5f);
+//             GrenadeLanded();
+//         }
+//
+//         protected virtual void GrenadeLanded()
+//         {
+//             Debug.Log("Base class check - Grenade landed!");
+//         }
+//
+//         private void OnDestroy()
+//         {
+//             // Ensure coroutines are stopped when the object is destroyed
+//             if (trajectoryCoroutine != null)
+//             {
+//                 StopCoroutine(trajectoryCoroutine);
+//             }
+//         }
+//     }
+// }
