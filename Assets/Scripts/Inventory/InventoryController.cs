@@ -121,6 +121,11 @@ namespace Inventory
                 }
 
             }
+
+            if (inventoryInputs.Inventory.Cancel.triggered)
+            {
+                inventoryUI.Hide();
+            }
         }
     }
 }

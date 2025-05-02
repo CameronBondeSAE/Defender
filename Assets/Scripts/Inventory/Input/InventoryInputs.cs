@@ -35,6 +35,15 @@ public partial class @InventoryInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""ffc2a94f-a43b-4641-b669-042295c544db"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -48,6 +57,28 @@ public partial class @InventoryInputs: IInputActionCollection2, IDisposable
                     ""action"": ""confirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2e805ca-2c8c-4205-8691-5fdccb977548"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5737f374-68b4-4de0-be67-f929c41128e6"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -57,6 +88,7 @@ public partial class @InventoryInputs: IInputActionCollection2, IDisposable
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
         m_Inventory_confirm = m_Inventory.FindAction("confirm", throwIfNotFound: true);
+        m_Inventory_Cancel = m_Inventory.FindAction("Cancel", throwIfNotFound: true);
     }
 
     ~@InventoryInputs()
@@ -124,11 +156,13 @@ public partial class @InventoryInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Inventory;
     private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
     private readonly InputAction m_Inventory_confirm;
+    private readonly InputAction m_Inventory_Cancel;
     public struct InventoryActions
     {
         private @InventoryInputs m_Wrapper;
         public InventoryActions(@InventoryInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @confirm => m_Wrapper.m_Inventory_confirm;
+        public InputAction @Cancel => m_Wrapper.m_Inventory_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -141,6 +175,9 @@ public partial class @InventoryInputs: IInputActionCollection2, IDisposable
             @confirm.started += instance.OnConfirm;
             @confirm.performed += instance.OnConfirm;
             @confirm.canceled += instance.OnConfirm;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IInventoryActions instance)
@@ -148,6 +185,9 @@ public partial class @InventoryInputs: IInputActionCollection2, IDisposable
             @confirm.started -= instance.OnConfirm;
             @confirm.performed -= instance.OnConfirm;
             @confirm.canceled -= instance.OnConfirm;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IInventoryActions instance)
@@ -168,5 +208,6 @@ public partial class @InventoryInputs: IInputActionCollection2, IDisposable
     public interface IInventoryActions
     {
         void OnConfirm(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }
