@@ -14,6 +14,7 @@ public class TrackAliens : MonoBehaviour
             Health health = Alien.GetComponent<Health>();
             if (health != null)
             {
+                health.OnDeath -= OnAlienDeath;
                 health.OnDeath += OnAlienDeath;
             }
         }

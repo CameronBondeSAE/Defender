@@ -14,6 +14,7 @@ public class TrackCivilians : MonoBehaviour
             Health health = civilian.GetComponent<Health>();
             if (health != null)
             {
+                health.OnDeath -= OnCivilianDeath;
                 health.OnDeath += OnCivilianDeath;
             }
         }
