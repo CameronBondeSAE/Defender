@@ -1,56 +1,99 @@
-using System;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 namespace Brad
 {
     public class TimeNade : Nades
     {
-        private float originalDrag = 0.0f;
-        private Coroutine exitTriggerCoroutine;
+        private Coroutine MoveAndDelete;  // Moves the time grenade activating on trigger exit then deletes 
 
         public override void Start()
         {
             base.Start();
 
-
-            if (!hasLaunched) // Only launch if not already launched
+            if (!hasLaunched)
             {
-                Vector3 launchDirection = transform.forward; // Direction of launch 
-                Launch(launchDirection); // Launch function from base class 
+                Vector3 launchDirection = transform.forward;
+                Launch(launchDirection);
             }
         }
 
+        /// <summary>
+        /// Called when the grenade lands
+        /// </summary>
         protected override void GrenadeLanded()
         {
             Debug.Log("Slow Grenade triggered.");
 
-            transform.localScale *= 11f;
+          
+            transform.localScale *= 11f;  
             rb.useGravity = false;
             rb.isKinematic = true;
 
-            // Set the collider as a trigger
-            Collider collider = GetComponentInChildren<Collider>();
+            
+            Collider collider = GetComponentInChildren<Collider>(); // Makes the collider a trigger 
             if (collider != null)
             {
                 collider.isTrigger = true;
             }
 
-            //Drop & Destroy the grenade after 5 seconds
-            if (exitTriggerCoroutine != null)
+            if (MoveAndDelete != null)
             {
-                StopCoroutine(exitTriggerCoroutine);
+                StopCoroutine(MoveAndDelete); // Stop any existing Coroutine 
             }
-            
-            exitTriggerCoroutine = StartCoroutine(DeleteTimeGrenade());
+
+            MoveAndDelete = StartCoroutine(DeleteTimeGrenade());
         }
 
+        /// <summary>
+        /// Steps to delete the time grenade
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator DeleteTimeGrenade()
         {
-          transform.localPosition = new Vector3(0.0f, transform.localPosition.y, transform.localPosition.z);
-          Destroy(this.gameObject);
-          yield return null;
-          Debug.Log("Delete time grenade.");
+            yield return new WaitForSeconds(3.0f); // Grenade duration? 
+            transform.localPosition = new Vector3(0.0f, -80f, 0f); // Drops then grenade to trigger OnTriggerExit
+            
+            yield return new WaitForSeconds(3.0f); // Delay just to make sure it worked
+            
+
+            Debug.Log("Delete time grenade.");
+            Destroy(this.gameObject);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {    
+            Debug.Log("Entered trigger: " + other.name);
+            Rigidbody rb = other.GetComponentInParent<Rigidbody>();
+            
+            if (rb != null)
+            {
+                rb.linearDamping = 20f; // Apply slow effect
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            Debug.Log("Exited trigger: " + other.name);
+            Rigidbody rb = other.GetComponentInParent<Rigidbody>();
+           
+            if (rb != null)
+            {
+                StartCoroutine(ResetDrag(rb)); // Reset drag (slow effect) to 0
+            }
+        }
+
+        /// <summary>
+        /// Resets the drag (slow effect) 
+        /// </summary>
+        private IEnumerator ResetDrag(Rigidbody rb)
+        {
+            yield return null;
+
+            if (rb != null)
+            {
+                rb.linearDamping = 0f; // Reset to default value
+            }
         }
     }
 }
