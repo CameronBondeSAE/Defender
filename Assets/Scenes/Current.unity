@@ -297,10 +297,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 10
-  acceleration: 100
   patrolPoints: []
   patrolPointsCount: 4
+  rotationSpeed: 10
+  acceleration: 100
   followDistance: 0
   damageMin: 5
   damageMax: 10
@@ -682,10 +682,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 10
-  acceleration: 100
   patrolPoints: []
   patrolPointsCount: 4
+  rotationSpeed: 10
+  acceleration: 100
   followDistance: 0
   damageMin: 5
   damageMax: 10
@@ -4148,10 +4148,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 10
-  acceleration: 10
   patrolPoints: []
   patrolPointsCount: 0
+  rotationSpeed: 10
+  acceleration: 10
   followDistance: 2
   followTarget: {fileID: 0}
 --- !u!195 &763717280
@@ -4555,19 +4555,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7853373800204901994, guid: 8e856ca4414ea89408f9ab8994404ed9, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4731,10 +4731,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 10
-  acceleration: 10
   patrolPoints: []
   patrolPointsCount: 0
+  rotationSpeed: 10
+  acceleration: 10
   followDistance: 2
   followTarget: {fileID: 0}
 --- !u!1 &1020671060
@@ -4959,10 +4959,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 0
-  acceleration: 0
   patrolPoints: []
   patrolPointsCount: 5
+  rotationSpeed: 0
+  acceleration: 0
   followDistance: 0
   followTarget: {fileID: 0}
 --- !u!114 &1047894229
@@ -5187,10 +5187,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 0
-  acceleration: 0
   patrolPoints: []
   patrolPointsCount: 5
+  rotationSpeed: 0
+  acceleration: 0
   followDistance: 0
   followTarget: {fileID: 0}
 --- !u!114 &1219769407
@@ -5569,10 +5569,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 10
-  acceleration: 100
   patrolPoints: []
   patrolPointsCount: 3
+  rotationSpeed: 10
+  acceleration: 100
   followDistance: 0
   tagDistance: 2.5
   mothership: {fileID: 1295785231}
@@ -6734,10 +6734,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 10
-  acceleration: 100
   patrolPoints: []
   patrolPointsCount: 4
+  rotationSpeed: 10
+  acceleration: 100
   followDistance: 0
   damageMin: 5
   damageMax: 10

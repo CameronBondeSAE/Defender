@@ -1,7 +1,9 @@
 using UnityEngine;
 using AIAnimation;
 using System.Collections;
-
+/// <summary>
+/// AIs who transition into this state will chase down the player (if they are within alertDistance), and attack them within their attack distance
+/// </summary>
 public class AttackState : MonoBehaviour, IAIState
 {
     private AIBase ai;
