@@ -39,7 +39,10 @@ public class FollowState : IAIState
         }
     }
 
-    public void Exit() { }
+    public void Exit()
+    {
+        ai.ResumeMoving();
+    }
 
     // Didn't put into use, but this coroutine stuns the Civ for 5 seconds before resuming movement
     private IEnumerator StunnedDelay()

@@ -71,8 +71,7 @@ public class AIBase : MonoBehaviour
     // Resume movement
     public void ResumeMoving()
     {
-        if (agent.isStopped)
-            agent.isStopped = false;
+        agent.isStopped = false;
     }
 
     // Health change callback
