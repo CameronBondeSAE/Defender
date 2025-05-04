@@ -3,44 +3,47 @@ using UnityEngine;
 using UnityEngine.AI;
 using AIAnimation;
 
+/// <summary>
+/// AIs who transition into this state will follow their target
+/// </summary>
 public class FollowState : IAIState
 {
-    
-    private AIBase ai;
-    private Transform target;
-    private AIAnimationController animController;
+    private AIBase ai;    // originally CivilianAI, but this lets all AI use this state                     
+    private Transform target;                  
+    private AIAnimationController animController; 
 
     public FollowState(AIBase ai, Transform target)
     {
         this.ai = ai;
         this.target = target;
     }
-
     public void Enter()
     {
         animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
-        //ai.StartCoroutine(StunnedDelay());
         ai.ResumeMoving();
     }
-
     public void Stay()
     {
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
+
+        // If target exists and is further than follow distance, move towards target
         if (target != null && Vector3.Distance(ai.transform.position, target.position) > ai.followDistance)
         {
             ai.MoveTo(target.position);
         }
 
+        // If target is null (died for example), switch back to idle state
         if (target == null)
         {
-            ai. ChangeState(new IdleState(ai));
+            ai.ChangeState(new IdleState(ai));
         }
     }
 
     public void Exit() { }
 
+    // Didn't put into use, but this coroutine stuns the Civ for 5 seconds before resuming movement
     private IEnumerator StunnedDelay()
-    {
+    { 
         animController.SetAnimation(AIAnimationController.AnimationState.Idle);
         ai.StopMoving();
         yield return new WaitForSeconds(5f);

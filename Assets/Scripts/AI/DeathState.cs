@@ -1,6 +1,8 @@
 using UnityEngine;
 using AIAnimation;
-
+/// <summary>
+/// Stops an AI and plays death animation
+/// </summary>
 public class DeathState : IAIState
 {
     private AIBase ai;

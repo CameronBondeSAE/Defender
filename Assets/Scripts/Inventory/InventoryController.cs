@@ -107,14 +107,13 @@ namespace Inventory
                 item.name, item.Description);
         }
 
+        // Function to activate currently selected item in the inventory
         public void ActivateSelectedItem()
         {
             if (currentlySelectedIndex == -1) return;
 
             InventoryItem selectedItem = inventoryData.GetItemAt(currentlySelectedIndex);
             if (selectedItem.IsEmpty || selectedItem.item.itemPrefab == null) return;
-
-            // or asl player's child...?
             GameObject instance = Instantiate(selectedItem.item.itemPrefab, playerTransform);
             instance.transform.localPosition = new Vector3(0, 0, 1.5f);
             inventoryData.RemoveItemAt(currentlySelectedIndex);

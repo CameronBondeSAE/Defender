@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 35
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
@@ -748,7 +748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 35
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
@@ -4130,7 +4130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 15
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
@@ -4713,7 +4713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 15
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
@@ -4919,7 +4919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 20
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
@@ -5205,7 +5205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 20
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
@@ -5590,7 +5590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 30
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
@@ -6694,7 +6694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 35
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
@@ -8554,11 +8554,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1868140902059823394, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
       propertyPath: shootAction.m_SingletonActionBindings.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1868140902059823394, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
       propertyPath: interactAction.m_SingletonActionBindings.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868140902059823394, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
+      propertyPath: shootAction.m_SingletonActionBindings.Array.data[0].m_Id
+      value: fd81b9d3-e259-4458-953a-60d1a2f3c910
+      objectReference: {fileID: 0}
+    - target: {fileID: 1868140902059823394, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
+      propertyPath: shootAction.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Mouse>/leftButton
       objectReference: {fileID: 0}
     - target: {fileID: 1868140902059823394, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
       propertyPath: interactAction.m_SingletonActionBindings.Array.data[1].m_Id

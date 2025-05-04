@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-namespace AIAnimation
+namespace AIAnimation // A name space shared only by AIs for clarity
 {
+    /// <summary>
+    /// Same structure as player animation which handles animations shared by all AIs 
+    /// </summary>
     public class AIAnimationController : MonoBehaviour
     {
         public enum AnimationState
