@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1951568
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -661,7 +661,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &321857023
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -907,7 +907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &485848128
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1146,6 +1146,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AggressiveMothership (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2950303260782308162, guid: bceb7f503edda394a9e6f869747f1219, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3799823159149738141, guid: bceb7f503edda394a9e6f869747f1219, type: 3}
       propertyPath: m_LocalPosition.x
       value: 27.57
@@ -1210,7 +1214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &811023012
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1587,6 +1591,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MoveableMothership
       objectReference: {fileID: 0}
+    - target: {fileID: 1320570501020182109, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4261932001835839538, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
       propertyPath: m_LocalPosition.x
       value: 45.103035
@@ -1663,6 +1671,10 @@ PrefabInstance:
       propertyPath: 'waypoints.Array.data[6]'
       value: 
       objectReference: {fileID: 523683605}
+    - target: {fileID: 8620849587009008872, guid: ebf5e20a3472a744cb09319e3f2d43be, type: 3}
+      propertyPath: alienSpawnCountForEachWave
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2470,6 +2482,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BasicMothership 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8362697627708850459, guid: 3c5d8f7eb1764d544b451d35564b4992, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2494,7 +2510,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &1981788811
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2770,7 +2786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!54 &2132024521
 Rigidbody:
   m_ObjectHideFlags: 0

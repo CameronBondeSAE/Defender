@@ -8,7 +8,7 @@ namespace mothershipScripts
     /// This motherhship doesnt move at all, it jsut spawns aliens below it
     /// </summary>
 
-    public class MothershipBase : MonoBehaviour
+    public class MothershipBase : MonoBehaviour, ISpawner
     {
         [SerializeField] protected GameObject alienPrefab;
         [SerializeField] protected GameObject blueBeam;
@@ -50,11 +50,11 @@ namespace mothershipScripts
         {
             Spin();
 
-            // if (Input.GetKeyDown(KeyCode.E))
-            // {
-            //     //SpawnAliens();
-            //     StartWaves();
-            // }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                //SpawnAliens();
+                StartWaves();
+            }
         }
 
         protected virtual IEnumerator SpawnAliens()
