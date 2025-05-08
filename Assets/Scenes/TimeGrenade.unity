@@ -348,8 +348,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390597962}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.049, y: 1.002, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.049000125, y: 1.0019996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -763,7 +763,7 @@ GameObject:
   - component: {fileID: 552256598}
   - component: {fileID: 552256597}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: 'Activate for instructions '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -839,7 +839,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 552256596}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
@@ -849,7 +849,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -26.111902, y: 4.633217}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &593329729
@@ -924,8 +924,39 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 593329729}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &749986433
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 749986434}
+  m_Layer: 0
+  m_Name: '------------------------------------ '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &749986434
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749986433}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 26.111902, y: -4.633217, z: -2.644514}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1597,7 +1628,7 @@ MonoBehaviour:
       m_Flags: 8
     m_Flags: 0
   shootAction:
-    m_Name: 
+    m_Name: Shoot
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: f6758045-5b7d-4708-973b-932dc573c67c
@@ -1606,7 +1637,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   throwAction:
-    m_Name: 
+    m_Name: Throw
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: bf158cf3-eae3-43d4-af7f-14ca4947bda7
@@ -1615,7 +1646,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   laserAction:
-    m_Name: 
+    m_Name: Laser
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: b6cc9cf7-391b-4130-b230-041805475c15
@@ -1624,7 +1655,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   aimGrenadeAction:
-    m_Name: 
+    m_Name: Aim Grenade
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 1dc68875-cb5c-4eec-a870-1feb401f77c1
@@ -2025,7 +2056,7 @@ Transform:
   m_GameObject: {fileID: 1518606146}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.515, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5149996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2044,7 +2075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc5b00a489a4e38448a3b7ab8e880076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trajectory: {fileID: 11400000, guid: 9c43df60b21ad164bb471d17eb1c92d9, type: 2}
+  trajectory: {fileID: 11400000, guid: b5e2c936710902249892f77dff77ab9b, type: 2}
   lineRenderer: {fileID: 885941975}
   throwPoint: {fileID: 390597963}
   playerInputHandler: {fileID: 1452026852}
@@ -2607,5 +2638,6 @@ SceneRoots:
   - {fileID: 1536692430}
   - {fileID: 1902826001}
   - {fileID: 1131212962}
+  - {fileID: 749986434}
   - {fileID: 552256600}
   - {fileID: 593329732}
