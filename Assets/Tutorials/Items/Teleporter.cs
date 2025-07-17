@@ -10,6 +10,11 @@ public class Teleporter : MonoBehaviour, IInteractable
 		Teleport();
 	}
 
+	public void StopInteracting()
+	{
+		
+	}
+
 	public void Teleport()
 	{
 		Debug.Log("Teleport");

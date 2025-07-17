@@ -18,16 +18,16 @@ namespace Tutorials
 	        {
 		        // Activate Item action
 		        other.gameObject.GetComponent<IInteractable>().Interact();
-		        PickupThing(other);
 	        }
         }
 
-        private void PickupThing(Collision other)
+        private void OnCollisionExit(Collision other)
         {
-	        Debug.Log("Pick up attempt : "+other.gameObject.name);
-
-	        howManyThingsHaveIPickupUp = howManyThingsHaveIPickupUp + 1;
-	        Destroy(other.gameObject);
+	        if (other.gameObject.GetComponent<IInteractable>() != null)
+	        {
+		        // Activate Item action
+		        other.gameObject.GetComponent<IInteractable>().StopInteracting();
+	        }
         }
 
         

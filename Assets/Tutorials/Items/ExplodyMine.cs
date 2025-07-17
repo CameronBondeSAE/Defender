@@ -7,6 +7,12 @@ public class ExplodyMine : MonoBehaviour, IInteractable
 		Explode();
 	}
 
+	public void StopInteracting()
+	{
+		
+	}
+
+
 	public void Explode()
     {
 	    Debug.Log("Explode");
