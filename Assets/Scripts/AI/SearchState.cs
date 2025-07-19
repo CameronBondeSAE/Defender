@@ -108,7 +108,7 @@ public class SearchState : MonoBehaviour, IAIState
         ai.StopMoving();
         ai.currentTargetCiv.StopMoving();
         animController.SetAnimation(AIAnimationController.AnimationState.Grab);
-        Debug.Log("is grabbing");
+        //Debug.Log("is grabbing");
         yield return new WaitForSeconds(0.8f); // Simulate grab duration
         ai.currentTargetCiv.ChangeState(new FollowState(ai.currentTargetCiv, ai.transform));
         ai.ChangeState(new ReturnState(ai));

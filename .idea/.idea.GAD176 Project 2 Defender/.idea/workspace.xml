@@ -6,21 +6,93 @@
   <component name="ChangeListManager">
     <list default="true" id="ede24b97-680b-4656-9d08-e37e2b5e823f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GAD176 Project 2 Defender/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GAD176 Project 2 Defender/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Discarded.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Discarded/AlienMovement.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Discarded/AlienMovement.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Discarded/CivAI.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Discarded/CivAI.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Discarded/NavMeshTest.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Discarded/NavMeshTest.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Misc/NotInUse/AlienBehaviour.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Misc/NotInUse/AlienBehaviour.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NotInUse/CivBehaviour.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NotInUse/CivBehaviour.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/stuff/Random Movement/AlienRandomWanderer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/stuff/Random Movement/AlienRandomWanderer.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/stuff/Random Movement/AlienWaypointPatrol.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/stuff/Random Movement/AlienWaypointPatrol.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/BoomNade.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/BoomNade.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/BoomNade.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/BoomNade.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/GrenadeAim.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/GrenadeAim.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Materials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Materials/TimeAOE.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Materials/TimeAOE.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Materials/TrajectoryLine.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Materials/TrajectoryLine.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Nades.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Nades.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Prefabs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Prefabs/TimeGrenade.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/Prefabs/TimeGrenade.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/TimeNade.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Nades/TimeNade.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Alien.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Alien/AgroAlien.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Alien/AgroAlien.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Alien/Alien.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Alien/Alien.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Alien/AlienRandomWanderer.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Alien/AlienRandomWanderer.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Grenade.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Grenade.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/InventoryUI.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/InventoryUI/Inventory.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/InventoryUI/Inventory.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/InventoryUI/ItemUI.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/InventoryUI/ItemUI.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup/Camera setup.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup/Camera setup.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup/Player Input Manager.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup/Player Input Manager.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup/Waypoint Manager.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup/Waypoint Manager.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup/Waypoint.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Level setup/Waypoint.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Current.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Current.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AI/SearchState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AI/SearchState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/AmmoData.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/AmmoData.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/Basic Bullet.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/Basic Bullet.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/Basic Grenade.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/Basic Grenade.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/BasicGrenade.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/BasicGrenade.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/Bullet.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/Bullet.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/BulletData.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/BulletData.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/Grenade.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Ammos/Grenade.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Data.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Data/Items.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Data/TestPlayerInventory.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Data/TestPlayerInventory.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Input.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Input/InventoryInputs.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Input/InventoryInputs.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Input/InventoryInputs.inputactions" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Input/InventoryInputs.inputactions.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/InventoryController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/InventoryController.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/MouseFollower.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/MouseFollower.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/ScriptableObject.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/ScriptableObject/InventorySO.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/ScriptableObject/InventorySO.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/ScriptableObject/ItemSO.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/ScriptableObject/ItemSO.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/UIInventory.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/UIInventory/UIInventoryDescription.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/UIInventory/UIInventoryDescription.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/UIInventory/UIInventoryItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/UIInventory/UIInventoryItem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/UIInventory/UIInventoryPage.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/UIInventory/UIInventoryPage.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerCombat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerCombat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/FloatingUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/FloatingUI.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +185,7 @@
       <workItem from="1746375115166" duration="8000" />
       <workItem from="1746403269325" duration="8000" />
       <workItem from="1746403330763" duration="115000" />
+      <workItem from="1752897361236" duration="5531000" />
     </task>
     <servers />
   </component>

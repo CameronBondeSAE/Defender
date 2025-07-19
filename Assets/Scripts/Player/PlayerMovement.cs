@@ -40,28 +40,9 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 8f);
             PlayerEventManager.instance.events.onMove.Invoke();
         }
-        // else if (playerCombat.isShooting)
-        // {
-        //     PlayerEventManager.instance.events.onShoot.Invoke();
-        // }
         else
         {
             PlayerEventManager.instance.events.onIdle.Invoke();
         }
     }
-    
-    /// <summary>
-    /// If we want player to face the direction of mouse
-    /// </summary>
-    // void RotateTowardsMouse()
-    // {
-    //     // raycast from camera into the world to detect mouse position, storing the hit points as Vector3
-    //     Ray ray = gameCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
-    //     if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-    //     {
-    //         Vector3 lookAtPosition = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-    //         // player face mouse direction
-    //         transform.LookAt(lookAtPosition);
-    //     }
-    // }
 }
