@@ -123,8 +123,8 @@ public class PlayerCombat : MonoBehaviour
     #region Item-Based Combat
     /// <summary>
     /// TEMPLATE 1: Throwable Items (like grenades, bombs, etc.)
-    /// These methods will throw an item from your inventory. For general bombs and throwables,
-    /// you guys can just use this template.
+    /// These methods will throw an item from your inventory. All items are single use.
+    /// For general bombs and throwables you guys can just use this template.
     /// </summary>
     private void TryThrowGrenade()
     {
