@@ -8,49 +8,48 @@ using System;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [Header("Inventory Settings")]
-    [SerializeField]
-    private Transform itemHolder; // Where to parent the current item
+   [Header("Inventory Settings")]
+    public Transform itemHolder; // Where to parent the current item
 
     [Header("Current State")]
-    [SerializeField]
-    private ItemSO currentItem;
-    
-    [SerializeField]
-    private GameObject currentItemInstance;
+    public ItemSO CurrentItem { get; private set; }
+    public GameObject CurrentItemInstance { get; private set; }
+    public bool HasItem => CurrentItem != null && CurrentItemInstance != null;
 
     [Header("Inventory Tracking")]
-    [SerializeField]
     private List<ItemSO> itemsCollected = new List<ItemSO>();
-    
-    [SerializeField]
     private List<ItemSO> itemsUsed = new List<ItemSO>();
+    private List<ItemSO> availableItems = new List<ItemSO>();
+    public IReadOnlyList<ItemSO> AvailableItems => availableItems;
 
-    // Events for UI updates
+    // Events for UI updates if needed
     public event Action<ItemSO> OnItemPickedUp;
     public event Action<ItemSO> OnItemUsed;
     public event Action OnItemSlotCleared;
-
-    // Properties
-    public bool HasItem => currentItem != null;
-    public ItemSO CurrentItem => currentItem;
+    
     public List<ItemSO> ItemsCollected => new List<ItemSO>(itemsCollected);
     public List<ItemSO> ItemsUsed => new List<ItemSO>(itemsUsed);
 
     private void Start()
     {
-        // Create item holder if not assigned
         if (itemHolder == null)
         {
-            GameObject holder = new GameObject("ItemHolder");
-            holder.transform.SetParent(transform);
-            holder.transform.localPosition = Vector3.zero;
-            itemHolder = holder.transform;
+            Debug.LogError("ItemHolder is not assigned! Please assign it in the inspector.");
         }
     }
-
     /// <summary>
-    /// Attempts to pick up an item. Returns true if successful.
+    /// Registers list of available items on this level from game manager
+    /// </summary>
+    public void RegisterAvailableItem(ItemSO item)
+    {
+        if (!availableItems.Contains(item))
+        {
+            availableItems.Add(item);
+            Debug.Log($"Registered item: {item.name}");
+        }
+    }
+    /// <summary>
+    /// Tries to pick up an item. Returns true if successful.
     /// </summary>
     public bool TryPickupItem(ItemSO item)
     {
@@ -66,33 +65,43 @@ public class PlayerInventory : MonoBehaviour
             return false;
         }
 
-        // Set current item
-        currentItem = item;
-        itemsCollected.Add(item);
-
-        // Instantiate the item prefab
-        currentItemInstance = Instantiate(item.ItemPrefab, itemHolder);
-        currentItemInstance.transform.localPosition = Vector3.zero;
-        currentItemInstance.transform.localRotation = Quaternion.identity;
-
-        // Disable physics and colliders so it doesn't interfere or fall
-        var rigidbody = currentItemInstance.GetComponent<Rigidbody>();
-        if (rigidbody != null)
+        if (itemHolder == null)
         {
-            rigidbody.isKinematic = true;
-            rigidbody.useGravity = false;
+            Debug.LogError("ItemHolder is null! Cannot spawn item.");
+            return false;
         }
+        // Set current item
+        CurrentItem = item;
+        itemsCollected.Add(item);
+        // Instantiate the item prefab in the item holder
+        CurrentItemInstance = Instantiate(item.ItemPrefab, itemHolder);
+        CurrentItemInstance.transform.localPosition = Vector3.zero;
+        CurrentItemInstance.transform.localRotation = Quaternion.identity;
+        // Sets up this item to be held in inventory (kinematic)
+        SetupItemForInventory(CurrentItemInstance);
+        OnItemPickedUp?.Invoke(item);
+        Debug.Log($"Picked up: {item.Name}");
+        return true;
+    }
 
-        var colliders = currentItemInstance.GetComponents<Collider>();
+    /// <summary>
+    /// Make item kinematic and disable colliders while in inventory so it doesn't fall forever...
+    /// </summary>
+    private void SetupItemForInventory(GameObject item)
+    {
+        // no physics
+        Rigidbody rb = item.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+        // nio colliders
+        Collider[] colliders = item.GetComponents<Collider>();
         foreach (var col in colliders)
         {
             col.enabled = false;
         }
-
-        OnItemPickedUp?.Invoke(item);
-        
-        Debug.Log($"Picked up: {item.Name}");
-        return true;
     }
 
     /// <summary>
@@ -107,42 +116,68 @@ public class PlayerInventory : MonoBehaviour
         }
 
         // Add to used items list
-        itemsUsed.Add(currentItem);
+        itemsUsed.Add(CurrentItem);
         
         // Fire event before clearing
-        OnItemUsed?.Invoke(currentItem);
+        OnItemUsed?.Invoke(CurrentItem);
         
-        Debug.Log($"Used: {currentItem.Name}");
+        Debug.Log($"Used: {CurrentItem.Name}");
 
-        // Clear current item
-        if (currentItemInstance != null)
+        // Destroy the item instance and clear references
+        if (CurrentItemInstance != null)
         {
-            Destroy(currentItemInstance);
+            Destroy(CurrentItemInstance);
         }
+        
+        ClearInventorySlot();
+    }
 
-        currentItem = null;
-        currentItemInstance = null;
-
+    /// <summary>
+    /// Clears the current item from inventory
+    /// </summary>
+    public void ClearCurrentItemWithoutDestroy()
+    {
+        if (!HasItem)
+        {
+            Debug.Log("No item to clear!");
+            return;
+        }
+        // Add to used items list for tracking
+        itemsUsed.Add(CurrentItem);
+        // Fire event before clearing
+        OnItemUsed?.Invoke(CurrentItem);
+        Debug.Log($"Used: {CurrentItem.Name}");
+        // Clear references without destroying the instance (the latter is handled in PlayerCombat)
+        ClearInventorySlot();
+    }
+    /// <summary>
+    /// Clears the inventory slot references
+    /// </summary>
+    private void ClearInventorySlot()
+    {
+        CurrentItem = null;
+        CurrentItemInstance = null;
         OnItemSlotCleared?.Invoke();
     }
-    /// Ok use these functions below if you guys would like to show UI popups or tell the player how they went
-    /// ("you used x number of grenades! So aggressive!" etc.) at end of game
+
+    /// Here are some helper functions if you guys want to show UI messages etc about player's item usage info :)
     /// <summary>
-    /// checks if player has used a specific item
+    /// Checks if player has used a specific item
     /// </summary>
     public bool HasUsedItem(ItemSO item)
     {
         return itemsUsed.Contains(item);
     }
     /// <summary>
-    /// checks if player has collected a specific item
+    /// Checks if player has collected a specific item
     /// </summary>
     public bool HasCollectedItem(ItemSO item)
     {
         return itemsCollected.Contains(item);
     }
     /// <summary>
-    /// gets the count of how many times an item has been used
+    /// Gets the count of how many times an item has been used
+    /// e.g. At end of game, UI shows "you have used X amount of grenade! You love it."
     /// </summary>
     public int GetItemUsedCount(ItemSO item)
     {

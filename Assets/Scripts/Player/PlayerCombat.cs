@@ -4,14 +4,9 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [Header("Gun Combat")]
-    [SerializeField]
-    private Transform firePosition;
-    
-    [SerializeField]
-    private float fireRate = 0.2f;
-    
-    [SerializeField]
-    private GameObject bulletPrefab;
+    [SerializeField] private Transform firePosition;
+    [SerializeField] private float fireRate = 0.2f;
+    [SerializeField] private GameObject bulletPrefab;
     
     public bool isShooting;
     private Coroutine shootCoroutine;
@@ -21,11 +16,12 @@ public class PlayerCombat : MonoBehaviour
     private PlayerInventory inventory;
 
     [Header("Item Type Names")]
-    [SerializeField]
     private string grenadeItemName = "Grenade";
-    
-    [SerializeField]
     private string laserItemName = "Laser";
+
+    [Header("Throw Settings")]
+    [SerializeField] private float throwForce = 1f;
+    [SerializeField] private Vector3 throwDirection = new Vector3(0, 0.1f, 0.3f); // Slight upward arc
 
     private void Awake()
     {
@@ -33,13 +29,11 @@ public class PlayerCombat : MonoBehaviour
         if (playerInput == null)
             playerInput = FindObjectOfType<PlayerInputHandler>();
         inventory = GetComponent<PlayerInventory>();
+        
         if (playerInput != null)
         {
-            // gun shooting is always available, just to make the game a bit more accessible 
-            // can adjust shoot interval/amount for increased difficulty
             playerInput.onShootStart += StartShooting;
             playerInput.onShootStop += StopShooting;
-            // Item-based actions now (only work if player has the item)
             playerInput.onLaserStart += TryActivateLaser;
             playerInput.onLaserStop += TryDeactivateLaser;
             playerInput.onThrow += TryThrowGrenade;
@@ -99,19 +93,78 @@ public class PlayerCombat : MonoBehaviour
     #region Item-Based Combat
     private void TryThrowGrenade()
     {
-        if (!HasItemOfType(grenadeItemName))
+        // Check if we have an item
+        if (!inventory.HasItem)
         {
-            Debug.Log("No grenade in inventory!");
+            Debug.Log("No item in inventory.");
             return;
         }
-        // Get the grenade from inventory and use it
-        var grenadeComponent = GetCurrentItemComponent<BasicGrenade>();
-        if (grenadeComponent != null)
+        // Check if it's a grenade
+        if (!inventory.CurrentItem.Name.Equals(grenadeItemName, System.StringComparison.OrdinalIgnoreCase))
         {
-            grenadeComponent.UseItem();
-            inventory.UseCurrentItem(); // Remove from inventory
-            Debug.Log("Grenade thrown!");
+            Debug.Log("Current item is not a grenade.");
+            return;
         }
+        // Check if we have an instance to throw
+        if (inventory.CurrentItemInstance == null)
+        {
+            Debug.LogWarning("No item instance to throw!");
+            return;
+        }
+        ThrowCurrentItem();
+    }
+
+    private void ThrowCurrentItem()
+    {
+        GameObject itemToThrow = inventory.CurrentItemInstance;
+        
+        if (itemToThrow == null)
+        {
+            Debug.LogWarning("No item instance to throw!");
+            return;
+        }
+
+        // Move item to fire position
+        itemToThrow.transform.position = firePosition.position;
+        itemToThrow.transform.rotation = firePosition.rotation;
+
+        // Unparent the item from player
+        itemToThrow.transform.SetParent(null);
+
+        // Re-enable physics
+        Rigidbody rb = itemToThrow.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+
+            // Apply throwing force
+            Vector3 worldThrowDirection = firePosition.TransformDirection(throwDirection.normalized);
+            rb.AddForce(worldThrowDirection * throwForce, ForceMode.VelocityChange);
+        }
+        else
+        {
+            Debug.LogWarning("Item doesn't have a Rigidbody component!");
+        }
+
+        // Re-enable colliders
+        Collider[] colliders = itemToThrow.GetComponents<Collider>();
+        foreach (var col in colliders)
+        {
+            col.enabled = true;
+        }
+
+        // Activate the item's behavior ("use" it)
+        IUsableItem usableItem = itemToThrow.GetComponent<IUsableItem>();
+        if (usableItem != null)
+        {
+            usableItem.UseItem();
+        }
+
+        // Clear from inventory (this will NOT destroy the thrown item)
+        inventory.ClearCurrentItemWithoutDestroy();
+
+        Debug.Log("Item thrown!");
     }
 
     private void TryActivateLaser()
@@ -122,7 +175,6 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
 
-        // Get the laser component and activate it
         var laserComponent = GetCurrentItemComponent<ILaserItem>();
         if (laserComponent != null)
         {
@@ -135,10 +187,9 @@ public class PlayerCombat : MonoBehaviour
     {
         if (!HasItemOfType(laserItemName))
         {
-            return; // No laser to deactivate
+            return;
         }
 
-        // Get the laser component and deactivate it
         var laserComponent = GetCurrentItemComponent<ILaserItem>();
         if (laserComponent != null)
         {
@@ -156,24 +207,15 @@ public class PlayerCombat : MonoBehaviour
         
         return inventory.CurrentItem.Name.Equals(itemName, System.StringComparison.OrdinalIgnoreCase);
     }
-
     private T GetCurrentItemComponent<T>() where T : class
     {
-        if (inventory == null || !inventory.HasItem) 
+        if (inventory == null || !inventory.HasItem || inventory.CurrentItemInstance == null) 
             return null;
 
-        // Look for the component in the current item instance
-        var itemTransform = inventory.transform.GetComponentInChildren<Transform>();
-        if (itemTransform != null)
-        {
-            return itemTransform.GetComponent<T>();
-        }
-
-        return null;
+        return inventory.CurrentItemInstance.GetComponent<T>();
     }
     #endregion
 }
-
 // example interface for laser items
 public interface ILaserItem
 {

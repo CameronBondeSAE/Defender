@@ -14,8 +14,7 @@ public class PickupItem : MonoBehaviour
     private void Start()
     {
         floatingUI = GetComponent<FloatingUI>();
-        
-        // Ensure the trigger collider is set up
+        // Ensure the trigger collider is set up in case forget
         Collider col = GetComponent<Collider>();
         if (col != null)
         {
@@ -67,10 +66,9 @@ public class PickupItem : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     private void OnDrawGizmosSelected()
     {
-        // Draw interaction range in scene view
+        // Visual debug
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactionRange);
     }

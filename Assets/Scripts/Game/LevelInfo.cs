@@ -22,7 +22,7 @@ public class LevelInfo : ScriptableObject
     public int crateSpawnCount = 5;
 
     /// <summary>
-    /// Returns a random item from the available items list:)
+    /// If needed, this returns a random item from the available items list:)
     /// </summary>
     public ItemSO GetRandomItem()
     {

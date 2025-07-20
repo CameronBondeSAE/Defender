@@ -3,70 +3,49 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInventory))]
 public class PlayerInteract : MonoBehaviour
 {
-    [Header("References")]
+   [Header("References")]
     private PlayerInputHandler inputHandler;
     private PlayerInventory inventory;
 
-    [Header("Level Settings")]
-    [SerializeField]
-    private LevelInfo currentLevelInfo;
-
     private void Start()
     {
-        // Get required components
         inputHandler = GetComponent<PlayerInputHandler>();
         inventory = GetComponent<PlayerInventory>();
 
         if (inputHandler == null)
-        {
-            Debug.LogError("PlayerInputHandler not found on player!");
-        }
+            Debug.LogError("PlayerInputHandler not found on player");
 
         if (inventory == null)
-        {
-            Debug.LogError("PlayerInventory not found on player!");
-        }
+            Debug.LogError("PlayerInventory not found on player");
 
-        // Subscribe to input events
         if (inputHandler != null)
-        {
             inputHandler.onInteract += HandleInteract;
-        }
     }
 
     private void OnDestroy()
     {
-        // Unsubscribe from events
         if (inputHandler != null)
-        {
             inputHandler.onInteract -= HandleInteract;
-        }
     }
 
     private void HandleInteract()
     {
-        // Find the closest pickup in range
         PickupItem pickup = FindClosestPickup();
-        
+
         if (pickup != null)
         {
             TryPickupItem(pickup);
         }
-        else
+        else if (inventory.HasItem)
         {
-            // Try to use current item if no pickup is available
-            if (inventory.HasItem)
-            {
-                UseCurrentItem();
-            }
+            UseCurrentItem();
         }
     }
 
     private PickupItem FindClosestPickup()
     {
-        // Find all pickup items in the scene
         PickupItem[] pickups = FindObjectsOfType<PickupItem>();
-        PickupItem closestPickup = null;
+        PickupItem closest = null;
         float closestDistance = float.MaxValue;
 
         foreach (var pickup in pickups)
@@ -77,14 +56,13 @@ public class PlayerInteract : MonoBehaviour
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    closestPickup = pickup;
+                    closest = pickup;
                 }
             }
         }
 
-        return closestPickup;
+        return closest;
     }
-
     private void TryPickupItem(PickupItem pickup)
     {
         if (inventory.HasItem)
@@ -93,56 +71,44 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
 
-        // Get random item from current level
-        if (currentLevelInfo == null)
+        var availableItems = inventory.AvailableItems;
+        if (availableItems == null || availableItems.Count == 0)
         {
-            Debug.LogWarning("No level info assigned! Cannot generate random item.");
+            Debug.LogWarning("No items available to pick up!");
             return;
         }
 
-        ItemSO randomItem = currentLevelInfo.GetRandomItem();
+        ItemSO randomItem = availableItems[Random.Range(0, availableItems.Count)];
+
         if (randomItem == null)
         {
-            Debug.LogWarning("No items available in current level!");
+            Debug.LogWarning("Item from list is null!");
             return;
         }
 
-        // Try to pickup the item
         if (inventory.TryPickupItem(randomItem))
         {
-            // Successfully picked up - destroy the pickup object
             pickup.OnPickedUp();
         }
     }
 
     private void UseCurrentItem()
     {
-        if (inventory.HasItem)
+        if (!inventory.HasItem) return;
+
+        // Use the item through its interface
+        IUsableItem usable = inventory.CurrentItemInstance?.GetComponent<IUsableItem>();
+
+        if (usable != null)
         {
-            // Get the current item instance and try to use it
-            var itemInstance = inventory.transform.GetComponentInChildren<IUsableItem>();
-            
-            if (itemInstance != null)
-            {
-                itemInstance.UseItem();
-            }
-            
-            // Clear from inventory
+            usable.UseItem();
+            // * For items like potions that are consumed immediately,
+            // Add functionality here (or create a similar function) to handle its immediate destruction
             inventory.UseCurrentItem();
         }
+        else
+        {
+            Debug.Log("Current item is not directly usable through interact. Use specific controls (throw, laser, etc.)");
+        }
     }
-
-    /// <summary>
-    /// Set the current level info (call this when loading a new level)
-    /// </summary>
-    public void SetLevelInfo(LevelInfo levelInfo)
-    {
-        currentLevelInfo = levelInfo;
-    }
-}
-
-// Interface for items that can be used
-public interface IUsableItem
-{
-    void UseItem();
 }

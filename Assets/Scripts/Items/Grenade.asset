@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e638deab5413e514a916e36d4f48fed7, type: 3}
   m_Name: Grenade
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Grenade
-  <Description>k__BackingField: Throw it with the SPACE key, it will explode after
-    3 seconds!
-  <Icon>k__BackingField: {fileID: 8968075353753836396, guid: 3ad56d0daa98d8a41b2846a87a936e73, type: 3}
-  <ItemPrefab>k__BackingField: {fileID: 2531855980546327703, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
+  Name: Grenade
+  Description: Explodes after 3 seconds
+  Icon: {fileID: 0}
+  ItemPrefab: {fileID: 2531855980546327703, guid: 98c2e98497c437244894f00baebe2afa, type: 3}

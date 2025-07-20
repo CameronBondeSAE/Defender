@@ -2,22 +2,17 @@ using UnityEngine;
 
 public class BasicGrenade : MonoBehaviour, IUsableItem
 {
-     [Header("Grenade Stats")]
-    [SerializeField]
+   [Header("Grenade Stats")]
     private float explosionRadius = 5f;
-    
-    [SerializeField]
     private float explosionDelay = 3f;
-    
-    [SerializeField]
-    private float launchSpeed = 10f;
-    
-    [SerializeField]
     private float damage = 50f;
+
+    [Header("Explosion Force")]
+    private float explosionForce = 10f;
 
     private float countdown;
     private Rigidbody rb;
-    private bool isLaunched = false;
+    private bool isActivated = false;
 
     private void Start()
     {
@@ -32,7 +27,7 @@ public class BasicGrenade : MonoBehaviour, IUsableItem
 
     private void Update()
     {
-        if (isLaunched)
+        if (isActivated)
         {
             countdown -= Time.deltaTime;
             if (countdown <= 0f) 
@@ -43,31 +38,20 @@ public class BasicGrenade : MonoBehaviour, IUsableItem
     }
 
     /// <summary>
-    /// Implementation of IUsableItem - called when player uses this item
+    /// UseItem from IUsableItem interface - called when player throws/uses this item
+    /// This here just starts the countdown timer - throwing (rb.AddForce) is handled by PlayerCombat
     /// </summary>
     public void UseItem()
     {
-        Launch();
+        ActivateGrenade();
     }
 
-    private void Launch()
+    private void ActivateGrenade()
     {
-        if (isLaunched) return;
-
-        isLaunched = true;
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        var colliders = GetComponents<Collider>();
-        foreach (var col in colliders)
-        {
-            col.enabled = true;
-        }
-        transform.SetParent(null);
-        Transform player = transform.root;
-        Vector3 launchDirection = player.forward + Vector3.up * 0.5f;
-        rb.AddForce(launchDirection * launchSpeed, ForceMode.VelocityChange);
+        if (isActivated) return;
         
-        Debug.Log($"Grenade launched! Exploding in {countdown} seconds.");
+        isActivated = true;
+        Debug.Log($"Grenade activated! Exploding in {countdown} seconds.");
     }
 
     private void Explode()
@@ -86,11 +70,11 @@ public class BasicGrenade : MonoBehaviour, IUsableItem
             var rb = collider.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.AddExplosionForce(launchSpeed * 2f, transform.position, explosionRadius);
+                rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
             }
         }
-
-        // can add explosion effects here (particles, sound, etc.)
+        
+        // Can add explosion effects here if you guys want (particles, sound, etc.)
         Destroy(gameObject);
     }
 
