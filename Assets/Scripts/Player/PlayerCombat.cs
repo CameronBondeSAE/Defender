@@ -18,6 +18,12 @@ public class PlayerCombat : MonoBehaviour
     [Header("Item Type Names")]
     private string grenadeItemName = "Grenade";
     private string laserItemName = "Laser";
+    // ================================================================
+    // When you guys add items, ADD THEIR NAME (STRING) HERE
+     // * Examples:
+     // * private string trapItemName = "Trap";
+     // * private string healItemName = "Heal";
+     // ================================================================
 
     [Header("Throw Settings")]
     [SerializeField] private float throwForce = 1f;
@@ -37,6 +43,21 @@ public class PlayerCombat : MonoBehaviour
             playerInput.onLaserStart += TryActivateLaser;
             playerInput.onLaserStop += TryDeactivateLaser;
             playerInput.onThrow += TryThrowGrenade;
+            // ================================================================
+            // If you guys have your own custom input keys for your items, ADD NEW INPUT EVENT SUBSCRIPTIONS HERE
+            // * Examples:
+            // * playerInput.onSetTrap += SettingTrap;
+            // * playerInput.onDrinkHeal += UseHeal;
+            // ================================================================
+            
+            // =============================================================================
+            // DON'T FORGET TO UPDATE PLAYERINPUTHANDLER TOO!!
+             // If your item needs new input keys, you'll need to:
+             // 1. Add the input detection in PlayerInputHandler
+             // 2. Create events for your new inputs
+             // 3. Subscribe to those events in PlayerCombat (like above)
+             // 4. ASSIGN those keys in Player's inspector (in PlayerInputHandler field)!
+             // =============================================================================
         }
     }
 
@@ -49,10 +70,19 @@ public class PlayerCombat : MonoBehaviour
             playerInput.onLaserStart -= TryActivateLaser;
             playerInput.onLaserStop -= TryDeactivateLaser;
             playerInput.onThrow -= TryThrowGrenade;
+            // ================================================================
+            // UNSUBSCRIBE ANY NEW INPUT EVENTS HERE
+            // ================================================================
         }
     }
 
     #region Gun Combat (Always Available)
+    /// <summary>
+    /// So, currently the gun is always available, can omit if you guys don't want.
+    /// Makes the game a little more interactive and less dangerous, and you can adjust fireRate to increase difficulty
+    /// Comment out if you don't want the player to have a gun. If you guys are making guns yourselves,
+    /// you can just use these methods with the shoot input already set up.
+    /// </summary>
     private void StartShooting()
     {
         if (!isShooting)
@@ -84,13 +114,18 @@ public class PlayerCombat : MonoBehaviour
     public void FireBullet()
     {
         if (bulletPrefab == null || firePosition == null) return;
-        
+
         var bullet = Instantiate(bulletPrefab, firePosition.position, firePosition.rotation);
         Debug.Log("Bullet fired!");
     }
     #endregion
 
     #region Item-Based Combat
+    /// <summary>
+    /// TEMPLATE 1: Throwable Items (like grenades, bombs, etc.)
+    /// These methods will throw an item from your inventory. For general bombs and throwables,
+    /// you guys can just use this template.
+    /// </summary>
     private void TryThrowGrenade()
     {
         // Check if we have an item
@@ -105,6 +140,17 @@ public class PlayerCombat : MonoBehaviour
             Debug.Log("Current item is not a grenade.");
             return;
         }
+        // ================================================================
+        // INSERT MORE THROWABLE ITEM NAME CHECKS HERE
+        // Example:
+        // if (!inventory.CurrentItem.Name.Equals(flashingBombItemName, System.StringComparison.OrdinalIgnoreCase))
+        // {
+        //     Debug.Log("Current item is not a grenade.");
+        //     return;
+        // }
+        // Or check for inherited component :), like if your custom bomb is inheriting from basic grenade
+        // ================================================================
+
         // Check if we have an instance to throw
         if (inventory.CurrentItemInstance == null)
         {
@@ -117,7 +163,7 @@ public class PlayerCombat : MonoBehaviour
     private void ThrowCurrentItem()
     {
         GameObject itemToThrow = inventory.CurrentItemInstance;
-        
+
         if (itemToThrow == null)
         {
             Debug.LogWarning("No item instance to throw!");
@@ -167,6 +213,10 @@ public class PlayerCombat : MonoBehaviour
         Debug.Log("Item thrown!");
     }
 
+    /// <summary>
+    /// TEMPLATE 2: Toggle items like lasers, flashlights, swords etc.
+    /// Same as before, here's a template to use.
+    /// </summary>
     private void TryActivateLaser()
     {
         if (!HasItemOfType(laserItemName))
@@ -197,19 +247,42 @@ public class PlayerCombat : MonoBehaviour
             Debug.Log("Laser deactivated!");
         }
     }
+
+    /// <summary>
+    /// MORE TEMPLATE FOR NEW & YOUR CUSTOM INSTANT-USE ITEMS (potions, sci-fi spells):
+    /// </summary>
+    /// <param name="itemName"></param>
+    /// <returns></returns>
+    //
+    // private void TryUseYourItem()
+    //  {
+    //      if (!HasItemOfType(yourItemName))
+    //         {
+    //             Debug.Log("No [your item] in inventory!");
+    //             return;
+    //         }
+    //
+    //      var component = GetCurrentItemComponent<IYourItemInterface>();
+    //      if (component != null)
+    //       {
+    //             component.Use(); // or Attack(), Cast(), etc.
+    //            Debug.Log("[Your item] used!");
+    //         }
+    //  } // you get the gist of it :)
     #endregion
 
     #region Inventory Helpers
+    // These are just some methods to help verify (any) items in player's inventory :)
     private bool HasItemOfType(string itemName)
     {
-        if (inventory == null || !inventory.HasItem) 
+        if (inventory == null || !inventory.HasItem)
             return false;
-        
+
         return inventory.CurrentItem.Name.Equals(itemName, System.StringComparison.OrdinalIgnoreCase);
     }
     private T GetCurrentItemComponent<T>() where T : class
     {
-        if (inventory == null || !inventory.HasItem || inventory.CurrentItemInstance == null) 
+        if (inventory == null || !inventory.HasItem || inventory.CurrentItemInstance == null)
             return null;
 
         return inventory.CurrentItemInstance.GetComponent<T>();

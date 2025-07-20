@@ -38,11 +38,15 @@ public class PlayerInteract : MonoBehaviour
         }
         else if (inventory.HasItem)
         {
-            UseCurrentItem();
+            UseCurrentItem();// This is where direct-use items get handled
         }
     }
 
-    private PickupItem FindClosestPickup()
+    /// <summary>
+    /// This method handles item pick up, leave it as is
+    /// </summary>
+    /// <returns></returns>
+    private PickupItem FindClosestPickup() 
     {
         PickupItem[] pickups = FindObjectsOfType<PickupItem>();
         PickupItem closest = null;
@@ -102,8 +106,30 @@ public class PlayerInteract : MonoBehaviour
         if (usable != null)
         {
             usable.UseItem();
-            // * For items like potions that are consumed immediately,
-            // Add functionality here (or create a similar function) to handle its immediate destruction
+            // ================================================================
+            // ADD SPECIAL HANDLING FOR CONSUMABLE ITEMS HERE
+             // Example Pattern for consumable items (potions, food, etc.):
+             //
+             // if (HasItemOfType("Health Potion"))
+             // { 
+             //     // Do healing logic here or let the potion component handle it
+             //    inventory.UseCurrentItem(); // This destroys the item
+             // }
+             // else if (HasItemOfType("Key"))
+             // {
+             //     // Keys might be consumed when used on doors
+             //     // Let the door/key interaction handle consumption
+             // }
+             //  else if (HasItemOfType("Sci-FiScroll"))
+             //  {
+             //     // Scrolls are usually consumed when cast
+             //      inventory.UseCurrentItem();
+             // }
+             
+            // For now, only consume items that are meant to be consumed immediately
+            // Items like grenades, lasers, etc. should NOT be consumed here! 
+            // They get consumed when thrown/used through PlayerCombat!
+            // ================================================================
             inventory.UseCurrentItem();
         }
         else
