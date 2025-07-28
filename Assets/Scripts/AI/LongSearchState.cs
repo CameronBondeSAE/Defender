@@ -85,7 +85,7 @@ public class LongSearchState : MonoBehaviour, IAIState
         ai.currentTargetCiv = null;
     }
 
-    private IEnumerator GrabThenContinue(AIBase civ)
+    private IEnumerator GrabThenContinue(AIBase civ) // rather than returning after capturing one civ, this alien will keep going until he captures his designated amount
     {
         animController.SetAnimation(AIAnimationController.AnimationState.Grab);
         Debug.Log("Grabbing civilian...");

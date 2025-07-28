@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// This class can be dragged onto any damageable game objects, which will allow you to choose what damage effect type this character takes, and assign the particle system prefab in the inspector
+/// </summary>
 public class SpecialEffectsManager : MonoBehaviour
 {
     public enum EffectType
@@ -32,12 +35,13 @@ public class SpecialEffectsManager : MonoBehaviour
     {
         health.OnHealthChanged -= HandleDamageReceived;
     }
-
+    // The effects (emission) are linked to how much damage is received by that character
     private void HandleDamageReceived(float damageReceived)
     {
         PlayEffect(damageReceived);
     }
-
+    
+    // Spawning the particle system
     private void PlayEffect(float damage)
     {
         var chosenEffect = GetEffectForType(effectType);
@@ -47,7 +51,8 @@ public class SpecialEffectsManager : MonoBehaviour
         emission.rateOverTime = Mathf.Clamp(damage, 2f, 100f);
         Destroy(effectInstance.gameObject, effectInstance.main.duration);
     }
-
+    
+    // Plays designated effects for eac effect type
     private ParticleSystem GetEffectForType(EffectType effectType)
     {
         switch (effectType)
