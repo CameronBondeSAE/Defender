@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 namespace mothershipScripts
@@ -50,7 +51,7 @@ namespace mothershipScripts
         {
             Spin();
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (InputSystem.GetDevice<Keyboard>().spaceKey.wasPressedThisFrame)
             {
                 //SpawnAliens();
                 StartWaves();
