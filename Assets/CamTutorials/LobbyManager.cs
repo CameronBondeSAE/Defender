@@ -241,7 +241,7 @@ namespace CameronBonde
 
 		private void OnApplicationQuit()
 		{
-			LobbyService.Instance.DeleteLobbyAsync(lobby.Id);
+			if (lobby != null) LobbyService.Instance.DeleteLobbyAsync(lobby.Id);
 		}
 	}
 }

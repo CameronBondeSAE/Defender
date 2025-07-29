@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using mothershipScripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,7 +17,10 @@ namespace DanniLi
 		[SerializeField]
 		private Transform levelContainer; // for organization
 
-		private void Awake()
+		[Header("Debugging: Don't edit")]
+		public List<ISpawner> spawners = new List<ISpawner>();
+
+		private void Start()
 		{
 			FindPlayerInventory();
 			SetupPlayerInventoryItems();
@@ -25,9 +29,32 @@ namespace DanniLi
 			StartWave();
 		}
 
+		public void TestLoadScene()
+		{
+			SceneHelper.LoadScene("Main Menu", true, true);
+		}
+
+		public void TestUnloadScene()
+		{
+			SceneHelper.UnloadScene("Main Menu");
+		}
+
 		private void StartWave()
 		{
-			FindObjectsByType<>()
+			foreach (ISpawner spawner in spawners)
+			{
+				spawner.StartWaves();
+			}
+		}
+
+		public void RegisterWaveSpawner(ISpawner spawner)
+		{
+			spawners.Add(spawner);
+		}
+
+		public void DeregisterWaveSpawner(ISpawner spawner)
+		{
+			spawners.Remove(spawner);
 		}
 
 		private void FindPlayerInventory()
@@ -74,6 +101,12 @@ namespace DanniLi
 
 		private void SpawnLevelProps()
 		{
+			if (levelInfo == null)
+			{
+				Debug.LogWarning("GameManager: no level info!");
+				return;
+			}
+
 			for (int i = 0; i < levelInfo.wallSpawnCount; i++)
 			{
 				Instantiate(levelInfo.wallPrefab, GetRandomSpawnPosition(), Quaternion.identity, levelContainer);
@@ -81,7 +114,12 @@ namespace DanniLi
 
 			for (int i = 0; i < levelInfo.crateSpawnCount; i++)
 			{
-				Instantiate(levelInfo.cratePrefab, GetRandomSpawnPosition(), Quaternion.identity, levelContainer);
+				if (levelInfo.cratePrefab != null)
+					Instantiate(levelInfo.cratePrefab, GetRandomSpawnPosition(), Quaternion.identity, levelContainer);
+				else
+				{
+					Debug.LogWarning("GameManager: no crate prefab!");
+				}
 			}
 		}
 

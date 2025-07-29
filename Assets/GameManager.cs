@@ -11,12 +11,12 @@ public class GameManager : MonoBehaviour
 {
 	public GameObject winScreen;
 	public GameObject loseScreen;
-	
+
 	public Object[] levels;
-	public int currentLevelIndex;
-	
-	public PlayerInputManager playerInputManager;
-	public List<GameObject> players;
+	public int      currentLevelIndex;
+
+	public PlayerInputManager     playerInputManager;
+	public List<GameObject>       players;
 	public CinemachineTargetGroup targetGroup;
 
 	public event Action GetReady_Event;
@@ -24,45 +24,60 @@ public class GameManager : MonoBehaviour
 	public event Action WinGameOver_Event;
 	public event Action LoseGameOver_Event;
 
-	public int civiliansAlive;
-	public int aliensIncoming;
+	public int       civiliansAlive;
+	public int       aliensIncoming;
 	public LevelInfo levelInfo;
 
-	public GameObject[] civilians;
+	public GameObject[]     civilians;
 	public MothershipBase[] mothershipBases;
 
 	private void OnEnable()
 	{
 		playerInputManager.onPlayerJoined += OnPlayerJoin;
-		playerInputManager.onPlayerLeft += OnPlayerLeave;
+		playerInputManager.onPlayerLeft   += OnPlayerLeave;
 
 		mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
 		aliensIncoming = 0;
 		foreach (MothershipBase mothershipBase in mothershipBases)
 		{
-			aliensIncoming += mothershipBase.alienSpawnCount;
+			aliensIncoming                    += mothershipBase.alienSpawnCount;
 			mothershipBase.AlienSpawned_Event += MothershipBaseOnAlienSpawned_Event;
 		}
 
 		Debug.Log("Aliens Incoming: " + aliensIncoming);
 
-		civilians = GameObject.FindGameObjectsWithTag("Civilian");
+		civilians      = GameObject.FindGameObjectsWithTag("Civilian");
 		civiliansAlive = civilians.Length;
 		Debug.Log("Civilians Alive: " + civiliansAlive);
 
 		foreach (GameObject civilian in civilians)
 		{
-			civilian.GetComponent<Health>().OnDeath += OnCivDeath;
+			var health = civilian.GetComponent<Health>();
+			if (health != null)
+			{
+				health.OnDeath += OnCivDeath;
+			}
 		}
 
 		levelInfo = FindFirstObjectByType<LevelInfo>();
-		Debug.Log("Level Info: Civilian percentage to save" + levelInfo.percentageToSave);
+		if (levelInfo != null)
+		{
+			Debug.Log("Level Info: Civilian percentage to save" + levelInfo.percentageToSave);
+		}
+		else
+		{
+			Debug.Log("Level Info: No level info found");
+		}
 	}
 
 	private void MothershipBaseOnAlienSpawned_Event(GameObject obj)
 	{
-		obj.GetComponent<Health>().OnDeath += OnAlienDeath;
+		Health health = obj.GetComponent<Health>();
+		if (health != null)
+		{
+			health.OnDeath += OnAlienDeath;
+		}
 	}
 
 	private void OnAlienDeath()

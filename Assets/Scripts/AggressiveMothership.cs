@@ -7,7 +7,7 @@ namespace mothershipScripts
     /// <summary>
     /// This mothership will constantly move towards the players position and spawn aliens near them
     /// </summary>
-    public class AggressiveMothership : MothershipBase
+    public class AggressiveMothership : MothershipBase, IMovable, ISpawner
     {
         [SerializeField] private float detectionSphereRadius;
 
@@ -38,10 +38,15 @@ namespace mothershipScripts
                 {
                     Vector3 playerPositionWithYOffset = new Vector3(hits[i].transform.position.x, yPosition,
                         hits[i].transform.position.z);
-                    yield return StartCoroutine(movement.MoveToADestination(playerPositionWithYOffset));
+                    yield return StartCoroutine(MoveToPosition(playerPositionWithYOffset));
                 }
             }
             // Debug.Log("test");
+        }
+
+        public IEnumerator MoveToPosition(Vector3 targetPosition)
+        {
+            yield return StartCoroutine(movement.MoveToADestination(targetPosition));
         }
 
         //private IEnumerator MoveTowardsPlayer(Vector3 currentPlayerPosition)
