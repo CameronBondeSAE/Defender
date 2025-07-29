@@ -21,6 +21,13 @@ namespace DanniLi
 			FindPlayerInventory();
 			SetupPlayerInventoryItems();
 			SpawnLevelProps();
+
+			StartWave();
+		}
+
+		private void StartWave()
+		{
+			FindObjectsByType<>()
 		}
 
 		private void FindPlayerInventory()
