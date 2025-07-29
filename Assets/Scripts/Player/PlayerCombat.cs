@@ -116,7 +116,7 @@ public class PlayerCombat : MonoBehaviour
         if (bulletPrefab == null || firePosition == null) return;
 
         var bullet = Instantiate(bulletPrefab, firePosition.position, firePosition.rotation);
-        Debug.Log("Bullet fired!");
+        // Debug.Log("Bullet fired!");
     }
     #endregion
 
