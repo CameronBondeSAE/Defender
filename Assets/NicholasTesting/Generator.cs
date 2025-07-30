@@ -1,0 +1,72 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+namespace NicholasScripts
+{
+    public class Generator : MonoBehaviour, IInteractable, IUsableItem
+    {
+        [System.Serializable]
+        public class GeneratorModel
+        {
+            public float powerRange = 5f;
+            public bool isUsed = false;
+        }
+
+        [System.Serializable]
+        public class GeneratorView
+        {
+            public void DrawPowerRange(Vector3 position, float range)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(position, range);
+            }
+        }
+
+        [Header("Generator MVC")]
+        public GeneratorModel model = new GeneratorModel();
+        public GeneratorView view = new GeneratorView();
+
+        private List<IPowerable> poweredObjects = new List<IPowerable>();
+
+        public void Interact()
+        {
+            // implement pickup logic here
+        }
+
+        public void StopInteracting()
+        {
+        }
+
+        public void UseItem()
+        {
+            if (model.isUsed) return;
+            model.isUsed = true;
+
+            Collider[] hits = Physics.OverlapSphere(transform.position, model.powerRange);
+            foreach (var hit in hits)
+            {
+                var powerable = hit.GetComponent<IPowerable>();
+                if (powerable != null && !poweredObjects.Contains(powerable))
+                {
+                    powerable.SetPowered(true);
+                    poweredObjects.Add(powerable);
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var powerable in poweredObjects)
+            {
+                if (powerable != null)
+                    powerable.SetPowered(false);
+            }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (view != null)
+                view.DrawPowerRange(transform.position, model.powerRange);
+        }
+    }
+}
