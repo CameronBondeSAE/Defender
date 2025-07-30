@@ -5,6 +5,12 @@ namespace NicholasScripts
 {
     public class Generator : MonoBehaviour, IInteractable, IUsableItem
     {
+        /*
+         * This is for the generator item/object that will be used to buff the other select objects
+         *
+         * To Do:
+         * Add Sound played (maybe some sort of generator sparking, or just running) while active
+         */
         [System.Serializable]
         public class GeneratorModel
         {
