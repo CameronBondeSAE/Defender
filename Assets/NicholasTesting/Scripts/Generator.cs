@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NicholasScripts
 {
-    public class Generator : MonoBehaviour, IInteractable, IUsableItem
+    public class Generator : MonoBehaviour, IUsable
     {
         /*
          * This is for the generator item/object that will be used to buff the other select objects
@@ -34,16 +34,7 @@ namespace NicholasScripts
 
         private List<IPowerable> poweredObjects = new List<IPowerable>();
 
-        public void Interact()
-        {
-            // implement pickup logic here
-        }
-
-        public void StopInteracting()
-        {
-        }
-
-        public void UseItem()
+        public void Use()
         {
             if (model.isUsed) return;
             model.isUsed = true;
@@ -58,6 +49,11 @@ namespace NicholasScripts
                     poweredObjects.Add(powerable);
                 }
             }
+        }
+
+        public void StopUsing()
+        {
+	        
         }
 
         private void OnDestroy()

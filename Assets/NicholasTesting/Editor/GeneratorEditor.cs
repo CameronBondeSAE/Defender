@@ -16,7 +16,7 @@ public class GeneratorEditor : Editor
 
         if (GUILayout.Button("Activate Generator"))
         {
-            generator.UseItem();
+            generator.Use();
         }
 
         if (GUILayout.Button("Destroy Generator"))

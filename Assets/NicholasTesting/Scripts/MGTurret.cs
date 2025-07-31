@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace NicholasScripts
 {
-    public class MGTurret : Turret, IUsableItem, IInteractable
+    public class MGTurret : Turret, IUsable
     {
         /*
          * Need to make another script that this will inherit from. Want to
@@ -10,21 +10,15 @@ namespace NicholasScripts
          *
          * This turret specifically will shoot bullets towards a target - maybe player/civs as well
          */
-        public void UseItem()
+        public void Use()
         {
             throw new System.NotImplementedException();
         }
 
-        public void Interact()
+        public void StopUsing()
         {
-            throw new System.NotImplementedException();
+	        
         }
 
-        public void StopInteracting()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        
     }
 }
