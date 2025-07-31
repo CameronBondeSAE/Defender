@@ -21,12 +21,20 @@ public class AIBase : MonoBehaviour
     public float followDistance = 10f; 
 
     protected IAIState currentState; // A reference to current AI state (using interface)
+    public IAIState CurrentState
+    {
+	    get
+	    {
+		    return currentState;
+	    }
+    }
 
     // Properties
     public NavMeshAgent Agent => agent;
     public Transform Player => player;
     public Transform[] PatrolPoints => patrolPoints;
     public float FollowDistance => followDistance;
+
 
     // Initialize AI - getting references
     protected virtual void Start()
@@ -43,15 +51,15 @@ public class AIBase : MonoBehaviour
     // State machine update loop
     protected virtual void Update()
     {
-        currentState?.Stay();
+        CurrentState?.Stay();
     }
 
     // Change state logic
     public void ChangeState(IAIState newState)
     {
-        currentState?.Exit();
+        CurrentState?.Exit();
         currentState = newState;
-        currentState.Enter();
+        CurrentState.Enter();
     }
 
     // Move AI to a target position smoothly
@@ -79,7 +87,7 @@ public class AIBase : MonoBehaviour
     {
         if (health.currentHealth > 0)
         {
-            ChangeState(new HitState(this, currentState)); // Switch to Hit state
+            ChangeState(new HitState(this, CurrentState)); // Switch to Hit state
         }
     }
 
