@@ -101,11 +101,11 @@ public class PlayerInteract : MonoBehaviour
         if (!inventory.HasItem) return;
 
         // Use the item through its interface
-        IUsableItem usable = inventory.CurrentItemInstance?.GetComponent<IUsableItem>();
+        IUsable usable = inventory.CurrentItemInstance?.GetComponent<IUsable>();
 
         if (usable != null)
         {
-            usable.UseItem();
+            usable.Use();
             // ================================================================
             // ADD SPECIAL HANDLING FOR CONSUMABLE ITEMS HERE
              // Example Pattern for consumable items (potions, food, etc.):
