@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public class DecoyItem : MonoBehaviour, IInteractable
+public class DecoyItem : MonoBehaviour, IUsable
 {
     //when is picked up it tells the player it is a decoy item
-    public void Interact()
+
+
+    public void Use()
     {
         Debug.Log("Hey, I'm a Decoy Item :)");
     }
-    //when placed down it tells the aliens to get it 
-    public void StopInteracting()
+
+    public void StopUsing()
     {
         Debug.Log("Hey aliens! Come get me!");
     }
-
-    
 }
