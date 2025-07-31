@@ -1,0 +1,169 @@
+\doxysection{AIBase Class Reference}
+\label{class_a_i_base}\index{AIBase@{AIBase}}
+
+
+Shared basic state machine logic/rules used by all AIs. Covers common refs; how to change state and shared rotation logic.  
+
+
+Inheritance diagram for AIBase\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_a_i_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \textbf{ Change\+State} (\textbf{ IAIState} new\+State)
+\item 
+void \textbf{ Move\+To} (Vector3 destination)
+\item 
+void \textbf{ Stop\+Moving} ()
+\item 
+void \textbf{ Resume\+Moving} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Nav\+Mesh\+Agent \textbf{ agent}
+\item 
+Transform[$\,$] \textbf{ patrol\+Points}
+\item 
+int \textbf{ patrol\+Points\+Count} = 3
+\item 
+float \textbf{ follow\+Distance} = 10f
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \textbf{ Start} ()
+\item 
+virtual void \textbf{ Update} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ IAIState} \textbf{ current\+State}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Nav\+Mesh\+Agent \textbf{ Agent}\hspace{0.3cm}{\ttfamily  [get]}
+\item 
+Transform \textbf{ Player}\hspace{0.3cm}{\ttfamily  [get]}
+\item 
+Transform[$\,$] \textbf{ Patrol\+Points}\hspace{0.3cm}{\ttfamily  [get]}
+\item 
+float \textbf{ Follow\+Distance}\hspace{0.3cm}{\ttfamily  [get]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Shared basic state machine logic/rules used by all AIs. Covers common refs; how to change state and shared rotation logic. 
+
+\doxysubsection{Member Function Documentation}
+\index{AIBase@{AIBase}!ChangeState@{ChangeState}}
+\index{ChangeState@{ChangeState}!AIBase@{AIBase}}
+\doxysubsubsection{ChangeState()}
+{\footnotesize\ttfamily \label{class_a_i_base_ae9a59383205805b4f86cc3e07e3b6133} 
+void AIBase.\+Change\+State (\begin{DoxyParamCaption}\item[{\textbf{ IAIState}}]{new\+State}{}\end{DoxyParamCaption})}
+
+\index{AIBase@{AIBase}!MoveTo@{MoveTo}}
+\index{MoveTo@{MoveTo}!AIBase@{AIBase}}
+\doxysubsubsection{MoveTo()}
+{\footnotesize\ttfamily \label{class_a_i_base_a508ff3b0ccc8b925a9d534c6f95a7d88} 
+void AIBase.\+Move\+To (\begin{DoxyParamCaption}\item[{Vector3}]{destination}{}\end{DoxyParamCaption})}
+
+\index{AIBase@{AIBase}!ResumeMoving@{ResumeMoving}}
+\index{ResumeMoving@{ResumeMoving}!AIBase@{AIBase}}
+\doxysubsubsection{ResumeMoving()}
+{\footnotesize\ttfamily \label{class_a_i_base_ac3460326c7686aa29dd6a4a0fe56ee70} 
+void AIBase.\+Resume\+Moving (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\index{AIBase@{AIBase}!Start@{Start}}
+\index{Start@{Start}!AIBase@{AIBase}}
+\doxysubsubsection{Start()}
+{\footnotesize\ttfamily \label{class_a_i_base_a0a342bc2161ed30436fb962d881e8474} 
+virtual void AIBase.\+Start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \textbf{ Agro\+Alien\+AI} \doxyref{}{p.}{class_agro_alien_a_i_ad9e5a900282886bab0e60c27ea2270e5}, \textbf{ Alien\+AI} \doxyref{}{p.}{class_alien_a_i_aa3baa474467ff1cfad8fd36680044d3c}, \textbf{ Idle\+Civilian\+AI} \doxyref{}{p.}{class_idle_civilian_a_i_ae4ea1187bf004cdb350525f38ed7a94d}, and \textbf{ Walking\+Civilian\+AI} \doxyref{}{p.}{class_walking_civilian_a_i_a684d598397840adf23468e2a5e41429d}.
+
+\index{AIBase@{AIBase}!StopMoving@{StopMoving}}
+\index{StopMoving@{StopMoving}!AIBase@{AIBase}}
+\doxysubsubsection{StopMoving()}
+{\footnotesize\ttfamily \label{class_a_i_base_a57b5a48cde9ed65b073e23dfda9784c4} 
+void AIBase.\+Stop\+Moving (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\index{AIBase@{AIBase}!Update@{Update}}
+\index{Update@{Update}!AIBase@{AIBase}}
+\doxysubsubsection{Update()}
+{\footnotesize\ttfamily \label{class_a_i_base_ab7fbfd5b51db0a5ef36c646583cb1f6b} 
+virtual void AIBase.\+Update (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\index{AIBase@{AIBase}!agent@{agent}}
+\index{agent@{agent}!AIBase@{AIBase}}
+\doxysubsubsection{agent}
+{\footnotesize\ttfamily \label{class_a_i_base_a77cc39e374fe373f2475cea83fe0f2ef} 
+Nav\+Mesh\+Agent AIBase.\+agent}
+
+\index{AIBase@{AIBase}!currentState@{currentState}}
+\index{currentState@{currentState}!AIBase@{AIBase}}
+\doxysubsubsection{currentState}
+{\footnotesize\ttfamily \label{class_a_i_base_a8b0c0c48d03e484044b8d58ef96c6251} 
+\textbf{ IAIState} AIBase.\+current\+State\hspace{0.3cm}{\ttfamily [protected]}}
+
+\index{AIBase@{AIBase}!followDistance@{followDistance}}
+\index{followDistance@{followDistance}!AIBase@{AIBase}}
+\doxysubsubsection{followDistance}
+{\footnotesize\ttfamily \label{class_a_i_base_ad7cbda41672ce206f185de653343a712} 
+float AIBase.\+follow\+Distance = 10f}
+
+\index{AIBase@{AIBase}!patrolPoints@{patrolPoints}}
+\index{patrolPoints@{patrolPoints}!AIBase@{AIBase}}
+\doxysubsubsection{patrolPoints}
+{\footnotesize\ttfamily \label{class_a_i_base_a98a549602e1afdbf0ae3c352ad7e2647} 
+Transform [$\,$] AIBase.\+patrol\+Points}
+
+\index{AIBase@{AIBase}!patrolPointsCount@{patrolPointsCount}}
+\index{patrolPointsCount@{patrolPointsCount}!AIBase@{AIBase}}
+\doxysubsubsection{patrolPointsCount}
+{\footnotesize\ttfamily \label{class_a_i_base_a2b0cc75c46b06c10c66110d39f6e5d55} 
+int AIBase.\+patrol\+Points\+Count = 3}
+
+
+
+\doxysubsection{Property Documentation}
+\index{AIBase@{AIBase}!Agent@{Agent}}
+\index{Agent@{Agent}!AIBase@{AIBase}}
+\doxysubsubsection{Agent}
+{\footnotesize\ttfamily \label{class_a_i_base_a6af9b58545b735cff23b0d09053bfa3e} 
+Nav\+Mesh\+Agent AIBase.\+Agent\hspace{0.3cm}{\ttfamily [get]}}
+
+\index{AIBase@{AIBase}!FollowDistance@{FollowDistance}}
+\index{FollowDistance@{FollowDistance}!AIBase@{AIBase}}
+\doxysubsubsection{FollowDistance}
+{\footnotesize\ttfamily \label{class_a_i_base_afb44995f145ae080b00103e2d4b10d99} 
+float AIBase.\+Follow\+Distance\hspace{0.3cm}{\ttfamily [get]}}
+
+\index{AIBase@{AIBase}!PatrolPoints@{PatrolPoints}}
+\index{PatrolPoints@{PatrolPoints}!AIBase@{AIBase}}
+\doxysubsubsection{PatrolPoints}
+{\footnotesize\ttfamily \label{class_a_i_base_a730ee81a3a389b8b5549b180bc3b3912} 
+Transform [$\,$] AIBase.\+Patrol\+Points\hspace{0.3cm}{\ttfamily [get]}}
+
+\index{AIBase@{AIBase}!Player@{Player}}
+\index{Player@{Player}!AIBase@{AIBase}}
+\doxysubsubsection{Player}
+{\footnotesize\ttfamily \label{class_a_i_base_af7154d5c4b2cf4b710474d4a2fd3edba} 
+Transform AIBase.\+Player\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+User/\+Desktop/\+GAD176 Project 2 Defender/\+Assets/\+Scripts/\+AI/\textbf{ AIBase.\+cs}\end{DoxyCompactItemize}

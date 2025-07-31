@@ -1,6 +1,9 @@
 using UnityEngine;
-using AIAnimation;
+using AIAnimation; 
 
+/// <summary>
+/// Ais who enter this state will move from point to point in a loop.
+/// </summary>
 public class PatrolState : IAIState
 {
     private AIBase ai;

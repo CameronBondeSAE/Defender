@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Temporary place-holder mothership that disable civs once they have been dragged into it
+/// </summary>
 public class MothershipZone : MonoBehaviour
 { 
     public float alienDistanceThreshold = 1f;
