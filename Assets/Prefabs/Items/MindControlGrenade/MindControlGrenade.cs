@@ -3,7 +3,7 @@ using UnityEngine;
 namespace adamsScripts
 {
     /// <summary>
-    /// mind control grenade script weeee
+    /// adz.was.here
     /// </summary>
     public class MindControlGrenade : MonoBehaviour
     {
