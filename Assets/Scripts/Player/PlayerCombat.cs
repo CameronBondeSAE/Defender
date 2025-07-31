@@ -201,10 +201,10 @@ public class PlayerCombat : MonoBehaviour
         }
 
         // Activate the item's behavior ("use" it)
-        IUsableItem usableItem = itemToThrow.GetComponent<IUsableItem>();
-        if (usableItem != null)
+        IUsable usable = itemToThrow.GetComponent<IUsable>();
+        if (usable != null)
         {
-            usableItem.UseItem();
+            usable.Use();
         }
 
         // Clear from inventory (this will NOT destroy the thrown item)

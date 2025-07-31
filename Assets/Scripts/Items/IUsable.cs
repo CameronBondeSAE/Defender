@@ -1,8 +1,10 @@
 using UnityEngine;
 /// Use this interface for items that can be used directly (potions, bombs, etc.)
-public interface IUsableItem
+public interface IUsable
 {
-    void UseItem();
+    void Use();
+
+    void StopUsing();
 }
 
 /// EXAMPLE INTERFACE for laser-like persistent items - things that can be used for a duration of time
