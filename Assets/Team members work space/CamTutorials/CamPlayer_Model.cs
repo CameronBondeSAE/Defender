@@ -14,19 +14,19 @@ namespace Tutorials
 	        // Check for specific tag (Slightly better)
 	        // Check for a specific script (Slightly better again)
 	        // Check for a specific interface (MUCH better + we can actually interact with whatever)
-	        if (other.gameObject.GetComponent<IInteractable>() != null)
+	        if (other.gameObject.GetComponent<IUsable>() != null)
 	        {
 		        // Activate Item action
-		        other.gameObject.GetComponent<IInteractable>().Interact();
+		        other.gameObject.GetComponent<IUsable>().Use();
 	        }
         }
 
         private void OnCollisionExit(Collision other)
         {
-	        if (other.gameObject.GetComponent<IInteractable>() != null)
+	        if (other.gameObject.GetComponent<IUsable>() != null)
 	        {
 		        // Activate Item action
-		        other.gameObject.GetComponent<IInteractable>().StopInteracting();
+		        other.gameObject.GetComponent<IUsable>().StopUsing();
 	        }
         }
 

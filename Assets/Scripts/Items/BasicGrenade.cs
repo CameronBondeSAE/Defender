@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BasicGrenade : MonoBehaviour, IUsableItem
+public class BasicGrenade : MonoBehaviour, IUsable
 {
    [Header("Grenade Stats")]
     private float explosionRadius = 5f;
@@ -41,9 +41,14 @@ public class BasicGrenade : MonoBehaviour, IUsableItem
     /// UseItem from IUsableItem interface - called when player throws/uses this item
     /// This here just starts the countdown timer - throwing (rb.AddForce) is handled by PlayerCombat
     /// </summary>
-    public void UseItem()
+    public void Use()
     {
         ActivateGrenade();
+    }
+
+    public void StopUsing()
+    {
+	    
     }
 
     private void ActivateGrenade()
