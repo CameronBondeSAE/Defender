@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using Unity.Netcode;
 
 public class PlayerInputHandler2 : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class PlayerInputHandler2 : MonoBehaviour
     
     private void OnEnable()
     {
+	    
+	    
 	    input = GetComponent<PlayerInput>();
 	    
 	    

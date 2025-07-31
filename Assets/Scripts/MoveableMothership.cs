@@ -7,7 +7,7 @@ namespace mothershipScripts
     /// <summary>
     /// this mothership will move between set waypoints and spawn aliens there.
     /// </summary>
-    public class MoveableMothership : MothershipBase
+    public class MoveableMothership : MothershipBase, IMovable, ISpawner
     {
         //[SerializeField] protected float moveSpeed;
 
@@ -32,10 +32,15 @@ namespace mothershipScripts
             int randomIndex = Random.Range(0, waypoints.Length - 1);
             if (waypoints[randomIndex] != null)
             {
-                yield return StartCoroutine(movement.MoveToADestination(waypoints[randomIndex].transform.position));
+                yield return StartCoroutine(MoveToPosition(waypoints[randomIndex].transform.position));
             }
 
             yield return StartCoroutine(base.SpawnTimer());
+        }
+
+        public IEnumerator MoveToPosition(Vector3 targetPosition)
+        {
+            yield return StartCoroutine(movement.MoveToADestination(targetPosition));
         }
 
         //private IEnumerator MoveToAWaypoint()

@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 2494873889678549557}
   - component: {fileID: 2750667366654397793}
   - component: {fileID: 3054832908179346283}
+  - component: {fileID: 6387018700346189093}
+  - component: {fileID: 4864699207639565352}
+  - component: {fileID: 8896563727650326744}
   m_Layer: 3
   m_Name: WalkingCiv
   m_TagString: Civilian
@@ -117,6 +120,58 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   deathAnimDuration: 2
+--- !u!95 &6387018700346189093
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4477475366770185476}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 389ca3d9c9d4e4f43b89f75ba8cb2335, type: 3}
+  m_Controller: {fileID: 9100000, guid: 69ce5dd747afb75488c00ed0f554f1d6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4864699207639565352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4477475366770185476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8896563727650326744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4477475366770185476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11415d2bca28804e9d4ad9a24a5023c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 0
+  bloodParticles: {fileID: 149532086693909962, guid: f93e78b40e8b922419a32b2b1cc9f8ec, type: 3}
+  alienBloodParticles: {fileID: 0}
+  woodParticles: {fileID: 0}
+  metalParticles: {fileID: 0}
+  fireParticles: {fileID: 0}
 --- !u!1001 &8706458970421007054
 PrefabInstance:
   m_ObjectHideFlags: 0

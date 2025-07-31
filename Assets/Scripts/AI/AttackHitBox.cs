@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// This attack hitbox will be called into effect when they are active in the scene during alien's attack coroutine
+/// </summary>
 public class AttackHitBox : MonoBehaviour
 {
     private AgroAlienAI ai;
@@ -28,11 +30,11 @@ public class AttackHitBox : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             float damage = Random.Range(ai.damageMin, ai.damageMax);
-            /*PlayerHealth health = other.GetComponent<PlayerHealth>();
+            PlayerHealth health = other.GetComponent<PlayerHealth>();
             if (health != null)
             {
                 health.TakeDamage(damage);
-            }*/
+            }
         }
     }
 }

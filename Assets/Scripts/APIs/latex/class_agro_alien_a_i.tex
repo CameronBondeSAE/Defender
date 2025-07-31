@@ -1,0 +1,143 @@
+\doxysection{Agro\+Alien\+AI Class Reference}
+\label{class_agro_alien_a_i}\index{AgroAlienAI@{AgroAlienAI}}
+Inheritance diagram for Agro\+Alien\+AI\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_agro_alien_a_i}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \textbf{ Scan\+For\+Player} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \textbf{ AIBase}}
+\begin{DoxyCompactItemize}
+\item 
+void \textbf{ Change\+State} (\textbf{ IAIState} new\+State)
+\item 
+void \textbf{ Move\+To} (Vector3 destination)
+\item 
+void \textbf{ Stop\+Moving} ()
+\item 
+void \textbf{ Resume\+Moving} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \textbf{ damage\+Min} = 5f
+\item 
+float \textbf{ damage\+Max} = 10f
+\item 
+float \textbf{ alert\+Range} = 10f
+\item 
+float \textbf{ field\+Of\+View\+Angle} = 90f
+\item 
+int \textbf{ ray\+Count} = 5
+\item 
+Layer\+Mask \textbf{ detection\+Mask}
+\item 
+Transform \textbf{ detected\+Player}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \textbf{ AIBase}}
+\begin{DoxyCompactItemize}
+\item 
+Nav\+Mesh\+Agent \textbf{ agent}
+\item 
+Transform[$\,$] \textbf{ patrol\+Points}
+\item 
+int \textbf{ patrol\+Points\+Count} = 3
+\item 
+float \textbf{ follow\+Distance} = 10f
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+override void \textbf{ Start} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \textbf{ AIBase}}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ IAIState} \textbf{ current\+State}
+\end{DoxyCompactItemize}
+\doxysubsection*{Properties inherited from \textbf{ AIBase}}
+\begin{DoxyCompactItemize}
+\item 
+Nav\+Mesh\+Agent \textbf{ Agent}\hspace{0.3cm}{\ttfamily  [get]}
+\item 
+Transform \textbf{ Player}\hspace{0.3cm}{\ttfamily  [get]}
+\item 
+Transform[$\,$] \textbf{ Patrol\+Points}\hspace{0.3cm}{\ttfamily  [get]}
+\item 
+float \textbf{ Follow\+Distance}\hspace{0.3cm}{\ttfamily  [get]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\index{AgroAlienAI@{AgroAlienAI}!ScanForPlayer@{ScanForPlayer}}
+\index{ScanForPlayer@{ScanForPlayer}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{ScanForPlayer()}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_a9b793d01254ef181f187f8990f90b4b4} 
+bool Agro\+Alien\+AI.\+Scan\+For\+Player (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\index{AgroAlienAI@{AgroAlienAI}!Start@{Start}}
+\index{Start@{Start}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{Start()}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_ad9e5a900282886bab0e60c27ea2270e5} 
+override void Agro\+Alien\+AI.\+Start (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \textbf{ AIBase} \doxyref{}{p.}{class_a_i_base_a0a342bc2161ed30436fb962d881e8474}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\index{AgroAlienAI@{AgroAlienAI}!alertRange@{alertRange}}
+\index{alertRange@{alertRange}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{alertRange}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_ad1373bbdf494042dd5b1bdab24cdd855} 
+float Agro\+Alien\+AI.\+alert\+Range = 10f}
+
+\index{AgroAlienAI@{AgroAlienAI}!damageMax@{damageMax}}
+\index{damageMax@{damageMax}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{damageMax}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_a5e83c83c02d139d3df9c33ae7cf63e25} 
+float Agro\+Alien\+AI.\+damage\+Max = 10f}
+
+\index{AgroAlienAI@{AgroAlienAI}!damageMin@{damageMin}}
+\index{damageMin@{damageMin}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{damageMin}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_a7cec5c4b92492a51aea8c5c44424ed6a} 
+float Agro\+Alien\+AI.\+damage\+Min = 5f}
+
+\index{AgroAlienAI@{AgroAlienAI}!detectedPlayer@{detectedPlayer}}
+\index{detectedPlayer@{detectedPlayer}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{detectedPlayer}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_a2b6381d16208afab368c8f1205755be0} 
+Transform Agro\+Alien\+AI.\+detected\+Player}
+
+\index{AgroAlienAI@{AgroAlienAI}!detectionMask@{detectionMask}}
+\index{detectionMask@{detectionMask}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{detectionMask}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_a792828e74052407f88c93504c11fae1d} 
+Layer\+Mask Agro\+Alien\+AI.\+detection\+Mask}
+
+\index{AgroAlienAI@{AgroAlienAI}!fieldOfViewAngle@{fieldOfViewAngle}}
+\index{fieldOfViewAngle@{fieldOfViewAngle}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{fieldOfViewAngle}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_ab01d442e6d9019bb701e406b7cda3f89} 
+float Agro\+Alien\+AI.\+field\+Of\+View\+Angle = 90f}
+
+\index{AgroAlienAI@{AgroAlienAI}!rayCount@{rayCount}}
+\index{rayCount@{rayCount}!AgroAlienAI@{AgroAlienAI}}
+\doxysubsubsection{rayCount}
+{\footnotesize\ttfamily \label{class_agro_alien_a_i_a15b5fbb8381b0b2b9fc1babdd2e77de6} 
+int Agro\+Alien\+AI.\+ray\+Count = 5}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+User/\+Desktop/\+GAD176 Project 2 Defender/\+Assets/\+Scripts/\+AI/\textbf{ Agro\+Alien\+AI.\+cs}\end{DoxyCompactItemize}

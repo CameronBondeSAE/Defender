@@ -30,11 +30,11 @@ public class WaypointManager : MonoBehaviour
         {
             allWaypoints.Add(obj.transform);
         }
-
+        
         Debug.Log($"Found {allWaypoints.Count} waypoints in the scene.");
     }
 
-    // void OnDrawGizmos()
+    // void OnDrawGizmos() // circle out the waypoints to see
     // {
     //     Gizmos.color = Color.blue;
     //     foreach (var wp in allWaypoints)
@@ -63,8 +63,8 @@ public class WaypointManager : MonoBehaviour
 
         return result.ToArray();
     }
-    
-    public Transform[] GetAllWaypoints()
+
+    public Transform[] GetAllWaypoints() // backup function to add all waypoints in the scene to an AI.
     {
         return allWaypoints.ToArray();
     }

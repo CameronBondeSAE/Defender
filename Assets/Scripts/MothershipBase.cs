@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -10,14 +12,14 @@ namespace mothershipScripts
     /// This motherhship doesnt move at all, it jsut spawns aliens below it
     /// </summary>
 
-    public class MothershipBase : MonoBehaviour
+    public class MothershipBase : NetworkBehaviour, ISpawner
     {
         [SerializeField] protected GameObject alienPrefab;
         [SerializeField] protected GameObject blueBeam;
 
-        [SerializeField]
-        public int alienSpawnCount; //number of aliens that spawn at a time
+        [SerializeField] protected int alienSpawnCountForEachWave; //number of aliens that spawn at a time
         [SerializeField] protected float spawnDelay; //the time in seconds it takes to spawn aliens again
+        [SerializeField] protected float spawnDelayBetweenWaves = 5f; //the time in seconds it takes to spawn aliens again
         [SerializeField] protected int maxWaves;
         [SerializeField] protected float currentWaveNumber;
 
@@ -36,9 +38,26 @@ namespace mothershipScripts
 
         //audio stuff
         [SerializeField] protected AudioClip[] beamSounds;
+        
+        public delegate void AlienSpawned(GameObject alien);
+        public event AlienSpawned OnAlienSpawned;
+        
         protected AudioSource audioSource;
+        public    int         alienSpawnCount;
 
         public event Action<GameObject> AlienSpawned_Event;
+
+        private void OnEnable()
+        {
+	        DanniLi.GameManager gameManager = FindFirstObjectByType<DanniLi.GameManager>();
+	        gameManager.RegisterWaveSpawner(this);
+        }
+
+        private void OnDisable()
+        {
+	        DanniLi.GameManager gameManager = FindFirstObjectByType<DanniLi.GameManager>();
+	        gameManager.DeregisterWaveSpawner(this);
+        }
 
         protected virtual void Start()
         {
@@ -53,24 +72,27 @@ namespace mothershipScripts
         {
             Spin();
 
-            // if (Input.GetKeyDown(KeyCode.E))
+            // if (InputSystem.GetDevice<Keyboard>().spaceKey.wasPressedThisFrame)
             // {
             //     //SpawnAliens();
-            //     StartWaves(maxWaves);
+            //     StartWaves();
             // }
         }
 
-        protected virtual IEnumerator SpawnAliens(int numberOfWaves)
+        protected virtual IEnumerator SpawnAliens()
         {
-            for (int i = 0; i < numberOfWaves; i++)
+            for (int i = 0; i < maxWaves; i++)
             {
                 if (isSpawningAliens == false)
                 {
                     yield return StartCoroutine(SpawnTimer());
-                    yield return new WaitForSeconds(spawnDelay);
+                    yield return new WaitForSeconds(spawnDelayBetweenWaves);
                 }
             }
             Debug.Log("Waves finished");
+            blueBeam.SetActive(true);
+            blueBeam.transform.GetComponent<Collider>().enabled = true;
+            blueBeam.transform.GetComponent<Collider>().isTrigger = true;
         }
 
         protected virtual IEnumerator SpawnTimer()
@@ -86,14 +108,15 @@ namespace mothershipScripts
             }
 
             Debug.Log("wave of aliens spawning");
-            for (int i = 0; i < alienSpawnCount; i++)
+            for (int i = 0; i < alienSpawnCountForEachWave; i++)
             {
                 blueBeam.SetActive(true);
                 PlayRandomBeamSound();
-                GameObject newAlien = Instantiate(alienPrefab, alienSpawnPosition + alienSpawnOffset, Quaternion.identity);
-                // Cam added
-                AlienSpawned_Event?.Invoke(newAlien);
-                
+                GameObject alienSpawned = Instantiate(alienPrefab, alienSpawnPosition + alienSpawnOffset, Quaternion.identity);
+                // TODO: Make abstract
+                alienSpawned.GetComponent<AlienAI>().mothership = transform;
+
+                OnAlienSpawned?.Invoke(alienSpawned);
                 yield return new WaitForSeconds(blueBeamDuration);
                 blueBeam.SetActive(false);
                 yield return new WaitForSeconds(spawnDelay);
@@ -106,10 +129,10 @@ namespace mothershipScripts
         /// <summary>
         /// this function can be used by a GameManager script to activate waves
         /// </summary>
-        public void StartWaves(int numberOfWaves)
+        public void StartWaves()
         { 
-            StartCoroutine(SpawnAliens(numberOfWaves));
-         }
+            StartCoroutine(SpawnAliens());
+        }
 
         protected void Spin()
         {

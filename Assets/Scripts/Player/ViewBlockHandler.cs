@@ -29,7 +29,6 @@ public class ViewBlockHandler : MonoBehaviour
     {
         Vector3 directionToCamera = mainCamera.position - transform.position;
         float distance = Vector3.Distance(transform.position, mainCamera.position);
-
         // Store all renderers that were transparent in this frame
         HashSet<Renderer> renderersToRestore = new HashSet<Renderer>(currentlyTransparent);
 
@@ -47,7 +46,7 @@ public class ViewBlockHandler : MonoBehaviour
                     originalMaterials[rend] = rend.materials;
                 }
 
-                // Apply transparent material
+                // Create a list of temporary new materials
                 Material[] newMats = new Material[rend.materials.Length];
                 for (int i = 0; i < newMats.Length; i++)
                 {

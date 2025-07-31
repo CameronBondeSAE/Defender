@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 2293536551349021963}
   - component: {fileID: 4843769592931144032}
   - component: {fileID: 3867679240588694092}
+  - component: {fileID: 5598249675942781008}
+  - component: {fileID: 3041347553923978941}
+  - component: {fileID: 3252683364797701811}
   m_Layer: 3
   m_Name: IdleCiv
   m_TagString: Civilian
@@ -117,6 +120,58 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5598249675942781008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3041347553923978941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11415d2bca28804e9d4ad9a24a5023c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectType: 0
+  bloodParticles: {fileID: 149532086693909962, guid: f93e78b40e8b922419a32b2b1cc9f8ec, type: 3}
+  alienBloodParticles: {fileID: 0}
+  woodParticles: {fileID: 0}
+  metalParticles: {fileID: 0}
+  fireParticles: {fileID: 0}
+--- !u!95 &3252683364797701811
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 389ca3d9c9d4e4f43b89f75ba8cb2335, type: 3}
+  m_Controller: {fileID: 9100000, guid: 69ce5dd747afb75488c00ed0f554f1d6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &7969516783889707945
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -409,54 +464,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8416255704413262220, guid: a58dd32ac24738f4bb2d6b145b5b6f0d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3580954379507441547, guid: a58dd32ac24738f4bb2d6b145b5b6f0d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4218671491877920956}
-    - targetCorrespondingSourceObject: {fileID: 3580954379507441547, guid: a58dd32ac24738f4bb2d6b145b5b6f0d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3427508452444788340}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a58dd32ac24738f4bb2d6b145b5b6f0d, type: 3}
 --- !u!4 &190175532723594799 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7798768810440758662, guid: a58dd32ac24738f4bb2d6b145b5b6f0d, type: 3}
   m_PrefabInstance: {fileID: 7969516783889707945}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6857700491638991906 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3580954379507441547, guid: a58dd32ac24738f4bb2d6b145b5b6f0d, type: 3}
-  m_PrefabInstance: {fileID: 7969516783889707945}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4218671491877920956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6857700491638991906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c11415d2bca28804e9d4ad9a24a5023c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectType: 0
-  bloodParticles: {fileID: 149532086693909962, guid: f93e78b40e8b922419a32b2b1cc9f8ec, type: 3}
-  alienBloodParticles: {fileID: 0}
-  woodParticles: {fileID: 0}
-  metalParticles: {fileID: 0}
-  fireParticles: {fileID: 0}
---- !u!114 &3427508452444788340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6857700491638991906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
