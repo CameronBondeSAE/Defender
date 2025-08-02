@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DecoyItem : MonoBehaviour, IInteractable
+public class DecoyItem : MonoBehaviour
 {
     //when is picked up it tells the player it is a decoy item
     public void Interact()
