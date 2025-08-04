@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using AIAnimation;
 
 /// <summary>
 /// Shared basic state machine logic/rules used by all AIs. Covers common refs; how to change state and shared rotation logic.

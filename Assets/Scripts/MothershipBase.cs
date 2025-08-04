@@ -31,7 +31,7 @@ namespace mothershipScripts
         [SerializeField] protected float raycastLength;
         [SerializeField] protected LayerMask raycastPhysicsLayerMasks;
 
-        private Vector3 alienSpawnPosition; //The position where the alien will spawn on the map
+        public Vector3 alienSpawnPosition; //The position where the alien will spawn on the map
         [SerializeField] protected Vector3 alienSpawnOffset;
 
         [SerializeField] protected float rotationSpeed;
@@ -71,7 +71,6 @@ namespace mothershipScripts
         protected virtual void Update()
         {
             Spin();
-
             // if (InputSystem.GetDevice<Keyboard>().spaceKey.wasPressedThisFrame)
             // {
             //     //SpawnAliens();

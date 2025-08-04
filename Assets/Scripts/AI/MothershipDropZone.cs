@@ -13,10 +13,12 @@ public class MothershipDropZone : MonoBehaviour
         {
             if (civ.escortingAlien != null)
             {
-                civ.escortingAlien.currentTargetCiv = null;
-                civ.escortingAlien = null;
+                //civ.escortingAlien.currentTargetCiv = null;
+                //civ.escortingAlien = null;
+                Destroy(civ.escortingAlien.gameObject);
             }
-            civ.ChangeState(new MoveToBeamState(civ, mothership.transform.position));
+            Vector3 suckUpPos = GetComponentInParent<MothershipBase>().alienSpawnPosition;
+            civ.ChangeState(new MoveToBeamState(civ, suckUpPos));
             // play sound & mark score here
             mothership.OnCivilianCollected(civ); 
         }

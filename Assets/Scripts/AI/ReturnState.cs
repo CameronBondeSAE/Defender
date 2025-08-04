@@ -52,7 +52,7 @@ public class ReturnState : IAIState
         {
             hasReachedDropZone = true;
             Debug.Log(ai.name + " has reached the drop zone");
-            ai.StopMoving();
+            //ai.StopMoving();
         }
         else if (!hasReachedDropZone)
         {
