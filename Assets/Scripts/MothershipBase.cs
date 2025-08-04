@@ -145,6 +145,12 @@ namespace mothershipScripts
             audioSource.clip = beamSounds[randomIndex];
             audioSource.Play();
         }
+        
+        public virtual void OnCivilianCollected(AIBase civilian)
+        {
+            PlayRandomBeamSound(); // sound effects?
+            //Destroy(civilian.gameObject); 
+        }
 
     }
 }

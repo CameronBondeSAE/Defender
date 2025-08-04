@@ -9,7 +9,6 @@ public class AlienAI : AIBase
     public bool isReached = false; // Flag to check if destination is reached
 
     private AIAnimationController animController; // Reference to animation controller
-
     [HideInInspector] public AIBase currentTargetCiv; // Stores current civilian target (public but can't be messed with in inspector)
 
     protected override void Start()
