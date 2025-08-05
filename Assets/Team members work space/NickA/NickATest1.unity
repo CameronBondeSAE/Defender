@@ -408,7 +408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scenePrefabInstances:
   - _gameObject: {fileID: 6216194275552450903}
-    _prefab: Assets/Team members work space/NickA/Prefabs/Booster Stim.prefab
+    _prefab: Assets/Prefabs/Items/Booster Stim/Booster Stim.prefab
 --- !u!4 &1904480375
 Transform:
   m_ObjectHideFlags: 11
@@ -435,6 +435,10 @@ PrefabInstance:
     - target: {fileID: 747852157601389569, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: m_Name
       value: Booster Stim
+      objectReference: {fileID: 0}
+    - target: {fileID: 747852157601389569, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4641844733280389271, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: m_LocalPosition.x
