@@ -3,7 +3,10 @@ using UnityEngine;
 
 public class BoosterStim : MonoBehaviour, IUsable
 {
-    private float stimDuration = 10f;
+    [SerializeField] private float stimDuration = 10f;
+    [SerializeField] private float speedIncrease = 4f;
+
+    [SerializeField] private PlayerMovement playerMovement;
 
     public void StopUsing()
     {
@@ -13,30 +16,37 @@ public class BoosterStim : MonoBehaviour, IUsable
     public void Use()
     {
         Debug.Log("Booster Stim, Use");
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+       //playerMovement = GetComponentInParent<PlayerMovement>(); // NOTE - when items get put as a child use this instead
+        playerMovement = FindAnyObjectByType<PlayerMovement>(); // temporary
+        ActivateBoosterStim();
 
     }
 
     public void ActivateBoosterStim()
     {
-        StartCoroutine(speedBoostTimer());
+        playerMovement.MoveSpeed += speedIncrease; 
+        StartCoroutine(BoosterStimDuration());
 
     }
 
-    IEnumerator speedBoostTimer()
+    IEnumerator BoosterStimDuration()
     {
-        // speed player
+        Debug.Log("stim timer active");
         yield return new WaitForSeconds(stimDuration);
 
+        DeactivateBoosterStim();
     }
+
+    public void DeactivateBoosterStim()
+    {
+        playerMovement.MoveSpeed -= speedIncrease;
+    }
+
+    // TO-DO LIST / IDEAS
+
+    // Rechargeable stim??
+    // stim affects everyone
+    // network it
+
+
 }
