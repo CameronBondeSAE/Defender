@@ -17,7 +17,7 @@ public class PlayerInputHandler2 : MonoBehaviour
 	public event Action onLaserStop;
 	public event Action onAimGrenadeStart;
 	public event Action onAimGrenadeStop;
-	public event Action<bool> onInventory;
+	public event Action<bool> onUse;
 
 	public bool isShooting = false;
 
@@ -37,7 +37,7 @@ public class PlayerInputHandler2 : MonoBehaviour
 		move.canceled       += OnMovePerformed;
 		throwing.performed  += OnThrowPerformed;
 		interact.performed  += OnInteractPerformed;
-		inventory.performed += OnInventoryPerformed;
+		inventory.performed += OnUsePerformed;
 	}
 
 	private void OnDisable()
@@ -51,18 +51,18 @@ public class PlayerInputHandler2 : MonoBehaviour
 		move.canceled       -= OnMovePerformed;
 		throwing.performed  -= OnThrowPerformed;
 		interact.performed  -= OnInteractPerformed;
-		inventory.performed -= OnInventoryPerformed;
+		inventory.performed -= OnUsePerformed;
 	}
 
-	private void OnInventoryPerformed(InputAction.CallbackContext obj)
+	private void OnUsePerformed(InputAction.CallbackContext obj)
 	{
 		if (obj.performed)
 		{
-			onInventory?.Invoke(true);
+			onUse?.Invoke(true);
 		}
 		else if (obj.canceled)
 		{
-			onInventory?.Invoke(false);
+			onUse?.Invoke(false);
 		}
 		else
 		{

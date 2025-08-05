@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInventory))]
@@ -30,7 +31,7 @@ public class PlayerInteract : MonoBehaviour
 		if (inputHandler != null)
 		{
 			inputHandler.onInteract += HandleInteract;
-			inputHandler.onInventory += InputHandlerOnonInventory;
+			inputHandler.onUse += InputHandlerOnonUse;
 		}
 	}
 
@@ -39,11 +40,11 @@ public class PlayerInteract : MonoBehaviour
 		if (inputHandler != null)
 		{
 			inputHandler.onInteract -= HandleInteract;
-			inputHandler.onInventory -= InputHandlerOnonInventory;
+			inputHandler.onUse -= InputHandlerOnonUse;
 		}
 	}
 
-	private void InputHandlerOnonInventory(bool obj)
+	private void InputHandlerOnonUse(bool obj)
 	{
 		IUsable pickup = FindClosestPickup();
 
