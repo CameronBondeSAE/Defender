@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 5768020533210726993}
   - component: {fileID: 1294038488148368138}
   - component: {fileID: 3060649665187118707}
+  - component: {fileID: 8016552299821511687}
   - component: {fileID: 3486413179113126749}
   - component: {fileID: -663322856983429174}
   m_Layer: 0
@@ -568,6 +569,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8016552299821511687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950303260782308162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 819440230
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &3486413179113126749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,11 +606,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1259e0bf662bc2742bd3580d3a62a62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   alienPrefab: {fileID: 9221107206343358144, guid: b082e6df53701df448358a796255e25b, type: 3}
   blueBeam: {fileID: 8051612008158297876}
   alienSpawnCountForEachWave: 1
-  spawnDelay: 1.5
   maxWaves: 1
+  spawnDelay: 1.5
+  spawnDelayBetweenWaves: 5
   currentWaveNumber: 0
   blueBeamDuration: 0.5
   isSpawningAliens: 0
@@ -592,6 +620,7 @@ MonoBehaviour:
   raycastPhysicsLayerMasks:
     serializedVersion: 2
     m_Bits: 4294967295
+  alienSpawnPosition: {x: 0, y: 0, z: 0}
   alienSpawnOffset: {x: 0, y: 1, z: 0}
   rotationSpeed: 50
   beamSounds:
@@ -604,6 +633,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8904d2c986f794949802efc1220915b9, type: 3}
   - {fileID: 8300000, guid: 364814694e2f2d2459fdd27488ec9e65, type: 3}
   - {fileID: 8300000, guid: f1cf8ee9c23e22d43b8f6a1d2b95bcd5, type: 3}
+  totalAlienSpawnCount: 0
   detectionSphereRadius: 31.27
   yPosition: 0
   movement: {fileID: -663322856983429174}
