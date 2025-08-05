@@ -1539,11 +1539,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1387163446135835622, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
   m_PrefabInstance: {fileID: 302250212}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &302250214 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8584288647349266514, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
-  m_PrefabInstance: {fileID: 302250212}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &302250228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1732726295342944604, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
@@ -1554,7 +1549,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6310878697514803470, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
   m_PrefabInstance: {fileID: 302250212}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302250213}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
@@ -1572,8 +1567,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd47f2b7cac96c44a7eca3f5f5e8300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   health: {fileID: 0}
   playerInput: {fileID: 302250242}
+--- !u!114 &302250244
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302250213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 931836066
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!4 &309136403 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2061808093753784860, guid: edd26c889f25c844891f58f2d4e63661, type: 3}
@@ -10012,9 +10033,7 @@ MonoBehaviour:
   - _gameObject: {fileID: 393680631}
     _prefab: Assets/Prefabs/Spawn.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Player.prefab
-  - _gameObject: {fileID: 302250214}
-    _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_04.prefab
+    _prefab: 
   - _gameObject: {fileID: 8708370507975262657}
     _prefab: Assets/Prefabs/Demo item/Demo Item.prefab
   - _gameObject: {fileID: 3977854}

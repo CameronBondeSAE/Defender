@@ -757,8 +757,8 @@ MonoBehaviour:
   revivedHealth: 0
   currentHealth: 0
   isDead: 0
-  deathAnimDuration: 0
-  reviveAnimDuration: 0
+  deathAnimDuration: 0.7
+  reviveAnimDuration: 0.5
 --- !u!114 &8972376730834744984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -771,13 +771,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-  GlobalObjectIdHash: 1764871362
-  InScenePlacedSourceGlobalObjectIdHash: 3683667178
-=======
   GlobalObjectIdHash: 3683667178
   InScenePlacedSourceGlobalObjectIdHash: 0
->>>>>>> d6023e2 (added player death anim before they respawn)
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
