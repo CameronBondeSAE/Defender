@@ -1,7 +1,17 @@
 using UnityEngine;
 
-public class BoosterStim : MonoBehaviour
+public class BoosterStim : MonoBehaviour, IUsable
 {
+    public void StopUsing()
+    {
+        
+    }
+
+    public void Use()
+    {
+        
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,4 +23,6 @@ public class BoosterStim : MonoBehaviour
     {
         
     }
+
+    
 }
