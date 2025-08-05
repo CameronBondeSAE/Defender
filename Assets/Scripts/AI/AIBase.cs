@@ -125,6 +125,7 @@ public class AIBase : MonoBehaviour
 
     private IEnumerator SuckUpRoutine(float height, float duration)
     {
+        Debug.Log("being sucked now");
         float elapsed = 0f;
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + Vector3.up * height;
@@ -143,7 +144,16 @@ public class AIBase : MonoBehaviour
         transform.position = endPos;
         // play a scream sound here...?
         // or pool
-        Destroy(gameObject);
+        var health = GetComponent<AIHealth>();
+        if (health != null)
+        {
+            Debug.Log("[SuckUpRoutine] Calling Kill()");
+            health.Kill(); 
+        }
+        else
+        {
+            Debug.Log("health is null on this civ");
+        }
+        //Destroy(this.gameObject);
     }
-
 }
