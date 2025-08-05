@@ -112,7 +112,7 @@ namespace DanniLi
 			// levelInfo = FindFirstObjectByType<LevelInfo>();
 			if (currentlevelInfo != null)
 			{
-				Debug.Log("Level Info: Civilian percentage to save" + currentlevelInfo.percentageToSave);
+				Debug.Log("Level Info: Civilians to save" + currentlevelInfo.civiliansToSave);
 			}
 			else
 			{

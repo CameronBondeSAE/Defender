@@ -6,8 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="ede24b97-680b-4656-9d08-e37e2b5e823f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GAD176 Project 2 Defender/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GAD176 Project 2 Defender/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Current.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Current.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerCombat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerCombat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Art/Mini Simple Characters Demo/Models/Animations/Civ.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/Mini Simple Characters Demo/Models/Animations/Civ.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/BasicMothership 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/BasicMothership 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AI/AIAnimationController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AI/AIAnimationController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AI/AIBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AI/AIBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AI/AlienAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AI/AlienAI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AI/MothershipDropZone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AI/MothershipDropZone.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AI/MoveToBeamState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AI/MoveToBeamState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AI/ReturnState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AI/ReturnState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/MothershipBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/MothershipBase.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,7 +26,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AI/MoveToBeamState.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -28,21 +36,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;danni/mydevelop&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "danni/networking",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.33f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.4f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\Users\User\Desktop\GAD176 Project 2 Defender&quot; -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\User\Desktop\GAD176 Project 2 Defender" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -50,7 +58,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.33f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.4f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\Users\User\Desktop\GAD176 Project 2 Defender&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\User\Desktop\GAD176 Project 2 Defender" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -98,6 +106,7 @@
       <workItem from="1746403330763" duration="115000" />
       <workItem from="1752897361236" duration="5531000" />
       <workItem from="1752970639073" duration="11204000" />
+      <workItem from="1754288304525" duration="16053000" />
     </task>
     <servers />
   </component>
