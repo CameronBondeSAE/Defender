@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 291437857159812101}
   - component: {fileID: 5011178475780853073}
   - component: {fileID: 84939263841303678}
-  - component: {fileID: 6853874871861722962}
+  - component: {fileID: -7105306997600193881}
   - component: {fileID: 4443991040536982110}
   m_Layer: 0
   m_Name: Grenade
@@ -96,10 +96,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2531855980546327703}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -116,7 +116,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6853874871861722962
+--- !u!114 &-7105306997600193881
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,13 +125,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2531855980546327703}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e70fe2c0be912cd46a05054863fd1225, type: 3}
+  m_Script: {fileID: 11500000, guid: c539ebe105290504da2ca5d7f2490740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionRadius: 2
+  isConsumable: 1
+  armDuration: 2
+  launchForce: 20
+  launchDirection: {x: 0, y: 0, z: 1}
+  explosionRadius: 5
   explosionDelay: 3
-  launchSpeed: 10
   damage: 50
+  throwForce: 20
 --- !u!136 &4443991040536982110
 CapsuleCollider:
   m_ObjectHideFlags: 0
