@@ -89,7 +89,8 @@ namespace DanniLi
 			Crate[] crates = FindObjectsByType<Crate>(FindObjectsSortMode.None);
 			foreach (Crate crate in crates)
 			{
-				crate.availableItems = levelSOs[currentLevelIndex].availableItems;
+				LevelInfo levelSO                         = levelSOs[currentLevelIndex];
+				if (levelSO != null) crate.availableItems = levelSO.availableItems;
 			}
 
 			Debug.Log("Aliens Incoming: " + aliensIncomingFromAllShips);
