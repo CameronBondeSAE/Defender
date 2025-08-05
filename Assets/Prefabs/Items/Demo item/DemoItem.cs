@@ -1,8 +1,12 @@
 using System;
 using UnityEngine;
 
-public class DemoItem : MonoBehaviour, IUsable
+public class DemoItem : MonoBehaviour, IUsable, IPickup
 {
+	public AudioSource audioSource;
+	public AudioClip   pickupClip;
+	public AudioClip   dropClip;
+	
 	private void Awake()
 	{
 		GetComponent<Renderer>().material.color = Color.white;
@@ -18,5 +22,15 @@ public class DemoItem : MonoBehaviour, IUsable
     {
 	    Debug.Log("Stopped using");
 	    GetComponent<Renderer>().material.color = Color.red;
+    }
+
+    public void Pickup()
+    {
+	    audioSource.PlayOneShot(pickupClip);
+    }
+
+    public void Drop()
+    {
+	    audioSource.PlayOneShot(dropClip);
     }
 }

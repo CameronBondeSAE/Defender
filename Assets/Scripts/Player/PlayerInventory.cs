@@ -7,6 +7,9 @@ using System;
 
 public class PlayerInventory : MonoBehaviour
 {
+	[SerializeField]
+	float smallDropForce = 10f;
+
 	[Header("Inventory Settings")]
 	public Transform itemHolder; // Where to parent the current item
 
@@ -71,9 +74,13 @@ public class PlayerInventory : MonoBehaviour
 	{
 		if (HasItem)
 		{
-			Debug.Log("Cannot pick up item - inventory is full!");
+			Debug.Log("Cannot pick up item - inventory is full! - Dropping instead");
+			DropHeldItem();
 			return false;
 		}
+		
+		if(item == null)
+			return false;
 
 		// Set current item
 		CurrentItem         = item;
@@ -93,6 +100,45 @@ public class PlayerInventory : MonoBehaviour
 		return true;
 	}
 
+	public bool DropHeldItem()
+	{
+		if (!HasItem)
+		{
+			return false;
+		}
+
+		// Move item to fire position
+		CurrentItemInstance.transform.position = itemHolder.position + transform.forward * 1.5f;
+		CurrentItemInstance.transform.rotation = Quaternion.identity;
+
+		// Unparent the item from player
+		CurrentItemInstance.transform.SetParent(null);
+
+		// Re-enable physics
+		Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.isKinematic = false;
+			rb.useGravity  = true;
+
+			// Apply throwing force
+			Vector3 worldThrowDirection = transform.forward;
+			rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
+		}
+		else
+		{
+			Debug.LogWarning("Item doesn't have a Rigidbody component!");
+		}
+
+		// Re-enable colliders
+		Collider[] colliders = CurrentItemInstance.GetComponentsInChildren<Collider>();
+		foreach (var col in colliders)
+		{
+			col.enabled = true;
+		}
+		return true;
+	}
+
 	/// <summary>
 	/// Make item kinematic and disable colliders while in inventory so it doesn't fall forever...
 	/// </summary>
@@ -107,7 +153,7 @@ public class PlayerInventory : MonoBehaviour
 		}
 
 		// no colliders
-		Collider[] colliders = item.GetComponents<Collider>();
+		Collider[] colliders = item.GetComponentsInChildren<Collider>();
 		foreach (var col in colliders)
 		{
 			col.enabled = false;

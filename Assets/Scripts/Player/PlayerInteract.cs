@@ -30,7 +30,7 @@ public class PlayerInteract : MonoBehaviour
 
 		if (inputHandler != null)
 		{
-			inputHandler.onInteract += HandleInteract;
+			inputHandler.onInventory += HandleInventory;
 			inputHandler.onUse += InputHandlerOnonUse;
 		}
 	}
@@ -39,7 +39,7 @@ public class PlayerInteract : MonoBehaviour
 	{
 		if (inputHandler != null)
 		{
-			inputHandler.onInteract -= HandleInteract;
+			inputHandler.onInventory -= HandleInventory;
 			inputHandler.onUse -= InputHandlerOnonUse;
 		}
 	}
@@ -50,23 +50,17 @@ public class PlayerInteract : MonoBehaviour
 
 		if (pickup != null)
 		{
-			inventory.TryPickupItem(pickup);
+			pickup.Use();
 		}
 	}
 
-	private void HandleInteract()
+	private void HandleInventory()
 	{
 		IUsable pickup = FindClosestPickup();
 
-		if (pickup != null)
-		{
-			// TryPickupItem(pickup);
-			pickup.Use();
-			// inventory.UseCurrentItem();
-		}
-		// else if (inventory.HasItem)
+		// if (pickup != null)
 		// {
-		// 	UseCurrentItem(); // This is where direct-use items get handled
+			inventory.TryPickupItem(pickup);
 		// }
 	}
 
