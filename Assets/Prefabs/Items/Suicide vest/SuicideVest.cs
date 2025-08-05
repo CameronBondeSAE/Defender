@@ -28,5 +28,20 @@ public class SuicideVest : MonoBehaviour, IUsable
     private void OnTriggerEnter(Collider other)
     {
         //vestTransform.SetParent(gameObject.transform);
+
+        if (state == VestState.inHand)
+        {
+
+        }
+    }
+
+    private void Explode()
+    {
+        // once attached, explode after a set timer
+
+        if (state == VestState.isAttached)
+        {
+
+        }
     }
 }
