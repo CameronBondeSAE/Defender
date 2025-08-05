@@ -25,6 +25,8 @@ public class FloatingUI : MonoBehaviour
     private Image uiIcon;
     private Canvas iconCanvas;
 
+    GameObject iconGO;
+
     private void Start()
     {
         // Get main cam
@@ -40,21 +42,31 @@ public class FloatingUI : MonoBehaviour
         FaceCamera();
     }
 
+    public void Enable()
+    {
+        iconGO.SetActive(true);
+    }
+
+    public void Disable()
+    {
+        iconGO.SetActive(false);
+    }
+
     private void SetupIcon()
     {
-        if (defaultIcon && iconHolder)
+	    if (defaultIcon && iconHolder)
         {
             // Create icon GameObject
-            var iconGO = new GameObject("UIIcon");
+            iconGO = new GameObject("UIIcon");
             iconGO.transform.SetParent(iconHolder);
             iconGO.transform.localPosition = Vector3.zero;
-            iconGO.transform.localScale = Vector3.one;
+            iconGO.transform.localScale    = Vector3.one;
             
-            uiIcon = iconGO.AddComponent<Image>();
+            uiIcon        = iconGO.AddComponent<Image>();
             uiIcon.sprite = defaultIcon;
 
             // Add Canvas for world space rendering
-            iconCanvas = iconGO.AddComponent<Canvas>();
+            iconCanvas            = iconGO.AddComponent<Canvas>();
             iconCanvas.renderMode = RenderMode.WorldSpace;
             var rectTransform = iconGO.GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(1f, 1f);

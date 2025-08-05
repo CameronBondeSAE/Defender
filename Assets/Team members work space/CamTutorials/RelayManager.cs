@@ -8,15 +8,35 @@ using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RelayManager : MonoBehaviour
 {
 	public string         joinCode;
 	public TMP_InputField joinCodeInput;
 	public TMP_InputField joinCodeDisplay;
+	public Button         startHostButton;
+	public Button         startClientButton;
+	
+	public void ActivateButtons()
+	{
+		joinCodeInput.interactable   = true;
+		joinCodeDisplay.interactable = true;
+		startHostButton.interactable  = true;
+		startClientButton.interactable = true;
+	}
+
+	private void DeactivateButtons()
+	{
+	// 	joinCodeInput.interactable   = false;
+	// 	joinCodeDisplay.interactable = false;
+	// 	startHostButton.interactable  = false;
+	// 	startClientButton.interactable = false;
+	}
 
 	async void Start()
 	{
+		DeactivateButtons();
 		// Task<string> startHostWithRelay = StartHostWithRelay(4, "udp");
 
 		// Debug.Log(await startHostWithRelay);
@@ -52,12 +72,12 @@ public class RelayManager : MonoBehaviour
 
 	public async Task<string> StartHostWithRelay(int maxConnections, string connectionType)
 	{
-		await UnityServices.InitializeAsync();
-		if (!AuthenticationService.Instance.IsSignedIn)
-		{
-			await AuthenticationService.Instance.SignInAnonymouslyAsync();
-		}
-
+		// await UnityServices.InitializeAsync();
+		// if (!AuthenticationService.Instance.IsSignedIn)
+		// {
+		// 	await AuthenticationService.Instance.SignInAnonymouslyAsync();
+		// }
+		//
 		Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
 		NetworkManager.Singleton.GetComponent<UnityTransport>()
 		              .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
@@ -66,12 +86,20 @@ public class RelayManager : MonoBehaviour
 		joinCodeDisplay.text = joinCode; // HACK
 		if (NetworkManager.Singleton.StartHost())
 		{
+			// OnJoinCodeGenerated_Event?.Invoke(joinCode);
+			
 			return joinCode;
 		}
 		else
 		{
 			return null;
 		}
+	}
+
+	public void NewJoinCodeSet(string _relayJoinCode)
+	{
+		joinCode = _relayJoinCode;
+		ActivateButtons();
 	}
 
 	public void StartClientWithJoinCode()
@@ -83,13 +111,13 @@ public class RelayManager : MonoBehaviour
 	public async Task<bool> StartClientWithRelay(string joinCode, string connectionType)
 	{
 		Debug.Log("StartClientWithRelay: " + joinCode);
-		await UnityServices.InitializeAsync();
-		Debug.Log("Initialised");
-		if (!AuthenticationService.Instance.IsSignedIn)
-		{
-			await AuthenticationService.Instance.SignInAnonymouslyAsync();
-			Debug.Log("SignedIn Anonymously");
-		}
+		// await UnityServices.InitializeAsync();
+		// Debug.Log("Initialised");
+		// if (!AuthenticationService.Instance.IsSignedIn)
+		// {
+		// 	await AuthenticationService.Instance.SignInAnonymouslyAsync();
+		// 	Debug.Log("SignedIn Anonymously");
+		// }
 
 		Debug.Log("Attempt to join allocation : Joincode = " + joinCode);
 		JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode: joinCode);

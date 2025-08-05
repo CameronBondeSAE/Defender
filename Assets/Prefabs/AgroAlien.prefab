@@ -157,7 +157,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6648060442026450375}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e13cba43bf6843041853598693fa0792, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -186,10 +186,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 10
-  acceleration: 100
   patrolPoints: []
   patrolPointsCount: 4
+  rotationSpeed: 10
+  acceleration: 100
   followDistance: 0
   damageMin: 5
   damageMax: 10

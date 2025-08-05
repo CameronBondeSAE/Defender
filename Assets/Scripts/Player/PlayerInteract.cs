@@ -3,138 +3,226 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInventory))]
 public class PlayerInteract : MonoBehaviour
 {
-   [Header("References")]
-    private PlayerInputHandler inputHandler;
-    private PlayerInventory inventory;
+	[Header("Pickup Settings")]
+	[SerializeField]
+	private float interactionRange = 2f;
 
-    private void Start()
-    {
-        inputHandler = GetComponent<PlayerInputHandler>();
-        inventory = GetComponent<PlayerInventory>();
+	public Transform interactMount;
+	
+	private bool playerInRange = false;
 
-        if (inputHandler == null)
-            Debug.LogError("PlayerInputHandler not found on player");
+	[Header("References")]
+	private PlayerInputHandler2 inputHandler;
 
-        if (inventory == null)
-            Debug.LogError("PlayerInventory not found on player");
+	private PlayerInventory inventory;
 
-        if (inputHandler != null)
-            inputHandler.onInteract += HandleInteract;
-    }
+	private void Start()
+	{
+		inputHandler = GetComponent<PlayerInputHandler2>();
+		inventory    = GetComponent<PlayerInventory>();
 
-    private void OnDestroy()
-    {
-        if (inputHandler != null)
-            inputHandler.onInteract -= HandleInteract;
-    }
+		if (inputHandler == null)
+			Debug.LogError("PlayerInputHandler not found on player");
 
-    private void HandleInteract()
-    {
-        PickupItem pickup = FindClosestPickup();
+		if (inventory == null)
+			Debug.LogError("PlayerInventory not found on player");
 
-        if (pickup != null)
-        {
-            TryPickupItem(pickup);
-        }
-        else if (inventory.HasItem)
-        {
-            UseCurrentItem();// This is where direct-use items get handled
-        }
-    }
+		if (inputHandler != null)
+			inputHandler.onInteract += HandleInteract;
+	}
 
-    /// <summary>
-    /// This method handles item pick up, leave it as is
-    /// </summary>
-    /// <returns></returns>
-    private PickupItem FindClosestPickup() 
-    {
-        PickupItem[] pickups = FindObjectsOfType<PickupItem>();
-        PickupItem closest = null;
-        float closestDistance = float.MaxValue;
+	private void OnDestroy()
+	{
+		if (inputHandler != null)
+			inputHandler.onInteract -= HandleInteract;
+	}
 
-        foreach (var pickup in pickups)
-        {
-            if (pickup.IsPlayerInRange(transform))
-            {
-                float distance = Vector3.Distance(transform.position, pickup.transform.position);
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closest = pickup;
-                }
-            }
-        }
+	private void HandleInteract()
+	{
+		IUsable pickup = FindClosestPickup();
 
-        return closest;
-    }
-    private void TryPickupItem(PickupItem pickup)
-    {
-        if (inventory.HasItem)
-        {
-            Debug.Log("Inventory is full! Use your current item first.");
-            return;
-        }
+		if (pickup != null)
+		{
+			// TryPickupItem(pickup);
+			pickup.Use();
+			// inventory.UseCurrentItem();
+		}
+		// else if (inventory.HasItem)
+		// {
+		// 	UseCurrentItem(); // This is where direct-use items get handled
+		// }
+	}
 
-        var availableItems = inventory.AvailableItems;
-        if (availableItems == null || availableItems.Count == 0)
-        {
-            Debug.LogWarning("No items available to pick up!");
-            return;
-        }
+	/// <summary>
+	/// This method handles item pick up, leave it as is
+	/// </summary>
+	/// <returns></returns>
+	private IUsable FindClosestPickup()
+	{
+		Collider[] collidersInRange       = new Collider[10];
+		Physics.OverlapSphereNonAlloc(interactMount.position, interactionRange, collidersInRange);
+		
+		IUsable[] pickups;
+		IUsable   closest         = null;
+		float     closestDistance = float.MaxValue;
 
-        ItemSO randomItem = availableItems[Random.Range(0, availableItems.Count)];
+		foreach (Collider c in collidersInRange)
+		{
+			if( c == null ) continue; // Because I preallocate a fixed array size
+			
+			Debug.DrawLine(transform.position, c.transform.position, Color.green, 1f);
+			Debug.Log("Nearby item = "+c.name);
+			IUsable pickup = c.GetComponent<IUsable>(); // Assumes collider and IUsables are on the same GO
+			if (pickup != null)
+			{
+				float distance = Vector3.Distance(transform.position, ((MonoBehaviour) pickup).transform.position);
+				if (distance < closestDistance)
+				{
+					closestDistance = distance;
+					closest         = pickup;
+				}
+			}
+		}
 
-        if (randomItem == null)
-        {
-            Debug.LogWarning("Item from list is null!");
-            return;
-        }
+		return closest;
+	}
 
-        if (inventory.TryPickupItem(randomItem))
-        {
-            pickup.OnPickedUp();
-        }
-    }
+	// private PickupItem FindClosestPickup() 
+	// {
+	//     PickupItem[] pickups = FindObjectsOfType<PickupItem>();
+	//     PickupItem closest = null;
+	//     float closestDistance = float.MaxValue;
+	//
+	//     foreach (var pickup in pickups)
+	//     {
+	//         if (pickup.IsPlayerInRange(transform))
+	//         {
+	//             float distance = Vector3.Distance(transform.position, pickup.transform.position);
+	//             if (distance < closestDistance)
+	//             {
+	//                 closestDistance = distance;
+	//                 closest = pickup;
+	//             }
+	//         }
+	//     }
+	//
+	//     return closest;
+	// }
 
-    private void UseCurrentItem()
-    {
-        if (!inventory.HasItem) return;
+	/// <summary>
+	/// Check if player is in range for pickup
+	/// </summary>
+	public bool IsPlayerInRange(Transform item)
+	{
+		float distance = Vector3.Distance(transform.position, item.position);
+		return distance <= interactionRange;
+	}
 
-        // Use the item through its interface
-        IUsable usable = inventory.CurrentItemInstance?.GetComponent<IUsable>();
+	private void TryPickupItem(IUsable pickup)
+	{
+		if (inventory.HasItem)
+		{
+			Debug.Log("Inventory is full! Use your current item first.");
+			return;
+		}
 
-        if (usable != null)
-        {
-            usable.Use();
-            // ================================================================
-            // ADD SPECIAL HANDLING FOR CONSUMABLE ITEMS HERE
-             // Example Pattern for consumable items (potions, food, etc.):
-             //
-             // if (HasItemOfType("Health Potion"))
-             // { 
-             //     // Do healing logic here or let the potion component handle it
-             //    inventory.UseCurrentItem(); // This destroys the item
-             // }
-             // else if (HasItemOfType("Key"))
-             // {
-             //     // Keys might be consumed when used on doors
-             //     // Let the door/key interaction handle consumption
-             // }
-             //  else if (HasItemOfType("Sci-FiScroll"))
-             //  {
-             //     // Scrolls are usually consumed when cast
-             //      inventory.UseCurrentItem();
-             // }
-             
-            // For now, only consume items that are meant to be consumed immediately
-            // Items like grenades, lasers, etc. should NOT be consumed here! 
-            // They get consumed when thrown/used through PlayerCombat!
-            // ================================================================
-            inventory.UseCurrentItem();
-        }
-        else
-        {
-            Debug.Log("Current item is not directly usable through interact. Use specific controls (throw, laser, etc.)");
-        }
-    }
+		// var availableItems = inventory.AvailableItems;
+		// if (availableItems == null || availableItems.Count == 0)
+		// {
+		//     Debug.LogWarning("No items available to pick up!");
+		//     return;
+		// }
+		//
+		// ItemSO randomItem = availableItems[Random.Range(0, availableItems.Count)];
+		//
+		// if (randomItem == null)
+		// {
+		//     Debug.LogWarning("Item from list is null!");
+		//     return;
+		// }
+
+		// if (inventory.TryPickupItem(randomItem))
+		// {
+		//     pickup.OnPickedUp();
+		// }
+	}
+
+	private void UseCurrentItem()
+	{
+		if (!inventory.HasItem) return;
+
+		// Use the item through its interface
+		// IUsable usable = inventory.CurrentItemInstance?.GetComponent<IUsable>();
+
+		// if (usable != null)
+		{
+			// usable.Use();
+			// ================================================================
+			// ADD SPECIAL HANDLING FOR CONSUMABLE ITEMS HERE
+			// Example Pattern for consumable items (potions, food, etc.):
+			//
+			// if (HasItemOfType("Health Potion"))
+			// { 
+			//     // Do healing logic here or let the potion component handle it
+			//    inventory.UseCurrentItem(); // This destroys the item
+			// }
+			// else if (HasItemOfType("Key"))
+			// {
+			//     // Keys might be consumed when used on doors
+			//     // Let the door/key interaction handle consumption
+			// }
+			//  else if (HasItemOfType("Sci-FiScroll"))
+			//  {
+			//     // Scrolls are usually consumed when cast
+			//      inventory.UseCurrentItem();
+			// }
+
+			// For now, only consume items that are meant to be consumed immediately
+			// Items like grenades, lasers, etc. should NOT be consumed here! 
+			// They get consumed when thrown/used through PlayerCombat!
+			// ================================================================
+			// inventory.UseCurrentItem();
+		}
+		// else
+		{
+			Debug.Log("Current item is not directly usable through interact. Use specific controls (throw, laser, etc.)");
+		}
+	}
+
+	/// <summary>
+	/// Tries to pick up an item. Returns true if successful.
+	/// </summary>
+	public bool TryPickupItem(ItemSO item)
+	{
+		// if (HasItem)
+		// {
+		//  Debug.Log("Cannot pick up item - inventory is full!");
+		//  return false;
+		// }
+		//
+		// if (item == null || item.ItemPrefab == null)
+		// {
+		//  Debug.LogWarning("Cannot pick up item - item or prefab is null!");
+		//  return false;
+		// }
+		//
+		// if (itemHolder == null)
+		// {
+		//  Debug.LogError("ItemHolder is null! Cannot spawn item.");
+		//  return false;
+		// }
+
+		// Set current item
+		// CurrentItem = item;
+		// itemsCollected.Add(item);
+		// // Instantiate the item prefab in the item holder
+		// CurrentItemInstance                         = Instantiate(item.ItemPrefab, itemHolder);
+		// CurrentItemInstance.transform.localPosition = Vector3.zero;
+		// CurrentItemInstance.transform.localRotation = Quaternion.identity;
+		// // Sets up this item to be held in inventory (kinematic)
+		// SetupItemForInventory(CurrentItemInstance);
+		// OnItemPickedUp?.Invoke(item);
+		// Debug.Log($"Picked up: {item.Name}");
+		return true;
+	}
 }

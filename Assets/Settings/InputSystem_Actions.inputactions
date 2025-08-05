@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "InputSystem_Actions",
     "maps": [
         {
@@ -29,7 +30,7 @@
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -305,22 +306,22 @@
                 },
                 {
                     "name": "",
-                    "id": "af15d857-8acd-49d6-95a1-e8db0dd5a9cc",
-                    "path": "<Keyboard>/space",
+                    "id": "1aa284e9-8b55-47f0-9a98-95672807db57",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "1aa284e9-8b55-47f0-9a98-95672807db57",
-                    "path": "<Gamepad>/buttonSouth",
+                    "id": "9b74c9bc-3ce5-46d3-9db5-3b95c9f795ff",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false

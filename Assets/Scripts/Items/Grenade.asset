@@ -12,20 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e638deab5413e514a916e36d4f48fed7, type: 3}
   m_Name: Grenade
   m_EditorClassIdentifier: 
-<<<<<<<< HEAD:Assets/Prefabs/Items/Grenade/Grenade.asset
-  <IsStackable>k__BackingField: 0
-  <MaxStackSize>k__BackingField: 1
-  <Name>k__BackingField: 
-  <Description>k__BackingField: This is a grenade which you can throw
-  <ItemImage>k__BackingField: {fileID: 21300000, guid: 38332853b7d949c429a8fb4d9b928603, type: 3}
-  interactionType: 1
-  promptText: 
-  sceneToLoad: 
-  icon: {fileID: 21300000, guid: 38332853b7d949c429a8fb4d9b928603, type: 3}
-  prefab: {fileID: 2531855980546327703, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
-========
   Name: Grenade
   Description: Explodes after 3 seconds
-  Icon: {fileID: 0}
+  BackingIcon: {fileID: 0}
   ItemPrefab: {fileID: 2531855980546327703, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
->>>>>>>> danni/mydevelop:Assets/Scripts/Items/Grenade.asset
+  ItemCrateUIPrefab: {fileID: 2531855980546327703, guid: 16d09c1923e545f49941675174125ba8, type: 3}

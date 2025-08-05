@@ -12,23 +12,25 @@ public class PlayerInventory : MonoBehaviour
     public Transform itemHolder; // Where to parent the current item
 
     [Header("Current State")]
-    public ItemSO CurrentItem { get; private set; }
+    // public ItemSO CurrentItem { get; private set; }
+    public IUsable CurrentItem { get; private set; }
     public GameObject CurrentItemInstance { get; private set; }
-    public bool HasItem => CurrentItem != null && CurrentItemInstance != null;
+    // public bool HasItem => CurrentItem != null && CurrentItemInstance != null;
+    public bool HasItem => itemHolder.parent != null;
 
-    [Header("Inventory Tracking")]
-    private List<ItemSO> itemsCollected = new List<ItemSO>();
-    private List<ItemSO> itemsUsed = new List<ItemSO>();
-    private List<ItemSO> availableItems = new List<ItemSO>();
-    public IReadOnlyList<ItemSO> AvailableItems => availableItems;
+    // [Header("Inventory Tracking")]
+    // private List<ItemSO> itemsCollected = new List<ItemSO>();
+    // private List<ItemSO> itemsUsed = new List<ItemSO>();
+    // private List<ItemSO> availableItems = new List<ItemSO>();
+    // public IReadOnlyList<ItemSO> AvailableItems => availableItems;
 
     // Events for UI updates if needed
-    public event Action<ItemSO> OnItemPickedUp;
-    public event Action<ItemSO> OnItemUsed;
-    public event Action OnItemSlotCleared;
+    // public event Action<ItemSO> OnItemPickedUp;
+    // public event Action<ItemSO> OnItemUsed;
+    // public event Action OnItemSlotCleared;
     
-    public List<ItemSO> ItemsCollected => new List<ItemSO>(itemsCollected);
-    public List<ItemSO> ItemsUsed => new List<ItemSO>(itemsUsed);
+    // public List<ItemSO> ItemsCollected => new List<ItemSO>(itemsCollected);
+    // public List<ItemSO> ItemsUsed => new List<ItemSO>(itemsUsed);
 
     private void Start()
     {
@@ -40,49 +42,14 @@ public class PlayerInventory : MonoBehaviour
     /// <summary>
     /// Registers list of available items on this level from game manager
     /// </summary>
-    public void RegisterAvailableItem(ItemSO item)
-    {
-        if (!availableItems.Contains(item))
-        {
-            availableItems.Add(item);
-            Debug.Log($"Registered item: {item.name}");
-        }
-    }
-    /// <summary>
-    /// Tries to pick up an item. Returns true if successful.
-    /// </summary>
-    public bool TryPickupItem(ItemSO item)
-    {
-        if (HasItem)
-        {
-            Debug.Log("Cannot pick up item - inventory is full!");
-            return false;
-        }
-
-        if (item == null || item.ItemPrefab == null)
-        {
-            Debug.LogWarning("Cannot pick up item - item or prefab is null!");
-            return false;
-        }
-
-        if (itemHolder == null)
-        {
-            Debug.LogError("ItemHolder is null! Cannot spawn item.");
-            return false;
-        }
-        // Set current item
-        CurrentItem = item;
-        itemsCollected.Add(item);
-        // Instantiate the item prefab in the item holder
-        CurrentItemInstance = Instantiate(item.ItemPrefab, itemHolder);
-        CurrentItemInstance.transform.localPosition = Vector3.zero;
-        CurrentItemInstance.transform.localRotation = Quaternion.identity;
-        // Sets up this item to be held in inventory (kinematic)
-        SetupItemForInventory(CurrentItemInstance);
-        OnItemPickedUp?.Invoke(item);
-        Debug.Log($"Picked up: {item.Name}");
-        return true;
-    }
+    // public void RegisterAvailableItem(ItemSO item)
+    // {
+    //     if (!availableItems.Contains(item))
+    //     {
+    //         availableItems.Add(item);
+    //         Debug.Log($"Registered item: {item.name}");
+    //     }
+    // }
 
     /// <summary>
     /// Make item kinematic and disable colliders while in inventory so it doesn't fall forever...
@@ -114,22 +81,26 @@ public class PlayerInventory : MonoBehaviour
             Debug.Log("No item to use!");
             return;
         }
+        
+        CurrentItem.Use();
+        // TODO: Need the item to tell us if it's been destroy. Event we sub to on collecting? Yes
+        
 
-        // Add to used items list
-        itemsUsed.Add(CurrentItem);
+        // // Add to used items list
+        // itemsUsed.Add(CurrentItem);
+        //
+        // // Fire event before clearing
+        // OnItemUsed?.Invoke(CurrentItem);
+        //
+        // Debug.Log($"Used: {CurrentItem.Name}");
+        //
+        // // Destroy the item instance and clear references
+        // if (CurrentItemInstance != null)
+        // {
+        //     Destroy(CurrentItemInstance);
+        // }
         
-        // Fire event before clearing
-        OnItemUsed?.Invoke(CurrentItem);
-        
-        Debug.Log($"Used: {CurrentItem.Name}");
-
-        // Destroy the item instance and clear references
-        if (CurrentItemInstance != null)
-        {
-            Destroy(CurrentItemInstance);
-        }
-        
-        ClearInventorySlot();
+        // ClearInventorySlot();
     }
 
     /// <summary>
@@ -143,10 +114,10 @@ public class PlayerInventory : MonoBehaviour
             return;
         }
         // Add to used items list for tracking
-        itemsUsed.Add(CurrentItem);
+        // itemsUsed.Add(CurrentItem);
         // Fire event before clearing
-        OnItemUsed?.Invoke(CurrentItem);
-        Debug.Log($"Used: {CurrentItem.Name}");
+        // OnItemUsed?.Invoke(CurrentItem);
+        // Debug.Log($"Used: {CurrentItem.Name}");
         // Clear references without destroying the instance (the latter is handled in PlayerCombat)
         ClearInventorySlot();
     }
@@ -155,37 +126,37 @@ public class PlayerInventory : MonoBehaviour
     /// </summary>
     private void ClearInventorySlot()
     {
-        CurrentItem = null;
-        CurrentItemInstance = null;
-        OnItemSlotCleared?.Invoke();
+        // CurrentItem = null;
+        // CurrentItemInstance = null;
+        // OnItemSlotCleared?.Invoke();
     }
 
     /// Here are some helper functions if you guys want to show UI messages etc about player's item usage info :)
     /// <summary>
     /// Checks if player has used a specific item
     /// </summary>
-    public bool HasUsedItem(ItemSO item)
-    {
-        return itemsUsed.Contains(item);
-    }
+    // public bool HasUsedItem(ItemSO item)
+    // {
+    //     return itemsUsed.Contains(item);
+    // }
     /// <summary>
     /// Checks if player has collected a specific item
     /// </summary>
-    public bool HasCollectedItem(ItemSO item)
-    {
-        return itemsCollected.Contains(item);
-    }
+    // public bool HasCollectedItem(ItemSO item)
+    // {
+    //     return itemsCollected.Contains(item);
+    // }
     /// <summary>
     /// Gets the count of how many times an item has been used
     /// e.g. At end of game, UI shows "you have used X amount of grenade! You love it."
     /// </summary>
-    public int GetItemUsedCount(ItemSO item)
-    {
-        int count = 0;
-        foreach (var usedItem in itemsUsed)
-        {
-            if (usedItem == item) count++;
-        }
-        return count;
-    }
+    // public int GetItemUsedCount(ItemSO item)
+    // {
+    //     int count = 0;
+    //     foreach (var usedItem in itemsUsed)
+    //     {
+    //         if (usedItem == item) count++;
+    //     }
+    //     return count;
+    // }
 }

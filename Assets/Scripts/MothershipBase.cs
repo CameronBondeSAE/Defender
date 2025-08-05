@@ -17,10 +17,12 @@ namespace mothershipScripts
         [SerializeField] protected GameObject alienPrefab;
         [SerializeField] protected GameObject blueBeam;
 
-        [SerializeField] protected int alienSpawnCountForEachWave; //number of aliens that spawn at a time
-        [SerializeField] protected float spawnDelay; //the time in seconds it takes to spawn aliens again
+        [SerializeField]
+        public int   alienSpawnCountForEachWave; //number of aliens that spawn at a time
+        [SerializeField]
+        public int   maxWaves;
+        [SerializeField] protected float spawnDelay;                  //the time in seconds it takes to spawn aliens again
         [SerializeField] protected float spawnDelayBetweenWaves = 5f; //the time in seconds it takes to spawn aliens again
-        [SerializeField] protected int maxWaves;
         [SerializeField] protected float currentWaveNumber;
 
         [SerializeField] protected float blueBeamDuration;
@@ -43,20 +45,27 @@ namespace mothershipScripts
         public event AlienSpawned OnAlienSpawned;
         
         protected AudioSource audioSource;
-        public    int         alienSpawnCount;
+        
+        [Header("Debugging - Don't adjust")]
+        public int totalAlienSpawnCount;
 
         public event Action<GameObject> AlienSpawned_Event;
+
+        private void Awake()
+        {
+	        totalAlienSpawnCount = alienSpawnCountForEachWave * maxWaves;
+        }
 
         private void OnEnable()
         {
 	        DanniLi.GameManager gameManager = FindFirstObjectByType<DanniLi.GameManager>();
-	        gameManager.RegisterWaveSpawner(this);
+	        if (gameManager != null) gameManager.RegisterWaveSpawner(this);
         }
 
         private void OnDisable()
         {
 	        DanniLi.GameManager gameManager = FindFirstObjectByType<DanniLi.GameManager>();
-	        gameManager.DeregisterWaveSpawner(this);
+	        if (gameManager != null) gameManager.DeregisterWaveSpawner(this);
         }
 
         protected virtual void Start()
@@ -64,7 +73,6 @@ namespace mothershipScripts
             //StartCoroutine(SpawnTimer());
             isSpawningAliens = false;
             audioSource = transform.GetComponent<AudioSource>();
-            
             // FindAnyObjectByType<GameManager>().
         }
 

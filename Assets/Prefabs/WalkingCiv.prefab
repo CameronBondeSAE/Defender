@@ -46,7 +46,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4477475366770185476}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e13cba43bf6843041853598693fa0792, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -75,10 +75,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  rotationSpeed: 10
-  acceleration: 10
   patrolPoints: []
   patrolPointsCount: 5
+  rotationSpeed: 10
+  acceleration: 10
   followDistance: 2
   followTarget: {fileID: 0}
 --- !u!195 &2750667366654397793
@@ -350,7 +350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5436741564957258347, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: m_TagString
-      value: Civilian
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5459237335498960552, guid: 6c7f06c6a702d4d41bba4b5576adc82c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
