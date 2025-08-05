@@ -2,11 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using AIAnimation;
+using Defender;
+using Unity.Netcode;
 
 /// <summary>
 /// Shared basic state machine logic/rules used by all AIs. Covers common refs; how to change state and shared rotation logic.
 /// </summary>
-public class AIBase : MonoBehaviour
+public class AIBase : CharacterBase
 {
    [Header("References")]
     public NavMeshAgent agent; // Movement agent

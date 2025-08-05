@@ -1,23 +1,29 @@
 using System;
+using Defender;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_Model : MonoBehaviour
+public class Player_Model : CharacterBase
 {
-
 	public PlayerHealth health;
 	public PlayerInput playerInput;
 
 	private void OnEnable()
 	{
-		health.OnDeath += HealthOnOnDeath;
-		health.OnRevive += HealthOnOnRevive;
+		if (health != null)
+		{
+			health.OnDeath  += HealthOnOnDeath;
+			health.OnRevive += HealthOnOnRevive;
+		}
 	}
 
 	private void OnDisable()
 	{
-		health.OnDeath -= HealthOnOnDeath;
-		health.OnRevive -= HealthOnOnRevive;
+		if (health != null)
+		{
+			health.OnDeath  -= HealthOnOnDeath;
+			health.OnRevive -= HealthOnOnRevive;
+		}
 	}
 
 	private void HealthOnOnDeath()
