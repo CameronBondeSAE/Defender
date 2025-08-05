@@ -10,9 +10,9 @@ namespace DanniLi
 		[Header("Level Items")]
 		[SerializeField]
 		public List<ItemSO> availableItems = new List<ItemSO>();
-
 		public Object scene;
-		
+		public int    civiliansToSave;
+
 		[Header("Level Props")]
 		[SerializeField]
 		public GameObject wallPrefab;
@@ -26,7 +26,6 @@ namespace DanniLi
 		[SerializeField]
 		public int crateSpawnCount = 5;
 
-		public int percentageToSave;
 		
 		/// <summary>
 		/// If needed, this returns a random item from the available items list:)

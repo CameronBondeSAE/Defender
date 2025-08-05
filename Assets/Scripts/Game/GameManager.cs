@@ -36,6 +36,7 @@ namespace DanniLi
 
 		public List<ISpawner> spawners = new List<ISpawner>();
 
+		public int totalCivilians;
 		public int civiliansAlive;
 		public int aliensIncomingFromAllShips;
 
@@ -94,12 +95,13 @@ namespace DanniLi
 			Debug.Log("Aliens Incoming: " + aliensIncomingFromAllShips);
 
 			civilians      = GameObject.FindGameObjectsWithTag("Civilian");
+			totalCivilians = civilians.Length;
 			civiliansAlive = civilians.Length;
 			Debug.Log("Civilians Alive: " + civiliansAlive);
 
 			foreach (GameObject civilian in civilians)
 			{
-				var health = civilian.GetComponent<Health>();
+				Health health = civilian.GetComponent<Health>();
 				if (health != null)
 				{
 					health.OnDeath += OnCivDeath;
@@ -160,7 +162,8 @@ namespace DanniLi
 			civiliansAlive--;
 
 			// Game over. Too many civs dead
-			if (civiliansAlive < civilians.Length * (currentlevelInfo.percentageToSave / 100f))
+			// if (civiliansAlive < civilians.Length * (currentlevelInfo.percentageToSave / 100f))
+			if (civiliansAlive < civilians.Length - civiliansAlive)
 			{
 				Debug.Log("Game Over: Loss");
 				LoseGameOver_Event?.Invoke();
