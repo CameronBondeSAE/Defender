@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInventory))]
@@ -28,28 +29,38 @@ public class PlayerInteract : MonoBehaviour
 			Debug.LogError("PlayerInventory not found on player");
 
 		if (inputHandler != null)
-			inputHandler.onInteract += HandleInteract;
+		{
+			inputHandler.onInventory += HandleInventory;
+			inputHandler.onUse += InputHandlerOnonUse;
+		}
 	}
 
 	private void OnDestroy()
 	{
 		if (inputHandler != null)
-			inputHandler.onInteract -= HandleInteract;
+		{
+			inputHandler.onInventory -= HandleInventory;
+			inputHandler.onUse -= InputHandlerOnonUse;
+		}
 	}
 
-	private void HandleInteract()
+	private void InputHandlerOnonUse(bool obj)
 	{
 		IUsable pickup = FindClosestPickup();
 
 		if (pickup != null)
 		{
-			// TryPickupItem(pickup);
 			pickup.Use();
-			// inventory.UseCurrentItem();
 		}
-		// else if (inventory.HasItem)
+	}
+
+	private void HandleInventory()
+	{
+		IUsable pickup = FindClosestPickup();
+
+		// if (pickup != null)
 		// {
-		// 	UseCurrentItem(); // This is where direct-use items get handled
+			inventory.TryPickupItem(pickup);
 		// }
 	}
 
@@ -141,10 +152,11 @@ public class PlayerInteract : MonoBehaviour
 		//     return;
 		// }
 
-		// if (inventory.TryPickupItem(randomItem))
-		// {
-		//     pickup.OnPickedUp();
-		// }
+		if (inventory.TryPickupItem(pickup))
+		{
+			// TODO find interface!
+			// pickup.OnPickedUp();
+		}
 	}
 
 	private void UseCurrentItem()
@@ -189,40 +201,5 @@ public class PlayerInteract : MonoBehaviour
 		}
 	}
 
-	/// <summary>
-	/// Tries to pick up an item. Returns true if successful.
-	/// </summary>
-	public bool TryPickupItem(ItemSO item)
-	{
-		// if (HasItem)
-		// {
-		//  Debug.Log("Cannot pick up item - inventory is full!");
-		//  return false;
-		// }
-		//
-		// if (item == null || item.ItemPrefab == null)
-		// {
-		//  Debug.LogWarning("Cannot pick up item - item or prefab is null!");
-		//  return false;
-		// }
-		//
-		// if (itemHolder == null)
-		// {
-		//  Debug.LogError("ItemHolder is null! Cannot spawn item.");
-		//  return false;
-		// }
 
-		// Set current item
-		// CurrentItem = item;
-		// itemsCollected.Add(item);
-		// // Instantiate the item prefab in the item holder
-		// CurrentItemInstance                         = Instantiate(item.ItemPrefab, itemHolder);
-		// CurrentItemInstance.transform.localPosition = Vector3.zero;
-		// CurrentItemInstance.transform.localRotation = Quaternion.identity;
-		// // Sets up this item to be held in inventory (kinematic)
-		// SetupItemForInventory(CurrentItemInstance);
-		// OnItemPickedUp?.Invoke(item);
-		// Debug.Log($"Picked up: {item.Name}");
-		return true;
-	}
 }
