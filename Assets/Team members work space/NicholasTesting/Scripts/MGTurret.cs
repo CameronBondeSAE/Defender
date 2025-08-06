@@ -1,23 +1,11 @@
-using UnityEngine;
-
 namespace NicholasScripts
 {
-    public class MGTurret : Turret, IUsable
+    public class MGTurret : BaseTurret
     {
-        /*
-                 * Need to make another script that this will inerit from. Want to
-                 * try and make a couple turret game objects that have different effects
-                 * This turret specifically will shoot bullets towards a target - maybe player/civs as well
-                 */
-        public void Use()
+        protected override void Fire()
         {
-            throw new System.NotImplementedException();
+            view.FireEffect();
+            view.Fire();
         }
-
-        public void StopUsing()
-        {
-	        
-        }
-
     }
 }
