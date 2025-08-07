@@ -1293,6 +1293,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6453254644985109743, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
   m_PrefabInstance: {fileID: 311911883}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &311911885 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 7029032598807591434, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
+  m_PrefabInstance: {fileID: 311911883}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &359343817 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1148814856502129443, guid: 8e75a91b70fd52d4aaef3475f20cb13e, type: 3}
@@ -5174,6 +5179,123 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1954941857848925541, guid: ed35efcb116ad224a8379ebdaa95565f, type: 3}
   m_PrefabInstance: {fileID: 950635403}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &951527753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 951527754}
+  - component: {fileID: 951527758}
+  - component: {fileID: 951527757}
+  - component: {fileID: 951527756}
+  - component: {fileID: 951527755}
+  m_Layer: 5
+  m_Name: CountdownUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &951527754
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951527753}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10.81}
+  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1981003925}
+  m_Father: {fileID: 8708370507975262659}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 4.9700003, y: 0}
+  m_SizeDelta: {x: 211, y: 132}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &951527755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951527753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df84a23b6ca841429971151b42f3126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countdownText: {fileID: 1981003926}
+  offset: {x: 0, y: 0.6, z: 0}
+--- !u!114 &951527756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951527753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &951527757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951527753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &951527758
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951527753}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 311911885}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0
@@ -5329,6 +5451,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 482073165}
     m_Modifications:
+    - target: {fileID: -7105306997600193881, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
+      propertyPath: countdownUI
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -7105306997600193881, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
+      propertyPath: launchForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -7105306997600193881, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
+      propertyPath: countdownText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -7105306997600193881, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
+      propertyPath: countdownUIObj
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -7105306997600193881, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
+      propertyPath: grenadeCountdown
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7105306997600193881, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
+      propertyPath: activationCountdown
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -7105306997600193881, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
+      propertyPath: activationCountdownUIPrefab
+      value: 
+      objectReference: {fileID: 7514180043727730636, guid: ff3745656f14bd0439ad69f0bb455f7f, type: 3}
     - target: {fileID: 2531855980546327703, guid: 98c2e98497c437244894f00baebe2afa, type: 3}
       propertyPath: m_Name
       value: Grenade
@@ -7881,6 +8031,85 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5461689639259859851, guid: 2cf3cbe696638804fa9a5811b60aaa44, type: 3}
   m_PrefabInstance: {fileID: 1973991208}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1981003924
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1981003925}
+  - component: {fileID: 1981003927}
+  - component: {fileID: 1981003926}
+  m_Layer: 5
+  m_Name: countdownText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1981003925
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981003924}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 951527754}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.0005188, y: 0.00000095367}
+  m_SizeDelta: {x: 35.17, y: 22}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1981003926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981003924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.08018869, g: 0.34800828, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
+    m_FontSize: 16
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 0
+--- !u!222 &1981003927
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981003924}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1985100325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9257,10 +9486,36 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9204893573952266371, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: countdownUI
+      value: 
+      objectReference: {fileID: 951527755}
+    - target: {fileID: 9204893573952266371, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: countdownText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204893573952266371, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: countdownUIObj
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204893573952266371, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: activationCountdown
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204893573952266371, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: activationCountdownUIPrefab
+      value: 
+      objectReference: {fileID: 3079584382116222463, guid: ff3745656f14bd0439ad69f0bb455f7f, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 951527754}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2130420092593000568, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8708370507975262664}
   m_SourcePrefab: {fileID: 100100000, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
 --- !u!1 &8708370507975262657 stripped
 GameObject:
@@ -9272,6 +9527,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
   m_PrefabInstance: {fileID: 8708370507975262656}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &8708370507975262664
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8708370507975262657}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &8855435615158446960
 PrefabInstance:
   m_ObjectHideFlags: 0
