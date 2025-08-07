@@ -15,7 +15,8 @@ namespace AIAnimation // A name space shared only by AIs for clarity
             GetHit,
             Attack,
             Grab,
-            Dead
+            Dead,
+            GettingSucked
         }
 
         private Animator animator;
@@ -48,6 +49,9 @@ namespace AIAnimation // A name space shared only by AIs for clarity
                     break;
                 case AnimationState.Dead:
                     animator.Play("Dead");
+                    break;
+                case AnimationState.GettingSucked:
+                    animator.Play("GettingSucked");
                     break;
             }
         }

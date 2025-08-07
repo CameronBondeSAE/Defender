@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class AIHealth : Health
 {
     protected override void Die()
@@ -5,5 +7,12 @@ public class AIHealth : Health
         base.Die();
         // plays animation
         Destroy(gameObject, deathAnimDuration);
+    }
+
+    public void Kill()
+    {
+        base.Die();
+        Debug.Log(gameObject.name + " is killed");
+        Destroy(gameObject);
     }
 }

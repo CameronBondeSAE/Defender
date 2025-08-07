@@ -7,9 +7,6 @@ public class AlienAI : AIBase
     public float tagDistance; // Distance at which alien can "tag" (catch) a civilian
     public Transform mothership; // Reference to mothership (could be used for returning, escaping, etc.)
     public bool isReached = false; // Flag to check if destination is reached
-
-    private AIAnimationController animController; // Reference to animation controller
-
     [HideInInspector] public AIBase currentTargetCiv; // Stores current civilian target (public but can't be messed with in inspector)
 
     protected override void Start()
@@ -18,7 +15,6 @@ public class AlienAI : AIBase
 
         // Start in Search State when spawned
         ChangeState(new SearchState(this));
-        animController = GetComponentInChildren<AIAnimationController>();
     }
     
     void Update()

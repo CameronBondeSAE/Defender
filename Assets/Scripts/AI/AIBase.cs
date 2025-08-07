@@ -1,10 +1,14 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using AIAnimation;
+using Defender;
+using Unity.Netcode;
 
 /// <summary>
 /// Shared basic state machine logic/rules used by all AIs. Covers common refs; how to change state and shared rotation logic.
 /// </summary>
-public class AIBase : MonoBehaviour
+public class AIBase : CharacterBase
 {
    [Header("References")]
     public NavMeshAgent agent; // Movement agent
@@ -18,9 +22,25 @@ public class AIBase : MonoBehaviour
     [Header("Movement Settings")] // These are NavMesh agent settings
     [SerializeField] private float rotationSpeed = 5f; 
     [SerializeField] private float acceleration = 8f;  
-    public float followDistance = 10f; 
+    public float followDistance = 10f;
+
+    [Header("Civ Params")] 
+    public bool IsAbducted;
+    [HideInInspector] public AlienAI escortingAlien;
+
+    public void SetAbducted(bool abducted)
+    {
+        IsAbducted = abducted;
+    }
 
     protected IAIState currentState; // A reference to current AI state (using interface)
+    public IAIState CurrentState
+    {
+	    get
+	    {
+		    return currentState;
+	    }
+    }
 
     // Properties
     public NavMeshAgent Agent => agent;
@@ -28,12 +48,12 @@ public class AIBase : MonoBehaviour
     public Transform[] PatrolPoints => patrolPoints;
     public float FollowDistance => followDistance;
 
+
     // Initialize AI - getting references
     protected virtual void Start()
     {
         health = GetComponent<AIHealth>();
         agent = GetComponent<NavMeshAgent>();
-
         patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(patrolPointsCount);
         // Subscribe to health events
         health.OnHealthChanged += HandleHit;
@@ -43,15 +63,15 @@ public class AIBase : MonoBehaviour
     // State machine update loop
     protected virtual void Update()
     {
-        currentState?.Stay();
+        CurrentState?.Stay();
     }
 
     // Change state logic
     public void ChangeState(IAIState newState)
     {
-        currentState?.Exit();
+        CurrentState?.Exit();
         currentState = newState;
-        currentState.Enter();
+        CurrentState.Enter();
     }
 
     // Move AI to a target position smoothly
@@ -79,7 +99,7 @@ public class AIBase : MonoBehaviour
     {
         if (health.currentHealth > 0)
         {
-            ChangeState(new HitState(this, currentState)); // Switch to Hit state
+            ChangeState(new HitState(this, CurrentState)); // Switch to Hit state
         }
     }
 
@@ -97,5 +117,45 @@ public class AIBase : MonoBehaviour
             health.OnHealthChanged -= HandleHit;
             health.OnDeath -= HandleDeath;
         }
+    }
+    
+    public void StartSuckUp(float height = 5f, float duration = 5f)
+    {
+        Debug.Log("[DropZone] Civilian entered zone, starting suck up!");
+        StartCoroutine(SuckUpRoutine(height, duration));
+    }
+
+    private IEnumerator SuckUpRoutine(float height, float duration)
+    {
+        Debug.Log("being sucked now");
+        float elapsed = 0f;
+        Vector3 startPos = transform.position;
+        Vector3 endPos = startPos + Vector3.up * height;
+
+        // disable NavmeshAgent and any active ai states
+        var agent = GetComponent<NavMeshAgent>();
+        if (agent) agent.enabled = false;
+        // play sound effect here?
+        while (elapsed < duration)
+        {
+            float time = elapsed / duration;
+            transform.position = Vector3.Lerp(startPos, endPos, time);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = endPos;
+        // play a scream sound here...?
+        // or pool
+        var health = GetComponent<AIHealth>();
+        if (health != null)
+        {
+            Debug.Log("[SuckUpRoutine] Calling Kill()");
+            health.Kill(); 
+        }
+        else
+        {
+            Debug.Log("health is null on this civ");
+        }
+        //Destroy(this.gameObject);
     }
 }
