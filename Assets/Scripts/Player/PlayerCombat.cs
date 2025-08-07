@@ -38,11 +38,11 @@ public class PlayerCombat : MonoBehaviour
         
         if (playerInput != null)
         {
-            playerInput.onShootStart += StartShooting;
-            playerInput.onShootStop += StopShooting;
-            playerInput.onLaserStart += TryActivateLaser;
-            playerInput.onLaserStop += TryDeactivateLaser;
-            playerInput.onThrow += TryThrowGrenade;
+            // playerInput.onShootStart += StartShooting;
+            // playerInput.onShootStop += StopShooting;
+            // playerInput.onLaserStart += TryActivateLaser;
+            // playerInput.onLaserStop += TryDeactivateLaser;
+            // playerInput.onThrow += TryThrowGrenade;
             // ================================================================
             // If you guys have your own custom input keys for your items, ADD NEW INPUT EVENT SUBSCRIPTIONS HERE
             // * Examples:
@@ -65,11 +65,11 @@ public class PlayerCombat : MonoBehaviour
     {
         if (playerInput != null)
         {
-            playerInput.onShootStart -= StartShooting;
-            playerInput.onShootStop -= StopShooting;
-            playerInput.onLaserStart -= TryActivateLaser;
-            playerInput.onLaserStop -= TryDeactivateLaser;
-            playerInput.onThrow -= TryThrowGrenade;
+            // playerInput.onShootStart -= StartShooting;
+            // playerInput.onShootStop -= StopShooting;
+            // playerInput.onLaserStart -= TryActivateLaser;
+            // playerInput.onLaserStop -= TryDeactivateLaser;
+            // playerInput.onThrow -= TryThrowGrenade;
             // ================================================================
             // UNSUBSCRIBE ANY NEW INPUT EVENTS HERE
             // ================================================================

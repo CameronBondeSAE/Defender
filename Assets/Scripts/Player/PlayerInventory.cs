@@ -7,12 +7,15 @@ using System;
 
 public class PlayerInventory : MonoBehaviour
 {
+	[SerializeField]
+	float smallDropForce = 10f;
+
 	[Header("Inventory Settings")]
 	public Transform itemHolder; // Where to parent the current item
 
 	[Header("Current State")]
 	// public ItemSO CurrentItem { get; private set; }
-	public IUsable CurrentItem { get; private set; }
+	public IPickup CurrentItem { get; private set; }
 
 
 	[SerializeField]
@@ -37,7 +40,7 @@ public class PlayerInventory : MonoBehaviour
 	// public IReadOnlyList<ItemSO> AvailableItems => availableItems;
 
 	// Events for UI updates if needed
-	public event Action<IUsable> OnItemPickedUp;
+	public event Action<IPickup> OnItemPickedUp;
 	// public event Action<ItemSO> OnItemUsed;
 	// public event Action OnItemSlotCleared;
 
@@ -67,13 +70,17 @@ public class PlayerInventory : MonoBehaviour
 	/// <summary>
 	/// Tries to pick up an item. Returns true if successful.
 	/// </summary>
-	public bool TryPickupItem(IUsable item)
+	public bool TryPickupItem(IPickup item)
 	{
 		if (HasItem)
 		{
-			Debug.Log("Cannot pick up item - inventory is full!");
+			Debug.Log("Cannot pick up item - inventory is full! - Dropping instead");
+			DropHeldItem();
 			return false;
 		}
+		
+		if(item == null)
+			return false;
 
 		// Set current item
 		CurrentItem         = item;
@@ -90,6 +97,48 @@ public class PlayerInventory : MonoBehaviour
 
 		OnItemPickedUp?.Invoke(item);
 		Debug.Log($"Picked up: {CurrentItemInstance.name}");
+		
+		return true;
+	}
+
+	public bool DropHeldItem()
+	{
+		if (!HasItem)
+		{
+			return false;
+		}
+
+		// Move item to fire position
+		CurrentItemInstance.transform.position = itemHolder.position + transform.forward * 1.5f;
+		CurrentItemInstance.transform.rotation = Quaternion.identity;
+
+		// Unparent the item from player
+		CurrentItemInstance.transform.SetParent(null);
+
+		// Re-enable physics
+		Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.isKinematic = false;
+			rb.useGravity  = true;
+
+			// Apply throwing force
+			Vector3 worldThrowDirection = transform.forward;
+			
+			// TODO might be better to leave up to items themselves
+			rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
+		}
+		else
+		{
+			Debug.LogWarning("Item doesn't have a Rigidbody component!");
+		}
+
+		// Re-enable colliders
+		Collider[] colliders = CurrentItemInstance.GetComponentsInChildren<Collider>();
+		foreach (var col in colliders)
+		{
+			col.enabled = true;
+		}
 		return true;
 	}
 
@@ -107,7 +156,7 @@ public class PlayerInventory : MonoBehaviour
 		}
 
 		// no colliders
-		Collider[] colliders = item.GetComponents<Collider>();
+		Collider[] colliders = item.GetComponentsInChildren<Collider>();
 		foreach (var col in colliders)
 		{
 			col.enabled = false;
@@ -121,11 +170,12 @@ public class PlayerInventory : MonoBehaviour
 	{
 		if (!HasItem)
 		{
-			Debug.Log("No item to use!");
+			Debug.Log("No item to use! Will try and use anything in front of me");
 			return;
 		}
 
-		CurrentItem.Use();
+		IUsable currentUsable = CurrentItem as IUsable;
+		currentUsable?.Use();
 		// TODO: Need the item to tell us if it's been destroy. Event we sub to on collecting? Yes
 
 

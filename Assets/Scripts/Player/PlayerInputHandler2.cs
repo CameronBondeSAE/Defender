@@ -7,36 +7,23 @@ public class PlayerInputHandler2 : MonoBehaviour
 {
 	public Vector2 moveInput { get; private set; }
 
-	public event Action onShootStart;
-	public event Action onShootStop;
-	public event Action onThrow;
-
-	public event Action onInteract;
-
-	public event Action onLaserStart;
-	public event Action onLaserStop;
-	public event Action onAimGrenadeStart;
-	public event Action onAimGrenadeStop;
-	public event Action<bool> onInventory;
-
-	public bool isShooting = false;
-
-	public PlayerInput input;
+	public PlayerInput        input;
+	public event Action<bool> onUse;
+	public event Action onInventory;
 
 	private void OnEnable()
 	{
 		input = GetComponent<PlayerInput>();
 
-
 		InputAction move      = input.actions.FindAction("Player/Move");
 		InputAction throwing  = input.actions.FindAction("Player/Throw");
-		InputAction interact  = input.actions.FindAction("Player/Interact");
+		InputAction use       = input.actions.FindAction("Player/Use");
 		InputAction inventory = input.actions.FindAction("Player/Inventory");
 
-		move.performed      += OnMovePerformed;
-		move.canceled       += OnMovePerformed;
-		throwing.performed  += OnThrowPerformed;
-		interact.performed  += OnInteractPerformed;
+		move.performed += OnMovePerformed;
+		move.canceled  += OnMovePerformed;
+		// throwing.performed  += OnThrowPerformed;
+		use.performed       += OnUsePerformed;
 		inventory.performed += OnInventoryPerformed;
 	}
 
@@ -44,30 +31,14 @@ public class PlayerInputHandler2 : MonoBehaviour
 	{
 		InputAction move      = input.actions.FindAction("Player/Move");
 		InputAction throwing  = input.actions.FindAction("Player/Throw");
-		InputAction interact  = input.actions.FindAction("Player/Interact");
+		InputAction use       = input.actions.FindAction("Player/Use");
 		InputAction inventory = input.actions.FindAction("Player/Inventory");
 
-		move.performed      -= OnMovePerformed;
-		move.canceled       -= OnMovePerformed;
-		throwing.performed  -= OnThrowPerformed;
-		interact.performed  -= OnInteractPerformed;
+		move.performed -= OnMovePerformed;
+		move.canceled  -= OnMovePerformed;
+		// throwing.performed  -= OnThrowPerformed;
+		use.performed       -= OnUsePerformed;
 		inventory.performed -= OnInventoryPerformed;
-	}
-
-	private void OnInventoryPerformed(InputAction.CallbackContext obj)
-	{
-		if (obj.performed)
-		{
-			onInventory?.Invoke(true);
-		}
-		else if (obj.canceled)
-		{
-			onInventory?.Invoke(false);
-		}
-		else
-		{
-			
-		}
 	}
 
 	private void OnMovePerformed(InputAction.CallbackContext context)
@@ -75,23 +46,23 @@ public class PlayerInputHandler2 : MonoBehaviour
 		moveInput = context.ReadValue<Vector2>();
 	}
 
-	private void OnThrowPerformed(InputAction.CallbackContext context)
+	private void OnUsePerformed(InputAction.CallbackContext obj)
 	{
-		onThrow?.Invoke();
+		if (obj.performed)
+		{
+			onUse?.Invoke(true);
+		}
+		else if (obj.canceled)
+		{
+			onUse?.Invoke(false);
+		}
 	}
 
-	private void OnAimGrenadeStarted(InputAction.CallbackContext context)
+	private void OnInventoryPerformed(InputAction.CallbackContext context)
 	{
-		onAimGrenadeStart?.Invoke();
-	}
-
-	private void OnAimGrenadeStopped(InputAction.CallbackContext context)
-	{
-		onAimGrenadeStop?.Invoke();
-	}
-
-	private void OnInteractPerformed(InputAction.CallbackContext context)
-	{
-		onInteract?.Invoke();
+		if (context.performed)
+		{
+			onInventory?.Invoke();
+		}
 	}
 }
