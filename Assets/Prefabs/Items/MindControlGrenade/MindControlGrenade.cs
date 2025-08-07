@@ -88,6 +88,7 @@ using UnityEngine;
                     if (character.GetComponent<AIBase>() != null)
                     {
                         // change the AI to something
+                        Debug.Log(character.name + " has been hit by mind control grenade");
                     }
                 }
             }
