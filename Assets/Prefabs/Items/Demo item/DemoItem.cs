@@ -1,36 +1,40 @@
 using System;
 using UnityEngine;
 
-public class DemoItem : MonoBehaviour, IUsable, IPickup
+public class DemoItem : UsableItem
 {
-	public AudioSource audioSource;
-	public AudioClip   pickupClip;
-	public AudioClip   dropClip;
-	
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		GetComponent<Renderer>().material.color = Color.white;
 	}
 
-	public void Use()
-    {
-	    Debug.Log("DemoItem Used");
-	    GetComponent<Renderer>().material.color = Color.green;
-    }
+	public override void Use()
+	{
+		base.Use(); 
+		Debug.Log("DemoItem Used");
+		GetComponent<Renderer>().material.color = Color.green;
+	}
 
-    public void StopUsing()
-    {
-	    Debug.Log("Stopped using");
-	    GetComponent<Renderer>().material.color = Color.red;
-    }
+	public override void StopUsing()
+	{
+		base.StopUsing();
+		Debug.Log("Stopped using");
+		GetComponent<Renderer>().material.color = Color.red;
+	}
 
-    public void Pickup()
-    {
-	    audioSource.PlayOneShot(pickupClip);
-    }
+	public override void Pickup()
+	{
+		base.Pickup(); // Plays pickup sound, etc
+	}
 
-    public void Drop()
-    {
-	    audioSource.PlayOneShot(dropClip);
-    }
+	public override void Drop()
+	{
+		base.Drop(); // Plays drop sound, etc
+	}
+	protected override void ActivateItem()
+	{
+		Debug.Log("DemoItem ACTIVATED!");
+		GetComponent<Renderer>().material.color = Color.yellow;
+	}
 }

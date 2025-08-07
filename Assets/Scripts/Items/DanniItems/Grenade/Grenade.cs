@@ -6,60 +6,61 @@ public class Grenade : UsableItem
 {
     [Header("Grenade Stats")]
     [SerializeField] private float explosionRadius = 5f;
-    [SerializeField] private float explosionDelay = 3f;
     [SerializeField] private float damage = 50f;
-    //[SerializeField] private float throwForce = 8f;
-    private float explosionForce = 10f;
+    [SerializeField] private float explosionForce = 10f;
+    [SerializeField] private float grenadeCountdown = 3f;
+    
+    [Header("Explosion effect")]
+    public ParticleSystem explosionEffect;
 
-    private float countdown;
-    private Rigidbody rb;
-    private bool isActivated = false;
-
-    private void Start()
+    protected override void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        if (rb == null)
-        {
-            rb = gameObject.AddComponent<Rigidbody>();
-        }
-        
-        countdown = explosionDelay;
+        base.Awake();
+        activationCountdown = grenadeCountdown;
     }
 
-    private void Update()
-    {
-        if (isActivated)
-        {
-            countdown -= Time.deltaTime;
-            if (countdown <= 0f) 
-            {
-                Explode();
-            }
-        }
-    }
     public override void Use()
     {
-        Debug.Log("Grenade Activated");
-        Arm(explosionDelay);
+        Debug.Log("Grenade thrown!");
+        // Launch itself forward (when used)
         Launch(transform.forward, launchForce);
+        base.Use(); // starts the activation countdown
     }
 
-    protected override void OnArmed()
+    public override void Launch(Vector3 direction, float force)
     {
-        base.OnArmed();
-        countdown = explosionDelay;
-        isActivated = true;
+        SetCollidersEnabled(true);
+        rb.isKinematic = false;
+        rb.useGravity = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        rb.AddForce(direction * force, ForceMode.VelocityChange);
+    }
+
+    protected override void ActivateItem()
+    {
+        Explode();
     }
 
     private void Explode()
     {
+        if (explosionEffect)
+        {
+            var vfx = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            Destroy(vfx.gameObject, vfx.main.duration);
+        }
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var col in colliders)
         {
-            Debug.Log("Grenade exploded");
             var health = col.GetComponent<Health>();
-            if(health != null) health.TakeDamage(damage);
+            if (health != null)
+                health.TakeDamage(damage);
         }
+        Debug.Log("grenade exploded");
         Destroy(gameObject);
     }
 }
