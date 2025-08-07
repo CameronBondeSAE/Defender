@@ -68,7 +68,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionRadius: 0
-  countDownTimer: 5
+  countDownTime: 5
+  ringMeshRenderers:
+  - {fileID: 8844963611186353242}
+  - {fileID: 6009825809321593670}
+  - {fileID: 5601955264417609220}
+  activeMaterial: {fileID: 2100000, guid: 8034f7ff10b4677449c35748edcbe195, type: 2}
+  inactiveMaterial: {fileID: 2100000, guid: f271c45c232b561488a12e55acaf9dd3, type: 2}
 --- !u!1 &5931770096160663356
 GameObject:
   m_ObjectHideFlags: 0

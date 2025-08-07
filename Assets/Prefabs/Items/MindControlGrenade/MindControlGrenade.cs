@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -6,12 +7,18 @@ using UnityEngine;
     /// </summary>
     public class MindControlGrenade : MonoBehaviour , IUsable, IPickup
     {
-        [SerializeField] private float explosionRadius;
+        [SerializeField] private float explosionRadius = 3f;
         [SerializeField] private float countDownTime = 5f;
+        
+        [Header("Visuals")]
+        [SerializeField] private List<MeshRenderer> ringMeshRenderers;
+        [SerializeField] private Material activeMaterial;
+        [SerializeField] private Material inactiveMaterial;
         
         private bool isActivated = false;
         private float countDown;
 
+        #region UnityFunctions
         void Start()
         {
             countDown = countDownTime;
@@ -28,16 +35,18 @@ using UnityEngine;
                 }
             }
         }
-        
+        #endregion
         
         /// <summary>
         /// Activate grenade
         /// </summary>
         public void Use()
         {
-            isActivated = true;
-            Debug.Log("MindControlGrenade activated");
-            // starts 5 second timer, after 5 seconds EXPLODE
+            isActivated = true; // starts 5 second timer, after 5 seconds will EXPLODE
+            foreach (MeshRenderer meshRenderer in ringMeshRenderers)
+            {
+                meshRenderer.material = activeMaterial;
+            }
         }
 
         /// <summary>
@@ -46,7 +55,11 @@ using UnityEngine;
         public void StopUsing()
         {
             isActivated = false;
-            countDown = countDownTime; // resets timer so when activated it doesnt blow up too quick
+            foreach (MeshRenderer meshRenderer in ringMeshRenderers)
+            {
+                meshRenderer.material = inactiveMaterial;
+            }
+            countDown = countDownTime; // resets timer so when activated it doesn't blow up too quick
         }
         
         public void Pickup()
@@ -54,10 +67,10 @@ using UnityEngine;
             // make sound
         }
 
-        // want drop to be throw
+        // want drop to throw
         public void Drop()
         {
-            
+            Use(); // throw should also activate
         }
         private void Explode()
         {
@@ -66,19 +79,21 @@ using UnityEngine;
             
             // check for radius around grenade
             Collider[] charactersHit = Physics.OverlapSphere(transform.position, explosionRadius);
+            
             // change AI of all character bases in radius - ?after x amount of time, revert to previous AI state?
             if (charactersHit.Length > 0)
             {
                 foreach (Collider character in charactersHit)
                 {
-                    // if(character.GetComponent<>()) what common component do aliens & civilians have in common that I can check for?
+                    if (character.GetComponent<AIBase>() != null)
+                    {
+                        // change the AI to something
+                    }
                 }
             }
+            
+            Destroy(gameObject);
         }
         
-        
-        
-        
-        // after launched will need to explode, have explosion radius, change ai of aliens hit - maybe even civilians?, play sound, spawn particles
     }
 
