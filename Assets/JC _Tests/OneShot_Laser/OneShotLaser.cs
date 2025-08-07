@@ -40,7 +40,7 @@ public class OneShot_Laser : MonoBehaviour, IUsable
     {
         if (gunFired == true)
         {
-            Destroy(OneShot_Laser);
+            Destroy(gameObject);
         }
     }
 
