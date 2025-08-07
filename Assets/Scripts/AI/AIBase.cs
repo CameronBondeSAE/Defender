@@ -43,7 +43,15 @@ public class AIBase : CharacterBase
     }
 
     // Properties
-    public NavMeshAgent Agent => agent;
+    public NavMeshAgent Agent
+    {
+	    get
+	    {
+		    if (agent != null) return agent;
+		    return null;
+	    }
+    }
+
     public Transform Player => player;
     public Transform[] PatrolPoints => patrolPoints;
     public float FollowDistance => followDistance;
@@ -77,21 +85,24 @@ public class AIBase : CharacterBase
     // Move AI to a target position smoothly
     public void MoveTo(Vector3 destination)
     {
-        agent.acceleration = acceleration;
-        agent.SetDestination(destination);
+	    if (agent != null)
+	    {
+		    agent.acceleration = acceleration;
+		    agent.SetDestination(destination);
+	    }
     }
 
     // Stop movement
     public void StopMoving()
     {
-        if (!agent.isStopped)
+        if (agent != null && !agent.isStopped)
             agent.isStopped = true;
     }
 
     // Resume movement
     public void ResumeMoving()
     {
-        agent.isStopped = false;
+	    if (agent != null) agent.isStopped = false;
     }
 
     // Health change callback
