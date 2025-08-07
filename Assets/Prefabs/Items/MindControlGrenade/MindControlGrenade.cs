@@ -7,21 +7,21 @@ using UnityEngine;
     public class MindControlGrenade : MonoBehaviour , IUsable, IPickup
     {
         [SerializeField] private float explosionRadius;
-        [SerializeField] private float countDownTimer = 5f;
+        [SerializeField] private float countDownTime = 5f;
         
         private bool isActivated = false;
         private float countDown;
 
         void Start()
         {
-            countDown = countDownTimer;
+            countDown = countDownTime;
         }
 
         void Update()
         {
             if (isActivated)
             {
-                countDownTimer -= Time.deltaTime;
+                countDown -= Time.deltaTime;
                 if (countDown <= 0)
                 {
                     Explode();
@@ -46,7 +46,7 @@ using UnityEngine;
         public void StopUsing()
         {
             isActivated = false;
-            countDown = countDownTimer; // resets timer so when activated it doesnt blow up too quick
+            countDown = countDownTime; // resets timer so when activated it doesnt blow up too quick
         }
         
         public void Pickup()
