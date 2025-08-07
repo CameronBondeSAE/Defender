@@ -121,6 +121,8 @@ public class PlayerInventory : MonoBehaviour
 			CurrentItemInstance.transform.localPosition = Vector3.zero;
 			CurrentItemInstance.transform.localRotation = Quaternion.identity;
 			SetupItemForInventory(CurrentItemInstance);
+			CurrentItem.Pickup();
+			CurrentItemInstance.GetComponent<UsableItem_Base>().CurrentCarrier = transform;
 		}
 		else
 		{
@@ -145,23 +147,24 @@ public class PlayerInventory : MonoBehaviour
 		// Unparent the item from player
 		CurrentItemInstance.transform.SetParent(null);
 
+		// TODO: This has moved to UsableItem_Base
 		// Re-enable physics
-		Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
-		if (rb != null)
-		{
-			rb.isKinematic = false;
-			rb.useGravity  = true;
-
-			// Apply throwing force
-			Vector3 worldThrowDirection = transform.forward;
-			
-			// TODO might be better to leave up to items themselves
-			rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
-		}
-		else
-		{
-			Debug.LogWarning("Item doesn't have a Rigidbody component!");
-		}
+		// Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
+		// if (rb != null)
+		// {
+		// 	rb.isKinematic = false;
+		// 	rb.useGravity  = true;
+		//
+		// 	// Apply throwing force
+		// 	Vector3 worldThrowDirection = transform.forward;
+		// 	
+		// 	// TODO might be better to leave up to items themselves
+		// 	rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
+		// }
+		// else
+		// {
+		// 	Debug.LogWarning("Item doesn't have a Rigidbody component!");
+		// }
 
 		// Re-enable colliders
 		Collider[] colliders = CurrentItemInstance.GetComponentsInChildren<Collider>();

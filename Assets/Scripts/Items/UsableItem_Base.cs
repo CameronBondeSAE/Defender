@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 /// Base for any inventory item you can use, arm (start a countdown), or launch (throw).
 /// Inherit and override Use, OnArmed, Explode, etc for your specific item logic.
 /// </summary>
-public class UsableItem : NetworkBehaviour, IPickup, IUsable
+public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 {
     [Header("Audio")]
     public AudioSource audioSource;
@@ -37,15 +37,18 @@ public class UsableItem : NetworkBehaviour, IPickup, IUsable
     protected Coroutine activationCoroutine;
 
     // track carrier/player
-    public bool IsCarried { get; private set; }
-    public Transform CurrentCarrier { get; private set; }
+    public bool      IsCarried      { get; private set; }
+    public Transform CurrentCarrier { get; set; }
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        if (!rb) rb = gameObject.AddComponent<Rigidbody>();
-        rb.isKinematic = true;
-        rb.useGravity = false;
+        // if (!rb) rb = gameObject.AddComponent<Rigidbody>();
+        if (rb != null)
+        {
+	        rb.isKinematic = true;
+	        rb.useGravity  = false;
+        }
 
         // hide countdown by default
         if (countdownUI) countdownUI.Hide();
@@ -67,11 +70,15 @@ public class UsableItem : NetworkBehaviour, IPickup, IUsable
     {
         if (audioSource && pickupClip) audioSource.PlayOneShot(pickupClip);
         IsCarried = true;
-        CurrentCarrier = transform.parent;
+        // CurrentCarrier = transform.parent;
 
         // Disable physics and colliders while in inventory
-        rb.isKinematic = true;
-        rb.useGravity = false;
+        if (rb != null)
+        {
+	        rb.isKinematic = true;
+	        rb.useGravity  = false;
+        }
+
         SetCollidersEnabled(false);
 
         if (countdownUI)
@@ -82,12 +89,17 @@ public class UsableItem : NetworkBehaviour, IPickup, IUsable
     {
         IsCarried = false;
         CurrentCarrier = null;
+        transform.SetParent(null, true);
 
         // re-enable colliders and physics
         SetCollidersEnabled(true);
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        if (rb != null)
+        {
+	        rb.isKinematic            = false;
+	        rb.useGravity             = true;
+	        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        }
+        
 
         if (audioSource && dropClip) audioSource.PlayOneShot(dropClip);
 
@@ -168,26 +180,35 @@ public class UsableItem : NetworkBehaviour, IPickup, IUsable
     public virtual void Launch(Vector3 direction, float force)
     {
         SetCollidersEnabled(true);
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        
+        transform.parent = null;
+        
+        if (rb != null)
+        {
+	        rb.isKinematic            = false;
+	        rb.useGravity             = true;
+	        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+	        rb.linearVelocity  = Vector3.zero;
+	        rb.angularVelocity = Vector3.zero;
 
-        rb.AddForce(direction * force, ForceMode.VelocityChange);
+	        rb.AddForce(direction * force, ForceMode.VelocityChange);
+        }
     }
 
     public virtual void Drop(Vector3 dropPosition)
     {
         // re-enable physics and colliders
         SetCollidersEnabled(true);
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        if (rb != null)
+        {
+	        rb.isKinematic            = false;
+	        rb.useGravity             = true;
+	        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+	        rb.linearVelocity  = Vector3.zero;
+	        rb.angularVelocity = Vector3.zero;
+        }
 
         transform.position = dropPosition;
 

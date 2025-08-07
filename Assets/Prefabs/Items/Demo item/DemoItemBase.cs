@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class DemoItem : UsableItem
+public class DemoItemBase : UsableItem_Base
 {
 	protected override void Awake()
 	{

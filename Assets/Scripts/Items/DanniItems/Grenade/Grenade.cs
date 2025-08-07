@@ -2,7 +2,7 @@ using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.WSA;
 
-public class Grenade : UsableItem
+public class Grenade : UsableItem_Base
 {
     [Header("Grenade Stats")]
     [SerializeField] private float explosionRadius = 5f;
@@ -23,21 +23,8 @@ public class Grenade : UsableItem
     {
         Debug.Log("Grenade thrown!");
         // Launch itself forward (when used)
-        Launch(transform.forward, launchForce);
+        Launch(CurrentCarrier.forward, launchForce);
         base.Use(); // starts the activation countdown
-    }
-
-    public override void Launch(Vector3 direction, float force)
-    {
-        SetCollidersEnabled(true);
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-
-        rb.AddForce(direction * force, ForceMode.VelocityChange);
     }
 
     protected override void ActivateItem()

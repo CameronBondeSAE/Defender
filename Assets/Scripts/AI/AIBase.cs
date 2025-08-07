@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,163 +11,252 @@ using Unity.Netcode;
 /// </summary>
 public class AIBase : CharacterBase
 {
-   [Header("References")]
-    public NavMeshAgent agent; // Movement agent
-    private Health health; //  health system
-    private Transform player; // Player reference (can be assigned later)
+	[Header("References")]
+	public NavMeshAgent agent; // Movement agent
 
-    [Header("Patrolling")]
-    public Transform[] patrolPoints; // Patrol points
-    public int patrolPointsCount = 3; // Number of patrol points to generate/get
+	private Health    health; //  health system
+	private Transform player; // Player reference (can be assigned later)
 
-    [Header("Movement Settings")] // These are NavMesh agent settings
-    [SerializeField] private float rotationSpeed = 5f; 
-    [SerializeField] private float acceleration = 8f;  
-    public float followDistance = 10f;
+	[Header("Patrolling")]
+	public Transform[] patrolPoints; // Patrol points
 
-    [Header("Civ Params")] 
-    public bool IsAbducted;
-    [HideInInspector] public AlienAI escortingAlien;
+	public int patrolPointsCount = 3; // Number of patrol points to generate/get
 
-    public void SetAbducted(bool abducted)
-    {
-        IsAbducted = abducted;
-    }
+	[Header("Movement Settings")]
+	// These are NavMesh agent settings
+	[SerializeField]
+	private float rotationSpeed = 5f;
 
-    protected IAIState currentState; // A reference to current AI state (using interface)
-    public IAIState CurrentState
-    {
-	    get
-	    {
-		    return currentState;
-	    }
-    }
+	[SerializeField]
+	private float acceleration = 8f;
 
-    // Properties
-    public NavMeshAgent Agent
-    {
-	    get
-	    {
-		    if (agent != null) return agent;
-		    return null;
-	    }
-    }
+	public float forwardForce = 50f;
 
-    public Transform Player => player;
-    public Transform[] PatrolPoints => patrolPoints;
-    public float FollowDistance => followDistance;
+	public float followDistance = 10f;
+
+	[Header("Civ Params")]
+	public bool IsAbducted;
+
+	[HideInInspector]
+	public AlienAI escortingAlien;
+
+	public bool useRigidbody = true;
+
+	public Rigidbody rb;
+
+	public void SetAbducted(bool abducted)
+	{
+		IsAbducted = abducted;
+	}
+
+	protected IAIState currentState; // A reference to current AI state (using interface)
+
+	public IAIState CurrentState
+	{
+		get
+		{
+			return currentState;
+		}
+	}
+
+	// Properties
+	public NavMeshAgent Agent
+	{
+		get
+		{
+			if (agent != null) return agent;
+			return null;
+		}
+	}
+
+	NavMeshPath        path;
+	public Transform   Player         => player;
+	public Transform[] PatrolPoints   => patrolPoints;
+	public float       FollowDistance => followDistance;
+
+	public float cornerThreshold = 0.75f;
+	public int   cornerIndex;
 
 
-    // Initialize AI - getting references
-    protected virtual void Start()
-    {
-        health = GetComponent<AIHealth>();
-        agent = GetComponent<NavMeshAgent>();
-        patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(patrolPointsCount);
-        // Subscribe to health events
-        health.OnHealthChanged += HandleHit;
-        health.OnDeath += HandleDeath;
-    }
+	// Initialize AI - getting references
+	protected virtual void Start()
+	{
+		health = GetComponent<AIHealth>();
+		agent  = GetComponent<NavMeshAgent>();
+		if (useRigidbody)
+		{
+			agent.enabled = false;
+			path = new NavMeshPath();
+		}
 
-    // State machine update loop
-    protected virtual void Update()
-    {
-        CurrentState?.Stay();
-    }
+		patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(patrolPointsCount);
+		// Subscribe to health events
+		health.OnHealthChanged += HandleHit;
+		health.OnDeath         += HandleDeath;
+	}
 
-    // Change state logic
-    public void ChangeState(IAIState newState)
-    {
-        CurrentState?.Exit();
-        currentState = newState;
-        CurrentState.Enter();
-    }
+	// State machine update loop
+	protected virtual void Update()
+	{
+		CurrentState?.Stay();
+	}
 
-    // Move AI to a target position smoothly
-    public void MoveTo(Vector3 destination)
-    {
-	    if (agent != null)
-	    {
-		    agent.acceleration = acceleration;
-		    agent.SetDestination(destination);
-	    }
-    }
+	private void FixedUpdate()
+	{
+		if (useRigidbody)
+		{
+			if(path != null && path.corners.Length > 0 && cornerIndex < path.corners.Length)
+			{
+				if (rb.linearVelocity.magnitude < acceleration)
+				{
+					rb.AddRelativeForce(0,0,4000f);
+				}
+			
+				// Turn towards
+				Vector3 direction   = path.corners[cornerIndex] - rb.position;
+				float   angle = Vector3.SignedAngle(rb.transform.forward, direction, Vector3.up);
+				rb.AddTorque(0, angle * rotationSpeed, 0);
+				float slowDownForce = -forwardForce*Mathf.Abs(angle) * 5f;
+				// Debug.Log(slowDownForce);
+				rb.AddRelativeForce(0,0,slowDownForce); // Slow down for sharp angles
+			
+				// rb.MovePosition(Vector3.MoveTowards(rb.position, path.corners[cornerIndex], acceleration * Time.deltaTime));
+				if (Vector3.Distance(rb.position, path.corners[cornerIndex]) < cornerThreshold)
+				{
+					cornerIndex++;
+					if (cornerIndex >= path.corners.Length)
+					{
+						rb.linearVelocity = Vector3.zero;
+						rb.angularVelocity = Vector3.zero;
+						path = null;
+						cornerIndex = 0;
+						Debug.Log("Alien : Reached destination");
+					}
+				}
+			}
+		}
+	}
 
-    // Stop movement
-    public void StopMoving()
-    {
-        if (agent != null && !agent.isStopped)
-            agent.isStopped = true;
-    }
+	// Change state logic
+	public void ChangeState(IAIState newState)
+	{
+		CurrentState?.Exit();
+		currentState = newState;
+		CurrentState.Enter();
+	}
 
-    // Resume movement
-    public void ResumeMoving()
-    {
-	    if (agent != null) agent.isStopped = false;
-    }
+	// Move AI to a target position smoothly
+	public void MoveTo(Vector3 destination)
+	{
+		// Debug.Log("Moving to " + destination);
+		if (useRigidbody)
+		{
+			if (path != null) NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path);
+			cornerIndex = 0;
+		}
+		else if (agent != null && agent.enabled == true)
+		{
+			agent.acceleration = acceleration;
+			agent.SetDestination(destination);
+		}
+	}
 
-    // Health change callback
-    private void HandleHit(float amount)
-    {
-        if (health.currentHealth > 0)
-        {
-            ChangeState(new HitState(this, CurrentState)); // Switch to Hit state
-        }
-    }
+	// Stop movement
+	public void StopMoving()
+	{
+		// TODO work with rb
+		if (agent != null && agent.enabled == true && !agent.isStopped)
+			agent.isStopped = true;
+	}
 
-    // Death callback
-    private void HandleDeath()
-    {
-        ChangeState(new DeathState(this)); // Switch to Death state
-    }
+	// Resume movement
+	public void ResumeMoving()
+	{
+		// TODO work with rb
+		if (agent != null && agent.enabled == true) agent.isStopped = false;
+	}
 
-    // Cleanup on destroy
-    private void OnDestroy()
-    {
-        if (health != null)
-        {
-            health.OnHealthChanged -= HandleHit;
-            health.OnDeath -= HandleDeath;
-        }
-    }
-    
-    public void StartSuckUp(float height = 5f, float duration = 5f)
-    {
-        Debug.Log("[DropZone] Civilian entered zone, starting suck up!");
-        StartCoroutine(SuckUpRoutine(height, duration));
-    }
+	// Health change callback
+	private void HandleHit(float amount)
+	{
+		if (health.currentHealth > 0)
+		{
+			ChangeState(new HitState(this, CurrentState)); // Switch to Hit state
+		}
+	}
 
-    private IEnumerator SuckUpRoutine(float height, float duration)
-    {
-        Debug.Log("being sucked now");
-        float elapsed = 0f;
-        Vector3 startPos = transform.position;
-        Vector3 endPos = startPos + Vector3.up * height;
+	// Death callback
+	private void HandleDeath()
+	{
+		ChangeState(new DeathState(this)); // Switch to Death state
+	}
 
-        // disable NavmeshAgent and any active ai states
-        var agent = GetComponent<NavMeshAgent>();
-        if (agent) agent.enabled = false;
-        // play sound effect here?
-        while (elapsed < duration)
-        {
-            float time = elapsed / duration;
-            transform.position = Vector3.Lerp(startPos, endPos, time);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = endPos;
-        // play a scream sound here...?
-        // or pool
-        var health = GetComponent<AIHealth>();
-        if (health != null)
-        {
-            Debug.Log("[SuckUpRoutine] Calling Kill()");
-            health.Kill(); 
-        }
-        else
-        {
-            Debug.Log("health is null on this civ");
-        }
-        //Destroy(this.gameObject);
-    }
+	// Cleanup on destroy
+	private void OnDestroy()
+	{
+		if (health != null)
+		{
+			health.OnHealthChanged -= HandleHit;
+			health.OnDeath         -= HandleDeath;
+		}
+	}
+
+	public void StartSuckUp(float height = 5f, float duration = 5f)
+	{
+		Debug.Log("[DropZone] Civilian entered zone, starting suck up!");
+		StartCoroutine(SuckUpRoutine(height, duration));
+	}
+
+	private IEnumerator SuckUpRoutine(float height, float duration)
+	{
+		Debug.Log("being sucked now");
+		float   elapsed  = 0f;
+		Vector3 startPos = transform.position;
+		Vector3 endPos   = startPos + Vector3.up * height;
+
+		// disable NavmeshAgent and any active ai states
+		var agent                = GetComponent<NavMeshAgent>();
+		if (agent) agent.enabled = false;
+		// play sound effect here?
+		while (elapsed < duration)
+		{
+			float time = elapsed / duration;
+			transform.position =  Vector3.Lerp(startPos, endPos, time);
+			elapsed            += Time.deltaTime;
+			yield return null;
+		}
+
+		transform.position = endPos;
+		// play a scream sound here...?
+		// or pool
+		var health = GetComponent<AIHealth>();
+		if (health != null)
+		{
+			Debug.Log("[SuckUpRoutine] Calling Kill()");
+			health.Kill();
+		}
+		else
+		{
+			Debug.Log("health is null on this civ");
+		}
+		//Destroy(this.gameObject);
+	}
+
+	private void OnDrawGizmos()
+	{
+		if(path == null || path.corners.Length<=0) return;
+		
+		for (int i = 0; i < path.corners.Length; i++)
+		{
+			if(cornerIndex == i)
+				Gizmos.color = Color.green;
+			else
+			{
+				Gizmos.color = Color.white;
+			}
+			Gizmos.DrawSphere(path.corners[i], 0.2f);
+			if(i>0)
+				Gizmos.DrawLine(path.corners[i], path.corners[i - 1]);
+		}
+	}
 }

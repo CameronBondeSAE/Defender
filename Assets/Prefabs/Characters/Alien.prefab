@@ -1951,6 +1951,8 @@ GameObject:
   - component: {fileID: 9006036892352818721}
   - component: {fileID: 750841075112867850}
   - component: {fileID: 6663059807473045784}
+  - component: {fileID: 5728813376443442653}
+  - component: {fileID: 6834610644936913233}
   m_Layer: 0
   m_Name: Alien
   m_TagString: Alien
@@ -2032,11 +2034,16 @@ MonoBehaviour:
   agent: {fileID: 0}
   patrolPoints: []
   patrolPointsCount: 3
-  rotationSpeed: 10
-  acceleration: 100
+  rotationSpeed: 2
+  acceleration: 5
+  forwardForce: 5
   followDistance: 0
   IsAbducted: 0
   escortingAlien: {fileID: 0}
+  useRigidbody: 1
+  rb: {fileID: 5728813376443442653}
+  cornerThreshold: 1
+  cornerIndex: 0
   tagDistance: 2.5
   mothership: {fileID: 0}
   isReached: 0
@@ -2048,7 +2055,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8897101158157931101}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 2
@@ -2081,3 +2088,53 @@ MonoBehaviour:
   woodParticles: {fileID: 0}
   metalParticles: {fileID: 0}
   fireParticles: {fileID: 0}
+--- !u!54 &5728813376443442653
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897101158157931101}
+  serializedVersion: 5
+  m_Mass: 50
+  m_LinearDamping: 5
+  m_AngularDamping: 5
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
+--- !u!136 &6834610644936913233
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897101158157931101}
+  m_Material: {fileID: 13400000, guid: e13cba43bf6843041853598693fa0792, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.52
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.05, z: 0}

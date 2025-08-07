@@ -6,12 +6,12 @@ public class CountdownUI : MonoBehaviour
     public Text countdownText;
     public Vector3 offset = new Vector3(0, 0.6f, 0);
 
-    private UsableItem itemToTrack;
+    private UsableItem_Base _itemBaseToTrack;
     private bool isActive = false;
 
     void Awake()
     {
-        itemToTrack = GetComponentInParent<UsableItem>();
+        _itemBaseToTrack = GetComponentInParent<UsableItem_Base>();
         Hide();
     }
 
@@ -36,13 +36,13 @@ public class CountdownUI : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!isActive || itemToTrack == null)
+        if (!isActive || _itemBaseToTrack == null)
             return;
 
         // decide what to follow: carrier (player) or item itself
-        Transform followTarget = itemToTrack.IsCarried && itemToTrack.CurrentCarrier != null
-            ? itemToTrack.CurrentCarrier
-            : itemToTrack.transform;
+        Transform followTarget = _itemBaseToTrack.IsCarried && _itemBaseToTrack.CurrentCarrier != null
+            ? _itemBaseToTrack.CurrentCarrier
+            : _itemBaseToTrack.transform;
         transform.position = followTarget.position + offset;
 
         // face camera and no flipping
