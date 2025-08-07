@@ -33,7 +33,7 @@ public class AgroAlienAI : AIBase
         base.Update();
 
         // Only scan for player while patrolling
-        if (currentState == patrolState)
+        if (CurrentState == patrolState)
         {
             if (ScanForPlayer()) // check for player in FoV
             {

@@ -11,6 +11,12 @@ public class PlayerMovement : MonoBehaviour
     private PlayerCombat playerCombat;
     private PlayerInputHandler2 inputHandler;
 
+    public float MoveSpeed
+    {
+	    get => moveSpeed;
+	    set => moveSpeed = value;
+    }
+
 
     void Start()
     {
@@ -29,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
         // Quaternion cameraRotation = Quaternion.Euler(0, 0, 0);
         // moveDirection = cameraRotation * moveDirection;
 
-        Vector3 targetVelocity = moveDirection * moveSpeed;
+        Vector3 targetVelocity = moveDirection * MoveSpeed;
         // realistic movement
         rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
         

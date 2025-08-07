@@ -14,27 +14,27 @@ namespace CameronBonde
 {
 	public class LobbyManager : MonoBehaviour
 	{
-		public string lobbyName      = "Cam's Lobby";
+		public string lobbyName      = "Defender Lobby #1";
 		public int    maxPlayers     = 4;
 		public float  heartBeatDelay = 15f;
 
 		public string playerName = "CAM";
-
+		
+		public RelayManager relayManager;
+		public AuthenticationManager authenticationManager;
+		
 		Lobby lobby;
 
-		async void Awake()
+		private void OnEnable()
 		{
-			try
-			{
-				await UnityServices.InitializeAsync();
-				SetupAuthenticationEvents();
-			}
-			catch (Exception e)
-			{
-				Debug.LogException(e);
-			}
+			authenticationManager.OnSignedIn += CreateLobby;
 		}
 
+		private void OnDisable()
+		{
+			authenticationManager.OnSignedIn -= CreateLobby;
+		}
+		
 		public async void CreateLobby()
 		{
 			Debug.Log("Creating lobby...");
@@ -59,7 +59,7 @@ namespace CameronBonde
 					return;
 				}
 
-				lobby = await LobbyService.Instance.JoinLobbyByIdAsync("Cam's Lobby");
+				lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyName); // TODO create custom name. This is just one lobby ever
 			}
 			catch (LobbyServiceException e)
 			{
@@ -164,6 +164,7 @@ namespace CameronBonde
 			Debug.Log("Setting up Lobby events");
 			var callbacks = new LobbyEventCallbacks();
 			callbacks.LobbyChanged += OnLobbyChanged;
+			callbacks.DataChanged += CallbacksOnDataChanged;
 
 			// callbacks.KickedFromLobby                  += OnKickedFromLobby;
 			// callbacks.LobbyEventConnectionStateChanged += OnLobbyEventConnectionStateChanged;
@@ -191,36 +192,22 @@ namespace CameronBonde
 			}
 		}
 
-		void SetupAuthenticationEvents()
+		private void CallbacksOnDataChanged(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> obj)
 		{
-			// Setup authentication event handlers if desired
-			AuthenticationService.Instance.SignedIn += () =>
-			                                           {
-				                                           // Shows how to get a playerID
-				                                           Debug
-					                                           .Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
-
-				                                           // Shows how to get an access token
-				                                           Debug
-					                                           .Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
-			                                           };
-
-			AuthenticationService.Instance.SignInFailed += (err) => { Debug.LogError(err); };
-
-			AuthenticationService.Instance.SignedOut += () => { Debug.Log("Player signed out."); };
-
-			AuthenticationService.Instance.Expired += () =>
-			                                          {
-				                                          Debug
-					                                          .Log("Player session could not be refreshed and expired.");
-			                                          };
+			Debug.Log("Data changed event : " + obj);
+			
+			// TODO more than just relaycode, presumably lobby name changes etc
+			if (obj.TryGetValue("RelayJoinCode", out ChangedOrRemovedLobbyValue<DataObject> relayJoinCode))
+			{
+				relayManager.NewJoinCodeSet(relayJoinCode.Value.Value);
+			}
 		}
-
+		
 		IEnumerator HeartbeatLobbyCoroutine(string lobbyId, float waitTimeSeconds)
 		{
 			while (true)
 			{
-				Debug.Log("Heartbeating lobby");
+				Debug.Log("Heartbeating lobby "+Random.Range(0,1000));
 				LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
 				yield return new WaitForSecondsRealtime(waitTimeSeconds);
 			}
@@ -242,6 +229,35 @@ namespace CameronBonde
 		private void OnApplicationQuit()
 		{
 			if (lobby != null) LobbyService.Instance.DeleteLobbyAsync(lobby.Id);
+		}
+
+		/// <summary>
+		/// Brute force, rewrites ALL lobby data in one go. Yes you can selectively update a simple key, but this is clearer for now
+		/// </summary>
+		/// <param name="_joinCode"></param>
+		public async void SetAllLobbyData()
+		{
+			try
+			{
+				UpdateLobbyOptions options = new UpdateLobbyOptions();
+				options.Name       = lobbyName;
+				options.MaxPlayers = maxPlayers;
+				options.IsPrivate  = false;
+
+				//Ensure you sign-in before calling Authentication Instance
+				//See IAuthenticationService interface
+				options.HostId = AuthenticationService.Instance.PlayerId;
+				
+				options.Data = new Dictionary<string, DataObject>();
+				options.Data.Add("RelayJoinCode", new DataObject(
+				                                                      visibility: DataObject.VisibilityOptions.Private,
+				                                                      value: relayManager.joinCode));
+				await LobbyService.Instance.UpdateLobbyAsync(lobbyName, options);
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.Log(e);
+			}
 		}
 	}
 }
