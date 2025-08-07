@@ -1,27 +1,64 @@
 using UnityEngine;
 
-namespace adamsScripts
-{
+
     /// <summary>
     /// script for the mind control grenade
     /// </summary>
-    public class MindControlGrenade : MonoBehaviour //, IUsable
+    public class MindControlGrenade : MonoBehaviour , IUsable, IPickup
     {
         [SerializeField] private float explosionRadius;
-        // inherits from base grenade/item script? - would need to be picked up, activated/thrown/rolled
-        //public void UseItem()
-        //{
-            // throw grenade in facing direction
-            // timer starts
-            // explode - in certain radius
-        //}
+        [SerializeField] private float countDownTimer = 5f;
         
-        // ACTIVATE
-        // starts 5 second timer, after 5 seconds EXPLODE
+        private bool isActivated = false;
+        private float countDown;
+
+        void Start()
+        {
+            countDown = countDownTimer;
+        }
+
+        void Update()
+        {
+            if (isActivated)
+            {
+                countDownTimer -= Time.deltaTime;
+                if (countDown <= 0)
+                {
+                    Explode();
+                }
+            }
+        }
         
-        // THROW
-        // adds force in facing direction
         
+        /// <summary>
+        /// Activate grenade
+        /// </summary>
+        public void Use()
+        {
+            isActivated = true;
+            Debug.Log("MindControlGrenade activated");
+            // starts 5 second timer, after 5 seconds EXPLODE
+        }
+
+        /// <summary>
+        /// Deactivate grenade
+        /// </summary>
+        public void StopUsing()
+        {
+            isActivated = false;
+            countDown = countDownTimer; // resets timer so when activated it doesnt blow up too quick
+        }
+        
+        public void Pickup()
+        {
+            // make sound
+        }
+
+        // want drop to be throw
+        public void Drop()
+        {
+            
+        }
         private void Explode()
         {
             // play sound
@@ -44,4 +81,4 @@ namespace adamsScripts
         
         // after launched will need to explode, have explosion radius, change ai of aliens hit - maybe even civilians?, play sound, spawn particles
     }
-}
+

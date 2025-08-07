@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6064659204558517880}
   - component: {fileID: 1849366311613834212}
-  - component: {fileID: -3859361609374087601}
-  m_Layer: 0
+  - component: {fileID: 9104141701661535609}
+  m_Layer: 7
   m_Name: MindControlGrenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.16
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-3859361609374087601
+--- !u!114 &9104141701661535609
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,6 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 585fdb05e9a788841b24371c0d9b9c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionRadius: 0
+  countDownTimer: 5
 --- !u!1 &5931770096160663356
 GameObject:
   m_ObjectHideFlags: 0
