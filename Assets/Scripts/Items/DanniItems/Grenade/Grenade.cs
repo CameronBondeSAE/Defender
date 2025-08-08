@@ -18,6 +18,20 @@ public class Grenade : UsableItem_Base
         base.Awake();
         activationCountdown = grenadeCountdown;
     }
+    
+    // In Grenade
+    public override void Pickup()
+    {
+        base.Pickup(); // plays audio, sets IsCarried, disables physics
+        // detect and store the carrier
+        var player = FindObjectOfType<PlayerHealth>();
+        if (player != null)
+        {
+            SetCarrier(player.transform);
+        }
+        Debug.Log("Grenade picked up and carrier set.");
+    }
+
 
     public override void Use()
     {

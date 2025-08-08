@@ -116,7 +116,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -1.026, y: -0.15288204}
+  m_AnchoredPosition: {x: -1.026001, y: -0.15287781}
   m_SizeDelta: {x: 211, y: 132}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1830247112458604482
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &188737067847924461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,3 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countdownText: {fileID: 3377913238198455553}
   offset: {x: 0, y: 0.6, z: 0}
+  smoothTime: 0.15
+  carriedDeadzone: 0.25
+  worldDeadzone: 0.08
+  teleportDistance: 2

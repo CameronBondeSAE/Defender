@@ -26,10 +26,12 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     public float activationCountdown = 0f;
 
     [Header("World UI - Assign in prefab!")]
-    [SerializeField] protected CountdownUI countdownUI; // drag the child UI here:D
+    [SerializeField] private CountdownUI countdownUIPrefab; // drag the child UI here:D
+    // prefab instance (not parented to the item!)
+    private CountdownUI countdownUIInstance;
 
     [Header("Launch Settings")]
-    [SerializeField] protected float launchForce = 10f;
+    public float launchForce = 10f;
     [SerializeField] protected Vector3 launchDirection = Vector3.forward;
     protected Rigidbody rb;
 
@@ -49,12 +51,22 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 	        rb.isKinematic = true;
 	        rb.useGravity  = false;
         }
-
-        // hide countdown by default
-        if (countdownUI) countdownUI.Hide();
-
         // disable all colliders while held in inventory (start as pickupable)
         SetCollidersEnabled(true);
+    }
+    
+    protected void OnDestroy()
+    {
+        DestroyCountdownUI();
+    }
+
+    protected void DestroyCountdownUI()
+    {
+        if (countdownUIInstance)
+        {
+            Destroy(countdownUIInstance.gameObject);
+            countdownUIInstance = null;
+        }
     }
 
     // helper - enable or disable all colliders
@@ -78,11 +90,12 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 	        rb.isKinematic = true;
 	        rb.useGravity  = false;
         }
-
         SetCollidersEnabled(false);
-
-        if (countdownUI)
-            countdownUI.Hide();
+    }
+    
+    protected void SetCarrier(Transform carrier) // for ui stuff, set in subclasses
+    {
+        CurrentCarrier = carrier;
     }
 
     public virtual void Drop()
@@ -99,11 +112,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 	        rb.useGravity             = true;
 	        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
-        
-
         if (audioSource && dropClip) audioSource.PlayOneShot(dropClip);
-
-        // uI will continue showing only if item is armed
     }
 
     // IUsable
@@ -113,7 +122,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 
         if (activationCountdown > 0)
         {
-            StartActivationCountdown();
+            StartActivationCountdown_Server();
         }
         else
         {
@@ -124,38 +133,104 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     public virtual void StopUsing() { /* Override in subclasses */ }
 
     // activation countdown & UI
-    public virtual void StartActivationCountdown()
+    // public virtual void StartActivationCountdown()
+    // {
+    //     // if (activationCoroutine != null) StopCoroutine(activationCoroutine);
+    //     // activationCoroutine = StartCoroutine(ActivationCountdownRoutine());
+    //     // Spawn the UI prefab if needed and initialize it with the starting seconds
+    //     if (!countdownUIInstance && countdownUIPrefab)
+    //     {
+    //         // spawn at current target pos, not parented
+    //         countdownUIInstance = Instantiate(countdownUIPrefab);
+    //         countdownUIInstance.Init(this, Mathf.CeilToInt(activationCountdown));
+    //     }
+    //     else if (countdownUIInstance)
+    //     {
+    //         countdownUIInstance.Show();
+    //         countdownUIInstance.SetCountdown(Mathf.CeilToInt(activationCountdown));
+    //     }
+    //
+    //     isArmed = true;
+    //
+    //     if (activationCoroutine != null) StopCoroutine(activationCoroutine);
+    //     activationCoroutine = StartCoroutine(ActivationCountdownRoutine());
+    // }
+    //
+    // protected virtual IEnumerator ActivationCountdownRoutine()
+    // {
+    //     float t = activationCountdown;
+    //     while (t > 0f)
+    //     {
+    //         if (countdownUIInstance)
+    //             countdownUIInstance.SetCountdown(Mathf.CeilToInt(t));
+    //
+    //         if (audioSource && timerBeepClip) audioSource.PlayOneShot(timerBeepClip);
+    //
+    //         yield return new WaitForSeconds(1f);
+    //         t -= 1f;
+    //     }
+    //
+    //     if (countdownUIInstance) countdownUIInstance.SetCountdown(0);
+    //
+    //     if (audioSource && timerActivatedClip) audioSource.PlayOneShot(timerActivatedClip);
+    //     if (countdownUIInstance) countdownUIInstance.Hide();
+    //
+    //     ActivateItem();
+    // }
+    
+    public virtual void StartActivationCountdown_Server()
     {
+        // Server-only timer logic; DO NOT spawn UI here
         if (activationCoroutine != null) StopCoroutine(activationCoroutine);
-        activationCoroutine = StartCoroutine(ActivationCountdownRoutine());
+        activationCoroutine = StartCoroutine(ActivationCountdownRoutine_Server());
     }
 
-    protected virtual IEnumerator ActivationCountdownRoutine()
+    protected virtual IEnumerator ActivationCountdownRoutine_Server()
     {
-        if (countdownUI)
-            countdownUI.Show();
-
         float t = activationCountdown;
-        while (t > 0)
+        while (t > 0f)
         {
-            if (countdownUI)
-                countdownUI.SetCountdown(Mathf.CeilToInt(t));
-
-            if (audioSource && timerBeepClip) audioSource.PlayOneShot(timerBeepClip);
-
+            // Optional: drive a NetworkVariable for time remaining if you want HUDs on all clients
             yield return new WaitForSeconds(1f);
             t -= 1f;
         }
+        ActivateItem(); // This should be server-authoritative
+    }
 
-        if (countdownUI)
-            countdownUI.SetCountdown(0);
+    public void StartActivationCountdown_LocalUI(int startSeconds)
+    {
+        // Owner-only local UI (non-networked)
+        if (!countdownUIPrefab) { Debug.LogWarning($"[{name}] No countdownUIPrefab"); return; }
 
-        if (audioSource && timerActivatedClip) audioSource.PlayOneShot(timerActivatedClip);
+        if (!countdownUIInstance)
+        {
+            countdownUIInstance = Instantiate(countdownUIPrefab);
+            countdownUIInstance.Init(this, startSeconds);
+        }
+        else
+        {
+            countdownUIInstance.Show();
+            countdownUIInstance.SetCountdown(startSeconds);
+        }
 
-        if (countdownUI)
-            countdownUI.Hide();
+        // Local UI countdown (purely cosmetic)
+        if (activationUICoroutine != null) StopCoroutine(activationUICoroutine);
+        activationUICoroutine = StartCoroutine(ActivationCountdownRoutine_LocalUI());
+    }
 
-        ActivateItem();
+    private Coroutine activationUICoroutine;
+
+    private IEnumerator ActivationCountdownRoutine_LocalUI()
+    {
+        float t = activationCountdown;
+        while (t > 0f)
+        {
+            countdownUIInstance?.SetCountdown(Mathf.CeilToInt(t));
+            yield return new WaitForSeconds(1f);
+            t -= 1f;
+        }
+        countdownUIInstance?.SetCountdown(0);
+        countdownUIInstance?.Hide();
     }
 
     protected virtual void ActivateItem()
@@ -170,9 +245,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
             StopCoroutine(activationCoroutine);
             activationCoroutine = null;
         }
-        if (countdownUI)
-            countdownUI.Hide();
-
+        DestroyCountdownUI();
         isArmed = false;
     }
 
