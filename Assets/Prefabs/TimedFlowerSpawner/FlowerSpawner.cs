@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FlowerSpawner : MonoBehaviour, IUsable
+public class FlowerSpawner : MonoBehaviour, IUsable, IPickup
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,6 +20,14 @@ public class FlowerSpawner : MonoBehaviour, IUsable
     }
 
     public void StopUsing()
+    {
+    }
+
+    public void Pickup()
+    {
+    }
+
+    public void Drop()
     {
     }
 }

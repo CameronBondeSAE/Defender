@@ -75,10 +75,10 @@ public class SearchState : IAIState
         //     ai.MoveTo(closestCiv.transform.position);
         // }
         
-        Debug.Log("[Search State] {ai.name} is entering search state.");
+        //Debug.Log("[Search State] {ai.name} is entering search state.");
         if (ai.currentTargetCiv != null && ai.currentTargetCiv.IsAbducted && ai.currentTargetCiv.escortingAlien == ai)
         {
-            Debug.Log($"[SearchState] {ai.name} already escorting, switching to return");
+            //Debug.Log($"[SearchState] {ai.name} already escorting, switching to return");
             ai.ChangeState(new ReturnState(ai));
             return;
         }
@@ -97,7 +97,7 @@ public class SearchState : IAIState
         {
             if (isGrabbing && Time.time >= grabStartTime + grabTimeout)
             {
-                Debug.Log($"[SearchState] {ai.name} has timed out"); 
+                //Debug.Log($"[SearchState] {ai.name} has timed out"); 
                 AbandonCurrentTargetAndSearchNew();
             }
 
@@ -113,7 +113,7 @@ public class SearchState : IAIState
         // check if current civ is taken by another alien
         if (ai.currentTargetCiv.IsAbducted && ai.currentTargetCiv.escortingAlien != ai)
         {
-            Debug.Log($"[SearchState] {ai.name} target taken by another alien");
+            //Debug.Log($"[SearchState] {ai.name} target taken by another alien");
             ai.currentTargetCiv = null;
             FindNewTarget();
             return;
@@ -148,7 +148,7 @@ public class SearchState : IAIState
         GameObject[] civObjects = GameObject.FindGameObjectsWithTag("Civilian");
         if (civObjects.Length == 0)
         {
-            Debug.Log($"[SearchState {ai.name}] No Civilian found");
+            //Debug.Log($"[SearchState {ai.name}] No Civilian found");
             ai.ChangeState(new PatrolState(ai));
             return;
         }
@@ -170,12 +170,12 @@ public class SearchState : IAIState
         {
             AIBase civBase = closestCiv.GetComponent<AIBase>();
             ai.currentTargetCiv = civBase;
-            Debug.Log($"[SearchState {ai.name}] Found civilian {closestCiv}");
+            //Debug.Log($"[SearchState {ai.name}] Found civilian {closestCiv}");
             ai.MoveTo(closestCiv.transform.position);
         }
         else
         {
-            Debug.Log($"[SearchState {ai.name}] No Civilian found, now patrolling");
+            //Debug.Log($"[SearchState {ai.name}] No Civilian found, now patrolling");
             ai.ChangeState(new PatrolState(ai));
         }
     }
@@ -183,7 +183,7 @@ public class SearchState : IAIState
     // Coroutine that handles grabbing the civilian, playing animation, then changing state
     private IEnumerator GrabThenReturn()
     {
-        Debug.Log("[SearchState] {ai.name} starting grab sequence");
+        //Debug.Log("[SearchState] {ai.name} starting grab sequence");
         // If already escorting, don't grab another ====
         if (ai.currentTargetCiv != null && ai.currentTargetCiv.IsAbducted)
         {
@@ -207,7 +207,7 @@ public class SearchState : IAIState
             ai.currentTargetCiv.SetAbducted(true); // mark instantly
             ai.currentTargetCiv.escortingAlien = ai; // record leader alien
             ai.currentTargetCiv.ChangeState(new FollowState(ai.currentTargetCiv, ai.transform));
-            Debug.Log($"[AlienAI] {ai.name} has grabbed {ai.currentTargetCiv.name}");
+            //Debug.Log($"[AlienAI] {ai.name} has grabbed {ai.currentTargetCiv.name}");
             ai.ChangeState(new ReturnState(ai));
         }
         else

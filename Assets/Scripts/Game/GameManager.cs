@@ -87,10 +87,15 @@ namespace DanniLi
 
 			// Set all crates to know this level's set of item SOs
 			Crate[] crates = FindObjectsByType<Crate>(FindObjectsSortMode.None);
-			foreach (Crate crate in crates)
+			if (levelSOs != null && levelSOs.Length > 0)
+				foreach (Crate crate in crates)
+				{
+					LevelInfo levelSO                         = levelSOs[currentLevelIndex];
+					if (levelSO != null) crate.availableItems = levelSO.availableItems;
+				}
+			else
 			{
-				LevelInfo levelSO                         = levelSOs[currentLevelIndex];
-				if (levelSO != null) crate.availableItems = levelSO.availableItems;
+				Debug.LogWarning("GameManager: no level info!");
 			}
 
 			Debug.Log("Aliens Incoming: " + aliensIncomingFromAllShips);

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BasicGrenade : MonoBehaviour, IUsable
+public class BasicGrenade : MonoBehaviour, IUsable, IPickup
 {
    [Header("Grenade Stats")]
     private float explosionRadius = 5f;
@@ -88,5 +88,14 @@ public class BasicGrenade : MonoBehaviour, IUsable
         // Draw explosion radius
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
+    }
+
+    public void Pickup()
+    {
+    }
+
+    public void Drop()
+    {
+	    Use();
     }
 }
