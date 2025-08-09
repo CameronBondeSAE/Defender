@@ -76,10 +76,10 @@ using UnityEngine;
         {
             // play sound
             // particle effects
-            
+
             // check for radius around grenade
             Collider[] charactersHit = Physics.OverlapSphere(transform.position, explosionRadius);
-            
+
             // change AI of all character bases in radius - ?after x amount of time, revert to previous AI state?
             if (charactersHit.Length > 0)
             {
@@ -87,12 +87,13 @@ using UnityEngine;
                 {
                     if (character.GetComponent<AIBase>() != null)
                     {
-                        // change the AI to something
                         Debug.Log(character.name + " has been hit by mind control grenade");
+                        // change the AI
+                        character.GetComponent<AIBase>().ChangeState(new IdleState(character.GetComponent<AIBase>())); // needs work, doesn't seem to be doing anything to captured civilians -------------
                     }
                 }
             }
-            
+            Debug.Log("Exploded");
             Destroy(gameObject);
         }
         
