@@ -29,6 +29,9 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     [SerializeField] private CountdownUI countdownUIPrefab; // drag the child UI here:D
     // prefab instance (not parented to the item!)
     private CountdownUI countdownUIInstance;
+    // tracking settings
+    public bool      IsCarried      { get; private set; }
+    public Transform CurrentCarrier { get; set; }
 
     [Header("Launch Settings")]
     public float launchForce = 10f;
@@ -36,17 +39,16 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     protected Rigidbody rb;
     
     [Header("NetworkVar")]
+    private NetworkVariable<bool> isArmedNetworked = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<float> countdownTimeRemaining = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    private NetworkVariable<bool> isCountdownActive = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    
     protected bool isArmed = false;
     protected Coroutine activationCoroutine;
-
-    // track carrier/player
-    public bool      IsCarried      { get; private set; }
-    public Transform CurrentCarrier { get; set; }
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        // if (!rb) rb = gameObject.AddComponent<Rigidbody>();
         if (rb != null)
         {
 	        rb.isKinematic = true;
@@ -55,7 +57,75 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         // disable all colliders while held in inventory (start as pickupable)
         SetCollidersEnabled(true);
     }
-    
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        isArmedNetworked.OnValueChanged += OnArmedStateChanged;
+        countdownTimeRemaining.OnValueChanged += OnCountdownTimeChanged;
+        isCountdownActive.OnValueChanged += OnCountdownActiveChanged;
+        // init ui in case its armed when we spawn
+        if (isArmedNetworked.Value && isCountdownActive.Value)
+        {
+            StartActivationCountdown_LocalUI(Mathf.CeilToInt(countdownTimeRemaining.Value));
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (isArmedNetworked != null)
+        {
+            isArmedNetworked.OnValueChanged -= OnArmedStateChanged;
+            countdownTimeRemaining.OnValueChanged -= OnCountdownTimeChanged;
+            isCountdownActive.OnValueChanged -= OnCountdownActiveChanged;
+        }
+        DestroyCountdownUI();
+        base.OnNetworkDespawn();
+    }
+
+    private void OnCountdownActiveChanged(bool previousvalue, bool newvalue)
+    {
+        if (newvalue && isArmedNetworked.Value)
+        {
+            StartActivationCountdown_LocalUI(Mathf.CeilToInt(countdownTimeRemaining.Value));
+        }
+        else
+        {
+            if (countdownUIInstance != null)
+            {
+                countdownUIInstance.Hide();
+            }
+
+            if (activationUICoroutine != null)
+            {
+                StopCoroutine(activationUICoroutine);
+                activationUICoroutine = null;
+            }
+        }
+    }
+
+    private void OnCountdownTimeChanged(float previousvalue, float newvalue)
+    {
+        if (countdownUIInstance != null && isCountdownActive.Value)
+        {
+            countdownUIInstance.SetCountdown(Mathf.CeilToInt(newvalue));
+        }
+    }
+
+    private void OnArmedStateChanged(bool previousvalue, bool newvalue)
+    {
+        isArmed = newvalue;
+        if (!newvalue)
+        {
+            DestroyCountdownUI();
+            if (activationCoroutine != null)
+            {
+                StopCoroutine(activationCoroutine);
+                activationCoroutine = null;
+            }
+        }
+    }
+
     protected void OnDestroy()
     {
         DestroyCountdownUI();
@@ -124,78 +194,94 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 
         if (activationCountdown > 0)
         {
-            StartActivationCountdown_Server();
-            StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
+            if (IsServer)
+            {
+                StartActivationCountdown_Server();
+            }
+            else
+            {
+                RequestDisarmServerRpc();
+            }
+        }
+        else
+        {
+            if (IsServer)
+            {
+                ActivateItem();
+            }
+            else
+            {
+                RequestImmediateActivationServerRpc();
+            }
+        }
+    }
+
+    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
+    private void RequestImmediateActivationServerRpc()
+    {
+        ActivateItem();
+    }
+
+    public virtual void StopUsing() { /* Override in subclasses */ }
+    
+
+    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
+    private void RequestActivationServerRpc()
+    {
+        StartActivationCountdown_Server();
+    }
+    
+    public virtual void StartActivationCountdown_Server()
+    {
+        if (!IsServer) return;
+        // set netvar state
+        isArmedNetworked.Value = true;
+        countdownTimeRemaining.Value = activationCountdown;
+        isCountdownActive.Value = activationCountdown > 0;
+        if (activationCountdown > 0)
+        {
+            if (activationCoroutine != null) StopCoroutine(activationCoroutine);
+            activationCoroutine = StartCoroutine(ActivationCountdownRoutine_Server());
+            // notify client to start ui
+            StartCountdownUIClientRpc(Mathf.CeilToInt(activationCountdown));
         }
         else
         {
             ActivateItem();
         }
     }
-
-    public virtual void StopUsing() { /* Override in subclasses */ }
-
-    // activation countdown & UI
-    // public virtual void StartActivationCountdown()
-    // {
-    //     // if (activationCoroutine != null) StopCoroutine(activationCoroutine);
-    //     // activationCoroutine = StartCoroutine(ActivationCountdownRoutine());
-    //     // Spawn the UI prefab if needed and initialize it with the starting seconds
-    //     if (!countdownUIInstance && countdownUIPrefab)
-    //     {
-    //         // spawn at current target pos, not parented
-    //         countdownUIInstance = Instantiate(countdownUIPrefab);
-    //         countdownUIInstance.Init(this, Mathf.CeilToInt(activationCountdown));
-    //     }
-    //     else if (countdownUIInstance)
-    //     {
-    //         countdownUIInstance.Show();
-    //         countdownUIInstance.SetCountdown(Mathf.CeilToInt(activationCountdown));
-    //     }
-    //
-    //     isArmed = true;
-    //
-    //     if (activationCoroutine != null) StopCoroutine(activationCoroutine);
-    //     activationCoroutine = StartCoroutine(ActivationCountdownRoutine());
-    // }
-    //
-    // protected virtual IEnumerator ActivationCountdownRoutine()
-    // {
-    //     float t = activationCountdown;
-    //     while (t > 0f)
-    //     {
-    //         if (countdownUIInstance)
-    //             countdownUIInstance.SetCountdown(Mathf.CeilToInt(t));
-    //
-    //         if (audioSource && timerBeepClip) audioSource.PlayOneShot(timerBeepClip);
-    //
-    //         yield return new WaitForSeconds(1f);
-    //         t -= 1f;
-    //     }
-    //
-    //     if (countdownUIInstance) countdownUIInstance.SetCountdown(0);
-    //
-    //     if (audioSource && timerActivatedClip) audioSource.PlayOneShot(timerActivatedClip);
-    //     if (countdownUIInstance) countdownUIInstance.Hide();
-    //
-    //     ActivateItem();
-    // }
-    
-    public virtual void StartActivationCountdown_Server()
-    {
-        if (activationCoroutine != null) StopCoroutine(activationCoroutine);
-        activationCoroutine = StartCoroutine(ActivationCountdownRoutine_Server());
-    }
-
     protected virtual IEnumerator ActivationCountdownRoutine_Server()
     {
-        float t = activationCountdown;
-        while (t > 0f)
+        float time = activationCountdown;
+        while (time > 0f)
         {
+            countdownTimeRemaining.Value = time;
+            PlayTimerBeepClientRpc(); // play cound down beep on all clients
             yield return new WaitForSeconds(1f);
-            t -= 1f;
+            time -= 1f;
         }
+        countdownTimeRemaining.Value = 0f;
+        isCountdownActive.Value = false;
+        PlayTimerActivatedClientRpc(); // play a sound on all clients upon timer activation
         ActivateItem(); 
+    }
+    
+    [Rpc(SendTo.Everyone, Delivery = RpcDelivery.Reliable)]
+    private void StartCountdownUIClientRpc(int startSeconds)
+    {
+        StartActivationCountdown_LocalUI(startSeconds);
+    }
+
+    [Rpc(SendTo.Everyone, Delivery = RpcDelivery.Reliable)]
+    private void PlayTimerActivatedClientRpc()
+    {
+        if(audioSource && timerActivatedClip) audioSource.PlayOneShot(timerActivatedClip);
+    }
+
+    [Rpc(SendTo.Everyone, Delivery = RpcDelivery.Unreliable)] //unreliable for frequent beep
+    private void PlayTimerBeepClientRpc()
+    {
+        if(audioSource && timerBeepClip) audioSource.PlayOneShot(timerBeepClip);
     }
 
     public void StartActivationCountdown_LocalUI(int startSeconds)
@@ -220,31 +306,61 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 
     private IEnumerator ActivationCountdownRoutine_LocalUI()
     {
-        float t = activationCountdown;
-        while (t > 0f)
+        while (isCountdownActive.Value && countdownUIInstance != null)
         {
-            countdownUIInstance?.SetCountdown(Mathf.CeilToInt(t));
-            yield return new WaitForSeconds(1f);
-            t -= 1f;
+            int timeLeft = Mathf.CeilToInt(countdownTimeRemaining.Value);
+            countdownUIInstance.SetCountdown(timeLeft);
+            if (timeLeft <= 0) break;
+            yield return new WaitForSeconds(.2f); // updating the ui slightly more frequently than server
         }
-        countdownUIInstance?.SetCountdown(0);
-        countdownUIInstance?.Hide();
+
+        if (countdownUIInstance != null)
+        {
+            countdownUIInstance?.SetCountdown(0);
+            countdownUIInstance?.Hide();
+        }
+        activationUICoroutine = null;
     }
 
     protected virtual void ActivateItem()
     {
         Debug.Log($"{gameObject.name} activated!");
+        if (!IsServer) return;
+        // resetting netvar states
+        isArmedNetworked.Value = false;
+        isCountdownActive.Value = false;
+        countdownTimeRemaining.Value = 0f;
     }
 
     public virtual void Disarm()
+    {
+        if (IsServer)
+        {
+            DisarmServerRpc();
+        }
+        else
+        {
+            RequestDisarmServerRpc();
+        }
+    }
+
+    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
+    private void RequestDisarmServerRpc()
+    {
+        DisarmServerRpc();
+    }
+    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
+    private void DisarmServerRpc()
     {
         if (activationCoroutine != null)
         {
             StopCoroutine(activationCoroutine);
             activationCoroutine = null;
         }
-        DestroyCountdownUI();
-        isArmed = false;
+        // clean netvars
+        isArmedNetworked.Value = false;
+        isCountdownActive.Value = false;
+        countdownTimeRemaining.Value = 0f;
     }
 
     // Launch/drop (NOTE: don't call Drop() inside Drop(Vector3))
