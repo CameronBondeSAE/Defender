@@ -55,6 +55,18 @@ public class PlayerInventory : MonoBehaviour
 		}
 	}
 
+
+	void LateUpdate()
+	{
+		if (HasItem && itemHolder != null)
+		{
+			transform.SetPositionAndRotation(
+			                                 itemHolder.position,
+			                                 itemHolder.rotation
+			                                );
+		}
+	}
+
 	/// <summary>
 	/// Registers list of available items on this level from game manager
 	/// </summary>
@@ -99,7 +111,7 @@ public class PlayerInventory : MonoBehaviour
 		// Debug.Log($"Picked up: {CurrentItemInstance.name}");
 		//
 		// return true;
-		
+
 		Debug.Log($"[TryPickupItem] Called for: {(item as MonoBehaviour)?.name}");
 		if (HasItem)
 		{
@@ -107,17 +119,19 @@ public class PlayerInventory : MonoBehaviour
 			DropHeldItem();
 			return false;
 		}
-		if(item == null)
+
+		if (item == null)
 		{
 			Debug.Log("[TryPickupItem] Item is null.");
 			return false;
 		}
-		CurrentItem = item;
+
+		CurrentItem         = item;
 		CurrentItemInstance = (CurrentItem as MonoBehaviour)?.gameObject;
 		if (CurrentItemInstance != null)
 		{
 			Debug.Log($"[TryPickupItem] Parenting {CurrentItemInstance.name} to itemHolder {itemHolder.name}");
-			CurrentItemInstance.transform.SetParent(itemHolder);
+			// CurrentItemInstance.transform.SetParent(itemHolder);
 			CurrentItemInstance.transform.localPosition = Vector3.zero;
 			CurrentItemInstance.transform.localRotation = Quaternion.identity;
 			SetupItemForInventory(CurrentItemInstance);
@@ -128,6 +142,7 @@ public class PlayerInventory : MonoBehaviour
 		{
 			Debug.LogWarning("[TryPickupItem] CurrentItemInstance is null!");
 		}
+
 		OnItemPickedUp?.Invoke(item);
 		Debug.Log($"[TryPickupItem] Picked up: {CurrentItemInstance?.name}");
 		return true;
@@ -145,7 +160,7 @@ public class PlayerInventory : MonoBehaviour
 		CurrentItemInstance.transform.rotation = Quaternion.identity;
 
 		// Unparent the item from player
-		CurrentItemInstance.transform.SetParent(null);
+		// CurrentItemInstance.transform.SetParent(null);
 
 		// TODO: This has moved to UsableItem_Base
 		// Re-enable physics
@@ -172,6 +187,7 @@ public class PlayerInventory : MonoBehaviour
 		{
 			col.enabled = true;
 		}
+
 		return true;
 	}
 
