@@ -2,7 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInventory))]
-public class PlayerInteract : MonoBehaviour
+public class PlayerInteract : NetworkBehaviour
 {
 	[Header("Pickup Settings")]
 	[SerializeField]
@@ -46,6 +46,16 @@ public class PlayerInteract : MonoBehaviour
 
 	private void InputHandlerOnonUse(bool obj)
 	{
+		// If client, request server to try pickup item
+		if(IsClient)
+		{
+			RequestTryUseItem_Rpc();
+		}
+	}
+
+	[Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+	private void RequestTryUseItem_Rpc()
+	{
 		// Use the held item if holding
 		if (inventory.HasItem)
 		{
@@ -64,6 +74,16 @@ public class PlayerInteract : MonoBehaviour
 
 	private void HandleInventory()
 	{
+		// If client, request server to try pickup item
+		if(IsClient)
+		{
+			RequestTryPickupItem_Rpc();
+		}
+	}
+
+	[Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+	private void RequestTryPickupItem_Rpc()
+	{
 		if (inventory.HasItem)
 		{
 			// if already holding, drop it
@@ -73,10 +93,11 @@ public class PlayerInteract : MonoBehaviour
 		{
 			IPickup pickup = FindClosestPickup();
 
-			MonoBehaviour monoBehaviour = pickup as MonoBehaviour;
-
-			if (monoBehaviour != null) 
-				inventory.TryPickupItem(monoBehaviour.GetComponent<NetworkObject>());
+			// MonoBehaviour monoBehaviour = pickup as MonoBehaviour;
+			// if (monoBehaviour != null) 
+			// 	inventory.TryPickupItem(monoBehaviour.GetComponent<NetworkObject>());
+			if (pickup != null) 
+				inventory.TryPickupItem(pickup);
 		}
 	}
 

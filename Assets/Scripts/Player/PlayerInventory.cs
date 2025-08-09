@@ -84,18 +84,18 @@ public class PlayerInventory : NetworkBehaviour
 	/// Tries to pick up an item. Returns true if successful.
 	/// </summary>
 	// public bool TryPickupItem(IPickup item)
-	public bool TryPickupItem(NetworkObjectReference _item)
+	// public bool TryPickupItem(NetworkObjectReference _item)
+	public bool TryPickupItem(IPickup item)
 	{
-		NetworkObject itemObject;
-		_item.TryGet(out itemObject);
-
-		if (itemObject == null)
-		{
-			Debug.LogWarning("Item object is null!");
-			return false;
-		}
-		
-		IPickup item = itemObject.GetComponent<IPickup>();
+		// NetworkObject itemObject;
+		// _item.TryGet(out itemObject);
+		//
+		// if (itemObject == null)
+		// {
+		// 	Debug.LogWarning("Item object is null!");
+		// 	return false;
+		// }
+		// IPickup item = itemObject.GetComponent<IPickup>();
 		
 		// if (HasItem)
 		// {
