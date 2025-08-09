@@ -1,29 +1,46 @@
+using Unity.Netcode;
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 
-public class PlayerAnimation : MonoBehaviour
+public class PlayerAnimation : NetworkBehaviour
 {
     public enum PlayerState
     {
         Idle,
-        ReadyGun,
         Run,
-        RunShoot,
         Death
     }
-
     private PlayerState currentState;
     public Animator animator;
-
+    [SerializeField] private NetworkAnimator networkAnimator; // must assign in inspector!
     void Start()
     {
-        SetAnimationState(PlayerState.Idle); 
+        //if (IsOwner) // owner asks, server sets
+       //RequestSetStateClientRpc(PlayerState.Idle);
+       SetAnimationStateServer(PlayerState.Idle);
     }
 
-    public void SetAnimationState(PlayerState newState)
+    /// <summary>
+    /// Call this function from other scripts to set animation on the OWNER ONLYYY
+    /// </summary>
+    /// <param name="newState"></param>
+    public void RequestState(PlayerState newState)
+    {
+        if (!IsOwner) return;
+        //RequestSetStateClientRpc(newState);
+        SetAnimationStateServer(newState);
+    }
+    // [Rpc(SendTo.Server)] // client to server
+    // private void RequestSetStateClientRpc(PlayerState newState)
+    // {
+    //     SetAnimationStateServer(newState);
+    // }
+    public void SetAnimationStateServer(PlayerState newState)
     {
         if (currentState == newState) return; 
         currentState = newState;
-        HandleAnimation();
+        HandleAnimation(); // runs on server
     }
 
     private void HandleAnimation()
@@ -33,15 +50,9 @@ public class PlayerAnimation : MonoBehaviour
             case PlayerState.Idle:
                 animator.Play("Idle");
                 break;
-            // case PlayerState.ReadyGun:
-            //     animator.Play("ReadyGun");
-            //     break;
             case PlayerState.Run:
                 animator.Play("Run");
                 break;
-            // case PlayerState.RunShoot:
-            //     animator.Play("RunShoot");
-            //     break;
             case PlayerState.Death:
                 animator.Play("Death");
                 break;

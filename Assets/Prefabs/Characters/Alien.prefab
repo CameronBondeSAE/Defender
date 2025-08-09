@@ -1329,6 +1329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  networkAnimator: {fileID: 9050013571413473896}
 --- !u!1 &5880721992343391638
 GameObject:
   m_ObjectHideFlags: 0
@@ -1954,6 +1956,7 @@ GameObject:
   - component: {fileID: 5728813376443442653}
   - component: {fileID: 6834610644936913233}
   - component: {fileID: 991821325801016927}
+  - component: {fileID: 9050013571413473896}
   m_Layer: 0
   m_Name: Alien
   m_TagString: Alien
@@ -2046,6 +2049,7 @@ MonoBehaviour:
   navMeshObstacle: {fileID: 991821325801016927}
   cornerThreshold: 1
   cornerIndex: 0
+  stuckTime: 0
   maxStuckTime: 2
   tagDistance: 2.5
   mothership: {fileID: 0}
@@ -2157,3 +2161,18 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 1.34, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &9050013571413473896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897101158157931101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 7663186140054401427}
