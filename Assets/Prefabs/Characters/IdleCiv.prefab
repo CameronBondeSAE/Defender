@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 3252683364797701811}
   - component: {fileID: 1198581524587882374}
   - component: {fileID: 4614431792279055049}
+  - component: {fileID: 8289037530859334116}
   m_Layer: 3
   m_Name: IdleCiv
   m_TagString: Civilian
@@ -53,7 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2767484409
+  GlobalObjectIdHash: 3751628293
   InScenePlacedSourceGlobalObjectIdHash: 4095787409
   DeferredDespawnTick: 0
   Ownership: 1
@@ -82,16 +83,18 @@ MonoBehaviour:
   agent: {fileID: 0}
   patrolPoints: []
   patrolPointsCount: 0
-  rotationSpeed: 2
+  rotationSpeed: 40
   acceleration: 10
-  forwardForce: 5
+  forwardForce: 200
   followDistance: 2
   IsAbducted: 0
   escortingAlien: {fileID: 0}
   useRigidbody: 1
   rb: {fileID: 1198581524587882374}
+  navMeshObstacle: {fileID: 8289037530859334116}
   cornerThreshold: 1
   cornerIndex: 0
+  maxStuckTime: 2
   followTarget: {fileID: 0}
 --- !u!114 &2293536551349021963
 MonoBehaviour:
@@ -218,7 +221,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468782042391114676}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e13cba43bf6843041853598693fa0792, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -234,6 +237,22 @@ CapsuleCollider:
   m_Height: 1.5
   m_Direction: 1
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!208 &8289037530859334116
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.26, y: 1, z: 0.26}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 1, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &7969516783889707945
 PrefabInstance:
   m_ObjectHideFlags: 0
