@@ -43,6 +43,8 @@ public class AIBase : CharacterBase
 	public bool useRigidbody = true;
 
 	public Rigidbody rb;
+	
+	public NavMeshObstacle navMeshObstacle;
 
 	public void SetAbducted(bool abducted)
 	{
@@ -77,7 +79,10 @@ public class AIBase : CharacterBase
 	public float cornerThreshold = 0.75f;
 	public int   cornerIndex;
 
-
+	public  float   stuckTime;
+	public  float   maxStuckTime = 2f;
+	private Vector3 lastDestination;
+		
 	// Initialize AI - getting references
 	protected virtual void Start()
 	{
@@ -107,19 +112,19 @@ public class AIBase : CharacterBase
 		{
 			if(path != null && path.corners.Length > 0 && cornerIndex < path.corners.Length)
 			{
-				if (rb.linearVelocity.magnitude < acceleration)
-				{
-					rb.AddRelativeForce(0,0,4000f);
-				}
 			
 				// Turn towards
 				Vector3 direction   = path.corners[cornerIndex] - rb.position;
 				float   angle = Vector3.SignedAngle(rb.transform.forward, direction, Vector3.up);
-				rb.AddTorque(0, angle * rotationSpeed, 0);
-				float slowDownForce = -forwardForce*Mathf.Abs(angle) * 5f;
-				// Debug.Log(slowDownForce);
-				rb.AddRelativeForce(0,0,slowDownForce); // Slow down for sharp angles
-			
+				rb.AddTorque(0, Mathf.Sign(angle) * rotationSpeed, 0);
+				
+				// Simple move forward with slowdown
+				float slowDownScalar = (1f - Mathf.Abs(angle/180f)); // Normalise to 0-1
+				if (rb.linearVelocity.magnitude < acceleration)
+				{
+					rb.AddRelativeForce(0,0,forwardForce * slowDownScalar);
+				}
+				
 				// rb.MovePosition(Vector3.MoveTowards(rb.position, path.corners[cornerIndex], acceleration * Time.deltaTime));
 				if (Vector3.Distance(rb.position, path.corners[cornerIndex]) < cornerThreshold)
 				{
@@ -130,7 +135,19 @@ public class AIBase : CharacterBase
 						rb.angularVelocity = Vector3.zero;
 						path = null;
 						cornerIndex = 0;
-						Debug.Log("Alien : Reached destination");
+						Debug.Log("AIBase : Reached destination");
+					}
+				}
+				
+				// Stuck detector. Recalculates path, eg if player shoves something in its way.
+				if (rb.linearVelocity.magnitude < 0.5f)
+				{
+					stuckTime += Time.fixedDeltaTime;
+					if (stuckTime > maxStuckTime)
+					{
+						Debug.Log("AI STUCK! : Recalculating path");
+						MoveTo(lastDestination);
+						stuckTime = 0;
 					}
 				}
 			}
@@ -145,9 +162,19 @@ public class AIBase : CharacterBase
 		CurrentState.Enter();
 	}
 
+	
+	public IEnumerator moveTo_Coroutine;
+
 	// Move AI to a target position smoothly
 	public void MoveTo(Vector3 destination)
 	{
+		Debug.Log("		Moving to " + destination);
+		
+		lastDestination = destination;
+
+		// Otherwise the character is sitting in a dead zone in the carved navmesh
+		// navMeshObstacle.enabled = false;
+		
 		// Debug.Log("Moving to " + destination);
 		if (useRigidbody)
 		{
@@ -159,6 +186,39 @@ public class AIBase : CharacterBase
 			agent.acceleration = acceleration;
 			agent.SetDestination(destination);
 		}
+		
+		// navMeshObstacle.enabled = true;
+
+		return;
+		
+		if(moveTo_Coroutine != null)
+			StopCoroutine(moveTo_Coroutine);
+
+		moveTo_Coroutine = CalculatePath_Coroutine(destination);
+		StartCoroutine(moveTo_Coroutine);
+	}
+
+	private IEnumerator CalculatePath_Coroutine(Vector3 destination)
+	{
+		lastDestination = destination;
+
+		// Otherwise the character is sitting in a dead zone in the carved navmesh
+		navMeshObstacle.enabled = false;
+		yield return new WaitForSeconds(0.2f);
+		
+		// Debug.Log("Moving to " + destination);
+		if (useRigidbody)
+		{
+			if (path != null) NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path);
+			cornerIndex = 0;
+		}
+		else if (agent != null && agent.enabled == true)
+		{
+			agent.acceleration = acceleration;
+			agent.SetDestination(destination);
+		}
+		
+		navMeshObstacle.enabled = true;
 	}
 
 	// Stop movement
