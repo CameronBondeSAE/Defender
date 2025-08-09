@@ -64,12 +64,20 @@ public class PlayerInteract : MonoBehaviour
 
 	private void HandleInventory()
 	{
-		IPickup pickup = FindClosestPickup();
+		if (inventory.HasItem)
+		{
+			// if already holding, drop it
+			inventory.DropHeldItem();
+		}
+		else
+		{
+			IPickup pickup = FindClosestPickup();
 
-		// if (pickup != null)
-		// {
-			inventory.TryPickupItem(pickup);
-		// }
+			MonoBehaviour monoBehaviour = pickup as MonoBehaviour;
+
+			if (monoBehaviour != null) 
+				inventory.TryPickupItem(monoBehaviour.GetComponent<NetworkObject>());
+		}
 	}
 
 	/// <summary>

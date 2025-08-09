@@ -53,29 +53,22 @@ namespace DanniLi
 		{
 			base.OnNetworkSpawn();
 
-			if (IsServer)
-			{
-				GetReady_Event?.Invoke();
-			}
-		}
-
-		private void Start()
-		{
-			// FindPlayerInventory();
-			// SetupPlayerInventoryItems();
-			// SpawnLevelProps();
-
-			StartWave();
-		}
-
-		private void OnEnable()
-		{
-			// playerInputManager.onPlayerJoined += OnPlayerJoin;
-			// playerInputManager.onPlayerLeft   += OnPlayerLeave;
-			// if(IsClient) // Camera is client side only for now
 			NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoin;
 			NetworkManager.Singleton.OnConnectionEvent         += SingletonOnOnConnectionEvent;
 
+			// Server only from now
+			if (!IsServer)
+			{
+				return;
+			}
+			
+			// TODO coroutine to space it out
+			GetReady_Event?.Invoke();
+			StartWave();
+
+			// playerInputManager.onPlayerJoined += OnPlayerJoin;
+			// playerInputManager.onPlayerLeft   += OnPlayerLeave;
+			// if(IsClient) // Camera is client side only for now
 			mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
 			aliensIncomingFromAllShips = 0;
@@ -87,10 +80,15 @@ namespace DanniLi
 
 			// Set all crates to know this level's set of item SOs
 			Crate[] crates = FindObjectsByType<Crate>(FindObjectsSortMode.None);
-			foreach (Crate crate in crates)
+			if (levelSOs != null && levelSOs.Length > 0)
+				foreach (Crate crate in crates)
+				{
+					LevelInfo levelSO                         = levelSOs[currentLevelIndex];
+					if (levelSO != null) crate.availableItems = levelSO.availableItems;
+				}
+			else
 			{
-				LevelInfo levelSO                         = levelSOs[currentLevelIndex];
-				if (levelSO != null) crate.availableItems = levelSO.availableItems;
+				Debug.LogWarning("GameManager: no level info!");
 			}
 
 			Debug.Log("Aliens Incoming: " + aliensIncomingFromAllShips);

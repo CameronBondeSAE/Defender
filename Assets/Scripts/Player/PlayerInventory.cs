@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : NetworkBehaviour
 {
 	[SerializeField]
 	float smallDropForce = 10f;
@@ -16,7 +17,7 @@ public class PlayerInventory : MonoBehaviour
 	[Header("Current State")]
 	// public ItemSO CurrentItem { get; private set; }
 	public IPickup CurrentItem { get; private set; }
-
+	
 
 	[SerializeField]
 	private GameObject currentItemInstance;
@@ -29,7 +30,7 @@ public class PlayerInventory : MonoBehaviour
 
 	// public bool HasItem => CurrentItem != null && CurrentItemInstance != null;
 
-	public bool HasItem => itemHolder.childCount != 0;
+	public bool HasItem => CurrentItem != null; // TODO: Redundant now
 
 	public PlayerInputHandler2 playerInput;
 
@@ -55,6 +56,18 @@ public class PlayerInventory : MonoBehaviour
 		}
 	}
 
+
+	void LateUpdate()
+	{
+		if (HasItem)
+		{
+			CurrentItemInstance.transform.SetPositionAndRotation(
+			                                 itemHolder.position,
+			                                 itemHolder.rotation
+			                                );
+		}
+	}
+
 	/// <summary>
 	/// Registers list of available items on this level from game manager
 	/// </summary>
@@ -70,34 +83,82 @@ public class PlayerInventory : MonoBehaviour
 	/// <summary>
 	/// Tries to pick up an item. Returns true if successful.
 	/// </summary>
-	public bool TryPickupItem(IPickup item)
+	// public bool TryPickupItem(IPickup item)
+	public bool TryPickupItem(NetworkObjectReference _item)
 	{
-		if (HasItem)
+		NetworkObject itemObject;
+		_item.TryGet(out itemObject);
+
+		if (itemObject == null)
 		{
-			Debug.Log("Cannot pick up item - inventory is full! - Dropping instead");
-			DropHeldItem();
+			Debug.LogWarning("Item object is null!");
 			return false;
 		}
 		
-		if(item == null)
-			return false;
+		IPickup item = itemObject.GetComponent<IPickup>();
+		
+		// if (HasItem)
+		// {
+		// 	Debug.Log("Cannot pick up item - inventory is full! - Dropping instead");
+		// 	DropHeldItem();
+		// 	return false;
+		// }
+		//
+		// if(item == null)
+		// 	return false;
+		//
+		// // Set current item
+		// CurrentItem         = item;
+		// CurrentItemInstance = (CurrentItem as MonoBehaviour)?.gameObject;
+		// if (CurrentItemInstance != null)
+		// {
+		// 	CurrentItemInstance.transform.SetParent(itemHolder);
+		// 	CurrentItemInstance.transform.localPosition = Vector3.zero;
+		// 	CurrentItemInstance.transform.localRotation = Quaternion.identity;
+		//
+		// 	// Sets up this item to be held in inventory (kinematic)
+		// 	SetupItemForInventory(CurrentItemInstance);
+		// }
+		//
+		// OnItemPickedUp?.Invoke(item);
+		// Debug.Log($"Picked up: {CurrentItemInstance.name}");
+		//
+		// return true;
 
-		// Set current item
+		Debug.Log($"[TryPickupItem] Called for: {(item as MonoBehaviour)?.name}");
+		if (HasItem)
+		{
+			Debug.Log("[TryPickupItem] Inventory full, dropping held item.");
+			DropHeldItem();
+			return false;
+		}
+
+		if (item == null)
+		{
+			Debug.Log("[TryPickupItem] Item is null.");
+			return false;
+		}
+
 		CurrentItem         = item;
 		CurrentItemInstance = (CurrentItem as MonoBehaviour)?.gameObject;
 		if (CurrentItemInstance != null)
 		{
-			CurrentItemInstance.transform.SetParent(itemHolder);
+			Debug.Log($"[TryPickupItem] Parenting {CurrentItemInstance.name} to itemHolder {itemHolder.name}");
+			// CurrentItemInstance.transform.SetParent(itemHolder);
+			SetupItemForInventory(CurrentItemInstance);
+			
 			CurrentItemInstance.transform.localPosition = Vector3.zero;
 			CurrentItemInstance.transform.localRotation = Quaternion.identity;
-
-			// Sets up this item to be held in inventory (kinematic)
-			SetupItemForInventory(CurrentItemInstance);
+			CurrentItem.Pickup();
+			CurrentItemInstance.GetComponent<UsableItem_Base>().CurrentCarrier = transform;
+		}
+		else
+		{
+			Debug.LogWarning("[TryPickupItem] CurrentItemInstance is null!");
 		}
 
 		OnItemPickedUp?.Invoke(item);
-		Debug.Log($"Picked up: {CurrentItemInstance.name}");
-		
+		Debug.Log($"[TryPickupItem] Picked up: {CurrentItemInstance?.name}");
 		return true;
 	}
 
@@ -113,25 +174,26 @@ public class PlayerInventory : MonoBehaviour
 		CurrentItemInstance.transform.rotation = Quaternion.identity;
 
 		// Unparent the item from player
-		CurrentItemInstance.transform.SetParent(null);
+		// CurrentItemInstance.transform.SetParent(null);
 
+		// TODO: This has moved to UsableItem_Base
 		// Re-enable physics
-		Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
-		if (rb != null)
-		{
-			rb.isKinematic = false;
-			rb.useGravity  = true;
-
-			// Apply throwing force
-			Vector3 worldThrowDirection = transform.forward;
-			
-			// TODO might be better to leave up to items themselves
-			rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
-		}
-		else
-		{
-			Debug.LogWarning("Item doesn't have a Rigidbody component!");
-		}
+		// Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
+		// if (rb != null)
+		// {
+		// 	rb.isKinematic = false;
+		// 	rb.useGravity  = true;
+		//
+		// 	// Apply throwing force
+		// 	Vector3 worldThrowDirection = transform.forward;
+		// 	
+		// 	// TODO might be better to leave up to items themselves
+		// 	rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
+		// }
+		// else
+		// {
+		// 	Debug.LogWarning("Item doesn't have a Rigidbody component!");
+		// }
 
 		// Re-enable colliders
 		Collider[] colliders = CurrentItemInstance.GetComponentsInChildren<Collider>();
@@ -139,6 +201,10 @@ public class PlayerInventory : MonoBehaviour
 		{
 			col.enabled = true;
 		}
+
+		CurrentItem         = null;
+		CurrentItemInstance = null;
+		
 		return true;
 	}
 

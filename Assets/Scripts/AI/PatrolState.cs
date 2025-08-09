@@ -22,8 +22,9 @@ public class PatrolState : IAIState
     public void Stay()
     {
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
-        if (Vector3.Distance(ai.transform.position, ai.patrolPoints[currentPoint].position) < 1f)
+        if (Vector3.Distance(ai.transform.position, ai.patrolPoints[currentPoint].position) < ai.cornerThreshold)
         {
+	        Debug.Log($"[PatrolState] {ai.name} has reached its destination");
             currentPoint = (currentPoint + 1) % ai.patrolPoints.Length;
             ai.MoveTo(ai.patrolPoints[currentPoint].position);
         }
