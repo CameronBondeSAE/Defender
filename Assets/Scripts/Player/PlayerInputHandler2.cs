@@ -11,13 +11,15 @@ public class PlayerInputHandler2 : NetworkBehaviour
 	public event Action<bool> onUse;
 	public event Action onInventory;
 
-	private void OnEnable()
+	override public void OnNetworkSpawn()
 	{
-		// if (!IsLocalPlayer)
-		// {
-		// 	Debug.Log(gameObject.name + " : Not local player");
-		// 	return;
-		// }
+		base.OnNetworkSpawn();
+
+		if (!IsLocalPlayer)
+		{
+			Debug.Log(gameObject.name + " : Not local player");
+			return;
+		}
 		
 		input = GetComponent<PlayerInput>();
 
@@ -33,12 +35,14 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		inventory.performed += OnInventoryPerformed;
 	}
 
-	private void OnDisable()
+	public override void OnNetworkDespawn()
 	{
-		// if (!IsLocalPlayer)
-		// {
-		// 	return;
-		// }
+		base.OnNetworkDespawn();
+
+		if (!IsLocalPlayer)
+		{
+			return;
+		}
 		
 		InputAction move      = input.actions.FindAction("Player/Move");
 		InputAction throwing  = input.actions.FindAction("Player/Throw");
