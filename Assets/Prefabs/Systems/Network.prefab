@@ -623,7 +623,7 @@ MonoBehaviour:
     PlayerPrefab: {fileID: 1387163446135835622, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
     Prefabs:
       NetworkPrefabsLists:
-      - {fileID: 11400000, guid: 0eeac58ed96d9fc4b8c1be293f1d5dd2, type: 2}
+      - {fileID: 11400000, guid: f5b8198e69bd80b4fa855dd2d0805019, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -3349,9 +3349,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3404143380561683964}
-        m_TargetAssemblyTypeName: RelayManager, Assembly-CSharp
-        m_MethodName: GetRoundTripTime
+      - m_Target: {fileID: 3216881366786687388}
+        m_TargetAssemblyTypeName: DefenderNetworkManager, Assembly-CSharp
+        m_MethodName: StartLocalHostForTesting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

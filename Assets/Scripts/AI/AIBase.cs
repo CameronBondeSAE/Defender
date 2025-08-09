@@ -174,7 +174,7 @@ public class AIBase : CharacterBase
 	// Move AI to a target position smoothly
 	public void MoveTo(Vector3 destination)
 	{
-		Debug.Log("		Moving to " + destination);
+		// Debug.Log("		Moving to " + destination);
 		
 		lastDestination = destination;
 

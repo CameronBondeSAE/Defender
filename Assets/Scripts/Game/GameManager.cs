@@ -53,11 +53,14 @@ namespace DanniLi
 		{
 			base.OnNetworkSpawn();
 
+			NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoin;
+			NetworkManager.Singleton.OnConnectionEvent         += SingletonOnOnConnectionEvent;
+
+			// Server only from now
 			if (!IsServer)
 			{
 				return;
 			}
-
 			
 			// TODO coroutine to space it out
 			GetReady_Event?.Invoke();
@@ -66,9 +69,6 @@ namespace DanniLi
 			// playerInputManager.onPlayerJoined += OnPlayerJoin;
 			// playerInputManager.onPlayerLeft   += OnPlayerLeave;
 			// if(IsClient) // Camera is client side only for now
-			NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoin;
-			NetworkManager.Singleton.OnConnectionEvent         += SingletonOnOnConnectionEvent;
-
 			mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
 			aliensIncomingFromAllShips = 0;
