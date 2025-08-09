@@ -1,57 +1,83 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 
-public class Snack : MonoBehaviour
+public class Snack : UsableItem_Base
 {
-    [Header("Snack Params")]
-    public GameObject snackPrefab;
-    public int civsToAttract = 3; 
-    
-    private GameObject heldSnack;
-    private bool isCarrying = false;
-    private Transform playerTransform;
-    
-    private void Start()
+    [Header("Snack Params")] [SerializeField]
+    private int civiliansToAttract = 3;
+    [SerializeField] private float searchRadius = 0f;
+    [SerializeField] private float attractDelay = 0.1f;
+
+    [Header("Snack Obj")] 
+    [SerializeField] private SnackObject snackObject; // todo
+
+    protected override void Awake()
     {
-        playerTransform = transform; // or assign directly if in inventory
+        base.Awake();
+        activationCountdown = 0f;
+
+        if (snackObject == null)
+            snackObject = GetComponentInChildren<SnackObject>();
     }
 
-    public void Use()
+    public override void Use()
     {
-        if (!isCarrying && snackPrefab != null)
+        Vector3 dir = CurrentCarrier != null ? CurrentCarrier.forward : transform.forward;
+        Launch(dir, launchForce);
+        base.Use();
+    }
+
+    protected override void ActivateItem()
+    {
+        SetCollidersEnabled(true);
+        if(isActiveAndEnabled)
+            StartCoroutine(AttractAfterDelay());
+        else
         {
-            // spawn snack in player's hand or at player position
-            heldSnack = Instantiate(snackPrefab, playerTransform.position + Vector3.up * 1f, Quaternion.identity);
-            heldSnack.transform.SetParent(playerTransform);
-            heldSnack.transform.localPosition = new Vector3(0, 1f, 1f); // adjust for "holding"
-            isCarrying = true;
-
-            var snackScript = heldSnack.GetComponent<SnackObject>();
-            if (snackScript != null)
-            {
-                snackScript.Setup(this, this);
-            }
-
-            Debug.Log("[SnackBomb] Snack picked up");
+            AttractCivilians();
         }
     }
-
-    public void StopUsing()
+    private System.Collections.IEnumerator AttractAfterDelay()
     {
-        if (isCarrying && heldSnack != null)
+        float time = attractDelay;
+        while (time > 0f)
         {
-            // drop snack
-            heldSnack.transform.SetParent(null);
-            heldSnack.transform.position = playerTransform.position + playerTransform.forward * 1.5f + Vector3.up * 0.2f;
-
-            var snackScript = heldSnack.GetComponent<SnackObject>();
-            if (snackScript != null)
-            {
-                snackScript.OnSnackDropped(civsToAttract);
-            }
-            isCarrying = false;
-            heldSnack = null;
-
-            Debug.Log("[SnackBomb] Snack dropped");
+            time -= Time.deltaTime;
+            yield return null;
         }
+        AttractCivilians();
     }
+
+    private void AttractCivilians()
+    {
+        if (snackObject == null) return;
+        AIBase[] all = FindObjectsOfType<AIBase>();
+        List<AIBase> candidates = new List<AIBase>();
+        if (searchRadius > 0f)
+        {
+            Vector3 snackPos = snackObject.transform.position;
+            for (int i = 0; i < all.Length; i++)
+            {
+                if(Vector3.SqrMagnitude(all[i].transform.position - snackPos) < searchRadius * searchRadius)candidates.Add(all[i]);
+            }
+        }
+        else
+        {
+            candidates.AddRange(all);
+        }
+
+        if (candidates.Count == 0) return;
+        int civilliansPicked = 0;
+        while (candidates.Count > 0 && civilliansPicked < civiliansToAttract)
+        {
+            int randomIndex = Random.Range(0, candidates.Count);
+            AIBase chosenCivilian = candidates[randomIndex];
+            chosenCivilian.ChangeState(new GetSnackState(chosenCivilian, snackObject.transform));
+            candidates.RemoveAt(randomIndex);
+            civilliansPicked++;
+        }
+
+    }
+
 }

@@ -90,6 +90,12 @@ public class AIBase : CharacterBase
 		agent  = GetComponent<NavMeshAgent>();
 		if (useRigidbody)
 		{
+			if (!rb) rb = GetComponent<Rigidbody>();
+			if (!rb)
+			{
+				rb = gameObject.AddComponent<Rigidbody>();
+				rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+			}
 			agent.enabled = false;
 			path = new NavMeshPath();
 		}
