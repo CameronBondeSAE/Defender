@@ -34,7 +34,8 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     public float launchForce = 10f;
     [SerializeField] protected Vector3 launchDirection = Vector3.forward;
     protected Rigidbody rb;
-
+    
+    [Header("NetworkVar")]
     protected bool isArmed = false;
     protected Coroutine activationCoroutine;
 
@@ -82,7 +83,8 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     {
         if (audioSource && pickupClip) audioSource.PlayOneShot(pickupClip);
         IsCarried = true;
-        // CurrentCarrier = transform.parent;
+        SetCarrier(CurrentCarrier);
+        //CurrentCarrier = transform.parent;
 
         // Disable physics and colliders while in inventory
         if (rb != null)
@@ -123,6 +125,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         if (activationCountdown > 0)
         {
             StartActivationCountdown_Server();
+            StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
         }
         else
         {
@@ -180,7 +183,6 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     
     public virtual void StartActivationCountdown_Server()
     {
-        // Server-only timer logic; DO NOT spawn UI here
         if (activationCoroutine != null) StopCoroutine(activationCoroutine);
         activationCoroutine = StartCoroutine(ActivationCountdownRoutine_Server());
     }
@@ -190,16 +192,14 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         float t = activationCountdown;
         while (t > 0f)
         {
-            // Optional: drive a NetworkVariable for time remaining if you want HUDs on all clients
             yield return new WaitForSeconds(1f);
             t -= 1f;
         }
-        ActivateItem(); // This should be server-authoritative
+        ActivateItem(); 
     }
 
     public void StartActivationCountdown_LocalUI(int startSeconds)
     {
-        // Owner-only local UI (non-networked)
         if (!countdownUIPrefab) { Debug.LogWarning($"[{name}] No countdownUIPrefab"); return; }
 
         if (!countdownUIInstance)
@@ -212,8 +212,6 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
             countdownUIInstance.Show();
             countdownUIInstance.SetCountdown(startSeconds);
         }
-
-        // Local UI countdown (purely cosmetic)
         if (activationUICoroutine != null) StopCoroutine(activationUICoroutine);
         activationUICoroutine = StartCoroutine(ActivationCountdownRoutine_LocalUI());
     }

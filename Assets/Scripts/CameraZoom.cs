@@ -9,10 +9,11 @@ public class CameraZoom : MonoBehaviour
     public CinemachineCamera vcam;
 
     [Header("Zoom Settings")]
-    [SerializeField] private float zoomSpeed = 5f;
-    [SerializeField] private float minSize = 20f;
-    [SerializeField] private float maxSize = 80f;
+    [SerializeField] private float zoomSpeed = 120f;
+    [SerializeField] private float minFOV = 80f;   // For perspective
+    [SerializeField] private float maxFOV = 120f;   // For perspective
     private float targetSize;
+    private float targetFOV;
 
 
     private void Awake()
@@ -28,12 +29,25 @@ public class CameraZoom : MonoBehaviour
 
     private void Update()
     {
-        float scrollValue = Mouse.current.scroll.ReadValue().y;
+        CamZoom();
+    }
+
+    private void CamZoom()
+    {
+        float scrollValue = 0f;
+        if (Mouse.current != null)
+        {
+            Vector2 scrollVector = Mouse.current.scroll.ReadValue();
+            scrollValue = scrollVector.y;
+        }
+        
         if (scrollValue != 0)
         {
-            targetSize -= scrollValue * zoomSpeed * Time.deltaTime;
-            targetSize = Mathf.Clamp(targetSize, minSize, maxSize);
-            vcam.Lens.OrthographicSize = targetSize;
+            float oldFOV = vcam.Lens.FieldOfView;
+            float zoomChange = scrollValue * zoomSpeed * 0.5f; 
+            targetFOV -= zoomChange;
+            targetFOV = Mathf.Clamp(targetFOV, minFOV, maxFOV);
+            vcam.Lens.FieldOfView = targetFOV;
         }
     }
 

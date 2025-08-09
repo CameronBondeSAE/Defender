@@ -7,7 +7,7 @@ public class CountdownUI : MonoBehaviour
     public Text countdownText;
 
     [Header("Offsets")]
-    public Vector3 offset = new Vector3(0, 0.6f, 0);
+    public Vector3 offset = new Vector3(0, 2.5f, 0);
 
     [Header("Smoothing / Deadzone")]
     [Tooltip("How quickly this UI catches up once it decides to move.")]
@@ -75,25 +75,27 @@ public class CountdownUI : MonoBehaviour
             anchorPos = Vector3.SmoothDamp(anchorPos, desired, ref vel, smoothTime);
         }
         transform.position = anchorPos;
-        // face the camera (no item rotation!)
-        var cam = Camera.main;
-        if (cam)
-        {
-            // face cam horizontally to reduce tilt
-            Vector3 camPos = cam.transform.position;
-            camPos.y = transform.position.y;
-            transform.LookAt(camPos);
-            transform.Rotate(0f, 180f, 0f); // flip to face Text at camera
-        }
+        
+        // Face the camera (no item rotation!)
+        // var cam = Camera.main;
+        // if (cam)
+        // {
+        //     // face cam horizontally to reduce tilt
+        //     Vector3 camPos = cam.transform.position;
+        //     camPos.y = transform.position.y;
+        //     transform.LookAt(camPos);
+        //     transform.Rotate(0f, 180f, 0f); // flip to face Text at camera
+        // }
     }
     private Vector3 GetDesiredTargetPos()
     {
         if (item == null) return transform.position;
+        return item.transform.position + offset;
 
-        Transform followTarget = (item.IsCarried && item.CurrentCarrier != null)
-            ? item.CurrentCarrier
-            : item.transform;
-
-        return followTarget.position + offset;
+        // Transform followTarget = (item.IsCarried && item.CurrentCarrier != null)
+        //     ? item.CurrentCarrier
+        //     : item.transform;
+        //
+        // return followTarget.position + offset;
     }
 }

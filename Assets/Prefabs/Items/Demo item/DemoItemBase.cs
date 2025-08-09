@@ -14,6 +14,9 @@ public class DemoItemBase : UsableItem_Base
 		base.Use(); 
 		Debug.Log("DemoItem Used");
 		GetComponent<Renderer>().material.color = Color.green;
+		
+		if (activationCountdown > 0)
+			StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
 	}
 
 	public override void StopUsing()

@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 2140459502506998565}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2912478756783342433}
@@ -108,7 +108,7 @@ RectTransform:
   m_GameObject: {fileID: 7822931937235686600}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.1}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6656035948815465886}
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownText: {fileID: 3377913238198455553}
-  offset: {x: 0, y: 0.6, z: 0}
+  offset: {x: 0, y: 3, z: 0}
   smoothTime: 0.15
   carriedDeadzone: 0.25
   worldDeadzone: 0.08
