@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 4638420518047162639}
   - component: {fileID: 1769863027275978531}
   - component: {fileID: 3536397080695100442}
+  - component: {fileID: 5714765879082662013}
   m_Layer: 0
   m_Name: AgroAlien
   m_TagString: Alien
@@ -193,9 +194,17 @@ MonoBehaviour:
   patrolPointsCount: 4
   rotationSpeed: 10
   acceleration: 100
+  forwardForce: 50
   followDistance: 0
   IsAbducted: 0
   escortingAlien: {fileID: 0}
+  useRigidbody: 1
+  rb: {fileID: 0}
+  navMeshObstacle: {fileID: 0}
+  cornerThreshold: 0.75
+  cornerIndex: 0
+  stuckTime: 0
+  maxStuckTime: 2
   damageMin: 5
   damageMax: 10
   alertRange: 10
@@ -278,6 +287,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  networkAnimator: {fileID: 5714765879082662013}
 --- !u!114 &3536397080695100442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +307,21 @@ MonoBehaviour:
   woodParticles: {fileID: 0}
   metalParticles: {fileID: 0}
   fireParticles: {fileID: 0}
+--- !u!114 &5714765879082662013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648060442026450375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 4638420518047162639}
 --- !u!1001 &239570271543353088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -430,3 +456,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  networkAnimator: {fileID: 0}

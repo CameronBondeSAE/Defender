@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 1198581524587882374}
   - component: {fileID: 4614431792279055049}
   - component: {fileID: 8289037530859334116}
+  - component: {fileID: 3610845311785406197}
   m_Layer: 3
   m_Name: IdleCiv
   m_TagString: Civilian
@@ -54,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3751628293
+  GlobalObjectIdHash: 4095787409
   InScenePlacedSourceGlobalObjectIdHash: 4095787409
   DeferredDespawnTick: 0
   Ownership: 1
@@ -94,6 +95,7 @@ MonoBehaviour:
   navMeshObstacle: {fileID: 8289037530859334116}
   cornerThreshold: 1
   cornerIndex: 0
+  stuckTime: 0
   maxStuckTime: 2
   followTarget: {fileID: 0}
 --- !u!114 &2293536551349021963
@@ -147,6 +149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  networkAnimator: {fileID: 3610845311785406197}
 --- !u!114 &3041347553923978941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,6 +257,21 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 1, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &3610845311785406197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 3252683364797701811}
 --- !u!1001 &7969516783889707945
 PrefabInstance:
   m_ObjectHideFlags: 0

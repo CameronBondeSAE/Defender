@@ -228,7 +228,6 @@ public class SearchState : IAIState
             ignoredCivs.Add(ai.currentTargetCiv); // Mark this civ as ignored
             ai.currentTargetCiv = null;
         }
-        
         isGrabbing = false;
         isBusy = false;
         FindNewTarget();
