@@ -258,6 +258,81 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 438404136864597573, guid: edd26c889f25c844891f58f2d4e63661, type: 3}
   m_PrefabInstance: {fileID: 506339786}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &70990410
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 482073165}
+    m_Modifications:
+    - target: {fileID: 2130420092593000568, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_Name
+      value: Demo Item (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -14.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.6668205
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 29.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7729380888957995605, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2803467921
+      objectReference: {fileID: 0}
+    - target: {fileID: 8650250806843277384, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 311911885}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+--- !u!4 &70990411 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+  m_PrefabInstance: {fileID: 70990410}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &70990412 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2130420092593000568, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
+  m_PrefabInstance: {fileID: 70990410}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &87345659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1466,6 +1541,7 @@ Transform:
   m_Children:
   - {fileID: 521664264}
   - {fileID: 8708370507975262659}
+  - {fileID: 70990411}
   - {fileID: 3977853}
   - {fileID: 1008216138}
   - {fileID: 558185320}
@@ -7044,6 +7120,8 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Characters/Player.prefab
   - _gameObject: {fileID: 8708370507975262657}
     _prefab: Assets/Prefabs/Items/Demo item/Demo Item.prefab
+  - _gameObject: {fileID: 70990412}
+    _prefab: Assets/Prefabs/Items/Demo item/Demo Item.prefab
   - _gameObject: {fileID: 3977854}
     _prefab: Assets/Prefabs/Items/Suicide vest/Suicide Vest.prefab
   - _gameObject: {fileID: 1008216137}
@@ -8570,10 +8648,6 @@ PrefabInstance:
     - target: {fileID: 7729380888957995605, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2087675651
-      objectReference: {fileID: 0}
-    - target: {fileID: 7729380888957995605, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 281891221
       objectReference: {fileID: 0}
     - target: {fileID: 8650250806843277384, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}
       propertyPath: m_Camera

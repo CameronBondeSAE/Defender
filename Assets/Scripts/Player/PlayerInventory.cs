@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventory : NetworkBehaviour
 {
 	[SerializeField]
 	float smallDropForce = 10f;
@@ -16,7 +17,7 @@ public class PlayerInventory : MonoBehaviour
 	[Header("Current State")]
 	// public ItemSO CurrentItem { get; private set; }
 	public IPickup CurrentItem { get; private set; }
-
+	
 
 	[SerializeField]
 	private GameObject currentItemInstance;
@@ -29,7 +30,7 @@ public class PlayerInventory : MonoBehaviour
 
 	// public bool HasItem => CurrentItem != null && CurrentItemInstance != null;
 
-	public bool HasItem => itemHolder.childCount != 0;
+	public bool HasItem => CurrentItem != null; // TODO: Redundant now
 
 	public PlayerInputHandler2 playerInput;
 
@@ -58,9 +59,9 @@ public class PlayerInventory : MonoBehaviour
 
 	void LateUpdate()
 	{
-		if (HasItem && itemHolder != null)
+		if (HasItem)
 		{
-			transform.SetPositionAndRotation(
+			CurrentItemInstance.transform.SetPositionAndRotation(
 			                                 itemHolder.position,
 			                                 itemHolder.rotation
 			                                );
@@ -82,8 +83,20 @@ public class PlayerInventory : MonoBehaviour
 	/// <summary>
 	/// Tries to pick up an item. Returns true if successful.
 	/// </summary>
-	public bool TryPickupItem(IPickup item)
+	// public bool TryPickupItem(IPickup item)
+	public bool TryPickupItem(NetworkObjectReference _item)
 	{
+		NetworkObject itemObject;
+		_item.TryGet(out itemObject);
+
+		if (itemObject == null)
+		{
+			Debug.LogWarning("Item object is null!");
+			return false;
+		}
+		
+		IPickup item = itemObject.GetComponent<IPickup>();
+		
 		// if (HasItem)
 		// {
 		// 	Debug.Log("Cannot pick up item - inventory is full! - Dropping instead");
@@ -132,9 +145,10 @@ public class PlayerInventory : MonoBehaviour
 		{
 			Debug.Log($"[TryPickupItem] Parenting {CurrentItemInstance.name} to itemHolder {itemHolder.name}");
 			// CurrentItemInstance.transform.SetParent(itemHolder);
+			SetupItemForInventory(CurrentItemInstance);
+			
 			CurrentItemInstance.transform.localPosition = Vector3.zero;
 			CurrentItemInstance.transform.localRotation = Quaternion.identity;
-			SetupItemForInventory(CurrentItemInstance);
 			CurrentItem.Pickup();
 			CurrentItemInstance.GetComponent<UsableItem_Base>().CurrentCarrier = transform;
 		}
@@ -188,6 +202,9 @@ public class PlayerInventory : MonoBehaviour
 			col.enabled = true;
 		}
 
+		CurrentItem         = null;
+		CurrentItemInstance = null;
+		
 		return true;
 	}
 

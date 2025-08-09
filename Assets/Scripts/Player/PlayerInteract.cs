@@ -72,7 +72,11 @@ public class PlayerInteract : MonoBehaviour
 		else
 		{
 			IPickup pickup = FindClosestPickup();
-			inventory.TryPickupItem(pickup);
+
+			MonoBehaviour monoBehaviour = pickup as MonoBehaviour;
+
+			if (monoBehaviour != null) 
+				inventory.TryPickupItem(monoBehaviour.GetComponent<NetworkObject>());
 		}
 	}
 

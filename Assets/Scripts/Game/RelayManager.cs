@@ -55,7 +55,7 @@ public class RelayManager : MonoBehaviour
 	private void OnSubmit(string _joinCode)
 	{
 		joinCode = _joinCode;
-		Debug.Log("New joincode entered by user = " + joinCode);
+		// Debug.Log("New joincode entered by user = " + joinCode);
 	}
 
 	public void GetRoundTripTime()
