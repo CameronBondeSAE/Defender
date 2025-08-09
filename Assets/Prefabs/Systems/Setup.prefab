@@ -163,7 +163,7 @@ Transform:
   m_GameObject: {fileID: 1879188494702621919}
   serializedVersion: 2
   m_LocalRotation: {x: 0.56062883, y: -0.000000018938643, z: 0.000000012822085, w: 0.82806724}
-  m_LocalPosition: {x: 91.570045, y: 7.0342054, z: 60.90202}
+  m_LocalPosition: {x: 103.54005, y: 25.338371, z: 45.691467}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 195584097
+  GlobalObjectIdHash: 3334962434
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -405,7 +405,7 @@ MonoBehaviour:
   loseScreen: {fileID: 0}
   currentLevelIndex: 0
   levelSOs: []
-  targetGroup: {fileID: 0}
+  targetGroup: {fileID: 7258090910381291285}
   levelContainer: {fileID: 0}
   totalCivilians: 0
   civiliansAlive: 0
@@ -769,6 +769,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6077567698208847209}
     m_Modifications:
+    - target: {fileID: 151884214589406600, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 4183140187233325674}
     - target: {fileID: 2153025547354022072, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -783,31 +787,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2684241525028908292, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4573982977447756965, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.970001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4573982977447756965, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.6668205
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4573982977447756965, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.3023796
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6453254644985109743, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.970001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6453254644985109743, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.428415
+      value: 30.732582
       objectReference: {fileID: 0}
     - target: {fileID: 6453254644985109743, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.9175186
+      value: -12.293034
       objectReference: {fileID: 0}
     - target: {fileID: 6453254644985109743, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_LocalRotation.w
@@ -867,7 +871,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7029032598807591434, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: field of view
-      value: 79.14332
+      value: 35.67532
+      objectReference: {fileID: 0}
+    - target: {fileID: 7331613789426811979, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
+      propertyPath: FollowOffset.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7331613789426811979, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
+      propertyPath: TrackerSettings.PositionDamping.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7331613789426811979, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
+      propertyPath: TrackerSettings.PositionDamping.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7331613789426811979, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
+      propertyPath: TrackerSettings.PositionDamping.z
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7970973161896725635, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       propertyPath: m_Name
@@ -883,6 +903,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7970973161896725635, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7258090910381291285}
+    - targetCorrespondingSourceObject: {fileID: 8140314587533726691, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6771109193269587861}
   m_SourcePrefab: {fileID: 100100000, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
 --- !u!1 &628643999828780741 stripped
 GameObject:
@@ -906,6 +929,32 @@ MonoBehaviour:
   UpdateMethod: 2
   Targets: []
   m_LegacyTargets: []
+--- !u!1 &1648252885481273765 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8140314587533726691, guid: de7644fe132602d4e927dcb2f328d612, type: 3}
+  m_PrefabInstance: {fileID: 7361117892009486918}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6771109193269587861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648252885481273765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eb4843bae7d24943842ea23130dcd55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FramingMode: 2
+  FramingSize: 0.8
+  CenterOffset: {x: 0, y: 0}
+  Damping: 7.12
+  SizeAdjustment: 2
+  LateralAdjustment: 0
+  FovRange: {x: 35.67532, y: 81.506485}
+  DollyRange: {x: -81.9, y: -33.1}
+  OrthoSizeRange: {x: 1, y: 1000}
 --- !u!4 &4183140187233325674 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6641277205878634540, guid: de7644fe132602d4e927dcb2f328d612, type: 3}

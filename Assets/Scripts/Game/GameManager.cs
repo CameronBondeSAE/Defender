@@ -53,23 +53,16 @@ namespace DanniLi
 		{
 			base.OnNetworkSpawn();
 
-			if (IsServer)
+			if (!IsServer)
 			{
-				GetReady_Event?.Invoke();
+				return;
 			}
-		}
 
-		private void Start()
-		{
-			// FindPlayerInventory();
-			// SetupPlayerInventoryItems();
-			// SpawnLevelProps();
-
+			
+			// TODO coroutine to space it out
+			GetReady_Event?.Invoke();
 			StartWave();
-		}
 
-		private void OnEnable()
-		{
 			// playerInputManager.onPlayerJoined += OnPlayerJoin;
 			// playerInputManager.onPlayerLeft   += OnPlayerLeave;
 			// if(IsClient) // Camera is client side only for now

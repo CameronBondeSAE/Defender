@@ -13,11 +13,11 @@ public class PlayerInputHandler2 : NetworkBehaviour
 
 	private void OnEnable()
 	{
-		if (!IsLocalPlayer)
-		{
-			Debug.Log(gameObject.name + " : Not local player");
-			return;
-		}
+		// if (!IsLocalPlayer)
+		// {
+		// 	Debug.Log(gameObject.name + " : Not local player");
+		// 	return;
+		// }
 		
 		input = GetComponent<PlayerInput>();
 
@@ -35,10 +35,10 @@ public class PlayerInputHandler2 : NetworkBehaviour
 
 	private void OnDisable()
 	{
-		if (!IsLocalPlayer)
-		{
-			return;
-		}
+		// if (!IsLocalPlayer)
+		// {
+		// 	return;
+		// }
 		
 		InputAction move      = input.actions.FindAction("Player/Move");
 		InputAction throwing  = input.actions.FindAction("Player/Throw");
