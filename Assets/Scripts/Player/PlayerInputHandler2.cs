@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using System;
 using Unity.Netcode;
 
-public class PlayerInputHandler2 : MonoBehaviour
+public class PlayerInputHandler2 : NetworkBehaviour
 {
 	public Vector2 moveInput { get; private set; }
 
@@ -13,6 +13,12 @@ public class PlayerInputHandler2 : MonoBehaviour
 
 	private void OnEnable()
 	{
+		if (!IsLocalPlayer)
+		{
+			Debug.Log(gameObject.name + " : Not local player");
+			return;
+		}
+		
 		input = GetComponent<PlayerInput>();
 
 		InputAction move      = input.actions.FindAction("Player/Move");
@@ -29,6 +35,11 @@ public class PlayerInputHandler2 : MonoBehaviour
 
 	private void OnDisable()
 	{
+		if (!IsLocalPlayer)
+		{
+			return;
+		}
+		
 		InputAction move      = input.actions.FindAction("Player/Move");
 		InputAction throwing  = input.actions.FindAction("Player/Throw");
 		InputAction use       = input.actions.FindAction("Player/Use");

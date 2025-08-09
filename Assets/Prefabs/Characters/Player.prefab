@@ -520,10 +520,10 @@ PrefabInstance:
       addedObject: {fileID: 6630151767160371311}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2029828533657641530}
+      addedObject: {fileID: 8972376730834744984}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8972376730834744984}
+      addedObject: {fileID: 2029828533657641530}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2324400417087420210}
@@ -596,7 +596,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387163446135835622}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 25
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -730,19 +730,6 @@ MonoBehaviour:
   itemHolder: {fileID: 3186870215189968867}
   currentItemInstance: {fileID: 0}
   playerInput: {fileID: 0}
---- !u!114 &2029828533657641530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387163446135835622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 943e927365b8436fb57ffd7607555944, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: {fileID: 6310878697514803470}
 --- !u!114 &8972376730834744984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,7 +742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1764871362
+  GlobalObjectIdHash: 3683667178
   InScenePlacedSourceGlobalObjectIdHash: 3683667178
   DeferredDespawnTick: 0
   Ownership: 1
@@ -768,6 +755,20 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &2029828533657641530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387163446135835622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 943e927365b8436fb57ffd7607555944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  input: {fileID: 6310878697514803470}
 --- !u!114 &2324400417087420210
 MonoBehaviour:
   m_ObjectHideFlags: 0
