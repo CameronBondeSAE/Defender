@@ -45,6 +45,11 @@ public class AIBase : CharacterBase
 	public Rigidbody rb;
 	
 	public NavMeshObstacle navMeshObstacle;
+	
+	[Header("To expose to statemachine")]
+	public NavMeshPath Path => path;
+	public int CornerIndex => cornerIndex;
+	public bool UseRigidbody => useRigidbody;
 
 	public void SetAbducted(bool abducted)
 	{
@@ -71,7 +76,7 @@ public class AIBase : CharacterBase
 		}
 	}
 
-	NavMeshPath        path;
+	public NavMeshPath        path;
 	public Transform   Player         => player;
 	public Transform[] PatrolPoints   => patrolPoints;
 	public float       FollowDistance => followDistance;
@@ -174,10 +179,11 @@ public class AIBase : CharacterBase
 	// Move AI to a target position smoothly
 	public void MoveTo(Vector3 destination)
 	{
-		// Debug.Log("		Moving to " + destination);
+		// OLD CODE
+		/*// Debug.Log("		Moving to " + destination);
 		
 		lastDestination = destination;
-
+		
 		// Otherwise the character is sitting in a dead zone in the carved navmesh
 		// navMeshObstacle.enabled = false;
 		
@@ -194,14 +200,54 @@ public class AIBase : CharacterBase
 		}
 		
 		// navMeshObstacle.enabled = true;
-
-		return;
+		// return;
 		
 		if(moveTo_Coroutine != null)
 			StopCoroutine(moveTo_Coroutine);
-
+		
 		moveTo_Coroutine = CalculatePath_Coroutine(destination);
-		StartCoroutine(moveTo_Coroutine);
+		StartCoroutine(moveTo_Coroutine);*/
+		
+		Debug.Log("Moving to " + destination);
+		lastDestination = destination;
+
+		if (useRigidbody)
+		{
+			// Find nearest valid NavMesh position for the AI
+			NavMeshHit startHit;
+			Vector3 startPos = transform.position;
+			if (!NavMesh.SamplePosition(startPos, out startHit, 10f, NavMesh.AllAreas))
+			{
+				Debug.LogWarning($"[MoveTo] {name} cannot find valid NavMesh start position near {startPos}");
+				return;
+			}
+
+			// find nearest valid navmesh pos for destination
+			NavMeshHit destHit;
+			if (!NavMesh.SamplePosition(destination, out destHit, 10f, NavMesh.AllAreas))
+			{
+				return;
+			}
+
+			// get path between these points
+			if (path == null) path = new NavMeshPath();
+        
+			bool pathFound = NavMesh.CalculatePath(startHit.position, destHit.position, NavMesh.AllAreas, path);
+        
+			if (pathFound && path.status == NavMeshPathStatus.PathComplete)
+			{
+				cornerIndex = 0;
+			}
+			else
+			{
+				path = null;
+			}
+		}
+		else if (agent != null && agent.enabled == true)
+		{
+			agent.acceleration = acceleration;
+			agent.SetDestination(destination);
+		}
 	}
 
 	private IEnumerator CalculatePath_Coroutine(Vector3 destination)

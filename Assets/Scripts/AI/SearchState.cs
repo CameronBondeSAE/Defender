@@ -93,14 +93,52 @@ public class SearchState : IAIState
     // Continuously called to keep moving towards the target and check for grabbing conditions
     public void Stay()
     {
+        // if (isGrabbing || isBusy)
+        // {
+        //     if (isGrabbing && Time.time >= grabStartTime + grabTimeout)
+        //     {
+        //         //Debug.Log($"[SearchState] {ai.name} has timed out"); 
+        //         AbandonCurrentTargetAndSearchNew();
+        //     }
+        //
+        //     return;
+        // }
+        //
+        // if (ai.currentTargetCiv == null)
+        // {
+        //     FindNewTarget();
+        //     return;
+        // }
+        //
+        // // check if current civ is taken by another alien
+        // if (ai.currentTargetCiv.IsAbducted && ai.currentTargetCiv.escortingAlien != ai)
+        // {
+        //     //Debug.Log($"[SearchState] {ai.name} target taken by another alien");
+        //     ai.currentTargetCiv = null;
+        //     FindNewTarget();
+        //     return;
+        // }
+        // float distanceToTarget = Vector3.Distance(ai.transform.position, ai.currentTargetCiv.transform.position);
+        // // update movement less frequently see if reduces conflict..?
+        // if (Time.time - lastMoveUpdate > moveUpdateInterval)
+        // {
+        //     ai.MoveTo(ai.currentTargetCiv.transform.position);
+        //     lastMoveUpdate = Time.time;
+        // }
+        //
+        // if (distanceToTarget <= ai.tagDistance)
+        // {
+        //     isGrabbing = true;
+        //     isBusy = true;
+        //     grabStartTime = Time.time;
+        //     ai.StartCoroutine(GrabThenReturn());
+        // }
         if (isGrabbing || isBusy)
         {
             if (isGrabbing && Time.time >= grabStartTime + grabTimeout)
             {
-                //Debug.Log($"[SearchState] {ai.name} has timed out"); 
                 AbandonCurrentTargetAndSearchNew();
             }
-
             return;
         }
 
@@ -109,19 +147,18 @@ public class SearchState : IAIState
             FindNewTarget();
             return;
         }
-        
-        // check if current civ is taken by another alien
         if (ai.currentTargetCiv.IsAbducted && ai.currentTargetCiv.escortingAlien != ai)
         {
-            //Debug.Log($"[SearchState] {ai.name} target taken by another alien");
             ai.currentTargetCiv = null;
             FindNewTarget();
             return;
         }
+
         float distanceToTarget = Vector3.Distance(ai.transform.position, ai.currentTargetCiv.transform.position);
-        // update movement less frequently see if reduces conflict..?
+        
         if (Time.time - lastMoveUpdate > moveUpdateInterval)
         {
+            Debug.Log($"[SearchState] {ai.name} moving to {ai.currentTargetCiv.name} at {ai.currentTargetCiv.transform.position}");
             ai.MoveTo(ai.currentTargetCiv.transform.position);
             lastMoveUpdate = Time.time;
         }

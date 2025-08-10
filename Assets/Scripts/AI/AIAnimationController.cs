@@ -27,8 +27,24 @@ namespace AIAnimation // A name space shared only by AIs for clarity
 
         private void Awake()
         {
-            animator = GetComponentInChildren<Animator>();
-            networkAnimator = GetComponent<NetworkAnimator>();
+            // search order: self > children > parent
+            // since our ai set up is all different
+            animator = GetComponent<Animator>() ?? 
+                       GetComponentInChildren<Animator>() ?? 
+                       GetComponentInParent<Animator>();
+
+            networkAnimator = GetComponent<NetworkAnimator>() ??
+                              GetComponentInChildren<NetworkAnimator>() ??
+                              GetComponentInParent<NetworkAnimator> ();
+    
+            if (animator == null)
+            {
+                Debug.LogError($"[AIAnimationController] No Animator found on {name}!");
+            }
+            else
+            {
+                Debug.Log($"[AIAnimationController] Found Animator on {animator.gameObject.name}");
+            }
         }
         public void SetAnimationStateServer(AnimationState newState) // server only
         {
@@ -42,22 +58,23 @@ namespace AIAnimation // A name space shared only by AIs for clarity
             {
                 SetAnimationStateServer(state);
             }
-            // else
-            // {
-            //     RequestSetStateServerRpc(state);
-            // }
+            else if (IsOwner) // Add this check
+            {
+                // If this client owns the object, request server to set animation
+                RequestSetStateServerRpc(state);
+            }
         }
         
-        // [Rpc(SendTo.Server, RequireOwnership = false)]
-        // private void RequestSetStateServerRpc(AnimationState newState)
+        [Rpc(SendTo.Server, RequireOwnership = false)]
+        private void RequestSetStateServerRpc(AnimationState newState)
+        {
+            SetAnimationStateServer(newState);
+        }
+        // [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
+        // private void RequestSetStateClientRpc(AnimationState newState)
         // {
         //     SetAnimationStateServer(newState);
         // }
-        // // [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
-        // // private void RequestSetStateClientRpc(AnimationState newState)
-        // // {
-        // //     SetAnimationStateServer(newState);
-        // // }
         public void HandleAnimation()
         {
             if (!IsServer || animator == null) return;
