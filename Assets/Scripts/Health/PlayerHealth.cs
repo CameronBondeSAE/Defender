@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using AIAnimation;
 
 public class PlayerHealth : Health
 {
     [SerializeField] private float reviveAnimDuration;
+    private AIAnimationController animation;
 
     protected override void Die()
     {
@@ -15,6 +17,8 @@ public class PlayerHealth : Health
 
     private IEnumerator RespawnPlayer()
     {
+        animation = GetComponent<AIAnimationController>();
+        animation.SetAnimation(AIAnimationController.AnimationState.Dead);
         yield return new WaitForSeconds(deathAnimDuration);
         yield return new WaitForSeconds(reviveAnimDuration);
         currentHealth = maxHealth;
