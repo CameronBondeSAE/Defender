@@ -1,3 +1,4 @@
+using Defender;
 using UnityEngine;
 
 public class BasicGrenade : MonoBehaviour, IUsable, IPickup
@@ -41,7 +42,7 @@ public class BasicGrenade : MonoBehaviour, IUsable, IPickup
     /// UseItem from IUsableItem interface - called when player throws/uses this item
     /// This here just starts the countdown timer - throwing (rb.AddForce) is handled by PlayerCombat
     /// </summary>
-    public void Use()
+    public void Use(CharacterBase characterTryingToUse)
     {
         ActivateGrenade();
     }
@@ -96,6 +97,6 @@ public class BasicGrenade : MonoBehaviour, IUsable, IPickup
 
     public void Drop()
     {
-	    Use();
+	    Use(GetComponent<CharacterBase>());
     }
 }

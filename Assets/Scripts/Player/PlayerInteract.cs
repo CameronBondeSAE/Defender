@@ -1,3 +1,4 @@
+using Defender;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -68,7 +69,7 @@ public class PlayerInteract : NetworkBehaviour
 
 		if (pickup != null)
 		{
-			pickup.Use();
+			pickup.Use(GetComponent<CharacterBase>());
 		}
 	}
 

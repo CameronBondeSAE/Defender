@@ -1,4 +1,5 @@
 using System;
+using Defender;
 using NaughtyAttributes;
 using Unity.Netcode;
 using UnityEngine;
@@ -11,9 +12,9 @@ public class DemoItemBase : UsableItem_Base
 		GetComponent<Renderer>().material.color = Color.white;
 	}
 
-	public override void Use()
+	public override void Use(CharacterBase characterTryingToUse)
 	{
-		base.Use();
+		base.Use(characterTryingToUse);
 		if (activationCountdown > 0)
 			StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
 
@@ -27,6 +28,7 @@ public class DemoItemBase : UsableItem_Base
 		GetComponent<Renderer>().material.color = Color.green;
 	}
 
+	// TODO: Networking
 	public override void StopUsing()
 	{
 		base.StopUsing();

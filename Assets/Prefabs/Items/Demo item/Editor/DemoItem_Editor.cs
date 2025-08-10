@@ -9,7 +9,7 @@ public class DemoItem_Editor : Editor
 		if (GUILayout.Button("Use"))
 		{
 			DemoItemBase item = target as DemoItemBase;
-			item?.Use();
+			item?.Use(null);
 		}
 		
 		base.OnInspectorGUI();

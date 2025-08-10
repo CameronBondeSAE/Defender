@@ -1,4 +1,5 @@
 using System.Collections;
+using Defender;
 using UnityEngine;
 
 public class BoosterStim : MonoBehaviour, IUsable, IPickup
@@ -19,11 +20,11 @@ public class BoosterStim : MonoBehaviour, IUsable, IPickup
         //Debug.Log("Booster Stim, StopUsing");
     }
 
-    public void Use()
+    public void Use(CharacterBase characterTryingToUse)
     {
         Debug.Log("Booster Stim, Use");
        //playerMovement = GetComponentInParent<PlayerMovement>(); // NOTE - when items get put as a child use this instead?
-        playerMovement = FindAnyObjectByType<PlayerMovement>(); // temporary
+        playerMovement = FindAnyObjectByType<PlayerMovement>(); // TODO temporary
 
         if (stimUsed == false)
         {

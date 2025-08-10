@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using Defender;
 
 public class Snack : UsableItem_Base
 {
@@ -21,11 +22,11 @@ public class Snack : UsableItem_Base
             snackObject = GetComponentInChildren<SnackObject>();
     }
 
-    public override void Use()
+    public override void Use(CharacterBase characterTryingToUse)
     {
         Vector3 dir = CurrentCarrier != null ? CurrentCarrier.forward : transform.forward;
         Launch(dir, launchForce);
-        base.Use();
+        base.Use(characterTryingToUse);
     }
 
     protected override void ActivateItem()
