@@ -24,9 +24,9 @@ public class SuicideVest : UsableItem_Base
         Debug.Log("Vest disabled");
     }
 
-    public override void Use()
+    public override void Use(CharacterBase characterTryingToUse)
     {
-        base.Use();
+        base.Use(characterTryingToUse);
 
         Drop();
         Launch(transform.forward, 50f); // TODO get actual forward direction

@@ -24,8 +24,9 @@ public class BoosterStim : MonoBehaviour, IUsable, IPickup
     {
         Debug.Log("Booster Stim, Use");
        //playerMovement = GetComponentInParent<PlayerMovement>(); // NOTE - when items get put as a child use this instead?
-        playerMovement = FindAnyObjectByType<PlayerMovement>(); // TODO temporary
-
+        // playerMovement = FindAnyObjectByType<PlayerMovement>(); // TODO temporary
+		playerMovement = characterTryingToUse.GetComponent<PlayerMovement>(); // CAM NOTE: We added this to the IUseable JUST FOR YOU
+		
         if (stimUsed == false)
         {
             ActivateBoosterStim();
