@@ -1,28 +1,87 @@
+using System.Collections;
 using UnityEngine;
 
-public class BoosterStim : MonoBehaviour, IUsable
+public class BoosterStim : MonoBehaviour, IUsable, IPickup
 {
+    [SerializeField] private float stimDuration = 10f;
+    [SerializeField] private float speedIncrease = 4f;
+    [SerializeField] private bool stimUsed = false;
+
+    [SerializeField] private PlayerMovement playerMovement;
+
+    [SerializeField] private GameObject stimBoostVisual;
+
+
+    #region IUsable
+
     public void StopUsing()
     {
-        Debug.Log("Booster Stim, StopUsing");
+        //Debug.Log("Booster Stim, StopUsing");
     }
 
     public void Use()
     {
         Debug.Log("Booster Stim, Use");
+       //playerMovement = GetComponentInParent<PlayerMovement>(); // NOTE - when items get put as a child use this instead?
+        playerMovement = FindAnyObjectByType<PlayerMovement>(); // temporary
+
+        if (stimUsed == false)
+        {
+            ActivateBoosterStim();
+        }
+
+
+        if(stimBoostVisual != null)
+        {
+            Renderer render = stimBoostVisual.GetComponent<Renderer>();
+            render.material.color = Color.black;
+        }
+
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    #endregion
+
+    #region IPickup
+
+    public void Pickup()
     {
-        
+        //Debug.Log("Stim PickedUp");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Drop()
     {
-        
+        //Debug.Log("Stim Dropped");
     }
 
-    
+    #endregion
+
+
+    public void ActivateBoosterStim() // start
+    {
+        stimUsed = true;
+        //Debug.Log("Stim Boost Active");
+
+        playerMovement.MoveSpeed += speedIncrease; 
+        StartCoroutine(BoosterStimDuration());
+    }
+
+    IEnumerator BoosterStimDuration() // while
+    {
+        yield return new WaitForSeconds(stimDuration);
+
+        DeactivateBoosterStim();
+    }
+
+    public void DeactivateBoosterStim() // end
+    {
+        playerMovement.MoveSpeed -= speedIncrease;
+        //Debug.Log("Stim Boost Deactive");
+    }
+
+
+    // TO-DO LIST / IDEAS (nickA)
+
+    // network it (sync for everyone + position and use), sync stimUsed variable for late join?
+
+
 }
