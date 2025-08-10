@@ -1,4 +1,5 @@
 using System;
+using Defender;
 using UnityEngine;
 
 public class KeyCard : UsableItem_Base
@@ -17,11 +18,11 @@ public class KeyCard : UsableItem_Base
         base.Awake();
         activationCountdown = useTime;
     }
-    public override void Use()
+    public override void Use(CharacterBase characterTryingToUse)
     {
         if (currentGate != null && !inUse)
         {
-            base.Use();
+            base.Use(characterTryingToUse);
             inUse = true;
             Debug.Log("KeyCard used");
             GetComponentInChildren<MeshRenderer>().material =  keycardUsedMat;
