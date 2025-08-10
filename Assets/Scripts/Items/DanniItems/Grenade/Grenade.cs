@@ -1,3 +1,4 @@
+using Defender;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.WSA;
@@ -33,12 +34,12 @@ public class Grenade : UsableItem_Base
     }
 
 
-    public override void Use()
+    public override void Use(CharacterBase characterTryingToUse)
     {
         Debug.Log("Grenade thrown!");
         // Launch itself forward (when used)
         Launch(CurrentCarrier.forward, launchForce);
-        base.Use(); // starts the activation countdown
+        base.Use(characterTryingToUse); // starts the activation countdown
     }
 
     protected override void ActivateItem()

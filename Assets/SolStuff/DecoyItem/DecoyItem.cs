@@ -1,3 +1,4 @@
+using Defender;
 using UnityEngine;
 
 public class DecoyItem : AIBase, IUsable, IPickup
@@ -21,7 +22,7 @@ public class DecoyItem : AIBase, IUsable, IPickup
 		GameObject.Destroy(gameObject);
 	}
 
-	public void Use()
+	public void Use(CharacterBase characterTryingToUse)
 	{
 		Debug.Log("Hello fellow citizens :)");
 	}

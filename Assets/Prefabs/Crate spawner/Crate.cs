@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Defender;
 using UnityEngine;
 
 public class Crate : MonoBehaviour, IUsable
@@ -56,7 +57,7 @@ public class Crate : MonoBehaviour, IUsable
 	
     }
 
-    public void Use()
+    public void Use(CharacterBase characterTryingToUse)
     {
 	    
 	    

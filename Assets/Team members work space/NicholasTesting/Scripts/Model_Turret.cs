@@ -1,3 +1,4 @@
+using Defender;
 using UnityEngine;
 
 namespace NicholasScripts
@@ -28,7 +29,7 @@ namespace NicholasScripts
             fireTimer = 0f;
         }
 
-        public void Use()
+        public void Use(CharacterBase characterTryingToUse)
         {
         }
 

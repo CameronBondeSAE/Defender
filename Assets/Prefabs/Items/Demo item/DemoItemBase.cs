@@ -1,4 +1,7 @@
 using System;
+using Defender;
+using NaughtyAttributes;
+using Unity.Netcode;
 using UnityEngine;
 
 public class DemoItemBase : UsableItem_Base
@@ -9,16 +12,23 @@ public class DemoItemBase : UsableItem_Base
 		GetComponent<Renderer>().material.color = Color.white;
 	}
 
-	public override void Use()
+	public override void Use(CharacterBase characterTryingToUse)
 	{
-		base.Use(); 
-		Debug.Log("DemoItem Used");
-		GetComponent<Renderer>().material.color = Color.green;
-		
+		base.Use(characterTryingToUse);
 		if (activationCountdown > 0)
 			StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
+
+		Use_Rpc();
 	}
 
+	[Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+	private void Use_Rpc()
+	{
+		Debug.Log("DemoItem Used");
+		GetComponent<Renderer>().material.color = Color.green;
+	}
+
+	// TODO: Networking
 	public override void StopUsing()
 	{
 		base.StopUsing();
