@@ -47,6 +47,12 @@ public class DemoItemBase : UsableItem_Base
 	}
 	protected override void ActivateItem()
 	{
+		ActivateItem_Rpc();
+	}
+
+	[Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+	private void ActivateItem_Rpc()
+	{
 		Debug.Log("DemoItem ACTIVATED!");
 		GetComponent<Renderer>().material.color = Color.yellow;
 	}

@@ -158,7 +158,7 @@ public class SearchState : IAIState
         
         if (Time.time - lastMoveUpdate > moveUpdateInterval)
         {
-            Debug.Log($"[SearchState] {ai.name} moving to {ai.currentTargetCiv.name} at {ai.currentTargetCiv.transform.position}");
+            // Debug.Log($"[SearchState] {ai.name} moving to {ai.currentTargetCiv.name} at {ai.currentTargetCiv.transform.position}");
             ai.MoveTo(ai.currentTargetCiv.transform.position);
             lastMoveUpdate = Time.time;
         }
