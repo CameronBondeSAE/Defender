@@ -154,7 +154,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     {
         if (audioSource && pickupClip) audioSource.PlayOneShot(pickupClip);
         IsCarried = true;
-        SetCarrier(CurrentCarrier);
+        // SetCarrier(CurrentCarrier);
         //CurrentCarrier = transform.parent;
 
         // Disable physics and colliders while in inventory

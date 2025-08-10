@@ -24,13 +24,11 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		input = GetComponent<PlayerInput>();
 
 		InputAction move      = input.actions.FindAction("Player/Move");
-		InputAction throwing  = input.actions.FindAction("Player/Throw");
 		InputAction use       = input.actions.FindAction("Player/Use");
 		InputAction inventory = input.actions.FindAction("Player/Inventory");
 
 		move.performed += OnMoveUpdated;
 		move.canceled  += OnMoveUpdated;
-		// throwing.performed  += OnThrowPerformed;
 		use.performed       += OnUsePerformed;
 		inventory.performed += OnInventoryPerformed;
 	}
@@ -45,19 +43,18 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		}
 		
 		InputAction move      = input.actions.FindAction("Player/Move");
-		InputAction throwing  = input.actions.FindAction("Player/Throw");
 		InputAction use       = input.actions.FindAction("Player/Use");
 		InputAction inventory = input.actions.FindAction("Player/Inventory");
 
 		move.performed -= OnMoveUpdated;
 		move.canceled  -= OnMoveUpdated;
-		// throwing.performed  -= OnThrowPerformed;
 		use.performed       -= OnUsePerformed;
 		inventory.performed -= OnInventoryPerformed;
 	}
 
 	private void OnMoveUpdated(InputAction.CallbackContext context)
 	{
+		// Debug.Log("Move Updated : "+" "+context.ReadValue<Vector2>());
 		RequestMovePerformed_Rpc(context.ReadValue<Vector2>());
 	}
 

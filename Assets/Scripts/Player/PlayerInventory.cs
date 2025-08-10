@@ -62,10 +62,11 @@ public class PlayerInventory : NetworkBehaviour
 	{
 		if (HasItem)
 		{
-			CurrentItemInstance.transform.SetPositionAndRotation(
-			                                 itemHolder.position,
-			                                 itemHolder.rotation
-			                                );
+			if (CurrentItemInstance != null)
+				CurrentItemInstance.transform.SetPositionAndRotation(
+				                                                     itemHolder.position,
+				                                                     itemHolder.rotation
+				                                                    );
 		}
 	}
 
