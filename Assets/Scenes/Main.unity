@@ -1889,7 +1889,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4508805474982246382, guid: e6ac1b41648ef5a4d8d4fdb94cbed3d9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8529650782826857818, guid: e6ac1b41648ef5a4d8d4fdb94cbed3d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8677,9 +8677,11 @@ GameObject:
   - component: {fileID: 4893910233856695221}
   - component: {fileID: 3437983272624560474}
   - component: {fileID: 7729380888425002417}
-  - component: {fileID: 9204893574493658983}
   - component: {fileID: 3939292381119914051}
   - component: {fileID: 7206038058487114142}
+  - component: {fileID: 9204893574493658984}
+  - component: {fileID: 9204893574493658985}
+  - component: {fileID: 9204893574493658986}
   m_Layer: 7
   m_Name: Keycard
   m_TagString: Untagged
@@ -8860,7 +8862,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8815356779729681436}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 300bce24c9140a843af66273a020918b, type: 3}
   m_Name: 
@@ -8924,7 +8926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1729784561
+  GlobalObjectIdHash: 3607246520
   InScenePlacedSourceGlobalObjectIdHash: 281891221
   DeferredDespawnTick: 0
   Ownership: 1
@@ -9149,7 +9151,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2749066412941647305, guid: 8e75a91b70fd52d4aaef3475f20cb13e, type: 3}
   m_PrefabInstance: {fileID: 8855435615158446960}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9204893574493658983
+--- !u!114 &9204893574493658984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9158,21 +9160,73 @@ MonoBehaviour:
   m_GameObject: {fileID: 2130420092051615644}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78951439daabcd440a58e958ef021dff, type: 3}
+  m_Script: {fileID: 11500000, guid: c50ad22cd869f6f35a9b7068de5d97ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   audioSource: {fileID: 4714517418145655342}
-  pickupClip: {fileID: 8300000, guid: 331aa4052cc93c048ac408029b43951b, type: 3}
-  dropClip: {fileID: 8300000, guid: cadb002e4bf556b4487678c5566054eb, type: 3}
-  useClip: {fileID: 8300000, guid: 6cc51f83d78d5a144a4cd239399427ad, type: 3}
-  timerBeepClip: {fileID: 8300000, guid: 1b213e10868586442ad4146acebd2aa3, type: 3}
-  timerActivatedClip: {fileID: 8300000, guid: ec062204ab4b0f644982fc12c6f3bbc7, type: 3}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
   isConsumable: 1
-  activationCountdown: 5
+  activationCountdown: 0
   countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  KeyId: 
+  keycardUsedMat: {fileID: 2100000, guid: 14dbf71ae6c4acf878fdb85556a3cc4c, type: 2}
+  useTime: 15
+  currentGate: {fileID: 0}
+--- !u!54 &9204893574493658985
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130420092051615644}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &9204893574493658986
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130420092051615644}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
