@@ -835,9 +835,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25acad3a8eedd54e8c9f94e096ee8c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   maxHealth: 100
   revivedHealth: 0
-  currentHealth: 100
+  currentHealth:
+    m_InternalValue: 100
   isDead: 0
   deathAnimDuration: 0.7
   reviveAnimDuration: 10
