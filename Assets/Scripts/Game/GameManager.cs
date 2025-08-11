@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CameronBonde;
 using mothershipScripts;
+using NUnit.Framework.Internal.Commands;
 using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
@@ -14,71 +15,75 @@ namespace DanniLi
 {
 	public class GameManager : NetworkBehaviour
 	{
+		[Header("UI Elements")]
 		public GameObject winScreen;
 		public GameObject loseScreen;
 
-		public int currentLevelIndex;
-
-		[Header("References")]
+		[Header("Level Information")]
 		[SerializeField]
 		public LevelInfo[] levelSOs;
-
-		public CinemachineTargetGroup targetGroup;
-
-		private PlayerInventory playerInventory;
-
-		[Header("Spawn Settings")]
+		[Header("Debugging: Don't edit")]
+		private LevelInfo currentlevelInfo;
+		public int currentLevelIndex = 0;
 		[SerializeField]
 		private Transform levelContainer; // for organization
 
-		[Header("Debugging: Don't edit")]
-		private LevelInfo currentlevelInfo;
+		[Header("Camera Set-Up")]
+		public CinemachineTargetGroup targetGroup;
 
+		[Header("References")]
+		private PlayerInventory playerInventory;
+
+		[Header("Spawner Settings")]
 		public List<ISpawner> spawners = new List<ISpawner>();
-
+		
+		[Header("Alien Params")]
+		public int aliensIncomingFromAllShips;
+		private int totalAliensPlanned;
+		private int aliensSpawnedSoFar;
+		private int aliensDeadSoFar;
+		
+		[Header("Civilian Params")]
 		public int totalCivilians;
 		public int civiliansAlive;
-		public int aliensIncomingFromAllShips;
-
 		public GameObject[]     civilians;
+		
+		[Header("Mothership Params")]
 		public MothershipBase[] mothershipBases;
 
+		[Header("Difficulty Settings")] 
+		private float enemyMult = 1f; 
+		private float waveMult = 1f;
 
+		// Events
 		public event Action GetReady_Event;
 		public event Action StartGame_Event;
 		public event Action WinGameOver_Event;
 		public event Action LoseGameOver_Event;
-
+		
+		#region Netcode Lifecycle
 		public override void OnNetworkSpawn()
 		{
 			base.OnNetworkSpawn();
-
 			NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoin;
+			NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
 			NetworkManager.Singleton.OnConnectionEvent         += SingletonOnOnConnectionEvent;
 
 			// Server only from now
-			if (!IsServer)
-			{
-				return;
-			}
+			if (!IsServer) return;
 			
-			// TODO coroutine to space it out
-			GetReady_Event?.Invoke();
-			StartWave();
-
-			// playerInputManager.onPlayerJoined += OnPlayerJoin;
-			// playerInputManager.onPlayerLeft   += OnPlayerLeave;
-			// if(IsClient) // Camera is client side only for now
-			mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-
-			aliensIncomingFromAllShips = 0;
-			foreach (MothershipBase mothershipBase in mothershipBases)
+			//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
+			// TODO: Probably keep levelinfo a SO file, as we need the ability to show level names/info BEFORE the level is loaded
+			currentlevelInfo = (levelSOs != null && levelSOs.Length > 0) ? levelSOs[Mathf.Clamp(levelSOs.Length, 0, levelSOs.Length - 1)] : null;
+			if (currentlevelInfo != null)
 			{
-				aliensIncomingFromAllShips        += mothershipBase.totalAlienSpawnCount;
-				mothershipBase.AlienSpawned_Event += MothershipBaseOnAlienSpawned_Event;
+				Debug.Log("Level Info: Civilians to save" + currentlevelInfo.civiliansToSave);
 			}
-
-			// Set all crates to know this level's set of item SOs
+			else
+			{
+				Debug.Log("Level Info: No level info found");
+			}
+			//--------------------------------------------------CRATES & ITEMS-------------------------------------------------------------
 			Crate[] crates = FindObjectsByType<Crate>(FindObjectsSortMode.None);
 			if (levelSOs != null && levelSOs.Length > 0)
 				foreach (Crate crate in crates)
@@ -90,14 +95,21 @@ namespace DanniLi
 			{
 				Debug.LogWarning("GameManager: no level info!");
 			}
-
+			//--------------------------------------------------MOTHERSHIP & ALIENS-------------------------------------------------------------
+			mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+			aliensIncomingFromAllShips = 0;
+			foreach (MothershipBase mothershipBase in mothershipBases)
+			{
+				aliensIncomingFromAllShips        += mothershipBase.totalAlienSpawnCount;
+				mothershipBase.AlienSpawned_Event += MothershipBaseOnAlienSpawned_Event;
+			}
 			Debug.Log("Aliens Incoming: " + aliensIncomingFromAllShips);
-
+			
+			//--------------------------------------------------CIVILIANS-------------------------------------------------------------
 			civilians      = GameObject.FindGameObjectsWithTag("Civilian");
 			totalCivilians = civilians.Length;
 			civiliansAlive = civilians.Length;
 			Debug.Log("Civilians Alive: " + civiliansAlive);
-
 			foreach (GameObject civilian in civilians)
 			{
 				Health health = civilian.GetComponent<Health>();
@@ -106,17 +118,12 @@ namespace DanniLi
 					health.OnDeath += OnCivDeath;
 				}
 			}
-
-			// TODO: Probably keep levelinfo a SO file, as we need the ability to show level names/info BEFORE the level is loaded
-			// levelInfo = FindFirstObjectByType<LevelInfo>();
-			if (currentlevelInfo != null)
-			{
-				Debug.Log("Level Info: Civilians to save" + currentlevelInfo.civiliansToSave);
-			}
-			else
-			{
-				Debug.Log("Level Info: No level info found");
-			}
+			
+			//--------------------------------------------------GAME FLOW-------------------------------------------------------------
+			// TODO coroutine to space it out
+			GetReady_Event?.Invoke();
+			StartWave();
+			StartGame_Event?.Invoke();
 		}
 
 		private void SingletonOnOnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
@@ -130,10 +137,30 @@ namespace DanniLi
 		private void OnDisable()
 		{
 			if (IsClient) // Camera is client side only for now
+			{
 				NetworkManager.Singleton.OnClientConnectedCallback -= OnPlayerJoin;
+				NetworkManager.Singleton.OnClientDisconnectCallback -= OnPlayerLeave;
+			}
+
+			if (!IsServer) return; // server side cleaning up from now on
+			if (mothershipBases != null)
+			{
+				foreach (var mothershipBase in mothershipBases)
+					mothershipBase.AlienSpawned_Event -= MothershipBaseOnAlienSpawned_Event;
+			}
+
+			if (civilians != null)
+			{
+				foreach (var civ in civilians)
+				{
+					var health = civ.GetComponent<Health>();
+					if(health != null) health.OnDeath -= OnCivDeath;
+				}
+			}
 		}
-
-
+		#endregion
+		
+		#region Alien Events
 		private void MothershipBaseOnAlienSpawned_Event(GameObject obj)
 		{
 			Health health = obj.GetComponent<Health>();
@@ -142,7 +169,6 @@ namespace DanniLi
 				health.OnDeath += OnAlienDeath;
 			}
 		}
-
 		private void OnAlienDeath()
 		{
 			GameObject[] aliens = GameObject.FindGameObjectsWithTag("Alien");
@@ -155,6 +181,15 @@ namespace DanniLi
 				winScreen.SetActive(true);
 			}
 		}
+
+		private bool AreWavesOver()
+		{
+			return (aliensSpawnedSoFar >= totalAliensPlanned) &&
+			       (aliensDeadSoFar >= totalAliensPlanned);
+		}
+		#endregion
+		
+		#region Civilian Events
 
 		private void OnCivDeath()
 		{
@@ -170,8 +205,58 @@ namespace DanniLi
 				loseScreen.SetActive(true);
 			}
 		}
+		#endregion
+		
+		#region Gameplay Flow
 
+		// to decide end-of-waves and evaluate win condition
+		private void TryEndWavesAndScore()
+		{
+			if(!IsServer) return;
+			if(!AreWavesOver()) return;
+			if (totalCivilians <= 0)
+			{
+				DoLose();
+				return;
+			}
 
+			int required = (currentlevelInfo != null) ? currentlevelInfo.percentCiviliansAliveToWin : 50;
+			float alivePercentage = (civiliansAlive / (float)totalCivilians) * 100f;
+			if (alivePercentage >= required)
+				DoWin();
+			else DoLose();
+		}
+
+		private void DoWin()
+		{
+			Debug.Log("Game Win");
+			WinGameOver_Event?.Invoke();
+			ShowWinRpc();
+		}
+
+		[Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+		private void ShowWinRpc()
+		{
+			if(loseScreen != null) loseScreen.SetActive(false);
+			if(winScreen != null) winScreen.SetActive(true);
+		}
+
+		private void DoLose()
+		{
+			Debug.Log("Game Lost");
+			LoseGameOver_Event?.Invoke();
+			ShowLoseRpc();
+		}
+		[Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+		private void ShowLoseRpc()
+		{
+			if(winScreen != null) winScreen.SetActive(false);
+			if(loseScreen != null) loseScreen.SetActive(true);
+		}
+
+		#endregion
+		
+		#region Camera Control
 		// Add player to target group when they join
 		public void OnPlayerJoin(ulong playerID)
 		{
@@ -185,7 +270,6 @@ namespace DanniLi
 				}
 			}
 		}
-
 		// Remove player from target group when they leave
 		public void OnPlayerLeave(ulong playerID)
 		{
@@ -199,7 +283,6 @@ namespace DanniLi
 				}
 			}
 		}
-
 		private void AddItemToCameraTargetGroup(Transform playerTransform)
 		{
 			if (targetGroup != null)
@@ -217,20 +300,16 @@ namespace DanniLi
 
 		private void RemoveItemFromCameraTargetGroup(Transform playerTransform)
 		{
-			if (targetGroup != null)
-			{
-				List<CinemachineTargetGroup.Target> targets = targetGroup.m_Targets.ToList();
-				foreach (CinemachineTargetGroup.Target target in targets)
-				{
-					if (target.Object == playerTransform)
-						targets.Remove(target);
-				}
-
-				targetGroup.m_Targets = targets.ToArray();
-			}
+			if (targetGroup != null) return;
+			List<CinemachineTargetGroup.Target> targets = targetGroup.m_Targets.ToList();
+			targets.RemoveAll(target => target.Object == playerTransform);
+			targetGroup.m_Targets = targets.ToArray();
 		}
-
-
+		
+		# endregion
+		
+		#region Utility Methods
+		
 		public void TestLoadScene()
 		{
 			SceneHelper.LoadScene("Main Menu", true, true);
@@ -240,6 +319,9 @@ namespace DanniLi
 		{
 			SceneHelper.UnloadScene("Main Menu");
 		}
+		#endregion
+		
+		#region Spawners
 
 		private void StartWave()
 		{
@@ -258,48 +340,6 @@ namespace DanniLi
 		{
 			spawners.Remove(spawner);
 		}
-
-		// private void FindPlayerInventory()
-		// {
-		// 	GameObject player = GameObject.FindGameObjectWithTag("Player");
-		//
-		// 	if (player == null)
-		// 	{
-		// 		return;
-		// 	}
-		//
-		// 	playerInventory = player.GetComponent<PlayerInventory>();
-		// 	if (playerInventory == null)
-		// 	{
-		// 		Debug.LogError("GameManager: please attach PlayerInventory to player!");
-		// 	}
-		// }
-
-		// private void SetupPlayerInventoryItems()
-		// {
-		// 	if (playerInventory == null)
-		// 	{
-		// 		return;
-		// 	}
-		//
-		// 	if (currentlevelInfo == null)
-		// 	{
-		// 		return;
-		// 	}
-		//
-		// 	foreach (var item in currentlevelInfo.availableItems)
-		// 	{
-		// 		if (item != null)
-		// 		{
-		// 			playerInventory.RegisterAvailableItem(item);
-		// 			Debug.Log($"GameManager: Registered item {item.name}");
-		// 		}
-		// 		else
-		// 		{
-		// 			Debug.LogWarning("GameManager: please assign items in LevelInfo!");
-		// 		}
-		// 	}
-		// }
 
 		private void SpawnLevelProps()
 		{
@@ -330,5 +370,6 @@ namespace DanniLi
 		{
 			return new Vector3(Random.Range(-50, 50), -0.5f, Random.Range(-50, 50)); // adjust these based on level size
 		}
+		#endregion
 	}
 }
