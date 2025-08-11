@@ -28,7 +28,7 @@ public class AIBase : CharacterBase
 	private float rotationSpeed = 5f;
 
 	[SerializeField]
-	private float acceleration = 8f;
+	private float maxSpeed = 8f;
 
 	public float forwardForce = 50f;
 
@@ -50,6 +50,10 @@ public class AIBase : CharacterBase
 	public NavMeshPath Path => path;
 	public int CornerIndex => cornerIndex;
 	public bool UseRigidbody => useRigidbody;
+	
+	[Header("Debug")]
+	[Tooltip( "Show path lines etc" )]
+	public bool debug = true;
 
 	public void SetAbducted(bool abducted)
 	{
@@ -131,22 +135,26 @@ public class AIBase : CharacterBase
 				
 				// Simple move forward with slowdown
 				float slowDownScalar = (1f - Mathf.Abs(angle/180f)); // Normalise to 0-1
-				if (rb.linearVelocity.magnitude < acceleration)
+				if (rb.linearVelocity.magnitude < maxSpeed)
 				{
 					rb.AddRelativeForce(0,0,forwardForce * slowDownScalar);
 				}
 				
+				Debug.DrawLine(path.corners[cornerIndex], path.corners[cornerIndex] + Vector3.up*10f, Color.red);
 				// rb.MovePosition(Vector3.MoveTowards(rb.position, path.corners[cornerIndex], acceleration * Time.deltaTime));
-				if (Vector3.Distance(rb.position, path.corners[cornerIndex]) < cornerThreshold)
+				float distance = Vector3.Distance(rb.position, path.corners[cornerIndex]);
+				Debug.Log(gameObject.name + " : cornerThreshold = " + cornerThreshold+ " : distance = " + distance + " : cornerIndex = " + cornerIndex + " : path.corners.Length = " + path.corners.Length, gameObject);
+				if (distance < cornerThreshold)
 				{
 					cornerIndex++;
+					Debug.Log("		" + gameObject.name + " : AIBase reached corner");
 					if (cornerIndex >= path.corners.Length)
 					{
 						rb.linearVelocity = Vector3.zero;
 						rb.angularVelocity = Vector3.zero;
 						path = null;
 						cornerIndex = 0;
-						Debug.Log("AIBase : Reached destination");
+						Debug.Log(gameObject.name + " : AIBase Reached destination");
 					}
 				}
 				
@@ -215,6 +223,7 @@ public class AIBase : CharacterBase
 		{
 			// Find nearest valid NavMesh position for the AI
 			NavMeshHit startHit;
+			// Vector3 startPos = transform.position + transform.forward * 0.5f;
 			Vector3 startPos = transform.position;
 			if (!NavMesh.SamplePosition(startPos, out startHit, 10f, NavMesh.AllAreas))
 			{
@@ -236,7 +245,7 @@ public class AIBase : CharacterBase
         
 			if (pathFound && path.status == NavMeshPathStatus.PathComplete)
 			{
-				cornerIndex = 0;
+				cornerIndex = 1;
 			}
 			else
 			{
@@ -245,32 +254,9 @@ public class AIBase : CharacterBase
 		}
 		else if (agent != null && agent.enabled == true)
 		{
-			agent.acceleration = acceleration;
+			agent.acceleration = maxSpeed;
 			agent.SetDestination(destination);
 		}
-	}
-
-	private IEnumerator CalculatePath_Coroutine(Vector3 destination)
-	{
-		lastDestination = destination;
-
-		// Otherwise the character is sitting in a dead zone in the carved navmesh
-		navMeshObstacle.enabled = false;
-		yield return new WaitForSeconds(0.2f);
-		
-		// Debug.Log("Moving to " + destination);
-		if (useRigidbody)
-		{
-			if (path != null) NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path);
-			cornerIndex = 0;
-		}
-		else if (agent != null && agent.enabled == true)
-		{
-			agent.acceleration = acceleration;
-			agent.SetDestination(destination);
-		}
-		
-		navMeshObstacle.enabled = true;
 	}
 
 	// Stop movement
@@ -356,7 +342,7 @@ public class AIBase : CharacterBase
 
 	private void OnDrawGizmos()
 	{
-		if(path == null || path.corners.Length<=0) return;
+		if(debug == false || path == null || path.corners.Length<=0) return;
 		
 		for (int i = 0; i < path.corners.Length; i++)
 		{
