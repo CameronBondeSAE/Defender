@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Defender;
 using Unity.Burst.Intrinsics;
 using Unity.Netcode;
 using UnityEngine;
@@ -153,7 +154,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     {
         if (audioSource && pickupClip) audioSource.PlayOneShot(pickupClip);
         IsCarried = true;
-        SetCarrier(CurrentCarrier);
+        // SetCarrier(CurrentCarrier);
         //CurrentCarrier = transform.parent;
 
         // Disable physics and colliders while in inventory
@@ -188,7 +189,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     }
 
     // IUsable
-    public virtual void Use()
+    public virtual void Use(CharacterBase characterTryingToUse)
     {
         if (audioSource && useClip) audioSource.PlayOneShot(useClip);
 

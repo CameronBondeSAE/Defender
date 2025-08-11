@@ -24,13 +24,11 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		input = GetComponent<PlayerInput>();
 
 		InputAction move      = input.actions.FindAction("Player/Move");
-		InputAction throwing  = input.actions.FindAction("Player/Throw");
 		InputAction use       = input.actions.FindAction("Player/Use");
 		InputAction inventory = input.actions.FindAction("Player/Inventory");
 
-		move.performed += OnMovePerformed;
-		move.canceled  += OnMovePerformed;
-		// throwing.performed  += OnThrowPerformed;
+		move.performed += OnMoveUpdated;
+		move.canceled  += OnMoveUpdated;
 		use.performed       += OnUsePerformed;
 		inventory.performed += OnInventoryPerformed;
 	}
@@ -45,29 +43,45 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		}
 		
 		InputAction move      = input.actions.FindAction("Player/Move");
-		InputAction throwing  = input.actions.FindAction("Player/Throw");
 		InputAction use       = input.actions.FindAction("Player/Use");
 		InputAction inventory = input.actions.FindAction("Player/Inventory");
 
-		move.performed -= OnMovePerformed;
-		move.canceled  -= OnMovePerformed;
-		// throwing.performed  -= OnThrowPerformed;
+		move.performed -= OnMoveUpdated;
+		move.canceled  -= OnMoveUpdated;
 		use.performed       -= OnUsePerformed;
 		inventory.performed -= OnInventoryPerformed;
 	}
 
-	private void OnMovePerformed(InputAction.CallbackContext context)
+	private void OnMoveUpdated(InputAction.CallbackContext context)
 	{
-		moveInput = context.ReadValue<Vector2>();
+		// Debug.Log("Move Updated : "+" "+context.ReadValue<Vector2>());
+		RequestMovePerformed_Rpc(context.ReadValue<Vector2>());
 	}
 
+	[Rpc(SendTo.Server, RequireOwnership = true, Delivery = RpcDelivery.Unreliable)]
+	private void RequestMovePerformed_Rpc(Vector2 _moveInput)
+	{
+		moveInput = _moveInput;
+	}
+
+	
+	
 	private void OnUsePerformed(InputAction.CallbackContext obj)
 	{
 		if (obj.performed)
+			RequestTryUseItem_Rpc(true);
+		else
+			RequestTryUseItem_Rpc(false);
+	}
+
+	[Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+	private void RequestTryUseItem_Rpc(bool state)
+	{
+		if (state)
 		{
 			onUse?.Invoke(true);
 		}
-		else if (obj.canceled)
+		else
 		{
 			onUse?.Invoke(false);
 		}
@@ -75,9 +89,14 @@ public class PlayerInputHandler2 : NetworkBehaviour
 
 	private void OnInventoryPerformed(InputAction.CallbackContext context)
 	{
-		if (context.performed)
-		{
-			onInventory?.Invoke();
-		}
+		RequestTryPickupItem_Rpc();
 	}
+	
+	[Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+	private void RequestTryPickupItem_Rpc()
+	{
+		onInventory?.Invoke();
+	}
+
+
 }

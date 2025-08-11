@@ -208,7 +208,7 @@ public class AIBase : CharacterBase
 		moveTo_Coroutine = CalculatePath_Coroutine(destination);
 		StartCoroutine(moveTo_Coroutine);*/
 		
-		Debug.Log("Moving to " + destination);
+		// Debug.Log("Moving to " + destination);
 		lastDestination = destination;
 
 		if (useRigidbody)

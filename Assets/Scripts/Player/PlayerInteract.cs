@@ -1,3 +1,4 @@
+using Defender;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -46,16 +47,6 @@ public class PlayerInteract : NetworkBehaviour
 
 	private void InputHandlerOnonUse(bool obj)
 	{
-		// If client, request server to try pickup item
-		if(IsClient)
-		{
-			RequestTryUseItem_Rpc();
-		}
-	}
-
-	[Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
-	private void RequestTryUseItem_Rpc()
-	{
 		// Use the held item if holding
 		if (inventory.HasItem)
 		{
@@ -68,21 +59,11 @@ public class PlayerInteract : NetworkBehaviour
 
 		if (pickup != null)
 		{
-			pickup.Use();
+			pickup.Use(GetComponent<CharacterBase>());
 		}
 	}
-
+	
 	private void HandleInventory()
-	{
-		// If client, request server to try pickup item
-		if(IsClient)
-		{
-			RequestTryPickupItem_Rpc();
-		}
-	}
-
-	[Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
-	private void RequestTryPickupItem_Rpc()
 	{
 		if (inventory.HasItem)
 		{

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Defender;
 using Unity.Netcode;
 
 public class PlayerInventory : NetworkBehaviour
@@ -61,10 +62,11 @@ public class PlayerInventory : NetworkBehaviour
 	{
 		if (HasItem)
 		{
-			CurrentItemInstance.transform.SetPositionAndRotation(
-			                                 itemHolder.position,
-			                                 itemHolder.rotation
-			                                );
+			if (CurrentItemInstance != null)
+				CurrentItemInstance.transform.SetPositionAndRotation(
+				                                                     itemHolder.position,
+				                                                     itemHolder.rotation
+				                                                    );
 		}
 	}
 
@@ -241,7 +243,7 @@ public class PlayerInventory : NetworkBehaviour
 		}
 
 		IUsable currentUsable = CurrentItem as IUsable;
-		currentUsable?.Use();
+		currentUsable?.Use(GetComponent<CharacterBase>());
 		// TODO: Need the item to tell us if it's been destroy. Event we sub to on collecting? Yes
 
 

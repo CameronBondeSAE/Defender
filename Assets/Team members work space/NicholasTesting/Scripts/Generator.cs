@@ -1,6 +1,7 @@
     using System.Collections;
     using UnityEngine;
     using System.Collections.Generic;
+    using Defender;
 
     namespace NicholasScripts
     {
@@ -18,7 +19,7 @@
                 model.isUsed = false;
             }
 
-            public void Use()
+            public void Use(CharacterBase characterTryingToUse)
             {
                 if (model.isUsed || startupCoroutine != null)
                 {
