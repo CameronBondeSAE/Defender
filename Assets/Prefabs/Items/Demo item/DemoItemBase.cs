@@ -15,9 +15,6 @@ public class DemoItemBase : UsableItem_Base
 	public override void Use(CharacterBase characterTryingToUse)
 	{
 		base.Use(characterTryingToUse);
-		if (activationCountdown > 0)
-			StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
-
 		Use_Rpc();
 	}
 
@@ -25,6 +22,10 @@ public class DemoItemBase : UsableItem_Base
 	private void Use_Rpc()
 	{
 		Debug.Log("DemoItem Used");
+
+		if (activationCountdown > 0)
+			StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
+
 		GetComponent<Renderer>().material.color = Color.green;
 	}
 
