@@ -92,14 +92,15 @@ MonoBehaviour:
   - {fileID: 0}
   patrolPointsCount: 5
   rotationSpeed: 40
-  acceleration: 10
-  forwardForce: 600
+  maxSpeed: 8
+  forwardForce: 300
   followDistance: 2
   IsAbducted: 0
   escortingAlien: {fileID: 0}
   useRigidbody: 1
   rb: {fileID: 995182541390530525}
   navMeshObstacle: {fileID: 6159155859954856615}
+  debug: 1
   cornerThreshold: 1
   cornerIndex: 0
   stuckTime: 0
