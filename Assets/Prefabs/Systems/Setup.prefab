@@ -404,7 +404,8 @@ MonoBehaviour:
   winScreen: {fileID: 0}
   loseScreen: {fileID: 0}
   currentLevelIndex: 0
-  levelSOs: []
+  levelSOs:
+  - {fileID: 11400000, guid: 5d1b16645c958854bbca0107b7c47a5c, type: 2}
   targetGroup: {fileID: 7258090910381291285}
   levelContainer: {fileID: 0}
   totalCivilians: 0
@@ -468,7 +469,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2520828478107740173
 Transform:
   m_ObjectHideFlags: 0
