@@ -6057,6 +6057,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 482073165}
     m_Modifications:
+    - target: {fileID: 6813401065027002585, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: 7214323903650827927, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
       propertyPath: m_Name
       value: Generator
@@ -8630,6 +8634,10 @@ PrefabInstance:
     - target: {fileID: 6847697555821305677, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3334962434
+      objectReference: {fileID: 0}
+    - target: {fileID: 7627109749740444134, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8252729606240833830, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
       propertyPath: m_Name
