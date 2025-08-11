@@ -143,18 +143,18 @@ public class AIBase : CharacterBase
 				Debug.DrawLine(path.corners[cornerIndex], path.corners[cornerIndex] + Vector3.up*10f, Color.red);
 				// rb.MovePosition(Vector3.MoveTowards(rb.position, path.corners[cornerIndex], acceleration * Time.deltaTime));
 				float distance = Vector3.Distance(rb.position, path.corners[cornerIndex]);
-				Debug.Log(gameObject.name + " : cornerThreshold = " + cornerThreshold+ " : distance = " + distance + " : cornerIndex = " + cornerIndex + " : path.corners.Length = " + path.corners.Length, gameObject);
+				// Debug.Log(gameObject.name + " : cornerThreshold = " + cornerThreshold+ " : distance = " + distance + " : cornerIndex = " + cornerIndex + " : path.corners.Length = " + path.corners.Length, gameObject);
 				if (distance < cornerThreshold)
 				{
 					cornerIndex++;
-					Debug.Log("		" + gameObject.name + " : AIBase reached corner");
+					// Debug.Log("		" + gameObject.name + " : AIBase reached corner");
 					if (cornerIndex >= path.corners.Length)
 					{
 						rb.linearVelocity = Vector3.zero;
 						rb.angularVelocity = Vector3.zero;
 						path = null;
 						cornerIndex = 0;
-						Debug.Log(gameObject.name + " : AIBase Reached destination");
+						// Debug.Log(gameObject.name + " : AIBase Reached destination");
 					}
 				}
 				
