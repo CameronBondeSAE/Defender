@@ -21,6 +21,18 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     [Header("Item Settings")]
     [SerializeField] private bool isConsumable = true;
     public virtual bool IsConsumable => isConsumable;
+    
+    [Header("Expiry Settings")]
+    [Tooltip("After activation the item remains functional for this many seconds, then is destroyed.")]
+    public float expiryDuration = 0f;
+    // NetVars for expiry
+    private NetworkVariable<float> expiryTimeRemaining = new NetworkVariable<float>(
+        0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    private NetworkVariable<bool> isExpiryActive = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    // local UI coroutine for expiry
+    private Coroutine expiryUICoroutine;
 
     [Header("Activation Settings")]
     [Tooltip("If > 0, activates countdown before item is activated")]
@@ -70,6 +82,15 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         {
             StartActivationCountdown_LocalUI(Mathf.CeilToInt(countdownTimeRemaining.Value));
         }
+        
+        expiryTimeRemaining.OnValueChanged += OnExpiryTimeChanged;
+        isExpiryActive.OnValueChanged += OnExpiryActiveChanged;
+
+        // if we spawned while expiry already running, bring UI back JUST IN CASE
+        if (isExpiryActive.Value)
+        {
+            StartExpiryCountdown_LocalUI(Mathf.CeilToInt(expiryTimeRemaining.Value));
+        }
     }
 
     public override void OnNetworkDespawn()
@@ -80,6 +101,8 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
             countdownTimeRemaining.OnValueChanged -= OnCountdownTimeChanged;
             isCountdownActive.OnValueChanged -= OnCountdownActiveChanged;
         }
+        expiryTimeRemaining.OnValueChanged -= OnExpiryTimeChanged;
+        isExpiryActive.OnValueChanged -= OnExpiryActiveChanged;
         DestroyCountdownUI();
         base.OnNetworkDespawn();
     }
@@ -110,6 +133,34 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         if (countdownUIInstance != null && isCountdownActive.Value)
         {
             countdownUIInstance.SetCountdown(Mathf.CeilToInt(newvalue));
+        }
+    }
+    
+    private void OnExpiryActiveChanged(bool prev, bool nowActive)
+    {
+        if (nowActive)
+        {
+            StartExpiryCountdown_LocalUI(Mathf.CeilToInt(expiryTimeRemaining.Value));
+        }
+        else
+        {
+            if (countdownUIInstance != null)
+            {
+                countdownUIInstance.Hide();
+            }
+            if (expiryUICoroutine != null)
+            {
+                StopCoroutine(expiryUICoroutine);
+                expiryUICoroutine = null;
+            }
+        }
+    }
+
+    private void OnExpiryTimeChanged(float prev, float nowVal)
+    {
+        if (countdownUIInstance != null && isExpiryActive.Value)
+        {
+            countdownUIInstance.SetCountdown(Mathf.CeilToInt(nowVal));
         }
     }
 
@@ -331,6 +382,120 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         isArmedNetworked.Value = false;
         isCountdownActive.Value = false;
         countdownTimeRemaining.Value = 0f;
+        // start expiry if configured
+        if (expiryDuration > 0f)
+        {
+            StartExpiryCountdown_Server();
+        }
+        else
+        {
+            // no expiry value; maybe item could be destroyed immediately or left active...?
+            // adjust per-case
+        }
+    }
+    
+    public void StartExpiryCountdown_Server()
+    {
+        if (!IsServer) return;
+
+        isExpiryActive.Value = true;
+        expiryTimeRemaining.Value = expiryDuration;
+
+        if (activationCoroutine != null)
+        {
+            StopCoroutine(activationCoroutine);
+            activationCoroutine = null;
+        }
+
+        // kick clients to show expiry UI in expiry color
+        StartExpiryUIClientRpc(Mathf.CeilToInt(expiryDuration));
+
+        StartCoroutine(ExpiryCountdownRoutine_Server());
+    }
+
+    private IEnumerator ExpiryCountdownRoutine_Server()
+    {
+        float time = expiryDuration;
+        while (time > 0f)
+        {
+            expiryTimeRemaining.Value = time;
+            yield return new WaitForSeconds(1f);
+            time -= 1f;
+        }
+
+        expiryTimeRemaining.Value = 0f;
+        isExpiryActive.Value = false;
+
+        // destroy on server; despawn across network
+        DestroyItem_Server();
+    }
+
+    private void DestroyItem_Server()
+    {
+        if (!IsServer) return;
+
+        // clean all netvars so late joiners don't see stale UI
+        isArmedNetworked.Value = false;
+        isCountdownActive.Value = false;
+        countdownTimeRemaining.Value = 0f;
+        isExpiryActive.Value = false;
+        expiryTimeRemaining.Value = 0f;
+
+        var no = GetComponent<NetworkObject>();
+        if (no && no.IsSpawned)
+        {
+            no.Despawn(true); // destroy
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    
+    [Rpc(SendTo.Everyone, Delivery = RpcDelivery.Reliable)]
+    private void StartExpiryUIClientRpc(int startSeconds)
+    {
+        StartExpiryCountdown_LocalUI(startSeconds);
+    }
+    
+    public void StartExpiryCountdown_LocalUI(int startSeconds)
+    {
+        if (!countdownUIPrefab) { Debug.LogWarning($"[{name}] No countdownUIPrefab"); return; }
+
+        if (!countdownUIInstance)
+        {
+            // init with expiry style
+            countdownUIInstance = Instantiate(countdownUIPrefab);
+            countdownUIInstance.Init(this, startSeconds, useExpiryStyle: true);
+        }
+        else
+        {
+            countdownUIInstance.Show();
+            countdownUIInstance.SetExpiryStyle(true); // switch to expiry color
+            countdownUIInstance.SetCountdown(startSeconds);
+        }
+
+        if (expiryUICoroutine != null) StopCoroutine(expiryUICoroutine);
+        expiryUICoroutine = StartCoroutine(ExpiryCountdownRoutine_LocalUI());
+    }
+
+    private IEnumerator ExpiryCountdownRoutine_LocalUI()
+    {
+        while (isExpiryActive.Value && countdownUIInstance != null)
+        {
+            int timeLeft = Mathf.CeilToInt(expiryTimeRemaining.Value);
+            countdownUIInstance.SetCountdown(timeLeft);
+            if (timeLeft <= 0) break;
+            yield return new WaitForSeconds(.2f);
+        }
+
+        if (countdownUIInstance != null)
+        {
+            countdownUIInstance.SetCountdown(0);
+            countdownUIInstance.Hide();
+        }
+        expiryUICoroutine = null;
+        yield break;
     }
 
     public virtual void Disarm()
