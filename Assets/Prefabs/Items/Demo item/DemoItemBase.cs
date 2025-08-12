@@ -7,6 +7,7 @@ public class DemoItemBase : UsableItem_Base
 	protected override void Awake()
 	{
 		base.Awake();
+		
 		GetComponent<Renderer>().material.color = Color.white;
 	}
 
@@ -32,6 +33,8 @@ public class DemoItemBase : UsableItem_Base
 
 	protected override void ActivateItem()
 	{
+		base.ActivateItem();
+		
 		ActivateItemClient_Rpc();
 	}
 
@@ -48,6 +51,7 @@ public class DemoItemBase : UsableItem_Base
 	public override void StopUsing()
 	{
 		base.StopUsing();
+		
 		Debug.Log("Stopped using");
 		GetComponent<Renderer>().material.color = Color.red;
 	}
