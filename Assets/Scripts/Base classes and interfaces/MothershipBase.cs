@@ -124,6 +124,7 @@ namespace mothershipScripts
 
                 // TODO: Make abstract
                 alienSpawned.GetComponent<AlienAI>().mothership = transform;
+                AlienSpawned_Event?.Invoke(alienSpawned);
 
                 OnAlienSpawned?.Invoke(alienSpawned);
                 yield return new WaitForSeconds(blueBeamDuration);
