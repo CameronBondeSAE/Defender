@@ -1,5 +1,8 @@
 using Defender;
 using System.Buffers;
+using System.Collections;
+using TreeEditor;
+using Unity.Netcode;
 using UnityEngine;
 
 /// <summary>
@@ -10,10 +13,36 @@ public class SuicideVest : UsableItem_Base
 {
     [Space]
     [Header("Vest Settings")]
+    [SerializeField] private float damageAmount;
+    [SerializeField] private float explosionRadius;
     [SerializeField] private Transform vestTransform;
     [SerializeField] private CharacterBase owner;
     private enum VestState { disabled, inHand, isAttached };
     [SerializeField] private VestState state;
+
+    [SerializeField] private GameObject sparkParticles;
+
+    public CharacterBase entityAttachedTo;
+
+    private bool SetAttachedPosition()
+    {
+        if (state != VestState.isAttached)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void LateUpdate()
+    {
+        if (state == VestState.isAttached)
+        {
+            transform.rotation = entityAttachedTo.transform.rotation;
+
+            transform.position = entityAttachedTo.transform.position + transform.forward * -0.8f + transform.up * 1.5f; 
+        }
+    }
 
     public override void StopUsing()
     {
@@ -24,39 +53,81 @@ public class SuicideVest : UsableItem_Base
         Debug.Log("Vest disabled");
     }
 
+    public override void Pickup()
+    {
+        base.Pickup();
+
+        state = VestState.inHand;
+    }
+
     public override void Use(CharacterBase characterTryingToUse)
     {
         base.Use(characterTryingToUse);
 
-        Drop();
-        Launch(transform.forward, 50f); // TODO get actual forward direction
+        owner = characterTryingToUse;
+        Debug.Log("owner = " + owner);
+        Launch(characterTryingToUse.transform.forward, launchForce); 
 
         // on pickup, the vest is not activated. instead it is assigned an owner
         // on collision enter, attach the vest to the other character (whether that be a civ, alien, or player)
     }
 
-    private void GetHolderFacingDirection()
+    private void OnCollisionEnter(Collision collision)
     {
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        //vestTransform.SetParent(gameObject.transform);
-
         if (state == VestState.inHand)
         {
+            if (collision.gameObject.GetComponent<CharacterBase>())
+            {
+                if (collision.gameObject != owner.gameObject)
+                {
+                    entityAttachedTo = collision.gameObject.GetComponent<CharacterBase>();
+                    //transform.position = new Vector3(entityAttachedTo.position.x, entityAttachedTo.position.y, entityAttachedTo.position.z - 1.5f);
 
+                    state = VestState.isAttached;
+
+                    StartCoroutine(Explode());
+                }
+            }
         }
     }
 
-    private void Explode()
+    private IEnumerator Explode()
     {
         // once attached, explode after a set timer
 
         if (state == VestState.isAttached)
         {
+            sparkParticles.SetActive(true);
+            activationCountdown = 5f;
+            StartActivationCountdown_Server();
 
+            SetAttachedPosition();
+            SetCollidersEnabled(false);
+            
+            yield return new WaitForSeconds(activationCountdown);
+
+            Collider[] collidersInRange = new Collider[10];
+            Physics.OverlapSphereNonAlloc(transform.position, explosionRadius, collidersInRange);
+
+            foreach (Collider collider in collidersInRange)
+            {
+                if (collider.gameObject != null)
+                {
+                    if (collider.GetComponent<CharacterBase>())
+                    {
+                        collider.gameObject.GetComponent<Health>().TakeDamage(damageAmount);
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            Debug.Log("Exploded");
+
+            Destroy(gameObject);
+            GetComponent<NetworkObject>().Despawn();
         }
     }
 }
