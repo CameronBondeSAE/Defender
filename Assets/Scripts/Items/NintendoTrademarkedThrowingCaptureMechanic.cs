@@ -36,7 +36,7 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
     {
         //Drop(characterTryingToUse.transform.forward);
         if (characterTryingToUse == null) Launch(transform.forward, throwForce);
-        Launch(characterTryingToUse.transform.forward, throwForce);
+        else Launch(characterTryingToUse.transform.forward, throwForce);
         if (capturedObject == null)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius);
