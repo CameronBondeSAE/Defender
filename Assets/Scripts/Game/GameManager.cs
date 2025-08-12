@@ -15,10 +15,6 @@ namespace DanniLi
 {
 	public class GameManager : NetworkBehaviour
 	{
-		[Header("UI Elements")]
-		public GameObject winScreen;
-		public GameObject loseScreen;
-
 		[Header("Level Information")]
 		[SerializeField]
 		public LevelInfo[] levelSOs;
@@ -33,6 +29,7 @@ namespace DanniLi
 
 		[Header("References")]
 		private PlayerInventory playerInventory;
+		[SerializeField] private UIManager uiManager;
 
 		[Header("Spawner Settings")]
 		public List<ISpawner> spawners = new List<ISpawner>();
@@ -54,6 +51,10 @@ namespace DanniLi
 		[Header("Difficulty Settings")] 
 		private float enemyMult = 1f; 
 		private float waveMult = 1f;
+		
+		[Header("Wave Management")]
+		private int currentWaveNumber = 0;
+		private int totalWaves = 3;
 
 		// Events
 		public event Action GetReady_Event;
@@ -68,11 +69,58 @@ namespace DanniLi
 			NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoin;
 			NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
 			NetworkManager.Singleton.OnConnectionEvent         += SingletonOnOnConnectionEvent;
+			
+			if (uiManager == null)
+				uiManager = FindObjectOfType<UIManager>();
 
 			// Server only from now
 			if (!IsServer) return;
 			
-			//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
+			InitializeLevel();
+		}
+
+		private void SingletonOnOnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
+		{
+			if (arg2.EventType == ConnectionEvent.ClientConnected)
+			{
+				Debug.Log("Client connected : " + arg2.ClientId);
+			}
+		}
+
+		private void OnDisable()
+		{
+			if (IsClient) // Camera is client side only for now
+			{
+				NetworkManager.Singleton.OnClientConnectedCallback -= OnPlayerJoin;
+				NetworkManager.Singleton.OnClientDisconnectCallback -= OnPlayerLeave;
+			}
+
+			if (!IsServer) return; // server side cleaning up from now on
+			if (mothershipBases != null)
+			{
+				foreach (var mothershipBase in mothershipBases)
+					mothershipBase.AlienSpawned_Event -= MothershipBaseOnAlienSpawned_Event;
+			}
+
+			if (civilians != null)
+			{
+				foreach (var civ in civilians)
+				{
+					var health = civ.GetComponent<Health>();
+					if(health != null) health.OnDeath -= OnCivDeath;
+				}
+			}
+		}
+		
+		public void OnLevelLoaded()
+		{
+			if (!IsServer) return;
+			InitializeLevel();
+		}
+
+		private void InitializeLevel()
+		{
+				//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
 			// TODO: Probably keep levelinfo a SO file, as we need the ability to show level names/info BEFORE the level is loaded
 			currentlevelInfo = (levelSOs != null && levelSOs.Length > 0) ? levelSOs[Mathf.Clamp(levelSOs.Length, 0, levelSOs.Length - 1)] : null;
 			if (currentlevelInfo != null)
@@ -118,46 +166,17 @@ namespace DanniLi
 					health.OnDeath += OnCivDeath;
 				}
 			}
-			
 			//--------------------------------------------------GAME FLOW-------------------------------------------------------------
+			if (uiManager != null)
+			{
+				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves);
+			}
 			// TODO coroutine to space it out
 			GetReady_Event?.Invoke();
 			StartWave();
 			StartGame_Event?.Invoke();
 		}
 
-		private void SingletonOnOnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
-		{
-			if (arg2.EventType == ConnectionEvent.ClientConnected)
-			{
-				Debug.Log("Client connected : " + arg2.ClientId);
-			}
-		}
-
-		private void OnDisable()
-		{
-			if (IsClient) // Camera is client side only for now
-			{
-				NetworkManager.Singleton.OnClientConnectedCallback -= OnPlayerJoin;
-				NetworkManager.Singleton.OnClientDisconnectCallback -= OnPlayerLeave;
-			}
-
-			if (!IsServer) return; // server side cleaning up from now on
-			if (mothershipBases != null)
-			{
-				foreach (var mothershipBase in mothershipBases)
-					mothershipBase.AlienSpawned_Event -= MothershipBaseOnAlienSpawned_Event;
-			}
-
-			if (civilians != null)
-			{
-				foreach (var civ in civilians)
-				{
-					var health = civ.GetComponent<Health>();
-					if(health != null) health.OnDeath -= OnCivDeath;
-				}
-			}
-		}
 		#endregion
 		
 		#region Alien Events
@@ -171,14 +190,14 @@ namespace DanniLi
 		}
 		private void OnAlienDeath()
 		{
+			if (uiManager != null)
+				uiManager.OnAlienKilled();
 			GameObject[] aliens = GameObject.FindGameObjectsWithTag("Alien");
 
 			if (aliens.Length <= 0)
 			{
 				Debug.Log("Game Over: Win");
 				WinGameOver_Event?.Invoke();
-				loseScreen.SetActive(false);
-				winScreen.SetActive(true);
 			}
 		}
 
@@ -194,15 +213,16 @@ namespace DanniLi
 		private void OnCivDeath()
 		{
 			civiliansAlive--;
-
+			if (uiManager != null)
+				uiManager.OnCivilianDeath(civiliansAlive);
 			// Game over. Too many civs dead
 			// if (civiliansAlive < civilians.Length * (currentlevelInfo.percentageToSave / 100f))
-			if (civiliansAlive < civilians.Length - civiliansAlive)
+			if (civiliansAlive < civilians.Length - civiliansAlive) // gameover condition
 			{
 				Debug.Log("Game Over: Loss");
 				LoseGameOver_Event?.Invoke();
-				winScreen.SetActive(false);
-				loseScreen.SetActive(true);
+				// winScreen.SetActive(false);
+				// loseScreen.SetActive(true);
 			}
 		}
 		#endregion
@@ -231,29 +251,13 @@ namespace DanniLi
 		{
 			Debug.Log("Game Win");
 			WinGameOver_Event?.Invoke();
-			ShowWinRpc();
-		}
-
-		[Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
-		private void ShowWinRpc()
-		{
-			if(loseScreen != null) loseScreen.SetActive(false);
-			if(winScreen != null) winScreen.SetActive(true);
 		}
 
 		private void DoLose()
 		{
 			Debug.Log("Game Lost");
 			LoseGameOver_Event?.Invoke();
-			ShowLoseRpc();
 		}
-		[Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
-		private void ShowLoseRpc()
-		{
-			if(winScreen != null) winScreen.SetActive(false);
-			if(loseScreen != null) loseScreen.SetActive(true);
-		}
-
 		#endregion
 		
 		#region Camera Control
@@ -325,9 +329,28 @@ namespace DanniLi
 
 		private void StartWave()
 		{
-			foreach (ISpawner spawner in spawners)
+			currentWaveNumber++;
+			if (uiManager != null)
+				uiManager.OnWaveStart(currentWaveNumber);
+				foreach (ISpawner spawner in spawners)
+				{
+					spawner.StartWaves();
+				}
+				// can add logic here later to end the wave after some condition?
+				// for now, just ending wave after 30 seconds
+				Invoke(nameof(EndWave), 30f); 
+			
+		}
+
+		private void EndWave()
+		{
+			// noyify UI of wave end
+			if (uiManager != null)
+				uiManager.OnWaveEnd(currentWaveNumber);
+			// check if more waves should start
+			if (currentWaveNumber < totalWaves)
 			{
-				spawner.StartWaves();
+				Invoke(nameof(StartWave), 5f); // start next wave after 5 seconds
 			}
 		}
 
