@@ -19,7 +19,7 @@ public class HealBomb : UsableItem_Base
     public override void Use(CharacterBase characterTryingToUse)
     {
         itemActive = true;
-        base.Use(characterTryingToUse);
+        //base.Use(characterTryingToUse);
         Drop();
 
     }

@@ -23,7 +23,6 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
         itemActive = true;
         base.Use(characterTryingToUse);
         Capture(characterTryingToUse);
-
     }
 
     public override void Drop()
@@ -34,9 +33,10 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
 
     public void Capture(CharacterBase characterTryingToUse = null)
     {
+        base.Drop();
         //Drop(characterTryingToUse.transform.forward);
-        if (characterTryingToUse == null) Launch(transform.forward, throwForce);
-        else Launch(characterTryingToUse.transform.forward, throwForce);
+        if (characterTryingToUse == null) rb.AddForce(transform.forward * throwForce, ForceMode.Force);
+        else rb.AddForce(characterTryingToUse.transform.forward * throwForce, ForceMode.Force);
         if (capturedObject == null)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius);

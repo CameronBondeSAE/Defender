@@ -370,7 +370,9 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         SetCollidersEnabled(true);
         
         transform.parent = null;
-        
+
+        if (rb == null) rb = GetComponent<Rigidbody>();
+
         if (rb != null)
         {
 	        rb.isKinematic            = false;
