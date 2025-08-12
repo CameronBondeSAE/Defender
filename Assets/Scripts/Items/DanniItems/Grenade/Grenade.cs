@@ -1,7 +1,5 @@
 using Defender;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
-using UnityEngine.WSA;
 
 public class Grenade : UsableItem_Base
 {
