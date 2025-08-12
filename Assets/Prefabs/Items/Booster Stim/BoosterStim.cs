@@ -3,7 +3,7 @@ using Defender;
 using Unity.Netcode;
 using UnityEngine;
 
-public class BoosterStim : UsableItem_Base, IUsable, IPickup
+public class BoosterStim : UsableItem_Base
 {
     [Header("Booster Stim Stats")]
     [SerializeField] private float stimDuration = 10f;
@@ -21,6 +21,12 @@ public class BoosterStim : UsableItem_Base, IUsable, IPickup
     {
         base.StopUsing();
         //Debug.Log("Booster Stim, StopUsing");
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void StopUsing_Rpc()
+    {
+
     }
 
     public override void Use(CharacterBase characterTryingToUse)
@@ -46,18 +52,24 @@ public class BoosterStim : UsableItem_Base, IUsable, IPickup
 
     }
 
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Use_Rpc()
+    {
+
+    }
+
     #endregion
 
     #region IPickup
 
     public override void Pickup()
     {
-        //Debug.Log("Stim PickedUp");
+        //Debug.Log("Stim, PickedUp");
     }
 
     public override void Drop()
     {
-        //Debug.Log("Stim Dropped");
+        //Debug.Log("Stim, Dropped");
     }
 
     #endregion
