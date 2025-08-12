@@ -17,6 +17,7 @@ public class SuicideVest : UsableItem_Base
     [SerializeField] private float explosionRadius;
     [SerializeField] private Transform vestTransform;
     [SerializeField] private CharacterBase owner;
+    [SerializeField] private DrawSphereOfInfluence explosionRadiusVisual;
     private enum VestState { disabled, inHand, isAttached };
     [SerializeField] private VestState state;
 
@@ -26,16 +27,6 @@ public class SuicideVest : UsableItem_Base
     
     public Collider vestTrigger;
 
-    private bool SetAttachedPosition()
-    {
-        if (state != VestState.isAttached)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     private void LateUpdate()
     {
         if (state == VestState.isAttached)
@@ -44,9 +35,8 @@ public class SuicideVest : UsableItem_Base
 	        {
 		        transform.rotation = entityAttachedTo.transform.rotation;
 
-		        transform.position = entityAttachedTo.transform.position + transform.forward * -0.8f +
-		                             transform.up * 1.5f;
-	        }
+		        transform.position = entityAttachedTo.transform.position + transform.forward * -0.8f + transform.up * 1.5f;
+            }
         }
     }
 
@@ -65,7 +55,7 @@ public class SuicideVest : UsableItem_Base
 
         state = VestState.inHand;
         
-        owner               = whoIsPickupMeUp;
+        owner = whoIsPickupMeUp;
         vestTrigger.enabled = true;
         
         Use(whoIsPickupMeUp);
@@ -93,7 +83,6 @@ public class SuicideVest : UsableItem_Base
 	                owner.GetComponent<PlayerInventory>().DropHeldItem(); // HACK: Need a better way to inform inventory of destroy/unattaching
 	                
                     entityAttachedTo = collision.gameObject.GetComponent<CharacterBase>();
-                    //transform.position = new Vector3(entityAttachedTo.position.x, entityAttachedTo.position.y, entityAttachedTo.position.z - 1.5f);
 
                     state = VestState.isAttached;
 
@@ -110,10 +99,10 @@ public class SuicideVest : UsableItem_Base
         if (state == VestState.isAttached)
         {
             sparkParticles.SetActive(true);
+            explosionRadiusVisual.enabled = true;
             activationCountdown = 5f;
             StartActivationCountdown_Server();
 
-            SetAttachedPosition();
             SetCollidersEnabled(false);
             
             yield return new WaitForSeconds(activationCountdown);
@@ -138,7 +127,7 @@ public class SuicideVest : UsableItem_Base
 
             Debug.Log("Exploded");
 
-            Destroy(gameObject);
+            //Destroy(gameObject);
             GetComponent<NetworkObject>().Despawn();
         }
     }
