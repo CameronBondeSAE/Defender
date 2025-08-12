@@ -1,9 +1,11 @@
 using System.Collections;
 using Defender;
+using Unity.Netcode;
 using UnityEngine;
 
-public class BoosterStim : MonoBehaviour, IUsable, IPickup
+public class BoosterStim : UsableItem_Base, IUsable, IPickup
 {
+    [Header("Booster Stim Stats")]
     [SerializeField] private float stimDuration = 10f;
     [SerializeField] private float speedIncrease = 4f;
     [SerializeField] private bool stimUsed = false;
@@ -15,13 +17,16 @@ public class BoosterStim : MonoBehaviour, IUsable, IPickup
 
     #region IUsable
 
-    public void StopUsing()
+    public override void StopUsing()
     {
+        base.StopUsing();
         //Debug.Log("Booster Stim, StopUsing");
     }
 
-    public void Use(CharacterBase characterTryingToUse)
+    public override void Use(CharacterBase characterTryingToUse)
     {
+        base.Use(characterTryingToUse);
+
         Debug.Log("Booster Stim, Use");
        //playerMovement = GetComponentInParent<PlayerMovement>(); // NOTE - when items get put as a child use this instead?
         // playerMovement = FindAnyObjectByType<PlayerMovement>(); // TODO temporary
@@ -45,12 +50,12 @@ public class BoosterStim : MonoBehaviour, IUsable, IPickup
 
     #region IPickup
 
-    public void Pickup()
+    public override void Pickup()
     {
         //Debug.Log("Stim PickedUp");
     }
 
-    public void Drop()
+    public override void Drop()
     {
         //Debug.Log("Stim Dropped");
     }
@@ -78,12 +83,14 @@ public class BoosterStim : MonoBehaviour, IUsable, IPickup
     {
         playerMovement.MoveSpeed -= speedIncrease;
         //Debug.Log("Stim Boost Deactive");
+
+        GetComponent<NetworkObject>().Despawn();
     }
 
 
     // TO-DO LIST / IDEAS (nickA)
 
-    // network it (sync for everyone + position and use), sync stimUsed variable for late join?
+    // network it (sync for everyone + position and use)
 
 
 }
