@@ -43,7 +43,7 @@ namespace AIAnimation // A name space shared only by AIs for clarity
             }
             else
             {
-                Debug.Log($"[AIAnimationController] Found Animator on {animator.gameObject.name}");
+               //  Debug.Log($"[AIAnimationController] Found Animator on {animator.gameObject.name}");
             }
         }
         public void SetAnimationStateServer(AnimationState newState) // server only
