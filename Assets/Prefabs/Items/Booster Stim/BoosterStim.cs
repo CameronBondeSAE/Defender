@@ -3,6 +3,11 @@ using Defender;
 using Unity.Netcode;
 using UnityEngine;
 
+/// <summary>
+/// A booster stim that boosts player speed for a set duration of time visually being empty, once the duration is used up it will despawn
+/// </summary>
+
+
 public class BoosterStim : UsableItem_Base
 {
     [Header("Booster Stim Stats")]
@@ -28,6 +33,7 @@ public class BoosterStim : UsableItem_Base
     {
 
     }
+
 
     public override void Use(CharacterBase characterTryingToUse)
     {
@@ -67,9 +73,22 @@ public class BoosterStim : UsableItem_Base
         //Debug.Log("Stim, PickedUp");
     }
 
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Pickup_Rpc()
+    {
+
+    }
+
+
     public override void Drop()
     {
         //Debug.Log("Stim, Dropped");
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Drop_Rpc()
+    {
+
     }
 
     #endregion
