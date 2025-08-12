@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 7771334653438271519}
   - component: {fileID: 8437680883679741453}
   - component: {fileID: 3904721607460801180}
-  - component: {fileID: 1659247359447178733}
   - component: {fileID: 1910325622651831406}
+  - component: {fileID: 6313707419370869817}
   m_Layer: 7
-  m_Name: HealBomb
+  m_Name: NintendoTrademarkedThrowingCaptureMechanic
   m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1488041479
+  GlobalObjectIdHash: 1198413545
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -136,32 +136,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 1
---- !u!114 &1659247359447178733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003757342820223510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be0fa787baf86c941aedb3c35c01d93a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  audioSource: {fileID: 0}
-  pickupClip: {fileID: 0}
-  dropClip: {fileID: 0}
-  useClip: {fileID: 0}
-  timerBeepClip: {fileID: 0}
-  timerActivatedClip: {fileID: 0}
-  isConsumable: 1
-  activationCountdown: 1
-  countdownUIPrefab: {fileID: 0}
-  launchForce: 10
-  launchDirection: {x: 0, y: 0, z: 1}
-  effectRadius: 5
-  healingAmount: 10
 --- !u!114 &1910325622651831406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,3 +183,15 @@ MonoBehaviour:
   Interpolate: 0
   SlerpPosition: 0
   StaleDataHandling: 1
+--- !u!114 &6313707419370869817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003757342820223510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513226204f5b45745b4441634bd6b257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
