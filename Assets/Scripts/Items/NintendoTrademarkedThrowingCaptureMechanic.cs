@@ -21,13 +21,13 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
     {
         itemActive = true;
         base.Use(characterTryingToUse);
-        Drop();
+        Capture(characterTryingToUse);
 
     }
 
-    public override void Drop()
+    public void Capture(CharacterBase characterTryingToUse)
     {
-        base.Drop();
+        Drop();
         if (capturedObject == null)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius);
@@ -44,8 +44,12 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
             if (healths.Count > 0)
             {
                 capturedObject = healths[Random.Range(0, healths.Count)].gameObject;
-                capturedObject.transform.parent = transform;
-                capturedObject.SetActive(false);
+                if (characterTryingToUse.gameObject != capturedObject)
+                {
+                    capturedObject.transform.parent = transform;
+                    capturedObject.SetActive(false);
+                }
+                else capturedObject = null;
             }
 
         }
@@ -53,6 +57,7 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
         {
             capturedObject.transform.parent = null;
             capturedObject.SetActive(true);
+            capturedObject.transform.position = transform.position;
             capturedObject = null;
             GetComponent<NetworkObject>().Despawn();
         }
