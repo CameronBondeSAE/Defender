@@ -58,7 +58,7 @@ public class SuicideVest : UsableItem_Base
         owner = whoIsPickupMeUp;
         vestTrigger.enabled = true;
         
-        Use(whoIsPickupMeUp);
+        //Use(whoIsPickupMeUp);
     }
 
     public override void Use(CharacterBase characterTryingToUse)
@@ -100,6 +100,7 @@ public class SuicideVest : UsableItem_Base
         {
             sparkParticles.SetActive(true);
             explosionRadiusVisual.enabled = true;
+
             activationCountdown = 5f;
             StartActivationCountdown_Server();
 
@@ -112,7 +113,7 @@ public class SuicideVest : UsableItem_Base
 
             foreach (Collider collider in collidersInRange)
             {
-                if (collider.gameObject != null)
+                if (collider != null)
                 {
                     if (collider.GetComponent<CharacterBase>())
                     {
@@ -127,8 +128,7 @@ public class SuicideVest : UsableItem_Base
 
             Debug.Log("Exploded");
 
-            //Destroy(gameObject);
-            GetComponent<NetworkObject>().Despawn();
+            gameObject.GetComponent<NetworkObject>().Despawn();
         }
     }
 }
