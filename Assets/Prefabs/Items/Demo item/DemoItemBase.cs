@@ -23,8 +23,8 @@ public class DemoItemBase : UsableItem_Base
 	{
 		Debug.Log("DemoItem Used");
 
-		if (activationCountdown > 0)
-			StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
+		// if (activationCountdown > 0)
+		// 	StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
 
 		GetComponent<Renderer>().material.color = Color.green;
 	}
@@ -49,6 +49,7 @@ public class DemoItemBase : UsableItem_Base
 	protected override void ActivateItem()
 	{
 		ActivateItem_Rpc();
+		base.ActivateItem();
 	}
 
 	[Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
