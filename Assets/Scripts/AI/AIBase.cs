@@ -277,7 +277,7 @@ public class AIBase : CharacterBase
 	// Health change callback
 	private void HandleHit(float amount)
 	{
-		if (health.currentHealth > 0)
+		if (health.currentHealth.Value > 0)
 		{
 			ChangeState(new HitState(this, CurrentState)); // Switch to Hit state
 		}
