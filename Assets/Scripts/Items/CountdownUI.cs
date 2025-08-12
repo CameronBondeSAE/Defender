@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class CountdownUI : MonoBehaviour
 {
-     [Header("Refs")]
+       [Header("Refs")]
     public Text countdownText;
 
     [Header("Colors")]
