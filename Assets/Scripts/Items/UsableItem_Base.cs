@@ -14,16 +14,23 @@ using UnityEngine.UIElements;
 /// </summary>
 public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 {
-    [Header("Audio")]
+       [Header("Audio")]
+    [Tooltip("audio source for all sfx (pickup, drop, use, beep, activated). null = mute.")]
     public AudioSource audioSource;
+
+    // note: unity only applies a [Tooltip] to the first field when multiple are declared on one line.
+    // keeping your format; the tooltip below documents the whole group.
+    [Tooltip("pickup: Pickup(), drop: Drop(), use: Use(), beep: per-second during activation, activated: when countdown hits 0.")]
     public AudioClip pickupClip, dropClip, useClip, timerBeepClip, timerActivatedClip;
 
     [Header("Item Settings")]
-    [SerializeField] private bool isConsumable = true;
+    [SerializeField] 
+    [Tooltip("single-use hint for gameplay. base doesn't auto-destroy; use expiryDuration or DestroyItem().")]
+    private bool isConsumable = true;
     public virtual bool IsConsumable => isConsumable;
 
     [Header("Expiry Settings")]
-    [Tooltip("After activation the item remains functional for this many seconds, then is destroyed.")]
+    [Tooltip("seconds active after activation, then auto-despawn. 0 = no auto-despawn; you destroy it.")]
     public float expiryDuration = 0f;
     // NetVars for expiry
     private NetworkVariable<float> expiryTimeRemaining = new NetworkVariable<float>(
@@ -35,20 +42,51 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     private Coroutine expiryUICoroutine;
 
     [Header("Activation Settings")]
-    [Tooltip("If > 0, activates countdown before item is activated")]
+    [Tooltip("delay before activation. 0 = immediate. OnUse: Use() starts it. Manual: start via code.")]
     public float activationCountdown = 0f;
 
-    [Header("World UI - Assign in prefab!")]
-    [SerializeField] private CountdownUI countdownUIPrefab; // drag the child UI here:D
+    public enum ActivationTriggerMode { OnUse, Manual }
+
+    [SerializeField] 
+    [Tooltip("OnUse: Use() starts activation. Manual: call TryStartActivation(...) / StartActivationCountdown_Server(...).")]
+    private ActivationTriggerMode activationTrigger = ActivationTriggerMode.OnUse;
+
+    [SerializeField] 
+    [Tooltip("allow re-arming after activation. false = one-shot; true = reusable (you control when).")]
+    private bool allowMultipleActivations = false;
+
+    [Header("Read-only flags for Debugging during runtime")]
+    [Tooltip("True after ActivateItem() runs at least once.")]
+    public bool IsActivated      => hasActivated.Value;
+
+    [Tooltip("True during server countdown (Activation). Driven by NetVar isCountdownActive.")]
+    public bool IsCountdownActive => isCountdownActive.Value;
+
+    [Tooltip("True during server expiry (post-activation). Driven by NetVar isExpiryActive.")]
+    public bool IsExpiryActive    => isExpiryActive.Value;
+
+    [Header("Countdown UI - Assign in prefab!")]
+    [SerializeField] 
+    [Tooltip("world-space countdown UI used for activation and expiry.")]
+    private CountdownUI countdownUIPrefab; // drag the child UI here:D
     // prefab instance (not parented to the item!)
     private CountdownUI countdownUIInstance;
+
     // tracking settings
+    [Tooltip("set in Pickup()/Drop(). debug only.")]
     public bool      IsCarried      { get; private set; }
+
+    // property is not serialized; no tooltip needed
     public Transform CurrentCarrier { get; set; }
 
     [Header("Launch Settings")]
+    [Tooltip("magnitude of the throw impulse used by Launch(). applied as ForceMode.VelocityChange on the server. requires a Rigidbody; if none, Launch() will do nothing.\nuse for throwables/physics-based deployables.")]
     public float launchForce = 10f;
-    [SerializeField] protected Vector3 launchDirection = Vector3.forward;
+
+    [SerializeField] 
+    [Tooltip("optional default direction for derived classes that call Launch(transform.TransformDirection(launchDirection), force). the base Launch(direction, force) ignores this field unless your subclass uses it explicitly.")]
+    protected Vector3 launchDirection = Vector3.forward;
+
     protected Rigidbody rb;
 
     [Header("NetworkVar")]
@@ -282,30 +320,29 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     public virtual void Use(CharacterBase characterTryingToUse)
     {
         if (audioSource && useClip) audioSource.PlayOneShot(useClip);
-        if (hasActivated.Value || isCountdownActive.Value || isExpiryActive.Value) return;
 
-        if (activationCountdown > 0)
+        // if already going/expired/used, ignore
+        if (hasActivated.Value && !allowMultipleActivations) return;
+        if (isCountdownActive.Value || isExpiryActive.Value) return;
+
+        if (activationTrigger == ActivationTriggerMode.OnUse)
         {
+            // preserve current behavior: start countdown or activate immediately
             if (IsServer)
             {
-                StartActivationCountdown_Server();
+                StartActivationCountdown_Server(activationCountdown);
             }
             else
             {
-                // RequestDisarmServerRpc();
-                RequestActivationServerRpc();
+                RequestTryStartActivationServerRpc(activationCountdown, false);
             }
         }
         else
         {
-            if (IsServer)
-            {
-                ActivateItem();
-            }
-            else
-            {
-                RequestImmediateActivationServerRpc();
-            }
+            // Manual mode: DO NOT start countdown/activation here.
+            // subclasses can override and still call base.Use(...) to get sfx n stuff
+            // here's a hook for subclasses if needed:D
+            OnManualUse(characterTryingToUse);
         }
     }
 
@@ -313,6 +350,46 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     #endregion
 
     #region RPCs: Client/Server (Activation entries)
+    
+    protected virtual void OnManualUse(CharacterBase characterTryingToUse) { }
+    
+    // call this from client or server to try starting activation
+    // **If seconds is null, it uses 'activationCountdown'. If seconds <= 0, it activates immediately.
+    public bool TryStartActivation(float? seconds = null, bool force = false)
+    {
+        float duration = Mathf.Max(0f, seconds ?? activationCountdown);
+
+        if (IsServer)
+        {
+            return TryStartActivation_Server(duration, force);
+        }
+        else
+        {
+            RequestTryStartActivationServerRpc(duration, force);
+            return true; // request sent
+        }
+    }
+
+    public bool TryStartActivationNow(bool force = false) => TryStartActivation(0f, force);
+    
+    private bool TryStartActivation_Server(float seconds, bool force)
+    {
+        if (!force)
+        {
+            if ((hasActivated.Value && !allowMultipleActivations) || isCountdownActive.Value || isExpiryActive.Value)
+                return false;
+        }
+
+        StartActivationCountdown_Server(seconds);
+        return true;
+    }
+
+    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
+    private void RequestTryStartActivationServerRpc(float seconds, bool force)
+    {
+        TryStartActivation_Server(seconds, force);
+    }
+    
     [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
     private void RequestImmediateActivationServerRpc()
     {
@@ -331,19 +408,26 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     #region Activation UI RPCs
     public virtual void StartActivationCountdown_Server()
     {
+        // keep old entry but route to the new explicit-seconds overload
+        StartActivationCountdown_Server(activationCountdown);
+    }
+
+    // subclasses choose their own duration
+    public void StartActivationCountdown_Server(float seconds)
+    {
         if (!IsServer) return;
-        // fixed: don't start activation countdown if already activated or in expiry
+        // don't start activation countdown if already activated or in expiry
         if (hasActivated.Value || isExpiryActive.Value || isCountdownActive.Value) return;
-        // set netvar state
+        // set netvar state using the provided seconds
         isArmedNetworked.Value = true;
-        countdownTimeRemaining.Value = activationCountdown;
-        isCountdownActive.Value = activationCountdown > 0;
-        if (activationCountdown > 0)
+        countdownTimeRemaining.Value = Mathf.Max(0f, seconds);
+        isCountdownActive.Value = countdownTimeRemaining.Value > 0f;
+        if (isCountdownActive.Value)
         {
             if (activationCoroutine != null) StopCoroutine(activationCoroutine);
-            activationCoroutine = StartCoroutine(ActivationCountdownRoutine_Server());
+            activationCoroutine = StartCoroutine(ActivationCountdownRoutine_Server_Internal(countdownTimeRemaining.Value));
             // notify client to start ui
-            StartCountdownUIClientRpc(Mathf.CeilToInt(activationCountdown));
+            StartCountdownUIClientRpc(Mathf.CeilToInt(countdownTimeRemaining.Value));
         }
         else
         {
@@ -353,7 +437,15 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 
     protected virtual IEnumerator ActivationCountdownRoutine_Server()
     {
-        float time = activationCountdown;
+        // redirect manual activation routine to the internal routine so everything uses one code path
+        // to save myself from fixing each one...
+        yield return ActivationCountdownRoutine_Server_Internal(activationCountdown);
+    }
+
+    // fix: internal routine that runs with an explicit duration (manual starts/overrides can now be used:D)
+    private IEnumerator ActivationCountdownRoutine_Server_Internal(float seconds)
+    {
+        float time = Mathf.Max(0f, seconds);
         while (time > 0f)
         {
             countdownTimeRemaining.Value = time;
