@@ -206,6 +206,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6705771452250497905, guid: 6f30714c3410b3d4095076a353ebb485, type: 3}
   m_PrefabInstance: {fileID: 3977852}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3977855 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8191844808735681502, guid: 6f30714c3410b3d4095076a353ebb485, type: 3}
+  m_PrefabInstance: {fileID: 3977852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!54 &3977857
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7302,6 +7307,10 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Items/Demo item/Demo Item.prefab
   - _gameObject: {fileID: 1451257866}
     _prefab: Assets/Prefabs/Items/Booster Stim/Booster Stim.prefab
+  - _gameObject: {fileID: 3977854}
+    _prefab: Assets/Prefabs/Items/Suicide vest/Suicide Vest.prefab
+  - _gameObject: {fileID: 3977855}
+    _prefab: Assets/Art/Bag/model_0.obj
   - _gameObject: {fileID: 3977854}
     _prefab: Assets/Prefabs/Items/Suicide vest/Suicide Vest.prefab
   - _gameObject: {fileID: 1008216137}
