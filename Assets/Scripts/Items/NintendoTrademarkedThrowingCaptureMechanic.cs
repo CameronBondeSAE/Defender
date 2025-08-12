@@ -9,6 +9,7 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
     [SerializeField] float effectRadius = 5f;
     [SerializeField] float healingAmount = 10f;
     [SerializeField] GameObject capturedObject = null;
+    [SerializeField] float throwForce = 4f;
 
     private void Start()
     {
@@ -28,6 +29,7 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
     public void Capture(CharacterBase characterTryingToUse)
     {
         Drop();
+        Launch(characterTryingToUse.transform.forward, throwForce);
         if (capturedObject == null)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius);
