@@ -58,21 +58,8 @@ public class SuicideVest : UsableItem_Base
         
         owner = whoIsPickupMeUp;
         vestTrigger.enabled = true;
-        
-        //Use(whoIsPickupMeUp);
     }
 
-    public override void Use(CharacterBase characterTryingToUse)
-    {
-        // base.Use(characterTryingToUse);
-
-        // Launch(characterTryingToUse.transform.forward, launchForce); 
-
-        // on pickup, the vest is not activated. instead it is assigned an owner
-        // on collision enter, attach the vest to the other character (whether that be a civ, alien, or player)
-    }
-
-    // private void OnCollisionEnter(Collision collision)
     private void OnTriggerEnter(Collider collision)
     {
         if (state == VestState.inHand)
@@ -90,7 +77,6 @@ public class SuicideVest : UsableItem_Base
                 }
             }
         }
-        
     }
 
     private IEnumerator Explode()
@@ -103,7 +89,6 @@ public class SuicideVest : UsableItem_Base
             explosionRadiusVisual.enabled = true;
 
             activationCountdown = 5f;
-            // StartActivationCountdown_Server();
             StartActivationCountdown_Server(attachActivationDelay);
             SetCollidersEnabled(false);
             
