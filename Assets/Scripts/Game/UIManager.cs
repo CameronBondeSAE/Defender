@@ -32,12 +32,18 @@ namespace DanniLi
         [SerializeField] private LevelLoader levelLoader;
         
         // Netvar for UI states
-        private NetworkVariable<int> networkCiviliansAlive = new NetworkVariable<int>();
-        private NetworkVariable<int> networkTotalCivilians = new NetworkVariable<int>();
-        private NetworkVariable<int> networkCurrentWave = new NetworkVariable<int>();
-        private NetworkVariable<int> networkTotalWaves = new NetworkVariable<int>();
-        private NetworkVariable<int> networkAliensKilled = new NetworkVariable<int>();
-        private NetworkVariable<bool> networkWaveInProgress = new NetworkVariable<bool>();
+        private NetworkVariable<int>  networkCiviliansAlive =
+            new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private NetworkVariable<int>  networkTotalCivilians =
+            new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private NetworkVariable<int>  networkCurrentWave =
+            new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private NetworkVariable<int>  networkTotalWaves =
+            new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private NetworkVariable<int>  networkAliensKilled =
+            new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private NetworkVariable<bool> networkWaveInProgress =
+            new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         
         public override void OnNetworkSpawn()
         {
@@ -64,12 +70,20 @@ namespace DanniLi
             
             //button listeners (all clients)
             SetupButtonListeners();
-            
             // initialize
             UpdateAllUI();
-            
             // hide screens initially
             HideAllScreens();
+            
+            // if (IsServer && gameManager != null && networkTotalWaves.Value <= 0)
+            // {
+            //     gameManager.ForceInitializeUI(this);
+            // }
+            if (IsServer)
+            {
+                var gameManager = FindObjectOfType<DanniLi.GameManager>();
+                gameManager?.ForceInitializeUI(this); // resync if we spawned after GM started the wave
+            }
         }
         
         public override void OnNetworkDespawn()
@@ -114,7 +128,7 @@ namespace DanniLi
             UpdateAliensKilledUI();
         }
         
-        private void OnWaveProgressChanged(bool oldValue, bool newValue)
+        private void OnWaveProgressChanged(bool oldV, bool newV)
         {
             UpdateWaveUI();
         }
@@ -138,25 +152,24 @@ namespace DanniLi
         
         private void UpdateWaveUI()
         {
-            if (waveText != null)
+            if (waveText == null) return;
+            if (networkTotalWaves.Value <= 0)
             {
-                if (networkWaveInProgress.Value)
-                {
-                    waveText.text = $"Wave {networkCurrentWave.Value} in Progress";
-                }
-                else
-                {
-                    int wavesRemaining = networkTotalWaves.Value - networkCurrentWave.Value;
-                    if (wavesRemaining > 0)
-                    {
-                        waveText.text = $"Wave {networkCurrentWave.Value + 1} Begins Soon ({wavesRemaining} waves remaining)";
-                    }
-                    else
-                    {
-                        waveText.text = "All Waves Complete";
-                    }
-                }
+                waveText.text = "Preparing waves…";
+                return;
             }
+
+            if (networkWaveInProgress.Value)
+            {
+                waveText.text = $"Wave {networkCurrentWave.Value} in Progress";
+                return;
+            }
+
+            int wavesRemaining = Mathf.Max(0, networkTotalWaves.Value - networkCurrentWave.Value);
+            if (wavesRemaining > 0)
+                waveText.text = $"Wave {networkCurrentWave.Value + 1} Begins Soon ({wavesRemaining} waves remaining)";
+            else
+                waveText.text = "All Waves Complete";
         }
         
         private void UpdateAliensKilledUI()
@@ -218,6 +231,7 @@ namespace DanniLi
         public void OnWaveStart(int waveNumber)
         {
             if (!IsServer) return;
+            // Debug.Log($"[UI][SERVER] OnWaveStart({waveNumber}) NO={GetComponent<NetworkObject>().NetworkObjectId}");
             networkCurrentWave.Value = waveNumber;
             networkWaveInProgress.Value = true;
         }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CameronBonde;
@@ -55,6 +56,8 @@ namespace DanniLi
 		[Header("Wave Management")]
 		private int currentWaveNumber = 0;
 		private int totalWaves = 3;
+		private bool waveInProgress;
+		private Coroutine startFlowCoroutine;
 
 		// Events
 		public event Action GetReady_Event;
@@ -77,6 +80,11 @@ namespace DanniLi
 			if (!IsServer) return;
 			
 			InitializeLevel();
+			
+			// order of fucking operation.
+			// now start flow only after UI's NetObject is spawned (or timeout)
+			if (startFlowCoroutine != null) StopCoroutine(startFlowCoroutine);
+			startFlowCoroutine = StartCoroutine(StartFlowWhenUIReady());
 		}
 
 		private void SingletonOnOnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
@@ -116,6 +124,24 @@ namespace DanniLi
 		{
 			if (!IsServer) return;
 			InitializeLevel();
+		}
+		
+		private IEnumerator StartFlowWhenUIReady()
+		{
+			float t = 0f;
+			while ((uiManager == null || !uiManager.TryGetComponent(out NetworkObject no) || !no.IsSpawned) && t < 3f)
+			{
+				if (uiManager == null) uiManager = FindObjectOfType<DanniLi.UIManager>();
+				yield return null;
+				t += Time.deltaTime;
+			}
+
+			// Initialize UI on server now that it's spawned
+			if (uiManager != null && uiManager.IsSpawned)
+				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves);
+
+			// NOW start the first wave
+			StartWave();
 		}
 
 		private void InitializeLevel()
@@ -173,8 +199,20 @@ namespace DanniLi
 			}
 			// TODO coroutine to space it out
 			GetReady_Event?.Invoke();
-			StartWave();
+			// StartWave();
 			StartGame_Event?.Invoke();
+		}
+		
+		public void ForceInitializeUI(UIManager ui)
+		{
+			if (ui != null && ui.IsSpawned)
+			{
+				ui.InitializeUI(totalCivilians, civiliansAlive, totalWaves);
+				if (waveInProgress)
+					ui.OnWaveStart(currentWaveNumber);
+				else
+					ui.OnWaveEnd(currentWaveNumber);
+			}
 		}
 
 		#endregion
@@ -304,7 +342,7 @@ namespace DanniLi
 
 		private void RemoveItemFromCameraTargetGroup(Transform playerTransform)
 		{
-			if (targetGroup != null) return;
+			if (targetGroup == null) return;
 			List<CinemachineTargetGroup.Target> targets = targetGroup.m_Targets.ToList();
 			targets.RemoveAll(target => target.Object == playerTransform);
 			targetGroup.m_Targets = targets.ToArray();
@@ -330,16 +368,17 @@ namespace DanniLi
 		private void StartWave()
 		{
 			currentWaveNumber++;
+
+			if (uiManager == null) uiManager = FindObjectOfType<DanniLi.UIManager>();
+			var uiNO = uiManager ? uiManager.GetComponent<NetworkObject>() : null;
+
+			Debug.Log($"[GM][SERVER] StartWave {currentWaveNumber} | UI isNull? {uiManager==null} | UI NO spawned? {uiNO && uiNO.IsSpawned} | id={(uiNO ? uiNO.NetworkObjectId : 0)}");
+
 			if (uiManager != null)
 				uiManager.OnWaveStart(currentWaveNumber);
-				foreach (ISpawner spawner in spawners)
-				{
-					spawner.StartWaves();
-				}
-				// can add logic here later to end the wave after some condition?
-				// for now, just ending wave after 30 seconds
-				Invoke(nameof(EndWave), 30f); 
-			
+
+			foreach (var spawner in spawners) spawner.StartWaves();
+			Invoke(nameof(EndWave), 30f);
 		}
 
 		private void EndWave()
