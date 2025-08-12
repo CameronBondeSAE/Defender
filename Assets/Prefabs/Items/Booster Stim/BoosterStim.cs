@@ -68,7 +68,7 @@ public class BoosterStim : UsableItem_Base
 
     #region IPickup
 
-    public override void Pickup()
+    public override void Pickup(CharacterBase characterTryingPickup)
     {
         //Debug.Log("Stim, PickedUp");
     }
