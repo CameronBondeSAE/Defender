@@ -58,9 +58,9 @@ namespace CameronBonde
 			
 			lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
 
-			await SetupLobbyEvents();
+			// await SetupLobbyEvents();
 			
-			await SetAllLobbyData();
+			// await SetAllLobbyData();
 
 			// Heartbeat the lobby every 15 seconds.
 			StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, heartBeatDelay));
