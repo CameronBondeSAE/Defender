@@ -26,9 +26,16 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
 
     }
 
-    public void Capture(CharacterBase characterTryingToUse)
+    public override void Drop()
     {
-        Drop();
+        Capture();
+    }
+
+
+    public void Capture(CharacterBase characterTryingToUse = null)
+    {
+        //Drop(characterTryingToUse.transform.forward);
+        if (characterTryingToUse == null) Launch(transform.forward, throwForce);
         Launch(characterTryingToUse.transform.forward, throwForce);
         if (capturedObject == null)
         {
