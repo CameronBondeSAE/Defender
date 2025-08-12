@@ -31,7 +31,7 @@ public class PlayerInventory : NetworkBehaviour
 
 	// public bool HasItem => CurrentItem != null && CurrentItemInstance != null;
 
-	public bool HasItem => CurrentItem != null; // TODO: Redundant now
+	public bool HasItem => CurrentItem != null || CurrentItemInstance != null; // TODO: Redundant now
 
 	public PlayerInputHandler2 playerInput;
 
@@ -172,39 +172,43 @@ public class PlayerInventory : NetworkBehaviour
 		}
 
 		// Move item to fire position
-		CurrentItemInstance.transform.position = itemHolder.position + transform.forward * 1.5f;
-		CurrentItemInstance.transform.rotation = Quaternion.identity;
-
-		// Unparent the item from player
-		// CurrentItemInstance.transform.SetParent(null);
-
-		// TODO: This has moved to UsableItem_Base
-		// Re-enable physics
-		// Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
-		// if (rb != null)
-		// {
-		// 	rb.isKinematic = false;
-		// 	rb.useGravity  = true;
-		//
-		// 	// Apply throwing force
-		// 	Vector3 worldThrowDirection = transform.forward;
-		// 	
-		// 	// TODO might be better to leave up to items themselves
-		// 	rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
-		// }
-		// else
-		// {
-		// 	Debug.LogWarning("Item doesn't have a Rigidbody component!");
-		// }
-
-		// Re-enable colliders
-		Collider[] colliders = CurrentItemInstance.GetComponentsInChildren<Collider>();
-		foreach (var col in colliders)
+		if (CurrentItemInstance != null)
 		{
-			col.enabled = true;
+			CurrentItemInstance.transform.position = itemHolder.position + transform.forward * 1.5f;
+			CurrentItemInstance.transform.rotation = Quaternion.identity;
+
+			// Unparent the item from player
+			// CurrentItemInstance.transform.SetParent(null);
+
+			// TODO: This has moved to UsableItem_Base
+			// Re-enable physics
+			// Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
+			// if (rb != null)
+			// {
+			// 	rb.isKinematic = false;
+			// 	rb.useGravity  = true;
+			//
+			// 	// Apply throwing force
+			// 	Vector3 worldThrowDirection = transform.forward;
+			// 	
+			// 	// TODO might be better to leave up to items themselves
+			// 	rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
+			// }
+			// else
+			// {
+			// 	Debug.LogWarning("Item doesn't have a Rigidbody component!");
+			// }
+
+			// Re-enable colliders
+			Collider[] colliders = CurrentItemInstance.GetComponentsInChildren<Collider>();
+			foreach (var col in colliders)
+			{
+				col.enabled = true;
+			}
+
+			CurrentItem = null;
 		}
 
-		CurrentItem         = null;
 		CurrentItemInstance = null;
 		
 		return true;

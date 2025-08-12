@@ -1,6 +1,7 @@
 using Shapes;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class DrawSphereOfInfluence : ImmediateModeShapeDrawer
 {
 	public Color colour = new Color(0, 1f, 0, 0.02f);
