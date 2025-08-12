@@ -31,7 +31,7 @@ public class PlayerInventory : NetworkBehaviour
 
 	// public bool HasItem => CurrentItem != null && CurrentItemInstance != null;
 
-	public bool HasItem => CurrentItem != null || CurrentItemInstance != null; // TODO: Redundant now
+	public bool HasItem => CurrentItemInstance != null;
 
 	public PlayerInputHandler2 playerInput;
 
@@ -127,22 +127,25 @@ public class PlayerInventory : NetworkBehaviour
 		//
 		// return true;
 
-		Debug.Log($"[TryPickupItem] Called for: {(item as MonoBehaviour)?.name}");
-		if (HasItem)
-		{
-			Debug.Log("[TryPickupItem] Inventory full, dropping held item.");
-			DropHeldItem();
-			return false;
-		}
-
 		if (item == null)
 		{
 			Debug.Log("[TryPickupItem] Item is null.");
 			return false;
 		}
 
+		Debug.Log($"[TryPickupItem] Called for: {(item as MonoBehaviour)?.name}");
+		// if (HasItem)
+		// {
+		// 	Debug.Log("[TryPickupItem] Inventory full, dropping held item.");
+		// 	DropHeldItem();
+		// 	return false;
+		// }
+		//
+		
+		// Get concrete references to real GOs
 		CurrentItem         = item;
 		CurrentItemInstance = (CurrentItem as MonoBehaviour)?.gameObject;
+		
 		if (CurrentItemInstance != null)
 		{
 			Debug.Log($"[TryPickupItem] Parenting {CurrentItemInstance.name} to itemHolder {itemHolder.name}");
@@ -151,7 +154,7 @@ public class PlayerInventory : NetworkBehaviour
 			
 			CurrentItemInstance.transform.localPosition = Vector3.zero;
 			CurrentItemInstance.transform.localRotation = Quaternion.identity;
-			CurrentItem.Pickup();
+			CurrentItem.Pickup(GetComponent<CharacterBase>());
 			CurrentItemInstance.GetComponent<UsableItem_Base>().CurrentCarrier = transform;
 		}
 		else

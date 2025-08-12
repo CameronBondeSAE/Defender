@@ -21,9 +21,9 @@ public class Grenade : UsableItem_Base
     }
     
     // In Grenade
-    public override void Pickup()
+    public override void Pickup(CharacterBase whoIsPickupMeUp)
     {
-        base.Pickup(); // plays audio, sets IsCarried, disables physics
+        base.Pickup(whoIsPickupMeUp); // plays audio, sets IsCarried, disables physics
         // detect and store the carrier
         Debug.Log("Grenade picked up");
     }

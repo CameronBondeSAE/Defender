@@ -37,7 +37,7 @@ namespace NicholasScripts
         {
         }
 
-        public void Pickup()
+        public void Pickup(CharacterBase whoIsPickupMeUp)
         {
 	        
         }

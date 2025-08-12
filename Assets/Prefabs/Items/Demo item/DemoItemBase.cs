@@ -16,6 +16,7 @@ public class DemoItemBase : UsableItem_Base
 	{
 		base.Use(characterTryingToUse);
 
+		// Server side only, because the base class does the networking for this
 		if (activationCountdown > 0)
 			StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
 
@@ -57,9 +58,9 @@ public class DemoItemBase : UsableItem_Base
 	}
 
 	// TODO: Networking
-	public override void Pickup()
+	public override void Pickup(CharacterBase whoIsPickupMeUp)
 	{
-		base.Pickup(); // Plays pickup sound, etc
+		base.Pickup(whoIsPickupMeUp); // Plays pickup sound, etc
 	}
 
 	// TODO: Networking

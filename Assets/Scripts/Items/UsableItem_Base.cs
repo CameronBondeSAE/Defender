@@ -243,10 +243,12 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 
     #region Interface Implementation: IPickup / IUsable
     // IPickup
-    public virtual void Pickup()
+    public virtual void Pickup(CharacterBase whoIsPickupMeUp)
     {
         if (audioSource && pickupClip) audioSource.PlayOneShot(pickupClip);
         IsCarried = true;
+        
+		SetCarrier(whoIsPickupMeUp.transform);
         // SetCarrier(CurrentCarrier);
         //CurrentCarrier = transform.parent;
 

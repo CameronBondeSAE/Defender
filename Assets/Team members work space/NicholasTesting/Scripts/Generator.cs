@@ -100,7 +100,7 @@
                     // view.DrawPowerRange(transform.position, model.powerRange);
             }
 
-            public void Pickup()
+            public void Pickup(CharacterBase whoIsPickupMeUp)
             {
             }
 

@@ -23,6 +23,8 @@ public class SuicideVest : UsableItem_Base
     [SerializeField] private GameObject sparkParticles;
 
     public CharacterBase entityAttachedTo;
+    
+    public Collider vestTrigger;
 
     private bool SetAttachedPosition()
     {
@@ -38,9 +40,13 @@ public class SuicideVest : UsableItem_Base
     {
         if (state == VestState.isAttached)
         {
-            transform.rotation = entityAttachedTo.transform.rotation;
+	        if (entityAttachedTo != null)
+	        {
+		        transform.rotation = entityAttachedTo.transform.rotation;
 
-            transform.position = entityAttachedTo.transform.position + transform.forward * -0.8f + transform.up * 1.5f; 
+		        transform.position = entityAttachedTo.transform.position + transform.forward * -0.8f +
+		                             transform.up * 1.5f;
+	        }
         }
     }
 
@@ -53,26 +59,30 @@ public class SuicideVest : UsableItem_Base
         Debug.Log("Vest disabled");
     }
 
-    public override void Pickup()
+    public override void Pickup(CharacterBase whoIsPickupMeUp)
     {
-        base.Pickup();
+        base.Pickup(whoIsPickupMeUp);
 
         state = VestState.inHand;
+        
+        owner               = whoIsPickupMeUp;
+        vestTrigger.enabled = true;
+        
+        Use(whoIsPickupMeUp);
     }
 
     public override void Use(CharacterBase characterTryingToUse)
     {
         base.Use(characterTryingToUse);
 
-        owner = characterTryingToUse;
-        Debug.Log("owner = " + owner);
-        Launch(characterTryingToUse.transform.forward, launchForce); 
+        // Launch(characterTryingToUse.transform.forward, launchForce); 
 
         // on pickup, the vest is not activated. instead it is assigned an owner
         // on collision enter, attach the vest to the other character (whether that be a civ, alien, or player)
     }
 
-    private void OnCollisionEnter(Collision collision)
+    // private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (state == VestState.inHand)
         {
@@ -80,6 +90,8 @@ public class SuicideVest : UsableItem_Base
             {
                 if (collision.gameObject != owner.gameObject)
                 {
+	                owner.GetComponent<PlayerInventory>().DropHeldItem(); // HACK: Need a better way to inform inventory of destroy/unattaching
+	                
                     entityAttachedTo = collision.gameObject.GetComponent<CharacterBase>();
                     //transform.position = new Vector3(entityAttachedTo.position.x, entityAttachedTo.position.y, entityAttachedTo.position.z - 1.5f);
 
