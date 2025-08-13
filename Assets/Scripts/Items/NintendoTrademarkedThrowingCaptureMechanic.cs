@@ -9,6 +9,7 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
     [SerializeField] float effectRadius = 5f;
     [SerializeField] float healingAmount = 10f;
     [SerializeField] GameObject capturedObject = null;
+    [SerializeField] float throwForce = 4f;
 
     private void Start()
     {
@@ -21,13 +22,21 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
     {
         itemActive = true;
         base.Use(characterTryingToUse);
-        Drop();
-
+        Capture(characterTryingToUse);
     }
 
     public override void Drop()
     {
+        Capture();
+    }
+
+
+    public void Capture(CharacterBase characterTryingToUse = null)
+    {
         base.Drop();
+        //Drop(characterTryingToUse.transform.forward);
+        if (characterTryingToUse == null) rb.AddForce(transform.forward * throwForce, ForceMode.Force);
+        else rb.AddForce(characterTryingToUse.transform.forward * throwForce, ForceMode.Force);
         if (capturedObject == null)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, effectRadius);
@@ -44,8 +53,12 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
             if (healths.Count > 0)
             {
                 capturedObject = healths[Random.Range(0, healths.Count)].gameObject;
-                capturedObject.transform.parent = transform;
-                capturedObject.SetActive(false);
+                if (characterTryingToUse.gameObject != capturedObject)
+                {
+                    capturedObject.transform.parent = transform;
+                    capturedObject.SetActive(false);
+                }
+                else capturedObject = null;
             }
 
         }
@@ -53,6 +66,7 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
         {
             capturedObject.transform.parent = null;
             capturedObject.SetActive(true);
+            capturedObject.transform.position = transform.position;
             capturedObject = null;
             GetComponent<NetworkObject>().Despawn();
         }

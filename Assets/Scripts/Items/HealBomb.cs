@@ -21,7 +21,6 @@ public class HealBomb : UsableItem_Base
         itemActive = true;
         base.Use(characterTryingToUse);
         Drop();
-
     }
 
     public override void Drop()
