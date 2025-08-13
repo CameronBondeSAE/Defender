@@ -3,7 +3,12 @@ using Defender;
 using Unity.Netcode;
 using UnityEngine;
 
-public class BoosterStim : UsableItem_Base, IUsable, IPickup
+/// <summary>
+/// A booster stim that boosts player speed for a set duration of time visually being empty, once the duration is used up it will despawn
+/// </summary>
+
+
+public class BoosterStim : UsableItem_Base
 {
     [Header("Booster Stim Stats")]
     [SerializeField] private float stimDuration = 10f;
@@ -22,6 +27,13 @@ public class BoosterStim : UsableItem_Base, IUsable, IPickup
         base.StopUsing();
         //Debug.Log("Booster Stim, StopUsing");
     }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void StopUsing_Rpc()
+    {
+
+    }
+
 
     public override void Use(CharacterBase characterTryingToUse)
     {
@@ -46,18 +58,37 @@ public class BoosterStim : UsableItem_Base, IUsable, IPickup
 
     }
 
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Use_Rpc()
+    {
+
+    }
+
     #endregion
 
     #region IPickup
 
-    public override void Pickup()
+    public override void Pickup(CharacterBase characterTryingPickup)
     {
-        //Debug.Log("Stim PickedUp");
+        //Debug.Log("Stim, PickedUp");
     }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Pickup_Rpc()
+    {
+
+    }
+
 
     public override void Drop()
     {
-        //Debug.Log("Stim Dropped");
+        //Debug.Log("Stim, Dropped");
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Drop_Rpc()
+    {
+
     }
 
     #endregion
