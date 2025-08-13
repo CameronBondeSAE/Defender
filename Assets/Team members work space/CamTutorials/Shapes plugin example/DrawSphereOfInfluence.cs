@@ -1,8 +1,12 @@
 using Shapes;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class DrawSphereOfInfluence : ImmediateModeShapeDrawer
 {
+	public Color colour = new Color(0, 1f, 0, 0.02f);
+	public float radius = 5f;
+	
 	public override void DrawShapes(Camera cam)
 	{
 		base.DrawShapes(cam);
@@ -17,9 +21,9 @@ public class DrawSphereOfInfluence : ImmediateModeShapeDrawer
 			Draw.LineGeometry = LineGeometry.Volumetric3D; // : LineGeometry.Flat2D;
 			Draw.ThicknessSpace = ThicknessSpace.Meters;
 			// Draw.Color = new Color(1, 1f, 1, 0.02f);
-			Draw.Color = new Color(0, 1f, 0, 0.02f);
-			
-			Draw.Radius = 5f;
+			Draw.Color = colour;
+
+			Draw.Radius = radius;
 
 			// Position + rotate drawing to XZ plane
 			Matrix4x4 matrix = Matrix4x4.TRS(

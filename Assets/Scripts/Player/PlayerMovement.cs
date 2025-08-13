@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInputHandler2 inputHandler;
     private PlayerAnimation playerAnimation;
 
+    Vector2 inputVector;
+
     public float MoveSpeed
     {
         get => moveSpeed;
@@ -19,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -28,9 +32,24 @@ public class PlayerMovement : MonoBehaviour
         playerAnimation = GetComponent<PlayerAnimation>();
     }
 
+    private void OnEnable()
+    {
+	    inputHandler.onMove += OnMovefff;
+    }
+    
+    private void OnDisable()
+    {
+	    inputHandler.onMove -= OnMovefff;
+    }
+
+    private void OnMovefff(Vector2 obj)
+    {
+	    inputVector = obj;
+    }
+
     void FixedUpdate()
     {
-        Vector2 inputVector = inputHandler.moveInput;
+        // Vector2 inputVector = inputHandler.moveInput;
         Vector3 moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
 
         Vector3 targetVelocity = moveDirection * moveSpeed;

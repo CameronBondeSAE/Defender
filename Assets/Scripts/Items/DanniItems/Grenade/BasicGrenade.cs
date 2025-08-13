@@ -91,7 +91,7 @@ public class BasicGrenade : MonoBehaviour, IUsable, IPickup
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 
-    public void Pickup()
+    public void Pickup(CharacterBase whoIsPickupMeUp)
     {
     }
 

@@ -1,7 +1,8 @@
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
-public class Health : MonoBehaviour
+public class Health : NetworkBehaviour
 {
    // events other classes can subscribe to; trigger when health is modified/reaches 0/restored
    public event Action OnDeath;
@@ -10,7 +11,7 @@ public class Health : MonoBehaviour
    
    public float maxHealth;
    public float revivedHealth;
-   public float currentHealth;
+   public NetworkVariable<float> currentHealth = new NetworkVariable<float>();
    public bool isDead = false;
 
    [Header("Health related animation Params")] 
@@ -19,22 +20,22 @@ public class Health : MonoBehaviour
    
    protected virtual void Awake()
    {
-      currentHealth = maxHealth;
+      currentHealth.Value = maxHealth;
    }
 
    public virtual void TakeDamage(float amount)
    {
-      currentHealth -= amount;
+      currentHealth.Value -= amount;
       if (isDead) return;
       OnHealthChanged?.Invoke(amount);
-      if (currentHealth <= 0) Die();
+      if (currentHealth.Value <= 0) Die();
    }
 
    public virtual void Heal(float amount)
    {
       if (isDead) return;
-      currentHealth = Mathf.Min(currentHealth + amount, maxHealth); // does not heal over maxHealth
-      OnHealthChanged?.Invoke(currentHealth);
+      currentHealth.Value = Mathf.Min(currentHealth.Value + amount, maxHealth); // does not heal over maxHealth
+      OnHealthChanged?.Invoke(currentHealth.Value);
    }
 
    // for 2-player mode?
@@ -42,9 +43,9 @@ public class Health : MonoBehaviour
    {
       if (!isDead) return;
       isDead = false;
-      currentHealth = revivedHealth;
+      currentHealth.Value = revivedHealth;
       OnRevive?.Invoke();
-      OnHealthChanged?.Invoke(currentHealth);
+      OnHealthChanged?.Invoke(currentHealth.Value);
    }
 
    protected virtual void Die()

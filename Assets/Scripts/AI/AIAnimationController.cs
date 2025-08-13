@@ -29,13 +29,15 @@ namespace AIAnimation // A name space shared only by AIs for clarity
         {
             // search order: self > children > parent
             // since our ai set up is all different
-            animator = GetComponent<Animator>() ?? 
-                       GetComponentInChildren<Animator>() ?? 
-                       GetComponentInParent<Animator>();
+            if(animator == null)
+	            animator = GetComponent<Animator>() ?? 
+	                       GetComponentInChildren<Animator>() ?? 
+	                       GetComponentInParent<Animator>();
 
-            networkAnimator = GetComponent<NetworkAnimator>() ??
-                              GetComponentInChildren<NetworkAnimator>() ??
-                              GetComponentInParent<NetworkAnimator> ();
+			if(networkAnimator == null)
+	            networkAnimator = GetComponent<NetworkAnimator>() ??
+	                              GetComponentInChildren<NetworkAnimator>() ??
+	                              GetComponentInParent<NetworkAnimator> ();
     
             if (animator == null)
             {
@@ -43,7 +45,7 @@ namespace AIAnimation // A name space shared only by AIs for clarity
             }
             else
             {
-                Debug.Log($"[AIAnimationController] Found Animator on {animator.gameObject.name}");
+               //  Debug.Log($"[AIAnimationController] Found Animator on {animator.gameObject.name}");
             }
         }
         public void SetAnimationStateServer(AnimationState newState) // server only

@@ -1,9 +1,16 @@
 using System.Collections;
 using Defender;
+using Unity.Netcode;
 using UnityEngine;
 
-public class BoosterStim : MonoBehaviour, IUsable, IPickup
+/// <summary>
+/// A booster stim that boosts player speed for a set duration of time visually being empty, once the duration is used up it will despawn
+/// </summary>
+
+
+public class BoosterStim : UsableItem_Base
 {
+    [Header("Booster Stim Stats")]
     [SerializeField] private float stimDuration = 10f;
     [SerializeField] private float speedIncrease = 4f;
     [SerializeField] private bool stimUsed = false;
@@ -15,13 +22,23 @@ public class BoosterStim : MonoBehaviour, IUsable, IPickup
 
     #region IUsable
 
-    public void StopUsing()
+    public override void StopUsing()
     {
+        base.StopUsing();
         //Debug.Log("Booster Stim, StopUsing");
     }
 
-    public void Use(CharacterBase characterTryingToUse)
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void StopUsing_Rpc()
     {
+
+    }
+
+
+    public override void Use(CharacterBase characterTryingToUse)
+    {
+        base.Use(characterTryingToUse);
+
         Debug.Log("Booster Stim, Use");
        //playerMovement = GetComponentInParent<PlayerMovement>(); // NOTE - when items get put as a child use this instead?
         // playerMovement = FindAnyObjectByType<PlayerMovement>(); // TODO temporary
@@ -41,18 +58,37 @@ public class BoosterStim : MonoBehaviour, IUsable, IPickup
 
     }
 
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Use_Rpc()
+    {
+
+    }
+
     #endregion
 
     #region IPickup
 
-    public void Pickup()
+    public override void Pickup(CharacterBase characterTryingPickup)
     {
-        //Debug.Log("Stim PickedUp");
+        //Debug.Log("Stim, PickedUp");
     }
 
-    public void Drop()
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Pickup_Rpc()
     {
-        //Debug.Log("Stim Dropped");
+
+    }
+
+
+    public override void Drop()
+    {
+        //Debug.Log("Stim, Dropped");
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void Drop_Rpc()
+    {
+
     }
 
     #endregion
@@ -78,12 +114,14 @@ public class BoosterStim : MonoBehaviour, IUsable, IPickup
     {
         playerMovement.MoveSpeed -= speedIncrease;
         //Debug.Log("Stim Boost Deactive");
+
+        GetComponent<NetworkObject>().Despawn();
     }
 
 
     // TO-DO LIST / IDEAS (nickA)
 
-    // network it (sync for everyone + position and use), sync stimUsed variable for late join?
+    // network it (sync for everyone + position and use)
 
 
 }

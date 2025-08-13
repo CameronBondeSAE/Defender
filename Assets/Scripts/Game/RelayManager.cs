@@ -20,10 +20,10 @@ public class RelayManager : MonoBehaviour
 	
 	public void ActivateButtons()
 	{
-		joinCodeInput.interactable   = true;
-		joinCodeDisplay.interactable = true;
-		startHostButton.interactable  = true;
-		startClientButton.interactable = true;
+		// joinCodeInput.interactable   = true;
+		// joinCodeDisplay.interactable = true;
+		// startHostButton.interactable  = true;
+		// startClientButton.interactable = true;
 	}
 
 	private void DeactivateButtons()
@@ -31,7 +31,7 @@ public class RelayManager : MonoBehaviour
 	// 	joinCodeInput.interactable   = false;
 	// 	joinCodeDisplay.interactable = false;
 	// 	startHostButton.interactable  = false;
-	// 	startClientButton.interactable = false;
+		// startClientButton.interactable = false;
 	}
 
 	async void Start()
@@ -99,7 +99,7 @@ public class RelayManager : MonoBehaviour
 	public void NewJoinCodeSet(string _relayJoinCode)
 	{
 		joinCode = _relayJoinCode;
-		ActivateButtons();
+		// ActivateButtons();
 	}
 
 	public void StartClientWithJoinCode()

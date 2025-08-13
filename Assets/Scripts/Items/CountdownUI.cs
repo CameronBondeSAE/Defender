@@ -3,8 +3,12 @@ using UnityEngine.UI;
 
 public class CountdownUI : MonoBehaviour
 {
-      [Header("Refs")]
+       [Header("Refs")]
     public Text countdownText;
+
+    [Header("Colors")]
+    public Color normalCountdownColor = Color.white;
+    public Color expiryCountdownColor = Color.red; 
 
     [Header("Offsets")]
     public Vector3 offset = new Vector3(0, 2.5f, 0);
@@ -24,15 +28,19 @@ public class CountdownUI : MonoBehaviour
     private Vector3 anchorPos;
     private Vector3 vel; // for SmoothDamp
 
-    public void Init(UsableItem_Base itemToTrack, int startSeconds)
+    // init to allow expiry styling
+    public void Init(UsableItem_Base itemToTrack, int startSeconds, bool useExpiryStyle = false)
     {
         item = itemToTrack;
         isActive = true;
 
-        // set initial position (no parenting noww)
         var targetPos = GetDesiredTargetPos();
         anchorPos = targetPos;
         transform.position = anchorPos;
+
+        // apply color
+        if (countdownText)
+            countdownText.color = useExpiryStyle ? expiryCountdownColor : normalCountdownColor;
 
         SetCountdown(startSeconds);
         gameObject.SetActive(true);
@@ -55,47 +63,35 @@ public class CountdownUI : MonoBehaviour
     {
         if (countdownText) countdownText.text = seconds.ToString();
     }
+    
+    public void SetExpiryStyle(bool useExpiryStyle)
+    {
+        if (!countdownText) return;
+        countdownText.color = useExpiryStyle ? expiryCountdownColor : normalCountdownColor;
+    }
 
     void LateUpdate()
     {
         if (!isActive || item == null) return;
         Vector3 desired = GetDesiredTargetPos();
-        // choose deadzone based on if the item is currently carried
+
         float deadzone = (item.IsCarried ? carriedDeadzone : worldDeadzone);
         float dist = Vector3.Distance(anchorPos, desired);
         if (dist > teleportDistance)
         {
-            // if there's a big jump (if the item is thrown or teleported) - snap
             anchorPos = desired;
             vel = Vector3.zero;
         }
         else if (dist > deadzone)
         {
-            // if there's significant motion, smoothly catch up
             anchorPos = Vector3.SmoothDamp(anchorPos, desired, ref vel, smoothTime);
         }
         transform.position = anchorPos;
-        
-        // Face the camera (no item rotation!)
-        // var cam = Camera.main;
-        // if (cam)
-        // {
-        //     // face cam horizontally to reduce tilt
-        //     Vector3 camPos = cam.transform.position;
-        //     camPos.y = transform.position.y;
-        //     transform.LookAt(camPos);
-        //     transform.Rotate(0f, 180f, 0f); // flip to face Text at camera
-        // }
     }
+
     private Vector3 GetDesiredTargetPos()
     {
         if (item == null) return transform.position;
         return item.transform.position + offset;
-
-        // Transform followTarget = (item.IsCarried && item.CurrentCarrier != null)
-        //     ? item.CurrentCarrier
-        //     : item.transform;
-        //
-        // return followTarget.position + offset;
     }
 }
