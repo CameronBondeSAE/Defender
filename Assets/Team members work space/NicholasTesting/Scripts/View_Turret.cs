@@ -15,7 +15,7 @@ namespace NicholasScripts
             {
                 Debug.DrawRay(firePoint.position, firePoint.forward * 2f, Color.red, 2f);
                 Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-                Debug.Log("Firing bullet...");
+                // Debug.Log("Firing bullet...");
                 if (fireAudio != null) fireAudio.Play();
                 if (muzzleFlash != null) muzzleFlash.Play();
             }

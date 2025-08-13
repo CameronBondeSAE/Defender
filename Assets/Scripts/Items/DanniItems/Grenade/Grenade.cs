@@ -1,0 +1,64 @@
+using Defender;
+using UnityEngine;
+
+public class Grenade : UsableItem_Base
+{
+    [Header("Grenade Stats")]
+    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float damage = 50f;
+    [SerializeField] private float explosionForce = 10f;
+    [SerializeField] private float grenadeCountdown = 3f;
+    
+    [Header("Explosion effect")]
+    public ParticleSystem explosionEffect;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        activationCountdown = grenadeCountdown;
+    }
+    
+    // In Grenade
+    public override void Pickup(CharacterBase whoIsPickupMeUp)
+    {
+        base.Pickup(whoIsPickupMeUp); // plays audio, sets IsCarried, disables physics
+        // detect and store the carrier
+        Debug.Log("Grenade picked up");
+    }
+
+
+    public override void Use(CharacterBase characterTryingToUse)
+    {
+        // Launch itself forward (when used)
+        if (characterTryingToUse != null)
+        {
+	        Debug.Log("Grenade thrown!");
+	        Launch(characterTryingToUse.transform.forward, launchForce);
+	        base.Use(characterTryingToUse); // starts the activation countdown
+        }
+    }
+
+    protected override void ActivateItem()
+    {
+        Explode();
+    }
+
+    private void Explode()
+    {
+        if (explosionEffect)
+        {
+            var vfx = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            Destroy(vfx.gameObject, vfx.main.duration);
+        }
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        foreach (var col in colliders)
+        {
+            var health = col.GetComponent<Health>();
+            if (health != null)
+                health.TakeDamage(damage);
+        }
+        Debug.Log("grenade exploded");
+        Destroy(gameObject);
+    }
+}

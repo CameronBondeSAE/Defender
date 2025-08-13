@@ -1,9 +1,10 @@
+using Defender;
 using UnityEngine;
 
 namespace NicholasScripts
 {
     [System.Serializable]
-    public class Model_Turret : MonoBehaviour
+    public class Model_Turret : MonoBehaviour, IUsable, IPickup
     {
         public float baseFireRate = 1f;
         public float poweredFireRate = 3f;
@@ -26,6 +27,23 @@ namespace NicholasScripts
         public void ResetTimer()
         {
             fireTimer = 0f;
+        }
+
+        public void Use(CharacterBase characterTryingToUse)
+        {
+        }
+
+        public void StopUsing()
+        {
+        }
+
+        public void Pickup(CharacterBase whoIsPickupMeUp)
+        {
+	        
+        }
+
+        public void Drop()
+        {
         }
     }
 }

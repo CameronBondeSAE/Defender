@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
-public class PlayerInputHandler : MonoBehaviour
+public class PlayerInputHandler_DISABLED : MonoBehaviour
 {
     [Header("Input Actions")]
     public InputAction moveAction;

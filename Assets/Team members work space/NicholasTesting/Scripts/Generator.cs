@@ -1,10 +1,11 @@
     using System.Collections;
     using UnityEngine;
     using System.Collections.Generic;
+    using Defender;
 
     namespace NicholasScripts
     {
-        public class Generator : MonoBehaviour, IUsable
+        public class Generator : MonoBehaviour, IUsable, IPickup
         {
             [Header("Generator MVC")]
             public Model_Generator model = new Model_Generator();
@@ -18,7 +19,7 @@
                 model.isUsed = false;
             }
 
-            public void Use()
+            public void Use(CharacterBase characterTryingToUse)
             {
                 if (model.isUsed || startupCoroutine != null)
                 {
@@ -92,8 +93,19 @@
 
             private void OnDrawGizmosSelected()
             {
-                if (view != null)
-                    view.DrawPowerRange(transform.position, model.powerRange);
+	            Gizmos.color = Color.yellow;
+	            Gizmos.DrawWireSphere(transform.position, model.powerRange);
+
+                // if (view != null)
+                    // view.DrawPowerRange(transform.position, model.powerRange);
+            }
+
+            public void Pickup(CharacterBase whoIsPickupMeUp)
+            {
+            }
+
+            public void Drop()
+            {
             }
         }
     }

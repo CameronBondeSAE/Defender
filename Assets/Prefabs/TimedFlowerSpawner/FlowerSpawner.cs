@@ -1,6 +1,7 @@
+using Defender;
 using UnityEngine;
 
-public class FlowerSpawner : MonoBehaviour//, IUseableObject
+public class FlowerSpawner : MonoBehaviour, IUsable, IPickup
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -12,5 +13,22 @@ public class FlowerSpawner : MonoBehaviour//, IUseableObject
     void Update()
     {
         
+    }
+
+    public void Use(CharacterBase characterTryingToUse)
+    {
+	    Debug.Log("Flower spawner Used");
+    }
+
+    public void StopUsing()
+    {
+    }
+
+    public void Pickup(CharacterBase whoIsPickupMeUp)
+    {
+    }
+
+    public void Drop()
+    {
     }
 }

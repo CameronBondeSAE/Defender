@@ -1,4 +1,5 @@
 using System.Collections;
+using Defender;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
@@ -12,7 +13,7 @@ public class PlayerCombat : MonoBehaviour
     private Coroutine shootCoroutine;
 
     [Header("References")]
-    private PlayerInputHandler playerInput;
+    private PlayerInputHandler2 playerInput;
     private PlayerInventory inventory;
 
     [Header("Item Type Names")]
@@ -31,18 +32,18 @@ public class PlayerCombat : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInputHandler>();
+        playerInput = GetComponent<PlayerInputHandler2>();
         if (playerInput == null)
-            playerInput = FindObjectOfType<PlayerInputHandler>();
+            playerInput = FindObjectOfType<PlayerInputHandler2>();
         inventory = GetComponent<PlayerInventory>();
         
         if (playerInput != null)
         {
-            playerInput.onShootStart += StartShooting;
-            playerInput.onShootStop += StopShooting;
-            playerInput.onLaserStart += TryActivateLaser;
-            playerInput.onLaserStop += TryDeactivateLaser;
-            playerInput.onThrow += TryThrowGrenade;
+            // playerInput.onShootStart += StartShooting;
+            // playerInput.onShootStop += StopShooting;
+            // playerInput.onLaserStart += TryActivateLaser;
+            // playerInput.onLaserStop += TryDeactivateLaser;
+            // playerInput.onThrow += TryThrowGrenade;
             // ================================================================
             // If you guys have your own custom input keys for your items, ADD NEW INPUT EVENT SUBSCRIPTIONS HERE
             // * Examples:
@@ -65,11 +66,11 @@ public class PlayerCombat : MonoBehaviour
     {
         if (playerInput != null)
         {
-            playerInput.onShootStart -= StartShooting;
-            playerInput.onShootStop -= StopShooting;
-            playerInput.onLaserStart -= TryActivateLaser;
-            playerInput.onLaserStop -= TryDeactivateLaser;
-            playerInput.onThrow -= TryThrowGrenade;
+            // playerInput.onShootStart -= StartShooting;
+            // playerInput.onShootStop -= StopShooting;
+            // playerInput.onLaserStart -= TryActivateLaser;
+            // playerInput.onLaserStop -= TryDeactivateLaser;
+            // playerInput.onThrow -= TryThrowGrenade;
             // ================================================================
             // UNSUBSCRIBE ANY NEW INPUT EVENTS HERE
             // ================================================================
@@ -135,11 +136,12 @@ public class PlayerCombat : MonoBehaviour
             return;
         }
         // Check if it's a grenade
-        if (!inventory.CurrentItem.Name.Equals(grenadeItemName, System.StringComparison.OrdinalIgnoreCase))
-        {
-            Debug.Log("Current item is not a grenade.");
-            return;
-        }
+        // if (!inventory.CurrentItem.Name.Equals(grenadeItemName, System.StringComparison.OrdinalIgnoreCase))
+        // {
+        //     Debug.Log("Current item is not a grenade.");
+        //     return;
+        // }
+
         // ================================================================
         // INSERT MORE THROWABLE ITEM NAME CHECKS HERE
         // Example:
@@ -152,11 +154,11 @@ public class PlayerCombat : MonoBehaviour
         // ================================================================
 
         // Check if we have an instance to throw
-        if (inventory.CurrentItemInstance == null)
-        {
-            Debug.LogWarning("No item instance to throw!");
-            return;
-        }
+        // if (inventory.CurrentItemInstance == null)
+        // {
+        //     Debug.LogWarning("No item instance to throw!");
+        //     return;
+        // }
         ThrowCurrentItem();
     }
 
@@ -204,7 +206,7 @@ public class PlayerCombat : MonoBehaviour
         IUsable usable = itemToThrow.GetComponent<IUsable>();
         if (usable != null)
         {
-            usable.Use();
+            usable.Use(GetComponent<CharacterBase>());
         }
 
         // Clear from inventory (this will NOT destroy the thrown item)
@@ -278,7 +280,7 @@ public class PlayerCombat : MonoBehaviour
         if (inventory == null || !inventory.HasItem)
             return false;
 
-        return inventory.CurrentItem.Name.Equals(itemName, System.StringComparison.OrdinalIgnoreCase);
+        return false;// BUG inventory.CurrentItem.Name.Equals(itemName, System.StringComparison.OrdinalIgnoreCase);
     }
     private T GetCurrentItemComponent<T>() where T : class
     {

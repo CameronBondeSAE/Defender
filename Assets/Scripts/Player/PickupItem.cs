@@ -6,9 +6,9 @@ public class PickupItem : MonoBehaviour
     [Header("Pickup Settings")]
     [SerializeField]
     private float interactionRange = 2f;
+    private bool playerInRange = false;
     
     private FloatingUI floatingUI;
-    private bool playerInRange = false;
     private Transform playerTransform;
 
     private void Start()
@@ -40,17 +40,17 @@ public class PickupItem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Check if player is in range for pickup
-    /// </summary>
-    public bool IsPlayerInRange(Transform player)
-    {
-        if (!playerInRange || playerTransform == null) 
-            return false;
-            
-        float distance = Vector3.Distance(transform.position, player.position);
-        return distance <= interactionRange;
-    }
+    // /// <summary>
+    // /// Check if player is in range for pickup
+    // /// </summary>
+    // public bool IsPlayerInRange(Transform player)
+    // {
+    //     if (!playerInRange || playerTransform == null) 
+    //         return false;
+    //         
+    //     float distance = Vector3.Distance(transform.position, player.position);
+    //     return distance <= interactionRange;
+    // }
 
     /// <summary>
     /// Called when the item is successfully picked up
