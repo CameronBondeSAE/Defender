@@ -43,10 +43,7 @@ using UnityEngine;
         public void Use()
         {
             isActivated = true; // starts 5 second timer, after 5 seconds will EXPLODE
-            foreach (MeshRenderer meshRenderer in ringMeshRenderers)
-            {
-                meshRenderer.material = activeMaterial;
-            }
+            ChangeVisuals(activeMaterial);
         }
 
         /// <summary>
@@ -55,10 +52,7 @@ using UnityEngine;
         public void StopUsing()
         {
             isActivated = false;
-            foreach (MeshRenderer meshRenderer in ringMeshRenderers)
-            {
-                meshRenderer.material = inactiveMaterial;
-            }
+            ChangeVisuals(inactiveMaterial);
             countDown = countDownTime; // resets timer so when activated it doesn't blow up too quick
         }
         
@@ -95,6 +89,18 @@ using UnityEngine;
             }
             Debug.Log("Exploded");
             Destroy(gameObject);
+        }
+
+        /// <summary>
+        /// Changes the material of the rings to whatever material is put in, active or inactive
+        /// </summary>
+        /// <param name="material"></param>
+        private void ChangeVisuals(Material material)
+        {
+            foreach (MeshRenderer meshRenderer in ringMeshRenderers)
+            {
+                meshRenderer.material = material;
+            }
         }
         
     }
