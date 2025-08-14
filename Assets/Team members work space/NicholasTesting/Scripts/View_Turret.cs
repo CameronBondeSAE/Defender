@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace NicholasScripts
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class View_Turret : MonoBehaviour
     {
         [SerializeField] private Transform firePoint;

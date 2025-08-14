@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace NicholasScripts
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [System.Serializable]
     public class View_Generator : MonoBehaviour
     {

@@ -6,7 +6,7 @@ public class TurretSphereOfInfluence : ImmediateModeShapeDrawer
 {
     public Color activeColour = new Color(0f, 1f, 0f, 0.02f);
     public Color inactiveColour = new Color(1f, 0.5f, 0f, 0.02f);
-    public float radius = 5f;
+    public float radius = 6f;
     public NicholasScripts.Model_Turret turretModel;
 
     public override void DrawShapes(Camera cam)

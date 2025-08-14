@@ -1,7 +1,12 @@
 using UnityEngine;
 
+
+
 namespace NicholasScripts
 {
+    /// <summary>
+    /// Base Turret Script
+    /// </summary>
     public abstract class BaseTurret : MonoBehaviour, IPowerable
     {
         [Header("MVC")]
