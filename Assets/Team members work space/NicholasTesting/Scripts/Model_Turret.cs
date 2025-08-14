@@ -3,8 +3,12 @@ using UnityEngine;
 
 namespace NicholasScripts
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [System.Serializable]
-    public class Model_Turret : MonoBehaviour, IUsable, IPickup
+    public class Model_Turret : UsableItem_Base 
+    
     {
         [Header("Fire Rates")]
         public float baseFireRate = 1f;
@@ -37,25 +41,26 @@ namespace NicholasScripts
             fireTimer = 0f;
         }
 
-        public void Use(CharacterBase characterTryingToUse)
+        public override void Use(CharacterBase characterTryingToUse)
         {
+            base.Use(characterTryingToUse);
             isActivated = true;
          
         }
 
-        public void StopUsing()
+        public override void StopUsing()
         {
             isActivated = false;
 
         }
 
-        public void Pickup(CharacterBase whoIsPickupMeUp)
+        public override void Pickup(CharacterBase whoIsPickupMeUp)
         {
             StopUsing();
 
         }
 
-        public void Drop()
+        public override void Drop()
         {
             
         }

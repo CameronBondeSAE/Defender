@@ -5,7 +5,10 @@
 
     namespace NicholasScripts
     {
-        public class Generator : MonoBehaviour, IUsable, IPickup
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Generator : UsableItem_Base
         {
             [Header("Generator MVC")]
             public Model_Generator model = new Model_Generator();
@@ -60,8 +63,9 @@
                 }
             }
 
-            public void Use(CharacterBase characterTryingToUse)
+            public override void Use(CharacterBase characterTryingToUse)
             {
+                base.Use(characterTryingToUse);
                 if (model.isUsed || startupCoroutine != null)
                 {
                     //Debug.Log("Generator already used or starting.");
@@ -100,7 +104,7 @@
                 startupCoroutine = null;
             }
             
-            public void StopUsing()
+            public override void StopUsing()
             {
                 if (!model.isUsed && startupCoroutine == null) return;
 
@@ -127,7 +131,7 @@
 
 
 
-            private void OnDestroy()
+            private new void OnDestroy()
             {
                 model.StopAll();
             }
@@ -141,7 +145,7 @@
                     // view.DrawPowerRange(transform.position, model.powerRange);
             }
 
-            public void Pickup(CharacterBase whoIsPickupMeUp)
+            public override void Pickup(CharacterBase whoIsPickupMeUp)
             {
                 if (model.isUsed || startupCoroutine != null)
                 {
@@ -149,7 +153,7 @@
                 }
             }
 
-            public void Drop()
+            public override void Drop()
             {
             }
         }

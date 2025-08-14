@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace NicholasScripts
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [System.Serializable]
     public class Model_Generator : MonoBehaviour
     {
