@@ -271,15 +271,17 @@ MonoBehaviour:
   timerBeepClip: {fileID: 0}
   timerActivatedClip: {fileID: 0}
   isConsumable: 1
+  expiryDuration: 10
   activationCountdown: 0
-  countdownUIPrefab: {fileID: 0}
+  activationTrigger: 0
+  allowMultipleActivations: 0
+  countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
   stimDuration: 10
   speedIncrease: 4
   stimUsed: 0
   playerMovement: {fileID: 0}
-  stimBoostVisual: {fileID: 6428342787807176104}
 --- !u!1 &1759960081170471699
 GameObject:
   m_ObjectHideFlags: 0
