@@ -27,16 +27,4 @@ public class AlienAI : AIBase
             ChangeState(new SearchState(this));
         }
     }
-
-    // Stop movement (using NavMesh built in bool)
-    public void StopMoving()
-    {
-        agent.isStopped = true;
-    }
-
-    // Resume movement
-    public void ResumeMoving()
-    {
-        agent.isStopped = false;
-    }
 }

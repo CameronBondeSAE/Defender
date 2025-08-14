@@ -20,5 +20,8 @@ public class IdleState : IAIState
         animController.SetAnimation(AIAnimationController.AnimationState.Idle);
     }
 
-    public void Exit() => ai.agent.isStopped = false;
+    public void Exit()
+    {
+	    if (ai.agent != null && ai.agent.enabled) ai.agent.isStopped = false;
+    }
 }

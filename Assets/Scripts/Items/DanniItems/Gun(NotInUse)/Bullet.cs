@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public partial class Bullet : MonoBehaviour
 {
     public BulletData bulletData;
     private Rigidbody rb;

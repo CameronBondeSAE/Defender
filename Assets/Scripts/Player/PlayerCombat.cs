@@ -1,4 +1,5 @@
 using System.Collections;
+using Defender;
 using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
@@ -205,7 +206,7 @@ public class PlayerCombat : MonoBehaviour
         IUsable usable = itemToThrow.GetComponent<IUsable>();
         if (usable != null)
         {
-            usable.Use();
+            usable.Use(GetComponent<CharacterBase>());
         }
 
         // Clear from inventory (this will NOT destroy the thrown item)
