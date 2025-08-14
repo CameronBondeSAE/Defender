@@ -1,5 +1,6 @@
 using System.Collections;
 using Defender;
+using NUnit.Framework;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ public class BoosterStim : UsableItem_Base
     [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
     private void StopUsing_Rpc()
     {
-
+        //unused
     }
 
 
@@ -39,29 +40,34 @@ public class BoosterStim : UsableItem_Base
     {
         base.Use(characterTryingToUse);
 
-        Debug.Log("Booster Stim, Use");
-       //playerMovement = GetComponentInParent<PlayerMovement>(); // NOTE - when items get put as a child use this instead?
-        // playerMovement = FindAnyObjectByType<PlayerMovement>(); // TODO temporary
-		playerMovement = characterTryingToUse.GetComponent<PlayerMovement>(); // CAM NOTE: We added this to the IUseable JUST FOR YOU
-		
-        if (stimUsed == false)
-        {
-            ActivateBoosterStim();
-        }
+        playerMovement = characterTryingToUse.GetComponent<PlayerMovement>();
 
-
-        if(stimBoostVisual != null)
-        {
-            Renderer render = stimBoostVisual.GetComponent<Renderer>();
-            render.material.color = Color.black;
-        }
+        Use_Rpc();
 
     }
 
     [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
     private void Use_Rpc()
     {
+        Debug.Log("Booster Stim, Use");
 
+        //playerMovement[1] = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None); // dont ask
+
+        //playerMovement = GetComponentInParent<PlayerMovement>(); 
+
+        //playerMovement = characterTryingToUse.GetComponent<PlayerMovement>(); // CAM NOTE: We added this to the IUseable JUST FOR YOU
+
+        if (stimUsed == false)
+        {
+            ActivateBoosterStim_Rpc();
+        }
+
+
+        if (stimBoostVisual != null)
+        {
+            Renderer render = stimBoostVisual.GetComponent<Renderer>();
+            render.material.color = Color.black;
+        }
     }
 
     #endregion
@@ -76,7 +82,7 @@ public class BoosterStim : UsableItem_Base
     [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
     private void Pickup_Rpc()
     {
-
+        // unused
     }
 
 
@@ -88,13 +94,13 @@ public class BoosterStim : UsableItem_Base
     [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
     private void Drop_Rpc()
     {
-
+        // unused
     }
 
     #endregion
 
-
-    public void ActivateBoosterStim() // start
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    public void ActivateBoosterStim_Rpc() // start  
     {
         stimUsed = true;
         //Debug.Log("Stim Boost Active");
@@ -107,10 +113,11 @@ public class BoosterStim : UsableItem_Base
     {
         yield return new WaitForSeconds(stimDuration);
 
-        DeactivateBoosterStim();
+        DeactivateBoosterStim_Rpc();
     }
 
-    public void DeactivateBoosterStim() // end
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    public void DeactivateBoosterStim_Rpc() // end
     {
         playerMovement.MoveSpeed -= speedIncrease;
         //Debug.Log("Stim Boost Deactive");
@@ -118,10 +125,6 @@ public class BoosterStim : UsableItem_Base
         GetComponent<NetworkObject>().Despawn();
     }
 
-
     // TO-DO LIST / IDEAS (nickA)
-
-    // network it (sync for everyone + position and use)
-
 
 }
