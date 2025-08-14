@@ -18,8 +18,6 @@ public class BoosterStim : UsableItem_Base
 
     [SerializeField] private PlayerMovement playerMovement;
 
-    [SerializeField] private GameObject stimBoostVisual;
-
 
     #region IUsable
 
@@ -62,12 +60,6 @@ public class BoosterStim : UsableItem_Base
             ActivateBoosterStim_Rpc();
         }
 
-
-        if (stimBoostVisual != null)
-        {
-            Renderer render = stimBoostVisual.GetComponent<Renderer>();
-            render.material.color = Color.black;
-        }
     }
 
     #endregion
