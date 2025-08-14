@@ -1,3 +1,4 @@
+using Defender;
 using UnityEngine;
 
 public class FlowerSpawner : MonoBehaviour, IUsable, IPickup
@@ -14,7 +15,7 @@ public class FlowerSpawner : MonoBehaviour, IUsable, IPickup
         
     }
 
-    public void Use()
+    public void Use(CharacterBase characterTryingToUse)
     {
 	    Debug.Log("Flower spawner Used");
     }
@@ -23,7 +24,7 @@ public class FlowerSpawner : MonoBehaviour, IUsable, IPickup
     {
     }
 
-    public void Pickup()
+    public void Pickup(CharacterBase whoIsPickupMeUp)
     {
     }
 

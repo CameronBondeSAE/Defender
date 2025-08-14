@@ -120,8 +120,11 @@ namespace mothershipScripts
                 blueBeam.SetActive(true);
                 PlayRandomBeamSound();
                 GameObject alienSpawned = Instantiate(alienPrefab, alienSpawnPosition + alienSpawnOffset, Quaternion.identity);
+                alienSpawned.GetComponent<NetworkObject>().Spawn(true);
+
                 // TODO: Make abstract
                 alienSpawned.GetComponent<AlienAI>().mothership = transform;
+                AlienSpawned_Event?.Invoke(alienSpawned);
 
                 OnAlienSpawned?.Invoke(alienSpawned);
                 yield return new WaitForSeconds(blueBeamDuration);

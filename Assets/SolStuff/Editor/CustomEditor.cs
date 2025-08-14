@@ -13,7 +13,7 @@ public class SolDecoyEditor : Editor
             // ‘target’ is the magic variable that editors use to link back to the original component. It’s in the BASE CLASS, so you have to ‘cast’ to get access to YOUR functions.
             DecoyItem decoyItem; 
             decoyItem = target as DecoyItem;
-            decoyItem.Use();
+            decoyItem.Use(null);
         }
         
         if (GUILayout.Button("Stop Interacting"))

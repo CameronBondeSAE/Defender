@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6515748185499703443}
   - component: {fileID: 8396184225666248301}
   - component: {fileID: 4716096615195027423}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6899852313980938872}
   - component: {fileID: 2093034735134712517}
   - component: {fileID: 4957797271303352018}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sphere (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,8 @@ GameObject:
   - component: {fileID: 2075590020007493858}
   - component: {fileID: 7386973050570223516}
   - component: {fileID: 6709389422929628399}
-  m_Layer: 0
+  - component: {fileID: 5905465289318767324}
+  m_Layer: 7
   m_Name: DropOffZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 1635782475023905785}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -15, z: 0}
+  m_LocalPosition: {x: 0, y: -16.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -238,10 +239,37 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8483565
-  m_Height: 31.974434
+  m_Radius: 0.5643501
+  m_Height: 26.98698
   m_Direction: 1
-  m_Center: {x: 0.0040325653, y: 3.0783067, z: 0.018383665}
+  m_Center: {x: 0.0030756046, y: 7.8211403, z: 0.062827475}
+--- !u!54 &5905465289318767324
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635782475023905785}
+  serializedVersion: 5
+  m_Mass: 0.0000001
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2117874990162501563
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +281,7 @@ GameObject:
   - component: {fileID: 2551343742368258642}
   - component: {fileID: 846347029578743528}
   - component: {fileID: 4916056655246807460}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +367,7 @@ GameObject:
   - component: {fileID: 2203060350351533651}
   - component: {fileID: 5965895684699394334}
   - component: {fileID: 3867561252579962735}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +453,7 @@ GameObject:
   - component: {fileID: 2164646962578694960}
   - component: {fileID: 4996505799332946739}
   - component: {fileID: 854066519997143697}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,7 +539,7 @@ GameObject:
   - component: {fileID: 132958560874788564}
   - component: {fileID: 8414681496369905862}
   - component: {fileID: 3629315799839397044}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,7 +625,7 @@ GameObject:
   - component: {fileID: 7626276691920532945}
   - component: {fileID: 145467094164319759}
   - component: {fileID: 7813223629545699359}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,7 +711,7 @@ GameObject:
   - component: {fileID: 3309561941749433484}
   - component: {fileID: 7720712353892176937}
   - component: {fileID: 1220914165651958913}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +797,7 @@ GameObject:
   - component: {fileID: 8578487565824298468}
   - component: {fileID: 6150168312743887316}
   - component: {fileID: 4984869710640548603}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -855,7 +883,7 @@ GameObject:
   - component: {fileID: 3617589203902052757}
   - component: {fileID: 6962010007727569777}
   - component: {fileID: 2982838290326170935}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -941,7 +969,7 @@ GameObject:
   - component: {fileID: 1425316505941966622}
   - component: {fileID: 4721032814110950903}
   - component: {fileID: 8974605041574731836}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1029,7 +1057,7 @@ GameObject:
   - component: {fileID: 4861690245408930415}
   - component: {fileID: 4462939408222429996}
   - component: {fileID: 206649068267551710}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Beam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1153,7 +1181,7 @@ GameObject:
   - component: {fileID: 3136250507864394635}
   - component: {fileID: 7989464865393846402}
   - component: {fileID: 1532989282446405009}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1239,7 +1267,7 @@ GameObject:
   - component: {fileID: 3348422221312564043}
   - component: {fileID: 5627637691032758819}
   - component: {fileID: 5413099020727544970}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1323,7 +1351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3315815907914060534}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 3DModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1371,9 +1399,9 @@ GameObject:
   - component: {fileID: 2344629811423463672}
   - component: {fileID: 3334005764402547896}
   - component: {fileID: 8959217093939328768}
-  - component: {fileID: 6890668045727232160}
+  - component: {fileID: 9073814983933191504}
   - component: {fileID: 1563980846029736457}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BasicMothership 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1388,16 +1416,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8362697627708850459}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.008899859, y: 0.020024655, z: 0.008549024, w: 0.9997233}
+  m_LocalRotation: {x: 0.008899901, y: 0.020027135, z: 0.008549023, w: 0.9997233}
   m_LocalPosition: {x: -2.46, y: 16.26, z: -33.45}
-  m_LocalScale: {x: 9.242155, y: 0.65403086, z: 9.242156}
+  m_LocalScale: {x: 9.242155, y: 0.6540309, z: 9.242158}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1423937445282961852}
   - {fileID: 3315815907914060534}
   - {fileID: 2075590020007493858}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 1, y: 2.304, z: 1}
 --- !u!33 &3778719426846483584
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1571,7 +1599,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6890668045727232160
+--- !u!114 &9073814983933191504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1583,14 +1611,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2876780775
+  GlobalObjectIdHash: 1199954049
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
+  SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -1612,9 +1640,9 @@ MonoBehaviour:
   alienPrefab: {fileID: 8897101158157931101, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
   blueBeam: {fileID: 6582087031567048020}
   alienSpawnCountForEachWave: 1
-  spawnDelay: 1.5
-  spawnDelayBetweenWaves: 5
   maxWaves: 1
+  spawnDelay: 0
+  spawnDelayBetweenWaves: 5
   currentWaveNumber: 0
   blueBeamDuration: 0.5
   isSpawningAliens: 0
@@ -1622,6 +1650,7 @@ MonoBehaviour:
   raycastPhysicsLayerMasks:
     serializedVersion: 2
     m_Bits: 4294967295
+  alienSpawnPosition: {x: 0, y: 0, z: 0}
   alienSpawnOffset: {x: 0, y: 1, z: 0}
   rotationSpeed: 50
   beamSounds:
@@ -1634,4 +1663,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8904d2c986f794949802efc1220915b9, type: 3}
   - {fileID: 8300000, guid: 364814694e2f2d2459fdd27488ec9e65, type: 3}
   - {fileID: 8300000, guid: f1cf8ee9c23e22d43b8f6a1d2b95bcd5, type: 3}
-  alienSpawnCount: 0
+  totalAlienSpawnCount: 0

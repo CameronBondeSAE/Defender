@@ -16,6 +16,7 @@ public class AggressiveCiv : MonoBehaviour
     {
         if (idleCivilianAI.IsAbducted && !breakoutTriggered)
         {
+            breakoutTriggered = true;
             StartCoroutine(TriggerBreakout());
         }
     }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3524523574331076636}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: IconHolder
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1808419478384878046}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mount for prefab mesh
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 8628111791387595177}
   - component: {fileID: 5479358664440202665}
   - component: {fileID: 4100067987042982320}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ItemUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 8880919360931479257}
   - component: {fileID: 7276689367130210689}
   - component: {fileID: 6971268149402912497}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Crate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,9 +218,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1435ce7ce454e734ab114823d54cc97e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToNewItemSpawn: 3
   availableItems: []
   currentItem: {fileID: 0}
   itemFloating: {fileID: 0}
+  floatingUI: {fileID: 0}
   floatingMount: {fileID: 1808419478384878046}
 --- !u!1 &8880919360931242747
 GameObject:
@@ -233,7 +235,7 @@ GameObject:
   - component: {fileID: 8880919360931479259}
   - component: {fileID: 8880919360928087803}
   - component: {fileID: 8880919360929053755}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: crate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +322,7 @@ GameObject:
   - component: {fileID: 8880919360928087801}
   - component: {fileID: 8880919360929053753}
   - component: {fileID: 8880919360933334105}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: logs_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

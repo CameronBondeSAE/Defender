@@ -21,7 +21,7 @@ public class PlayerHealth : Health
         animation.SetAnimation(AIAnimationController.AnimationState.Dead);
         yield return new WaitForSeconds(deathAnimDuration);
         yield return new WaitForSeconds(reviveAnimDuration);
-        currentHealth = maxHealth;
+        currentHealth.Value = maxHealth;
         base.Revive();
         
 
