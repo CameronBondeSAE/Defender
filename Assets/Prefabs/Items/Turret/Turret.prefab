@@ -45,7 +45,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 6feeb3e33d6e517428f661cc2cd1f357, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.1
+  m_Volume: 0.05
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -326,6 +326,8 @@ MonoBehaviour:
   baseFireRate: 1
   poweredFireRate: 3
   isPowered: 0
+  isActivated: 0
+  range: 6
   fireTimer: 0
 --- !u!65 &2929095005578154488
 BoxCollider:
@@ -364,6 +366,9 @@ MonoBehaviour:
   view: {fileID: 8352034384461009443}
   turretRotator: {fileID: 2762093627101497318}
   rotationSpeed: 5
+  raycastMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
 --- !u!1 &4892361660403282967
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,6 +379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 657129144167949323}
   - component: {fileID: 8352034384461009443}
+  - component: {fileID: 2094531167869033384}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -415,6 +421,23 @@ MonoBehaviour:
   bulletPrefab: {fileID: 4144061143352902021, guid: dbe64b6e85d71584bba243e0e8caeb42, type: 3}
   fireAudio: {fileID: 7079797918471125355}
   muzzleFlash: {fileID: 8344351014389186340}
+--- !u!114 &2094531167869033384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4892361660403282967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f291d9364527e42a0d19993cfc2b64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useCullingMasks: 0
+  activeColour: {r: 0, g: 1, b: 0, a: 0.02}
+  inactiveColour: {r: 1, g: 0.5, b: 0, a: 0.02}
+  radius: 5
+  turretModel: {fileID: 5029818213646845460}
 --- !u!1 &4978752061848632279
 GameObject:
   m_ObjectHideFlags: 0

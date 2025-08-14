@@ -23,6 +23,11 @@ public class GeneratorEditor : Editor
         {
             generator.StopUsing();
         }
+        
+        if (GUILayout.Button("Stop Using Generator"))
+        {
+            generator.StopUsing();
+        }
 
         if (GUILayout.Button("Destroy Generator"))
         {
