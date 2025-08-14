@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NicholasScripts
 {
     /// <summary>
-    /// 
+    /// Generator MVC model: stores range/usage and tracks powered objects; handles power on/off.
     /// </summary>
     [System.Serializable]
     public class Model_Generator : MonoBehaviour

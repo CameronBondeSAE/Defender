@@ -5,7 +5,7 @@ using UnityEngine;
 namespace NicholasScripts
 {
     /// <summary>
-    /// Base Turret Script
+    /// Base class for turrets: acquires targets, aims, gates fire; subclasses implement actual firing.
     /// </summary>
     public abstract class BaseTurret : MonoBehaviour, IPowerable
     {
@@ -109,5 +109,7 @@ namespace NicholasScripts
         {
             model.isPowered = state;
         }
+        
+        
     }
 }
