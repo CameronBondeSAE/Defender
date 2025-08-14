@@ -404,7 +404,8 @@ MonoBehaviour:
   winScreen: {fileID: 0}
   loseScreen: {fileID: 0}
   currentLevelIndex: 0
-  levelSOs: []
+  levelSOs:
+  - {fileID: 11400000, guid: 5d1b16645c958854bbca0107b7c47a5c, type: 2}
   targetGroup: {fileID: 7258090910381291285}
   levelContainer: {fileID: 0}
   totalCivilians: 0
@@ -438,7 +439,7 @@ Transform:
   m_GameObject: {fileID: 6559051769996194425}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 9.67}
+  m_LocalPosition: {x: 0, y: 0, z: 32.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -468,7 +469,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2520828478107740173
 Transform:
   m_ObjectHideFlags: 0

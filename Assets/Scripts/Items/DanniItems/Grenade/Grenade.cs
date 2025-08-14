@@ -1,6 +1,5 @@
-using Unity.Burst.Intrinsics;
+using Defender;
 using UnityEngine;
-using UnityEngine.WSA;
 
 public class Grenade : UsableItem_Base
 {
@@ -20,25 +19,23 @@ public class Grenade : UsableItem_Base
     }
     
     // In Grenade
-    public override void Pickup()
+    public override void Pickup(CharacterBase whoIsPickupMeUp)
     {
-        base.Pickup(); // plays audio, sets IsCarried, disables physics
+        base.Pickup(whoIsPickupMeUp); // plays audio, sets IsCarried, disables physics
         // detect and store the carrier
-        var player = FindObjectOfType<PlayerHealth>();
-        if (player != null)
-        {
-            SetCarrier(player.transform);
-        }
-        Debug.Log("Grenade picked up and carrier set.");
+        Debug.Log("Grenade picked up");
     }
 
 
-    public override void Use()
+    public override void Use(CharacterBase characterTryingToUse)
     {
-        Debug.Log("Grenade thrown!");
         // Launch itself forward (when used)
-        Launch(CurrentCarrier.forward, launchForce);
-        base.Use(); // starts the activation countdown
+        if (characterTryingToUse != null)
+        {
+	        Debug.Log("Grenade thrown!");
+	        Launch(characterTryingToUse.transform.forward, launchForce);
+	        base.Use(characterTryingToUse); // starts the activation countdown
+        }
     }
 
     protected override void ActivateItem()

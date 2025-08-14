@@ -1329,6 +1329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  networkAnimator: {fileID: 9050013571413473896}
 --- !u!1 &5880721992343391638
 GameObject:
   m_ObjectHideFlags: 0
@@ -1946,14 +1948,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8897101158158421629}
-  - component: {fileID: 311535112854980263}
   - component: {fileID: 3054207550848092690}
+  - component: {fileID: 311535112854980263}
   - component: {fileID: 9006036892352818721}
   - component: {fileID: 750841075112867850}
   - component: {fileID: 6663059807473045784}
   - component: {fileID: 5728813376443442653}
   - component: {fileID: 6834610644936913233}
   - component: {fileID: 991821325801016927}
+  - component: {fileID: 9050013571413473896}
   m_Layer: 0
   m_Name: Alien
   m_TagString: Alien
@@ -1977,23 +1980,6 @@ Transform:
   - {fileID: 550727601368639197}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &311535112854980263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8897101158157931101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 50
-  revivedHealth: 0
-  currentHealth: 0
-  isDead: 0
-  deathAnimDuration: 2
 --- !u!114 &3054207550848092690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2019,6 +2005,25 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &311535112854980263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897101158157931101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  maxHealth: 50
+  revivedHealth: 0
+  currentHealth:
+    m_InternalValue: 0
+  isDead: 0
+  deathAnimDuration: 2
 --- !u!114 &9006036892352818721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2046,6 +2051,7 @@ MonoBehaviour:
   navMeshObstacle: {fileID: 991821325801016927}
   cornerThreshold: 1
   cornerIndex: 0
+  stuckTime: 0
   maxStuckTime: 2
   tagDistance: 2.5
   mothership: {fileID: 0}
@@ -2148,7 +2154,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8897101158157931101}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 0.48, y: 1.545, z: 0.48}
@@ -2157,3 +2163,18 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 1.34, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &9050013571413473896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897101158157931101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 7663186140054401427}

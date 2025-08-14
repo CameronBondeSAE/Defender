@@ -25,32 +25,52 @@ namespace CameronBonde
 		
 		Lobby lobby;
 
-		private void OnEnable()
+		private void Start()
 		{
-			authenticationManager.OnSignedIn += CreateLobby;
+			UnityServices.InitializeAsync();
 		}
 
-		private void OnDisable()
-		{
-			authenticationManager.OnSignedIn -= CreateLobby;
-		}
+		// private void OnEnable()
+		// {
+		// 	authenticationManager.OnSignedIn += CreateLobby;
+		// }
+		//
+		// private void OnDisable()
+		// {
+		// 	authenticationManager.OnSignedIn -= CreateLobby;
+		// }
 		
 		public async void CreateLobby()
 		{
 			Debug.Log("Creating lobby...");
+			
+			await authenticationManager.SignInAsync();
+
+			await relayManager.StartHostWithRelay(maxPlayers, "udp");
+			
 			CreateLobbyOptions options = new CreateLobbyOptions();
 			options.IsPrivate = false;
-
+			options.IsLocked  = false;
+			options.Data      = new Dictionary<string, DataObject>();
+			options.Data.Add("RelayJoinCode", new DataObject(
+			                                                 visibility: DataObject.VisibilityOptions.Member,
+			                                                 value: relayManager.joinCode));
+			
 			lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
 
-			await SetupLobbyEvents();
+			// await SetupLobbyEvents();
+			
+			// await SetAllLobbyData();
 
 			// Heartbeat the lobby every 15 seconds.
 			StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, heartBeatDelay));
 		}
 
-		public async void JoinLobbyByID()
+		public async void JoinLobbyByCode(string lobbyCode)
 		{
+			Debug.Log("Joining lobby...");
+			await authenticationManager.SignInAsync();
+
 			try
 			{
 				if (lobby != null)
@@ -59,14 +79,51 @@ namespace CameronBonde
 					return;
 				}
 
-				lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyName); // TODO create custom name. This is just one lobby ever
+				Debug.Log("Lobby code = " + lobbyCode);
+				lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyCode); // TODO create custom name. This is just one lobby ever
+				
+				lobby.Data.TryGetValue("RelayJoinCode", out DataObject relayJoinCode);
+				if (relayJoinCode != null)
+				{
+					relayManager.NewJoinCodeSet(relayJoinCode.Value);
+					relayManager.StartClientWithJoinCode();
+				}
 			}
 			catch (LobbyServiceException e)
 			{
-				Debug.Log(e);
+				Debug.LogError($"Failed to join lobby: {e}");
 			}
 		}
+		
+		public async void JoinFirstAvailableLobby()
+		{
+			Debug.Log("Joining first available lobby...");
+			await authenticationManager.SignInAsync();
 
+			QueryResponse response = await LobbyService.Instance.QueryLobbiesAsync(
+			                          new QueryLobbiesOptions
+			                          {
+				                          Count = 1,
+				                          Filters = new List<QueryFilter>
+				                                    {
+					                                    new QueryFilter(QueryFilter.FieldOptions.Name, lobbyName, QueryFilter.OpOptions.EQ),
+					                                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT)
+				                                    }
+			                          });
+    
+			if (response.Results.Count > 0)
+			{
+				lobby = await LobbyService.Instance.JoinLobbyByIdAsync(response.Results[0].Id);
+
+				lobby.Data.TryGetValue("RelayJoinCode", out DataObject relayJoinCode);
+				if (relayJoinCode != null)
+				{
+					relayManager.NewJoinCodeSet(relayJoinCode.Value);
+					relayManager.StartClientWithJoinCode();
+				}
+			}
+		}
+		
 		private void OnLobbyChanged(ILobbyChanges obj)
 		{
 			Debug.Log("Lobby changed event");
@@ -130,10 +187,21 @@ namespace CameronBonde
 
 				// TODO: UI
 				Debug.Log("Found " + lobbies.Results.Count + " lobbies");
-				foreach (var l in lobbies.Results)
+				foreach (Lobby l in lobbies.Results)
 				{
 					Debug.Log("---------------------");
 					Debug.Log(l.Name);
+					if (l.Data != null)
+						foreach (KeyValuePair<string, DataObject> dataObject in l.Data)
+						{
+							if (dataObject.Key == "RelayJoinCode")
+							{
+								Debug.Log("RelayJoinCode : " + dataObject.Value.Value);
+							}
+
+							Debug.Log(dataObject.Key + " : " + dataObject.Value.Value);
+						}
+
 					foreach (Player p in l.Players)
 					{
 						if (p.Data != null)
@@ -235,8 +303,9 @@ namespace CameronBonde
 		/// Brute force, rewrites ALL lobby data in one go. Yes you can selectively update a simple key, but this is clearer for now
 		/// </summary>
 		/// <param name="_joinCode"></param>
-		public async void SetAllLobbyData()
+		public async Task SetAllLobbyData()
 		{
+			Debug.Log("Trying to set all lobby data");
 			try
 			{
 				UpdateLobbyOptions options = new UpdateLobbyOptions();
@@ -252,7 +321,8 @@ namespace CameronBonde
 				options.Data.Add("RelayJoinCode", new DataObject(
 				                                                      visibility: DataObject.VisibilityOptions.Private,
 				                                                      value: relayManager.joinCode));
-				await LobbyService.Instance.UpdateLobbyAsync(lobbyName, options);
+				await LobbyService.Instance.UpdateLobbyAsync(lobby.Id, options);
+				Debug.Log("Updated lobby data");
 			}
 			catch (LobbyServiceException e)
 			{

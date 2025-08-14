@@ -1,3 +1,4 @@
+using Defender;
 using UnityEngine;
 
 public class OneShot_Laser : MonoBehaviour, IUsable
@@ -15,7 +16,7 @@ public class OneShot_Laser : MonoBehaviour, IUsable
         
     }
 
-    public void Use() // laser is aquired // what do i write when the player grabs the laser gun? //
+    public void Use(CharacterBase characterTryingToUse) // laser is aquired // what do i write when the player grabs the laser gun? //
     {
         if (Input.GetMouseButtonDown(0) && isGrabbed) // player left clicks 
         {

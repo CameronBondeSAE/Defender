@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2087675651
+  GlobalObjectIdHash: 281891221
   InScenePlacedSourceGlobalObjectIdHash: 281891221
   DeferredDespawnTick: 0
   Ownership: 1
@@ -159,8 +159,9 @@ MonoBehaviour:
   timerBeepClip: {fileID: 8300000, guid: 1b213e10868586442ad4146acebd2aa3, type: 3}
   timerActivatedClip: {fileID: 8300000, guid: ec062204ab4b0f644982fc12c6f3bbc7, type: 3}
   isConsumable: 1
-  activationCountdown: 5
-  countdownUIPrefab: {fileID: 0}
+  expiryDuration: 5
+  activationCountdown: 3
+  countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
 --- !u!208 &3939292380586647463

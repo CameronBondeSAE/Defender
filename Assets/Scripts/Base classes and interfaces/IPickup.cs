@@ -1,7 +1,8 @@
+using Defender;
 using UnityEngine;
 
 public interface IPickup
 {
-	void Pickup();
+	void Pickup(CharacterBase whoIsPickupMeUp);
 	void Drop();
 }

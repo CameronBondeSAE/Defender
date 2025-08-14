@@ -18,7 +18,7 @@ public class SnackObject : MonoBehaviour
       {
          lifetimer += Time.deltaTime;
          if(lifetimer >= maxLifetime)
-            snackHealth.TakeDamage(snackHealth.currentHealth);
+            snackHealth.TakeDamage(snackHealth.currentHealth.Value);
       }
    }
 
