@@ -5140,6 +5140,7 @@ GameObject:
   - component: {fileID: 3154571159769168152}
   - component: {fileID: 431169046469856840}
   - component: {fileID: 5032110501715468860}
+  - component: {fileID: 3014765975722115866}
   m_Layer: 7
   m_Name: Generator
   m_TagString: Untagged
@@ -5175,6 +5176,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1e2d9ae439a3e46b46826817b226b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  audioSource: {fileID: 0}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
+  expiryDuration: 30
+  activationCountdown: 10
+  activationTrigger: 0
+  allowMultipleActivations: 1
+  countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
+  launchForce: 10
+  launchDirection: {x: 0, y: 0, z: 1}
   model: {fileID: 431169046469856840}
   view: {fileID: 5215284791305863850}
 --- !u!114 &431169046469856840
@@ -5212,6 +5228,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.74367, y: 0.74367, z: 0.74367}
   m_Center: {x: 0, y: 0.000000014901161, z: 0}
+--- !u!114 &3014765975722115866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7214323903650827927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 708276078
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &7711362776022235326
 GameObject:
   m_ObjectHideFlags: 0
