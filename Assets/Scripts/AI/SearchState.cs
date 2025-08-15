@@ -35,7 +35,7 @@ public class SearchState : IAIState
         // if (ai.currentTargetCiv != null)
         //     return; // already has civ, do not look for more
         //
-        // animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
+        // animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
         // isGrabbing = false;
         // isBusy = false;
         //
@@ -83,7 +83,7 @@ public class SearchState : IAIState
             return;
         }
         ai.currentTargetCiv = null;
-        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
+        animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
         isGrabbing = false;
         isBusy = false;
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);

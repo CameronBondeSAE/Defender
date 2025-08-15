@@ -12,8 +12,8 @@ public class DeathState : IAIState
 
     public void Enter()
     {
-        ai.agent.isStopped = true;
-        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
+	    if (ai.agent != null && ai.agent.enabled) ai.agent.isStopped = true;
+	    animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
     }
 
     public void Stay()
