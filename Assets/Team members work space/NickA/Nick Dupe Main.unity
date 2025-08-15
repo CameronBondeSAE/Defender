@@ -1791,6 +1791,7 @@ Transform:
   - {fileID: 8708370507975262659}
   - {fileID: 70990411}
   - {fileID: 1451257872}
+  - {fileID: 4641844732991968836}
   - {fileID: 3977853}
   - {fileID: 1008216138}
   - {fileID: 558185320}
@@ -7307,6 +7308,8 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Items/Demo item/Demo Item.prefab
   - _gameObject: {fileID: 1451257866}
     _prefab: Assets/Prefabs/Items/Booster Stim/Booster Stim.prefab
+  - _gameObject: {fileID: 747852157350576850}
+    _prefab: Assets/Prefabs/Items/Healing Stim/Health Stim.prefab
   - _gameObject: {fileID: 3977854}
     _prefab: Assets/Prefabs/Items/Suicide vest/Suicide Vest.prefab
   - _gameObject: {fileID: 3977855}
@@ -8365,6 +8368,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5461689639259859851, guid: 2cf3cbe696638804fa9a5811b60aaa44, type: 3}
   m_PrefabInstance: {fileID: 490153009583189437}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &747852157350576850 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2086126505567086940, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+  m_PrefabInstance: {fileID: 5302619141154366546}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1696617166908582397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8630,6 +8638,80 @@ PrefabInstance:
       addedObject: {fileID: 336697780}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+--- !u!4 &4641844732991968836 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+  m_PrefabInstance: {fileID: 5302619141154366546}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5302619141154366546
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 482073165}
+    m_Modifications:
+    - target: {fileID: 1926709863098964914, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1362830523
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926709863098964914, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 4226651003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2086126505567086940, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_Name
+      value: Health Stim
+      objectReference: {fileID: 0}
+    - target: {fileID: 4190794959055327295, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: expiryDuration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
 --- !u!1001 &8215012521910249126
 PrefabInstance:
   m_ObjectHideFlags: 0
