@@ -5,7 +5,10 @@
 
     namespace NicholasScripts
     {
-        public class Generator : MonoBehaviour, IUsable, IPickup
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Generator : UsableItem_Base
         {
             [Header("Generator MVC")]
             public Model_Generator model = new Model_Generator();
@@ -14,20 +17,62 @@
             private List<IPowerable> poweredObjects = new List<IPowerable>();
             private Coroutine startupCoroutine;
             
+            public bool IsUsed => model.isUsed;
+            public float PowerRange => model.powerRange;
+
             private void Start()
             {
                 model.isUsed = false;
             }
 
-            public void Use(CharacterBase characterTryingToUse)
+            private void Update()
             {
+                if (!model.isUsed) return;
+
+                for (int i = poweredObjects.Count - 1; i >= 0; i--)
+                {
+                    IPowerable powerable = poweredObjects[i];
+                    if (powerable == null) 
+                    {
+                        poweredObjects.RemoveAt(i);
+                        continue;
+                    }
+
+                    MonoBehaviour mb = powerable as MonoBehaviour;
+                    if (mb == null) continue; // Skip if not a MonoBehaviour
+
+                    float distance = Vector3.Distance(transform.position, mb.transform.position);
+                    if (distance > model.powerRange)
+                    {
+                        //Debug.Log($"Object {mb.name} left range — powering off.");
+                        powerable.SetPowered(false);
+                        poweredObjects.RemoveAt(i);
+                    }
+                }
+
+                Collider[] hits = Physics.OverlapSphere(transform.position, model.powerRange);
+                foreach (var hit in hits)
+                {
+                    var powerable = hit.GetComponent<IPowerable>();
+                    if (powerable != null && !poweredObjects.Contains(powerable))
+                    {
+                        //Debug.Log($"Object {hit.name} entered range — powering on.");
+                        powerable.SetPowered(true);
+                        poweredObjects.Add(powerable);
+                    }
+                }
+            }
+
+            public override void Use(CharacterBase characterTryingToUse)
+            {
+                base.Use(characterTryingToUse);
                 if (model.isUsed || startupCoroutine != null)
                 {
-                    Debug.Log("Generator already used or starting.");
+                    //Debug.Log("Generator already used or starting.");
                     return;
                 }
 
-                Debug.Log("Starting generator...");
+                //Debug.Log("Starting generator...");
                 view.PlayStartupSound();
 
                 startupCoroutine = StartCoroutine(ActivateAfterDelay());
@@ -37,19 +82,19 @@
             {
                 yield return new WaitForSeconds(10f);
 
-                Debug.Log("Generator activated.");
+                //Debug.Log("Generator activated.");
                 model.isUsed = true;
                 view.PlaySparks();
 
                 Collider[] hits = Physics.OverlapSphere(transform.position, model.powerRange);
-                Debug.Log($"Found {hits.Length} colliders in range.");
+                //Debug.Log($"Found {hits.Length} colliders in range.");
                 foreach (var hit in hits)
                 {
                     var powerable = hit.GetComponent<IPowerable>();
-                    Debug.Log($"Hit: {hit.name}, Found powerable: {powerable != null}");
+                   // Debug.Log($"Hit: {hit.name}, Found powerable: {powerable != null}");
                     if (powerable != null && !poweredObjects.Contains(powerable))
                     {
-                        Debug.Log($"Powering object: {hit.name}");
+                        //Debug.Log($"Powering object: {hit.name}");
                         powerable.SetPowered(true);
                         poweredObjects.Add(powerable);
                     }
@@ -59,11 +104,11 @@
                 startupCoroutine = null;
             }
             
-            public void StopUsing()
+            public override void StopUsing()
             {
                 if (!model.isUsed && startupCoroutine == null) return;
 
-                Debug.Log("Stopping generator.");
+               // Debug.Log("Stopping generator.");
 
                 if (startupCoroutine != null)
                 {
@@ -86,7 +131,7 @@
 
 
 
-            private void OnDestroy()
+            private new void OnDestroy()
             {
                 model.StopAll();
             }
@@ -100,11 +145,15 @@
                     // view.DrawPowerRange(transform.position, model.powerRange);
             }
 
-            public void Pickup()
+            public override void Pickup(CharacterBase whoIsPickupMeUp)
             {
+                if (model.isUsed || startupCoroutine != null)
+                {
+                    StopUsing();
+                }
             }
 
-            public void Drop()
+            public override void Drop()
             {
             }
         }

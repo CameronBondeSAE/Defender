@@ -31,7 +31,7 @@ public class DecoyItem : AIBase, IUsable, IPickup
 	{
 	}
 
-	public void Pickup()
+	public void Pickup(CharacterBase whoIsPickupMeUp)
 	{
 		// StopUsing();
 	}

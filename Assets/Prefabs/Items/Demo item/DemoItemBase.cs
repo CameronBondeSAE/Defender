@@ -7,6 +7,7 @@ public class DemoItemBase : UsableItem_Base
 	protected override void Awake()
 	{
 		base.Awake();
+		
 		GetComponent<Renderer>().material.color = Color.white;
 	}
 
@@ -15,6 +16,7 @@ public class DemoItemBase : UsableItem_Base
 	{
 		base.Use(characterTryingToUse);
 
+		// Server side only, because the base class does the networking for this
 		if (activationCountdown > 0)
 			StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
 
@@ -32,6 +34,8 @@ public class DemoItemBase : UsableItem_Base
 
 	protected override void ActivateItem()
 	{
+		base.ActivateItem();
+		
 		ActivateItemClient_Rpc();
 	}
 
@@ -48,14 +52,15 @@ public class DemoItemBase : UsableItem_Base
 	public override void StopUsing()
 	{
 		base.StopUsing();
+		
 		Debug.Log("Stopped using");
 		GetComponent<Renderer>().material.color = Color.red;
 	}
 
 	// TODO: Networking
-	public override void Pickup()
+	public override void Pickup(CharacterBase whoIsPickupMeUp)
 	{
-		base.Pickup(); // Plays pickup sound, etc
+		base.Pickup(whoIsPickupMeUp); // Plays pickup sound, etc
 	}
 
 	// TODO: Networking

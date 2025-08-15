@@ -4,7 +4,7 @@ using UnityEngine;
 namespace DanniLi
 {
 
-	[CreateAssetMenu(fileName = "New Level Info", menuName = "Level/Level Info")]
+	[CreateAssetMenu(fileName = "New Level Info", menuName = "Defender/Level/Level Info")]
 	public class LevelInfo : ScriptableObject
 	{
 		[Header("Scene")] 

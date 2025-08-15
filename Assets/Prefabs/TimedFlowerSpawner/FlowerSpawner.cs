@@ -24,7 +24,7 @@ public class FlowerSpawner : MonoBehaviour, IUsable, IPickup
     {
     }
 
-    public void Pickup()
+    public void Pickup(CharacterBase whoIsPickupMeUp)
     {
     }
 
