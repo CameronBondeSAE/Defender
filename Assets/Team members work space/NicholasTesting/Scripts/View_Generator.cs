@@ -3,7 +3,7 @@ using UnityEngine;
 namespace NicholasScripts
 {
     /// <summary>
-    /// 
+    /// Generator MVC view: handles playing audio, particle effects, and visual range for the generator.
     /// </summary>
     [System.Serializable]
     public class View_Generator : MonoBehaviour

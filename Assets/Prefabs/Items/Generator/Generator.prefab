@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 895674017014681273}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.41}
+  m_LocalRotation: {x: 0.9927203, y: -0, z: -0, w: -0.12044264}
+  m_LocalPosition: {x: 0.00000023841858, y: -0.091000006, z: 0.3079996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2303313609913337534}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 193.835, y: 0, z: 0}
 --- !u!198 &932534901196652652
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4861,7 +4861,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6709797174110615585}
@@ -5184,7 +5184,7 @@ MonoBehaviour:
   timerBeepClip: {fileID: 0}
   timerActivatedClip: {fileID: 0}
   isConsumable: 1
-  expiryDuration: 30
+  expiryDuration: 60
   activationCountdown: 10
   activationTrigger: 0
   allowMultipleActivations: 1
@@ -5226,7 +5226,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.74367, y: 0.74367, z: 0.74367}
+  m_Size: {x: 1.3, y: 1.3, z: 1.3}
   m_Center: {x: 0, y: 0.000000014901161, z: 0}
 --- !u!114 &3014765975722115866
 MonoBehaviour:
@@ -5240,8 +5240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 708276078
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 4232596761
+  InScenePlacedSourceGlobalObjectIdHash: 1778422357
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -5281,7 +5281,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.74367, y: 0.74367, z: 0.74367}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2303313609913337534}
@@ -5310,6 +5310,10 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ac48cfed65c3a2544a8c6ecd7ba7ab54, type: 2}
+  - {fileID: -4660651839558579860, guid: 64373b3cee4bde44b84084647ea4b039, type: 3}
+  - {fileID: -8896051167825165466, guid: 64373b3cee4bde44b84084647ea4b039, type: 3}
+  - {fileID: -6867524174320841699, guid: 64373b3cee4bde44b84084647ea4b039, type: 3}
+  - {fileID: 6231023347082624160, guid: 64373b3cee4bde44b84084647ea4b039, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5338,4 +5342,4 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7711362776022235326}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -5425581930609471644, guid: 64373b3cee4bde44b84084647ea4b039, type: 3}
