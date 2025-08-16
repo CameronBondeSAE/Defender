@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace NicholasScripts
 {
+    /// <summary>
+    /// Generator MVC model: stores range/usage and tracks powered objects; handles power on/off.
+    /// </summary>
     [System.Serializable]
     public class Model_Generator : MonoBehaviour
     {
@@ -14,22 +17,22 @@ namespace NicholasScripts
         {
             if (isUsed)
             {
-                Debug.Log("Generator already used.");
+               // Debug.Log("Generator already used.");
                 return;
             }
 
-            Debug.Log("Generator activated.");
+           // Debug.Log("Generator activated.");
             isUsed = true;
 
             Collider[] hits = Physics.OverlapSphere(generatorTransform.position, powerRange);
-            Debug.Log($"Found {hits.Length} colliders in range.");
+            //Debug.Log($"Found {hits.Length} colliders in range.");
             foreach (var hit in hits)
             {
                 var powerable = hit.GetComponent<IPowerable>();
-                Debug.Log($"Hit: {hit.name}, Found powerable: {powerable != null}");
+                //Debug.Log($"Hit: {hit.name}, Found powerable: {powerable != null}");
                 if (powerable != null && !poweredObjects.Contains(powerable))
                 {
-                    Debug.Log($"Powering object: {hit.name}");
+                   // Debug.Log($"Powering object: {hit.name}");
                     powerable.SetPowered(true);
                     poweredObjects.Add(powerable);
                 }

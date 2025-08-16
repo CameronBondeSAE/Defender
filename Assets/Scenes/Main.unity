@@ -2039,6 +2039,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 482073165}
     m_Modifications:
+    - target: {fileID: 1802649050208924071, guid: e6ac1b41648ef5a4d8d4fdb94cbed3d9, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1461482785
+      objectReference: {fileID: 0}
+    - target: {fileID: 1802649050208924071, guid: e6ac1b41648ef5a4d8d4fdb94cbed3d9, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 4234893524
+      objectReference: {fileID: 0}
     - target: {fileID: 4508805474982246382, guid: e6ac1b41648ef5a4d8d4fdb94cbed3d9, type: 3}
       propertyPath: m_Name
       value: Turret
@@ -6581,6 +6589,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 482073165}
     m_Modifications:
+    - target: {fileID: 3014765975722115866, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4232596761
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014765975722115866, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1778422357
+      objectReference: {fileID: 0}
     - target: {fileID: 6813401065027002585, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
       propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
       value: 0.9
@@ -6595,7 +6611,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7498277680880859014, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.23
+      value: -0.65
       objectReference: {fileID: 0}
     - target: {fileID: 7498277680880859014, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8209,6 +8225,8 @@ MonoBehaviour:
     _prefab: Assets/Art/Kenney - Food/burger.fbx
   - _gameObject: {fileID: 1693344813}
     _prefab: Assets/Prefabs/Items/NintendoTrademarkedThrowingCaptureMechanic/NintendoTrademarkedThrowingCaptureMechanic.prefab
+  - _gameObject: {fileID: 2122119418}
+    _prefab: Assets/Prefabs/Items/Healing Stim/Health Stim.prefab
 --- !u!4 &1664449590
 Transform:
   m_ObjectHideFlags: 11
@@ -9344,6 +9362,76 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2061808093753784860, guid: edd26c889f25c844891f58f2d4e63661, type: 3}
   m_PrefabInstance: {fileID: 1512999716}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2122119417
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1926709863098964914, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 560741772
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926709863098964914, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 4226651003
+      objectReference: {fileID: 0}
+    - target: {fileID: 2086126505567086940, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_Name
+      value: Health Stim
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.3305883
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.66681576
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.025647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8408456814744027100, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+--- !u!1 &2122119418 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2086126505567086940, guid: ab5aed983caf4f741825c8e9d394b5bc, type: 3}
+  m_PrefabInstance: {fileID: 2122119417}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &479882410466626714
 PrefabInstance:

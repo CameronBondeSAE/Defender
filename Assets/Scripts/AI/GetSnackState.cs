@@ -30,7 +30,7 @@ public class GetSnackState : IAIState
     public void Enter()
     {
         if (ai == null) return;
-        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
+        animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
         ai.ResumeMoving();
         lastBiteTime = 0f;
 

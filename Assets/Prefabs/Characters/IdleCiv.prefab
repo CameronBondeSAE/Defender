@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 4614431792279055049}
   - component: {fileID: 8289037530859334116}
   - component: {fileID: 3610845311785406197}
+  - component: {fileID: 4821019997805551192}
+  - component: {fileID: 5996115470389394392}
   m_Layer: 3
   m_Name: IdleCiv
   m_TagString: Civilian
@@ -55,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 739598051
+  GlobalObjectIdHash: 4095787409
   InScenePlacedSourceGlobalObjectIdHash: 4095787409
   DeferredDespawnTick: 0
   Ownership: 1
@@ -93,6 +95,7 @@ MonoBehaviour:
   useRigidbody: 1
   rb: {fileID: 1198581524587882374}
   navMeshObstacle: {fileID: 8289037530859334116}
+  debug: 1
   cornerThreshold: 1
   cornerIndex: 0
   stuckTime: 0
@@ -110,9 +113,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a69a178a860277409ece1673be15b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   maxHealth: 20
   revivedHealth: 0
-  currentHealth: 0
+  currentHealth:
+    m_InternalValue: 0
   isDead: 1
   deathAnimDuration: 2
 --- !u!195 &3867679240588694092
@@ -272,6 +277,69 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 3252683364797701811}
+--- !u!114 &4821019997805551192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 0
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
+--- !u!114 &5996115470389394392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
+  UseRigidBodyForMotion: 1
+  AutoUpdateKinematicState: 1
+  AutoSetKinematicOnDespawn: 1
 --- !u!1001 &7969516783889707945
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -43,12 +43,12 @@ public class MoveToBeamState : IAIState
         if (distance < 0.5f)
         {
             Debug.Log("civ is getting sucked up correctly");
-            animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
+            animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
             animController.SetAnimation(AIAnimationController.AnimationState.GettingSucked);
             startedSuckUp = true;
             ai.StartSuckUp(5f, 1.5f);
         }
-        else if (ai.agent != null && ai.agent.enabled)
+        else if (ai != null)
         {
             ai.MoveTo(beamPosition);
         }

@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace NicholasScripts
 {
+    /// <summary>
+    /// Turret MVC view: spawns bullets and plays audio/particle effects when firing.
+    /// </summary>
     public class View_Turret : MonoBehaviour
     {
         [SerializeField] private Transform firePoint;
@@ -13,14 +16,15 @@ namespace NicholasScripts
         {
             if (bulletPrefab != null && firePoint != null)
             {
-                Debug.DrawRay(firePoint.position, firePoint.forward * 2f, Color.red, 2f);
+                Debug.DrawRay(firePoint.position, firePoint.forward * 2f, Color.red, 0.1f);
+
                 Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-                // Debug.Log("Firing bullet...");
+
                 if (fireAudio != null) fireAudio.Play();
                 if (muzzleFlash != null) muzzleFlash.Play();
             }
         }
-        
+
         public void FireEffect()
         {
             if (muzzleFlash != null)
