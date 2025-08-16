@@ -1,4 +1,5 @@
 using System.Collections;
+using Defender;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,10 +22,14 @@ public class Laser_Gun_Script : MonoBehaviour, IUsable, IPickup
 
     public void ShotsFired()
     {
-        // else if (InputSystem.GetDevice<Mouse>().leftButton.isPressed)
-        // {
-        //     isCharging = true;
-        // }
+        if (InputSystem.GetDevice<Mouse>().leftButton.isPressed)
+        {
+            
+        }
+        else if (InputSystem.GetDevice<Mouse>().leftButton.isPressed)
+        {
+            /// instatiate other objects
+        }
     }
 
     public void ShotCharge()
@@ -50,6 +55,8 @@ public class Laser_Gun_Script : MonoBehaviour, IUsable, IPickup
         {
             //
         }
+
+        yield return null;
     }
 
 
@@ -63,12 +70,14 @@ public class Laser_Gun_Script : MonoBehaviour, IUsable, IPickup
     // Update is called once per frame
     void Update()
     {
+        
     }
-
-    public void Use() // laser gun is aquired and is held by the player unil its fired (used)
+    
+    public void Use(CharacterBase characterTryingToUse) // laser gun is aquired and is held by the player unil its fired (used)
     {
         AimBeam.SetActive(true);
     }
+
 
     public void StopUsing()
     {
@@ -76,9 +85,8 @@ public class Laser_Gun_Script : MonoBehaviour, IUsable, IPickup
         //ShotsFired()
     }
 
-
-    public void Pickup()
-    {
+    public void Pickup(CharacterBase whoIsPickupMeUp)
+    { 
         AimBeam.SetActive(true);
     }
 
