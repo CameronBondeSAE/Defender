@@ -91,14 +91,14 @@ public class PlayerInputHandler2 : NetworkBehaviour
 
 	private void OnMoveUpdated(InputAction.CallbackContext context)
 	{
-		Debug.Log("PlayerInputHandler2 : Move Updated : "+" "+context.ReadValue<Vector2>());
+		// Debug.Log("PlayerInputHandler2 : Move Updated : "+" "+context.ReadValue<Vector2>());
 		RequestMovePerformed_Rpc(context.ReadValue<Vector2>());
 	}
 
 	[Rpc(SendTo.Server, RequireOwnership = true, Delivery = RpcDelivery.Unreliable)]
 	private void RequestMovePerformed_Rpc(Vector2 _moveInput)
 	{
-		Debug.Log("PlayerInputHandler SERVER : Move Requested : "+" "+_moveInput);
+		// Debug.Log("PlayerInputHandler SERVER : Move Requested : "+" "+_moveInput);
 	
 		onMove?.Invoke(_moveInput);
 		// moveInput = _moveInput;
@@ -141,6 +141,5 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		Debug.Log("PlayerInputHandler SERVER : Inventory Requested");
 		onInventory?.Invoke();
 	}
-
 
 }
