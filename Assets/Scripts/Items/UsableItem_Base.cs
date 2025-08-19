@@ -176,6 +176,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         expiryTimeRemaining.OnValueChanged -= OnExpiryTimeChanged;
         isExpiryActive.OnValueChanged -= OnExpiryActiveChanged;
         DestroyCountdownUI();
+        Debug.Log($"OnNetworkDespawn on {(IsServer ? "Server" : "Client")} NO={NetworkObject?.NetworkObjectId}");
         base.OnNetworkDespawn();
     }
 
@@ -330,13 +331,16 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     // IPickup
     public virtual void Pickup(CharacterBase whoIsPickupMeUp)
     {
-        if (audioSource && pickupClip) audioSource.PlayOneShot(pickupClip);
+        // synced audio
+        if (audioSource && pickupClip) 
+        {
+            audioSource.PlayOneShot(pickupClip);
+            if (IsServer)
+                PlayPickupAudioClientRpc();
+        }
         IsCarried = true;
         
 		SetCarrier(whoIsPickupMeUp.transform);
-        // SetCarrier(CurrentCarrier);
-        //CurrentCarrier = transform.parent;
-
         // Disable physics and colliders while in inventory
         if (rb != null)
         {
@@ -344,6 +348,14 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 	        rb.useGravity  = false;
         }
         SetCollidersEnabled(false);
+    }
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+    private void PlayPickupAudioClientRpc()
+    {
+        if (!IsServer && audioSource && pickupClip)
+        {
+            audioSource.PlayOneShot(pickupClip);
+        }
     }
 
     public virtual void Drop()
@@ -360,13 +372,31 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 	        rb.useGravity             = true;
 	        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
-        if (audioSource && dropClip) audioSource.PlayOneShot(dropClip);
+        if (audioSource && dropClip)
+        {
+            audioSource.PlayOneShot(dropClip);
+            if (IsServer)
+                PlayDropAudioClientRpc();
+        }
+    }
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+    private void PlayDropAudioClientRpc()
+    {
+        if (!IsServer && audioSource && dropClip)
+        {
+            audioSource.PlayOneShot(dropClip);
+        }
     }
 
     // IUsable
     public virtual void Use(CharacterBase characterTryingToUse)
     {
-        if (audioSource && useClip) audioSource.PlayOneShot(useClip);
+        if (audioSource && useClip)
+        {
+            audioSource.PlayOneShot(useClip);
+            if (IsServer)
+                PlayUseAudioClientRpc();
+        }
 
         // if already going/expired/used, ignore
         if (hasActivated.Value && !allowMultipleActivations) return;
@@ -390,6 +420,14 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
             // subclasses can override and still call base.Use(...) to get sfx n stuff
             // here's a hook for subclasses if needed:D
             OnManualUse(characterTryingToUse);
+        }
+    }
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+    private void PlayUseAudioClientRpc()
+    {
+        if (!IsServer && audioSource && useClip)
+        {
+            audioSource.PlayOneShot(useClip);
         }
     }
 
@@ -437,27 +475,9 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         TryStartActivation_Server(seconds, force);
     }
     
-    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
-    private void RequestImmediateActivationServerRpc()
-    {
-        if (hasActivated.Value || isCountdownActive.Value || isExpiryActive.Value) return;
-        ActivateItem();
-    }
-
-    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
-    private void RequestActivationServerRpc()
-    {
-        if (hasActivated.Value || isCountdownActive.Value || isExpiryActive.Value) return; 
-        StartActivationCountdown_Server();
-    }
     #endregion
 
     #region Activation UI RPCs
-    public virtual void StartActivationCountdown_Server()
-    {
-        // keep old entry but route to the new explicit-seconds overload
-        StartActivationCountdown_Server(activationCountdown);
-    }
 
     // subclasses choose their own duration
     public void StartActivationCountdown_Server(float seconds)
@@ -480,13 +500,6 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         {
             ActivateItem();
         }
-    }
-
-    protected virtual IEnumerator ActivationCountdownRoutine_Server()
-    {
-        // redirect manual activation routine to the internal routine so everything uses one code path
-        // to save myself from fixing each one...
-        yield return ActivationCountdownRoutine_Server_Internal(activationCountdown);
     }
 
     // fix: internal routine that runs with an explicit duration (manual starts/overrides can now be used:D)
@@ -668,6 +681,17 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     /// Public method to destroy/despawn this item immediately.
     /// can be called from anywhere,server-authoritative.
     /// </summary>
+    public void DestroyItem()
+    {
+        if (IsServer)
+        {
+            DestroyItem_Server();
+        }
+        else
+        {
+            RequestDestroyItemServerRpc();
+        }
+    }
 
     [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
     private void RequestDestroyItemServerRpc()
@@ -680,25 +704,43 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     /// </summary>
     protected virtual void DestroyItem_Server()
     {
-        Debug.Log($"DestroyItem_Server called");
+        if (!IsServer) return;
+        if (activationCoroutine != null) { StopCoroutine(activationCoroutine); activationCoroutine = null; }
+        if (expiryUICoroutine != null)   { StopCoroutine(expiryUICoroutine);   expiryUICoroutine   = null; }
+        Debug.Log($"DestroyItem_Server Destroying {gameObject.name}");
+        ClearFromInventoryBeforeDestroy();
         // clean netvars
         isArmedNetworked.Value = false;
         isCountdownActive.Value = false;
         countdownTimeRemaining.Value = 0f;
         isExpiryActive.Value = false;
         expiryTimeRemaining.Value = 0f;
-
         // despawn or destroy
-        var no = GetComponent<NetworkObject>();
+        var no = NetworkObject;
         if (no && no.IsSpawned)
         {
+            Debug.Log($"[DestroyItem_Server] Despawning NO={no.NetworkObjectId} (pool-friendly).");
             no.Despawn(true); // destruction point
         }
         else
         {
-            Destroy(gameObject);
+            Debug.LogError($"[DestroyItem_Server] NetworkObject null or !IsSpawned. Clients will NOT despawn!");
         }
     }
+
+    private void ClearFromInventoryBeforeDestroy()
+    {
+        if (CurrentCarrier != null)
+        {
+            PlayerInventory inventory = CurrentCarrier.GetComponent<PlayerInventory>();
+            if (inventory != null && inventory.CurrentItemInstance == this.gameObject)
+            {
+                Debug.Log($"Clearing {gameObject.name} from {CurrentCarrier.name}'s inventory");
+                inventory.ClearCurrentItemWithoutDestroy();
+            }
+        }
+    }
+
     #endregion
 
     #region Disarm (and its RPCs)
@@ -743,10 +785,9 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     // Launch/drop (NOTE: don't call Drop() inside Drop(Vector3))
     public virtual void Launch(Vector3 direction, float force)
     {
+        Drop();
         SetCollidersEnabled(true);
-        
-        transform.parent = null;
-
+        // transform.parent = null;
         if (rb == null) rb = GetComponent<Rigidbody>();
 
         if (rb != null)
