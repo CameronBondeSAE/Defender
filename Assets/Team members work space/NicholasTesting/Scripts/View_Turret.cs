@@ -3,7 +3,7 @@ using UnityEngine;
 namespace NicholasScripts
 {
     /// <summary>
-    /// 
+    /// Turret MVC view: spawns bullets and plays audio/particle effects when firing.
     /// </summary>
     public class View_Turret : MonoBehaviour
     {

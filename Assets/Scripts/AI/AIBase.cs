@@ -95,6 +95,9 @@ public class AIBase : CharacterBase
 	// Initialize AI - getting references
 	protected virtual void Start()
 	{
+		if(!IsServer)
+			return;
+			
 		health = GetComponent<AIHealth>();
 		agent  = GetComponent<NavMeshAgent>();
 		if (useRigidbody)
@@ -118,11 +121,17 @@ public class AIBase : CharacterBase
 	// State machine update loop
 	protected virtual void Update()
 	{
+		if(!IsServer)
+			return;
+
 		CurrentState?.Stay();
 	}
 
 	private void FixedUpdate()
 	{
+		if(!IsServer)
+			return;
+		
 		if (useRigidbody)
 		{
 			if(path != null && path.corners.Length > 0 && cornerIndex < path.corners.Length)
@@ -187,6 +196,9 @@ public class AIBase : CharacterBase
 	// Move AI to a target position smoothly
 	public void MoveTo(Vector3 destination)
 	{
+		if(!IsServer)
+			return;
+
 		// OLD CODE
 		/*// Debug.Log("		Moving to " + destination);
 		
@@ -307,6 +319,9 @@ public class AIBase : CharacterBase
 
 	private IEnumerator SuckUpRoutine(float height, float duration)
 	{
+		if(!IsServer)
+			yield return null;
+
 		Debug.Log("being sucked now");
 		float   elapsed  = 0f;
 		Vector3 startPos = transform.position;
@@ -342,6 +357,9 @@ public class AIBase : CharacterBase
 
 	private void OnDrawGizmos()
 	{
+		if(!IsServer)
+			return;
+
 		if(debug == false || path == null || path.corners.Length<=0) return;
 		
 		for (int i = 0; i < path.corners.Length; i++)

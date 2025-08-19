@@ -24,7 +24,7 @@ public class FollowState : IAIState
         if (ai.escortingAlien == null && target != null && target.TryGetComponent<AlienAI>(out var escortingAlien))
             ai.escortingAlien = escortingAlien;
 
-        if (ai.agent != null) animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+        if (ai != null) animController = ai.gameObject.GetComponent<AIAnimationController>();
         ai.ResumeMoving();
     }
 
