@@ -5138,9 +5138,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7498277680880859014}
   - component: {fileID: 3154571159769168152}
+  - component: {fileID: 3014765975722115866}
   - component: {fileID: 431169046469856840}
   - component: {fileID: 5032110501715468860}
-  - component: {fileID: 3014765975722115866}
   m_Layer: 7
   m_Name: Generator
   m_TagString: Untagged
@@ -5193,6 +5193,31 @@ MonoBehaviour:
   launchDirection: {x: 0, y: 0, z: 1}
   model: {fileID: 431169046469856840}
   view: {fileID: 5215284791305863850}
+--- !u!114 &3014765975722115866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7214323903650827927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1778422357
+  InScenePlacedSourceGlobalObjectIdHash: 1778422357
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &431169046469856840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5228,31 +5253,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3, y: 1.3, z: 1.3}
   m_Center: {x: 0, y: 0.000000014901161, z: 0}
---- !u!114 &3014765975722115866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7214323903650827927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4232596761
-  InScenePlacedSourceGlobalObjectIdHash: 1778422357
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!1 &7711362776022235326
 GameObject:
   m_ObjectHideFlags: 0
