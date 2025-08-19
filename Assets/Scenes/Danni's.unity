@@ -2054,6 +2054,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 482073165}
     m_Modifications:
+    - target: {fileID: 1802649050208924071, guid: e6ac1b41648ef5a4d8d4fdb94cbed3d9, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 803710456
+      objectReference: {fileID: 0}
+    - target: {fileID: 1802649050208924071, guid: e6ac1b41648ef5a4d8d4fdb94cbed3d9, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 4234893524
+      objectReference: {fileID: 0}
     - target: {fileID: 4508805474982246382, guid: e6ac1b41648ef5a4d8d4fdb94cbed3d9, type: 3}
       propertyPath: m_Name
       value: Turret
@@ -10443,6 +10451,10 @@ PrefabInstance:
     - target: {fileID: 2234508926114655281, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3216881366786687388, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: NetworkConfig.EnableSceneManagement
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4175656752346437710, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchorMax.y
