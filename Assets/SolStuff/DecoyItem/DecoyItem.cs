@@ -1,17 +1,42 @@
+using Defender;
 using UnityEngine;
 
-public class DecoyItem : MonoBehaviour, IUsable
+public class DecoyItem : AIBase, IUsable, IPickup
 {
-    //when is picked up it tells the player it is a decoy item
+	// when is picked up it tells the player it is a decoy item
 
+	protected override void Start()
+	{
+	}
 
-    public void Use()
-    {
-        Debug.Log("Hey, I'm a Decoy Item :)");
-    }
+	void Update()
+	{
+		if (IsAbducted == true)
+		{
+			Destroy();
+		}
+	}
 
-    public void StopUsing()
-    {
-        Debug.Log("Hey aliens! Come get me!");
-    }
+	public void Destroy()
+	{
+		GameObject.Destroy(gameObject);
+	}
+
+	public void Use(CharacterBase characterTryingToUse)
+	{
+		Debug.Log("Hello fellow citizens :)");
+	}
+
+	public void StopUsing()
+	{
+	}
+
+	public void Pickup(CharacterBase whoIsPickupMeUp)
+	{
+		// StopUsing();
+	}
+
+	public void Drop()
+	{
+	}
 }

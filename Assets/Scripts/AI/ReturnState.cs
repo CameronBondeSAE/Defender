@@ -23,7 +23,7 @@ public class ReturnState : IAIState
 
     public void Enter()
     {
-        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
+        animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
         hasReachedDropZone = false;
         if (ai.agent != null && !speedModified)
         {

@@ -1,9 +1,9 @@
+using Defender;
 using UnityEngine;
 /// Use this interface for items that can be used directly (potions, bombs, etc.)
 public interface IUsable
 {
-    void Use();
-
+    void Use(CharacterBase characterTryingToUse);
     void StopUsing();
 }
 

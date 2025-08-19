@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Defender;
 using UnityEngine;
 
 namespace Tutorials
@@ -17,7 +18,7 @@ namespace Tutorials
 	        if (other.gameObject.GetComponent<IUsable>() != null)
 	        {
 		        // Activate Item action
-		        other.gameObject.GetComponent<IUsable>().Use();
+		        other.gameObject.GetComponent<IUsable>().Use(GetComponent<CharacterBase>());
 	        }
         }
 
