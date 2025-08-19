@@ -44,6 +44,7 @@ namespace DanniLi
             new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         private NetworkVariable<bool> networkWaveInProgress =
             new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private NetworkVariable<int> networkTotalAliens = new NetworkVariable<int>(0);
         
         public override void OnNetworkSpawn()
         {
@@ -176,7 +177,7 @@ namespace DanniLi
         {
             if (aliensKilledText != null)
             {
-                aliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}";
+                aliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value}";
             }
         }
         #endregion
@@ -204,16 +205,17 @@ namespace DanniLi
         // }
         
         // called by GameManager when initializing
-        public void InitializeUI(int totalCivs, int aliveCivs, int totalWaves)
+        public void InitializeUI(int totalCivs, int aliveCivs, int totalWaves, int totalAliens)
         {
             if (!IsServer) return;
-            
+
             networkTotalCivilians.Value = totalCivs;
             networkCiviliansAlive.Value = aliveCivs;
-            networkTotalWaves.Value = totalWaves;
-            networkCurrentWave.Value = 0;
-            networkAliensKilled.Value = 0;
+            networkTotalWaves.Value     = totalWaves;
+            networkCurrentWave.Value    = 0;
+            networkAliensKilled.Value   = 0;
             networkWaveInProgress.Value = false;
+            networkTotalAliens.Value    = totalAliens; 
         }
         
         public void OnCivilianDeath(int currentAlive)

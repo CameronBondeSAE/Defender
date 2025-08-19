@@ -142,5 +142,4 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		onInventory?.Invoke();
 	}
 
-
 }
