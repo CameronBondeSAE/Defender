@@ -14,9 +14,9 @@ public class PatrolState : IAIState
 
     public void Enter()
     {
-        animController = ai.agent.gameObject.GetComponent<AIAnimationController>() ?? 
-                         ai.agent.gameObject.GetComponentInChildren<AIAnimationController>() ?? 
-                         ai.agent.gameObject.GetComponentInParent<AIAnimationController>();
+        animController = ai.gameObject.GetComponent<AIAnimationController>() ?? 
+                         ai.gameObject.GetComponentInChildren<AIAnimationController>() ?? 
+                         ai.gameObject.GetComponentInParent<AIAnimationController>();
         if (animController != null)
         {
             animController.SetAnimation(AIAnimationController.AnimationState.Walk);

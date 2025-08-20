@@ -23,7 +23,7 @@ public class LongSearchState : MonoBehaviour, IAIState
 
     public void Enter()
     {
-        animController = ai.agent.gameObject.GetComponentInChildren<AIAnimationController>();
+        animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
         isGrabbing = false;
         isBusy = false;
         collectedCivilians.Clear();
