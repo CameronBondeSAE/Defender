@@ -28,6 +28,11 @@ namespace DanniLi
         [SerializeField] private Button loseTryAgainButton;
         [SerializeField] private Button loseMainMenuButton;
         
+        [Header("Item Info Panel")]
+        [SerializeField] private GameObject itemInfoPanel;
+        [SerializeField] private Text itemNameText;
+        [SerializeField] private Text itemDescriptionText;
+        
         [Header("References")]
         [SerializeField] private GameManager gameManager;
         [SerializeField] private LevelLoader levelLoader;
@@ -78,7 +83,7 @@ namespace DanniLi
             UpdateAllUI();
             // hide screens initially
             HideAllScreens();
-            
+            HideItemPanel(); 
             // if (IsServer && gameManager != null && networkTotalWaves.Value <= 0)
             // {
             //     gameManager.ForceInitializeUI(this);
@@ -305,6 +310,18 @@ namespace DanniLi
                     (networkCiviliansAlive.Value / (float)networkTotalCivilians.Value) * 100f : 0f;
                 loseCivsPercentageText.text = $"Civilians Saved: {networkCiviliansAlive.Value}/{networkTotalCivilians.Value} ({percentage:F1}%)";
             }
+        }
+        
+        public void ShowItemPanel(string nameString, string descString)
+        {
+            if (itemInfoPanel) itemInfoPanel.SetActive(true);
+            if (itemNameText) itemNameText.text = nameString ?? string.Empty;
+            if (itemDescriptionText) itemDescriptionText.text = descString ?? string.Empty;
+        }
+
+        public void HideItemPanel()
+        {
+            if (itemInfoPanel) itemInfoPanel.SetActive(false);
         }
         #endregion
         

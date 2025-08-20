@@ -341,6 +341,7 @@ namespace DanniLi
 			
 			if (IsServer)
 			{
+				if (playerID == NetworkManager.ServerClientId) return; // to fix the double spawn issue in build
 				TrySpawnCrateForNewClient(); // forgive me for putting this in your camera code, just sharing this function
 			}
 		}

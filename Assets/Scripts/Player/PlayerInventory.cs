@@ -21,8 +21,6 @@ public class PlayerInventory : NetworkBehaviour
 	// added netvar to sync held items to clients
 	private NetworkVariable<NetworkObjectReference> networkedHeldItem = new NetworkVariable<NetworkObjectReference>(
 		default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-	
-
 	[SerializeField]
 	private GameObject currentItemInstance;
 
@@ -80,11 +78,13 @@ public class PlayerInventory : NetworkBehaviour
 			CurrentItem = newObj.GetComponent<IPickup>();
 			CurrentItemInstance = newObj.gameObject;
 			OnItemPickedUp?.Invoke(CurrentItem);
+			ShowHeldItemInfo_FromCurrent();
 		}
 		else
 		{
 			CurrentItem = null;
 			CurrentItemInstance = null;
+			RequestHideHeldItemInfoRpc();
 		}
 	}
 
@@ -220,7 +220,6 @@ public class PlayerInventory : NetworkBehaviour
 		networkedHeldItem.Value = default;
 		CurrentItem = null;
 		CurrentItemInstance = null;
-		
 		return true;
 	}
 
@@ -281,4 +280,50 @@ public class PlayerInventory : NetworkBehaviour
 		CurrentItem = null;
 		CurrentItemInstance = null;
 	}
+
+	#region Item Description UI Rpcs
+
+	[Rpc(SendTo.Server)]
+	public void RequestShowHeldItemInfoRpc(NetworkObjectReference itemRef)
+	{
+		string nameStr = string.Empty, descStr = string.Empty;
+
+		if (itemRef.TryGet(out NetworkObject itemNO) &&
+		    itemNO && itemNO.TryGetComponent<IDescribable>(out var describable))
+		{
+			nameStr = describable.ItemName ?? string.Empty;
+			descStr = describable.Description ?? string.Empty;
+		}
+
+		ShowHeldItemInfoRpc(nameStr, descStr); 
+	}
+	public void ShowHeldItemInfo_FromCurrent()
+	{
+		NetworkObject networkObject = null;
+		if (currentItemInstance) networkObject = currentItemInstance.GetComponent<NetworkObject>();
+		var itemRef = (networkObject != null) ? new NetworkObjectReference(networkObject) : default;
+		RequestShowHeldItemInfoRpc(itemRef);
+	}
+
+	[Rpc(SendTo.Server)]
+	public void RequestHideHeldItemInfoRpc()
+	{
+		HideHeldItemInfoRpc();
+	}
+
+	[Rpc(SendTo.Owner)]
+	private void ShowHeldItemInfoRpc(string nameStr, string descStr)
+	{
+		var ui = FindFirstObjectByType<DanniLi.UIManager>();
+		if (ui != null) ui.ShowItemPanel(nameStr, descStr);
+	}
+
+	[Rpc(SendTo.Owner)]
+	private void HideHeldItemInfoRpc()
+	{
+		var ui = FindFirstObjectByType<DanniLi.UIManager>();
+		if (ui != null) ui.HideItemPanel();
+	}
+
+	#endregion
 }

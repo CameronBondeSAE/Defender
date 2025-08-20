@@ -164,8 +164,13 @@ MonoBehaviour:
   timerBeepClip: {fileID: 8300000, guid: 771b5914be81335449fd473e6b1926c4, type: 3}
   timerActivatedClip: {fileID: 8300000, guid: 09fb56ecb588ce34898132bcdf21de0e, type: 3}
   isConsumable: 1
+  expiryDuration: 0
   activationCountdown: 3
+  activationTrigger: 0
+  allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
+  itemName: Grenade
+  description: Launch and it will explode
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
   explosionRadius: 5

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Defender;
@@ -12,7 +13,7 @@ using UnityEngine.UIElements;
 /// Base for any inventory item you can use, arm (start a countdown), or launch (throw).
 /// Inherit and override Use, OnArmed, Explode, etc for your specific item logic.
 /// </summary>
-public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
+public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
 {
        [Header("Audio")]
     [Tooltip("audio source for all sfx (pickup, drop, use, beep, activated). null = mute.")]
@@ -72,6 +73,12 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     private CountdownUI countdownUIPrefab; // drag the child UI here:D
     // prefab instance (not parented to the item!)
     private CountdownUI countdownUIInstance;
+    
+    [Header("Item Description")]
+    [SerializeField] private string itemName;
+    [SerializeField] private string description;
+    public string ItemName => itemName;
+    public string Description => description;
 
     // tracking settings
     [Tooltip("set in Pickup()/Drop(). debug only.")]
@@ -303,7 +310,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     }
     #endregion
 
-    #region Helpers: Colliders, UI destroy, Carrier
+    #region Helpers: Colliders, UI destroy, Carrier, Description
     protected void DestroyCountdownUI()
     {
         if (countdownUIInstance)
@@ -325,6 +332,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     {
         CurrentCarrier = carrier;
     }
+    
     #endregion
 
     #region Interface Implementation: IPickup / IUsable
