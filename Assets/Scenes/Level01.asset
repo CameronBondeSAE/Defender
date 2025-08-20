@@ -18,8 +18,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 58e2c427dd8e61b41ab36f771291c3cc, type: 2}
   scene: {fileID: 102900000, guid: d312481305d9033438356053447b3b0e, type: 3}
   civiliansToSave: 0
-  wallPrefab: {fileID: 8988151785997015381, guid: 189f20ef2721b274882c4ca7d23e4818, type: 3}
-  wallSpawnCount: 5
-  cratePrefab: {fileID: 1075466619878568332, guid: 10aea0724d1fa4e43b909b589e08f543, type: 3}
-  crateSpawnCount: 5
+  cratePrefab: {fileID: 3944214951611117370, guid: e40b93891a37bfe41a06e361abe02df5, type: 3}
+  crateSpawnCount: 3
+  crateSpawnPoints:
+  - {fileID: 2046829170939313266, guid: aa7645b898400c5479d2edfbcd7cb816, type: 3}
+  - {fileID: 312793259860316505, guid: d6131acdfdbdb4a43b95bfa97088e318, type: 3}
+  - {fileID: 8793847021959896963, guid: 204d7f4c2122d5b448b8d97e44a823f1, type: 3}
   percentCiviliansAliveToWin: 50

@@ -58,6 +58,11 @@ namespace DanniLi
 		private int totalWaves = 3;
 		private bool waveInProgress;
 		private Coroutine startFlowCoroutine;
+		
+		[Header("Crates")]
+		private List<NetworkObject> spawnedCrates = new(); 
+		private int cratesSpawnedCount = 0;                         
+		private int nextCrateSpawnIndex = 0;  
 
 		// Events
 		public event Action GetReady_Event;
@@ -152,6 +157,9 @@ namespace DanniLi
 			// Initialize UI on server now that it's spawned
 			if (uiManager != null && uiManager.IsSpawned)
 				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves, totalAliensPlanned);
+			
+			// spawn crates!
+			SpawnInitialCrateForHost();
 
 			// NOW start the first wave
 			StartWave();
@@ -160,16 +168,19 @@ namespace DanniLi
 		private void InitializeLevel()
 		{
 				//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
-			// TODO: Probably keep levelinfo a SO file, as we need the ability to show level names/info BEFORE the level is loaded
-			currentlevelInfo = (levelSOs != null && levelSOs.Length > 0) ? levelSOs[Mathf.Clamp(levelSOs.Length, 0, levelSOs.Length - 1)] : null;
-			if (currentlevelInfo != null)
-			{
-				Debug.Log("Level Info: Civilians to save" + currentlevelInfo.civiliansToSave);
-			}
-			else
-			{
-				Debug.Log("Level Info: No level info found");
-			}
+				// ticked off the todos
+				currentlevelInfo = (levelSOs != null && levelSOs.Length > 0)
+					? levelSOs[Mathf.Clamp(currentLevelIndex, 0, levelSOs.Length - 1)] 
+					: null;
+
+				if (currentlevelInfo != null)
+				{
+					Debug.Log("Level Info: Civilians to save " + currentlevelInfo.civiliansToSave);
+				}
+				else
+				{
+					Debug.Log("Level Info: No level info found");
+				}
 			//--------------------------------------------------CRATES & ITEMS-------------------------------------------------------------
 			Crate[] crates = FindObjectsByType<Crate>(FindObjectsSortMode.None);
 			if (levelSOs != null && levelSOs.Length > 0)
@@ -327,6 +338,11 @@ namespace DanniLi
 					AddItemToCameraTargetGroup(client.PlayerObject.transform);
 				}
 			}
+			
+			if (IsServer)
+			{
+				TrySpawnCrateForNewClient(); // forgive me for putting this in your camera code, just sharing this function
+			}
 		}
 		// Remove player from target group when they leave
 		public void OnPlayerLeave(ulong playerID)
@@ -418,36 +434,55 @@ namespace DanniLi
 		{
 			spawners.Remove(spawner);
 		}
-
-		private void SpawnLevelProps()
-		{
-			if (currentlevelInfo == null)
-			{
-				Debug.LogWarning("GameManager: no level info!");
-				return;
-			}
-
-			for (int i = 0; i < currentlevelInfo.wallSpawnCount; i++)
-			{
-				Instantiate(currentlevelInfo.wallPrefab, GetRandomSpawnPosition(), Quaternion.identity, levelContainer);
-			}
-
-			for (int i = 0; i < currentlevelInfo.crateSpawnCount; i++)
-			{
-				if (currentlevelInfo.cratePrefab != null)
-					Instantiate(currentlevelInfo.cratePrefab, GetRandomSpawnPosition(), Quaternion.identity,
-					            levelContainer);
-				else
-				{
-					Debug.LogWarning("GameManager: no crate prefab!");
-				}
-			}
-		}
+		
 
 		private Vector3 GetRandomSpawnPosition()
 		{
 			return new Vector3(Random.Range(-50, 50), -0.5f, Random.Range(-50, 50)); // adjust these based on level size
 		}
+		#endregion
+		
+		#region Crates
+		 private void SpawnInitialCrateForHost() 
+    {
+        if (!IsServer || currentlevelInfo == null) return;
+        int maxCrates = Mathf.Max(0, currentlevelInfo.crateSpawnCount);
+        int connectedClients = NetworkManager.Singleton.ConnectedClientsIds.Count;
+        int desired = Mathf.Min(maxCrates, connectedClients);
+        while (cratesSpawnedCount < desired)
+        {
+            TrySpawnCrateForNewClient();
+        }
+    }
+    // Spawns one crate at the next spawn point from LevelInfo,
+    // added functionality to spawn at random position if no spawnPos configured (also as an alternative :3)
+    private void TrySpawnCrateForNewClient() // NEW
+    {
+        if (!IsServer || currentlevelInfo == null) return;
+        int maxCrates = Mathf.Max(0, currentlevelInfo.crateSpawnCount);
+        if (cratesSpawnedCount >= maxCrates) return;
+        if (currentlevelInfo.cratePrefab == null) return;
+        // Choose spawn transform in listed order
+        Transform spawnPos = null;
+        if (currentlevelInfo.crateSpawnPoints != null &&
+            nextCrateSpawnIndex < currentlevelInfo.crateSpawnPoints.Count)
+        {
+            spawnPos = currentlevelInfo.crateSpawnPoints[nextCrateSpawnIndex];
+        }
+        Vector3 pos = spawnPos ? spawnPos.position : GetRandomSpawnPosition();
+        Quaternion rotation = spawnPos ? spawnPos.rotation : Quaternion.identity;
+        var crateGO = Instantiate(currentlevelInfo.cratePrefab, pos, rotation, levelContainer);
+        var netObj = crateGO.GetComponent<NetworkObject>();
+        if (netObj == null)
+        {
+            Destroy(crateGO);
+            return;
+        }
+        netObj.Spawn(); 
+        spawnedCrates.Add(netObj);
+        cratesSpawnedCount++;
+        if (spawnPos != null) nextCrateSpawnIndex++; // spawn at next spawnPos in list
+    }
 		#endregion
 	}
 }
