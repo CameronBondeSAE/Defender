@@ -5425,10 +5425,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SlowTile
       objectReference: {fileID: 0}
-    - target: {fileID: 4990355939421191011, guid: 5a242a2dd5f631d42aa34c3c55c0c461, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 6bd018c6e4cf8e2488ce32356b6fbe48, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7148,6 +7144,72 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2061808093753784860, guid: edd26c889f25c844891f58f2d4e63661, type: 3}
   m_PrefabInstance: {fileID: 1412970186}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1552200199
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4007988770077996057, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_Name
+      value: SpeedTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -20.659807
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.6668167
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20.537035
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5095450946958769561, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525873288449161449, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 994384258
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+--- !u!1 &1552200200 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4007988770077996057, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+  m_PrefabInstance: {fileID: 1552200199}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1582309439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7790,6 +7852,8 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/KevinPrefab/Teleportation.prefab
   - _gameObject: {fileID: 990186514}
     _prefab: Assets/Prefabs/KevinPrefab/SlowTile.prefab
+  - _gameObject: {fileID: 1552200200}
+    _prefab: Assets/Prefabs/KevinPrefab/SpeedTile.prefab
 --- !u!4 &1664449590
 Transform:
   m_ObjectHideFlags: 11
@@ -9052,14 +9116,6 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2533229123
       objectReference: {fileID: 0}
-    - target: {fileID: 5959838474775106184, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 2050529144
-      objectReference: {fileID: 0}
-    - target: {fileID: 5984147420316716070, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: b4c66ed540cd0994cb1bb7fde5bd81f9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9730,3 +9786,4 @@ SceneRoots:
   - {fileID: 2122119417}
   - {fileID: 2135956674}
   - {fileID: 990186513}
+  - {fileID: 1552200199}
