@@ -533,18 +533,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8962850928172692104}
-<<<<<<< HEAD
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4109447943481564251}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3232354185868011537}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7537222141394951658}
-=======
->>>>>>> danni/networking
   m_SourcePrefab: {fileID: 100100000, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
 --- !u!1 &1387163446135835622 stripped
 GameObject:
@@ -864,56 +852,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   health: {fileID: 4433308929451714180}
   playerInput: {fileID: 6310878697514803470}
-<<<<<<< HEAD
---- !u!114 &4109447943481564251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387163446135835622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2600896c5f2dd5429f367035f889209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  networkAnimator: {fileID: 3232354185868011537}
---- !u!114 &3232354185868011537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387163446135835622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  TransitionStateInfoList: []
-  m_Animator: {fileID: 2888160544295006999}
---- !u!114 &7537222141394951658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387163446135835622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c3c0adb583cbd34b85a349187f03d67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  boostForce: 40
-  boostCoolDown: 2
-  audioHearingRadius: 15
-  audioSource: {fileID: 0}
-  boostClip: {fileID: 8300000, guid: 3b62c817e8e10484fb6fcf6d6a265612, type: 3}
-=======
->>>>>>> danni/networking
 --- !u!4 &1732726295342944604 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
