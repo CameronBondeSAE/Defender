@@ -38,6 +38,8 @@ public class BeerBarrel : UsableItem_Base
         Debug.Log("Pouring Beer");
 
         characterTryingToUse.gameObject.GetComponent<PlayerInventory>().DropHeldItem();
+        gameObject.transform.rotation = new Quaternion(0,0,0,0);
+
         state = PouringState.used;
     }
 
