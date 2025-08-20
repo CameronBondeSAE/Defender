@@ -32,6 +32,7 @@ public class AlienAI : AIBase
         }
     }
 
+<<<<<<< Updated upstream
     // Stop movement (using NavMesh built in bool)
     public void StopMoving()
     {
@@ -42,5 +43,10 @@ public class AlienAI : AIBase
     public void ResumeMoving()
     {
         agent.isStopped = false;
+=======
+    public override IAIState GetDefaultState()
+    {
+        return base.GetDefaultState();
+>>>>>>> Stashed changes
     }
 }
