@@ -19,6 +19,7 @@ namespace DanniLi
         [SerializeField] private Text winCivsPercentageText;
         [SerializeField] private Button winNextLevelButton;
         [SerializeField] private Button winMainMenuButton;
+        [SerializeField] private Button quitButton;
         
         [Header("Lose Screen")]
         [SerializeField] private GameObject loseScreen;
@@ -321,6 +322,9 @@ namespace DanniLi
                 loseTryAgainButton.onClick.AddListener(OnTryAgainClicked);
             if (loseMainMenuButton != null)
                 loseMainMenuButton.onClick.AddListener(OnMainMenuClicked);
+            
+            if (quitButton != null)
+                quitButton.onClick.AddListener(QuitGame);
         }
         
         private void OnNextLevelClicked()
@@ -346,20 +350,11 @@ namespace DanniLi
                 levelLoader.LoadMainMenuServerRpc();
             }
         }
-        
-        /// moveed these to LevelLoader
-        // [ServerRpc(RequireOwnership = false)]
-        // private void LoadMainMenuServerRpc()
-        // {
-        //     LoadMainMenuRpc();
-        // }
-        //
-        // [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
-        // private void LoadMainMenuRpc()
-        // {
-        //     // Replace "MainMenu" with your actual main menu scene name
-        //     SceneManager.LoadScene("MainMenu");
-        // }
+
+        private void QuitGame()
+        {
+            Application.Quit();
+        }
         #endregion
     }
 }
