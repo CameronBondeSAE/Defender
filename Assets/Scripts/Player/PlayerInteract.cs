@@ -7,7 +7,7 @@ public class PlayerInteract : NetworkBehaviour
 {
 	[Header("Pickup Settings")]
 	[SerializeField]
-	private float interactionRange = 2f;
+	private float interactionRange = 5f;
 
 	public Transform interactMount;
 	

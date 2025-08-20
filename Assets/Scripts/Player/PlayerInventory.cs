@@ -281,43 +281,4 @@ public class PlayerInventory : NetworkBehaviour
 		CurrentItem = null;
 		CurrentItemInstance = null;
 	}
-
-	// /// <summary>
-	// /// Clears the inventory slot references
-	// /// </summary>
-	// private void ClearInventorySlot()
-	// {
-	// 	// CurrentItem = null;
-	// 	// CurrentItemInstance = null;
-	// 	// OnItemSlotCleared?.Invoke();
-	// }
-
-	/// Here are some helper functions if you guys want to show UI messages etc about player's item usage info :)
-	/// <summary>
-	/// Checks if player has used a specific item
-	/// </summary>
-	// public bool HasUsedItem(ItemSO item)
-	// {
-	//     return itemsUsed.Contains(item);
-	// }
-	/// <summary>
-	/// Checks if player has collected a specific item
-	/// </summary>
-	// public bool HasCollectedItem(ItemSO item)
-	// {
-	//     return itemsCollected.Contains(item);
-	// }
-	/// <summary>
-	/// Gets the count of how many times an item has been used
-	/// e.g. At end of game, UI shows "you have used X amount of grenade! You love it."
-	/// </summary>
-	// public int GetItemUsedCount(ItemSO item)
-	// {
-	//     int count = 0;
-	//     foreach (var usedItem in itemsUsed)
-	//     {
-	//         if (usedItem == item) count++;
-	//     }
-	//     return count;
-	// }
 }
