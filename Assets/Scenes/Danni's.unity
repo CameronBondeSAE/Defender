@@ -350,7 +350,7 @@ Transform:
   m_GameObject: {fileID: 10365686}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.23, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1792,6 +1792,7 @@ GameObject:
   - component: {fileID: 450871405}
   - component: {fileID: 450871406}
   - component: {fileID: 450871408}
+  - component: {fileID: 450871409}
   m_Layer: 0
   m_Name: NetworkedCrate
   m_TagString: Untagged
@@ -1841,11 +1842,12 @@ MonoBehaviour:
   itemGenerationCooldown: 3
   itemSpawnPoint: {fileID: 10365687}
   itemFloatHeight: 1.5
-  floatingUI: {fileID: 878270611}
+  pickupRange: 4
+  pickupTrigger: {fileID: 450871408}
+  countdownUIPrefab: {fileID: 7822931937235686600, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
   audioSource: {fileID: 0}
   generateItemClip: {fileID: 0}
   itemReadyClip: {fileID: 0}
-  debugMode: 0
 --- !u!4 &450871407
 Transform:
   m_ObjectHideFlags: 0
@@ -1861,10 +1863,30 @@ Transform:
   m_Children:
   - {fileID: 1273277931}
   - {fileID: 10365687}
-  - {fileID: 878270612}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &450871408
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450871404}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 1, z: 3}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &450871409
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5577,55 +5599,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 438404136864597573, guid: edd26c889f25c844891f58f2d4e63661, type: 3}
   m_PrefabInstance: {fileID: 1412970186}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &878270610
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 878270612}
-  - component: {fileID: 878270611}
-  m_Layer: 0
-  m_Name: Floating2DUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &878270611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878270610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aff6fe09280334690ca4a5b7022e12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultIcon: {fileID: 21300000, guid: cabb16a43403a024ba75edeb47773c7f, type: 3}
-  iconHolder: {fileID: 10365687}
-  mainCamera: {fileID: 311911885}
-  floatHeight: 0.5
-  floatDuration: 1
---- !u!4 &878270612
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878270610}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 450871407}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &880969465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 468782042391114676, guid: e738b699983ba2c4590499f0c294bb9f, type: 3}
@@ -7635,7 +7608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2cbac68655ec8a74cbc4f7a2fe99c340, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.568
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2cbac68655ec8a74cbc4f7a2fe99c340, type: 3}
       propertyPath: m_LocalPosition.z

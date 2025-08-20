@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NetworkedFloatingItem : NetworkBehaviour
 {
-   [Header("Floating Params")]
+   [Header("Floating Animation")]
     [SerializeField] private float floatHeight = 0.5f;
     [SerializeField] private float floatDuration = 1f;
     [SerializeField] private float rotationSpeed = 30f;
@@ -13,8 +13,8 @@ public class NetworkedFloatingItem : NetworkBehaviour
     private Tween floatTween;
     private Tween rotateTween;
     
+    [Header("References")]
     private Rigidbody rb;
-    // private Collider[] itemColliders;
     
     public override void OnNetworkSpawn()
     {
@@ -25,13 +25,6 @@ public class NetworkedFloatingItem : NetworkBehaviour
             rb.isKinematic = true;
             rb.useGravity = false;
         }
-        // itemColliders = GetComponentsInChildren<Collider>();
-        // foreach (var collider in itemColliders)
-        // {
-        //     collider.enabled = false;
-        // }
-        
-        // Start floating animation
         startPosition = transform.position;
         StartFloating();
     }
@@ -44,11 +37,11 @@ public class NetworkedFloatingItem : NetworkBehaviour
     
     private void StartFloating()
     {
-        // floating up n down
+        // up n down float
         floatTween = transform.DOMoveY(startPosition.y + floatHeight, floatDuration)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
-        // a lil bit of rotation
+        // lil bit of rotation
         rotateTween = transform.DORotate(new Vector3(0, 360, 0), 360f / rotationSpeed, RotateMode.FastBeyond360)
             .SetLoops(-1, LoopType.Incremental)
             .SetEase(Ease.Linear);
@@ -59,17 +52,36 @@ public class NetworkedFloatingItem : NetworkBehaviour
         floatTween?.Kill();
         rotateTween?.Kill();
     }
+    
+    /// <summary>
+    /// when item is picked up they stop floating, basically behaves like normal prefab
+    /// </summary>
     public void OnPickedUp()
     {
         StopFloating();
-        // Re-enable colliders for pickup
-        // foreach (var collider in itemColliders)
-        // {
-        //     collider.enabled = true;
-        // }
-        
-        // physics is by the pickup system
+        if (rb != null)
+        {
+            rb.isKinematic = true; // inventory will handle physics
+            rb.useGravity = false;
+        }
+        // remove this component since we're done floating
+        if (IsSpawned)
+        {
+            RemoveFloatingBehaviorClientRpc();
+        }
+        Destroy(this); 
     }
+    
+    [ClientRpc]
+    private void RemoveFloatingBehaviorClientRpc()
+    {
+        // Ensure floating stops on all clients
+        StopFloating();
+    }
+    
+    /// <summary>
+    /// set the floating position (called by crate when spawning)
+    /// </summary>
     public void SetFloatingPosition(Vector3 position)
     {
         startPosition = position;

@@ -44,7 +44,8 @@ namespace DanniLi
             new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         private NetworkVariable<bool> networkWaveInProgress =
             new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-        private NetworkVariable<int> networkTotalAliens = new NetworkVariable<int>(0);
+        private NetworkVariable<int> networkTotalAliens =
+            new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         
         public override void OnNetworkSpawn()
         {
@@ -60,6 +61,7 @@ namespace DanniLi
             networkCurrentWave.OnValueChanged += OnCurrentWaveChanged;
             networkTotalWaves.OnValueChanged += OnTotalWavesChanged;
             networkAliensKilled.OnValueChanged += OnAliensKilledChanged;
+            networkTotalAliens.OnValueChanged += OnTotalAliensChanged;
             networkWaveInProgress.OnValueChanged += OnWaveProgressChanged;
             
             // Subscribe to game events (server only)
@@ -94,6 +96,7 @@ namespace DanniLi
             networkCurrentWave.OnValueChanged -= OnCurrentWaveChanged;
             networkTotalWaves.OnValueChanged -= OnTotalWavesChanged;
             networkAliensKilled.OnValueChanged -= OnAliensKilledChanged;
+            networkTotalAliens.OnValueChanged -= OnTotalAliensChanged;
             networkWaveInProgress.OnValueChanged -= OnWaveProgressChanged;
             if (gameManager != null)
             {
@@ -125,6 +128,11 @@ namespace DanniLi
         }
         
         private void OnAliensKilledChanged(int oldValue, int newValue)
+        {
+            UpdateAliensKilledUI();
+        }
+        
+        private void OnTotalAliensChanged(int oldValue, int newValue) 
         {
             UpdateAliensKilledUI();
         }
@@ -183,28 +191,6 @@ namespace DanniLi
         #endregion
         
         #region Server-Only Update Methods
-        // [ServerRpc(RequireOwnership = false)]
-        // public void UpdateCiviliansServerRpc(int alive, int total)
-        // {
-        //     networkCiviliansAlive.Value = alive;
-        //     networkTotalCivilians.Value = total;
-        // }
-        //
-        // [ServerRpc(RequireOwnership = false)]
-        // public void UpdateWaveServerRpc(int currentWave, int totalWaves, bool inProgress)
-        // {
-        //     networkCurrentWave.Value = currentWave;
-        //     networkTotalWaves.Value = totalWaves;
-        //     networkWaveInProgress.Value = inProgress;
-        // }
-        //
-        // [ServerRpc(RequireOwnership = false)]
-        // public void UpdateAliensKilledServerRpc(int killed)
-        // {
-        //     networkAliensKilled.Value = killed;
-        // }
-        
-        // called by GameManager when initializing
         public void InitializeUI(int totalCivs, int aliveCivs, int totalWaves, int totalAliens)
         {
             if (!IsServer) return;
