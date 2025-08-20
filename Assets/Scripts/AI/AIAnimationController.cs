@@ -21,11 +21,11 @@ namespace AIAnimation // A name space shared only by AIs for clarity
             Dead,
             GettingSucked
         }
-        private Animator animator;
+        [SerializeField] private Animator animator;
         private AnimationState currentState;
         [SerializeField] private NetworkAnimator networkAnimator;
 
-        private void Awake()
+        public override void OnNetworkSpawn()
         {
             // search order: self > children > parent
             // since our ai set up is all different

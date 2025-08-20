@@ -2,7 +2,6 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Collider))]
 public class FloatingUI : MonoBehaviour
 {
     [Header("UI Settings")]

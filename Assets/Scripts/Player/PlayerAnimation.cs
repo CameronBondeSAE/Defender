@@ -12,40 +12,81 @@ public class PlayerAnimation : NetworkBehaviour
         Death
     }
     private PlayerState currentState;
-    public Animator animator;
-    [SerializeField] private NetworkAnimator networkAnimator; // must assign in inspector!
-    void Start()
+    [SerializeField] private Animator animator;
+     private readonly NetworkVariable<PlayerState> stateNetVar =
+        new NetworkVariable<PlayerState>(
+            PlayerState.Idle,
+            NetworkVariableReadPermission.Everyone,
+            NetworkVariableWritePermission.Server);
+    
+     private PlayerState lastRequested = (PlayerState)(-1);
+    
+    private void Awake()
     {
-        //if (IsOwner) // owner asks, server sets
-       //RequestSetStateClientRpc(PlayerState.Idle);
-       SetAnimationStateServer(PlayerState.Idle);
+        FindAnimator();
     }
-
-    /// <summary>
-    /// Call this function from other scripts to set animation on the OWNER ONLYYY
-    /// </summary>
-    /// <param name="newState"></param>
+    
+    public override void OnNetworkSpawn()
+    {
+        stateNetVar.OnValueChanged += OnStateChanged;
+        // set start state on server so late-joiners get it
+        if (IsServer)
+            stateNetVar.Value = PlayerState.Idle;
+        Debug.Log($"[PA][{(IsServer ? "SERVER" : $"CLIENT {NetworkManager.LocalClientId}")}] " +
+                  $"Spawn NetId={NetworkObjectId}, Owner={OwnerClientId}, IsOwner={IsOwner}, IsSpawned={NetworkObject.IsSpawned}");
+        PlayState(stateNetVar.Value);
+    }
+    
+    public override void OnNetworkDespawn()
+    {
+        stateNetVar.OnValueChanged -= OnStateChanged;
+    }
+    
+    private bool FindAnimator()
+    {
+        if (animator) return true;
+        animator = GetComponent<Animator>()
+                   ?? GetComponentInChildren<Animator>(true)
+                   ?? GetComponentInParent<Animator>();
+        return animator != null;
+    }
+    
+    public void ServerSetState(PlayerState newState)
+    {
+        if (!IsServer) return;
+        if (lastRequested == newState) return;
+        if (stateNetVar.Value == newState) return;
+        stateNetVar.Value = newState; // shows to everyone
+    }
+    
     public void RequestState(PlayerState newState)
     {
-        if (!IsOwner) return;
-        //RequestSetStateClientRpc(newState);
-        SetAnimationStateServer(newState);
-    }
-    // [Rpc(SendTo.Server)] // client to server
-    // private void RequestSetStateClientRpc(PlayerState newState)
-    // {
-    //     SetAnimationStateServer(newState);
-    // }
-    public void SetAnimationStateServer(PlayerState newState)
-    {
-        if (currentState == newState) return; 
-        currentState = newState;
-        HandleAnimation(); // runs on server
+        if (lastRequested == newState) return;  // unspam updates to fix glitch
+        if (stateNetVar.Value == newState) return;
+
+        if (IsServer)
+            ServerSetState(newState);          
+        else
+            SetStateServerRpc(newState);
     }
 
-    private void HandleAnimation()
+
+    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]  
+    private void SetStateServerRpc(PlayerState newState)
     {
-        switch (currentState)
+        if (stateNetVar.Value == newState) return; 
+        stateNetVar.Value = newState;
+    }
+    private void OnStateChanged(PlayerState previous, PlayerState current)
+    {
+        lastRequested = current;
+        PlayState(current);
+    }
+    
+    private void PlayState(PlayerState state)
+    {
+        if (!FindAnimator()) return;
+        switch (state)
         {
             case PlayerState.Idle:
                 animator.Play("Idle");
