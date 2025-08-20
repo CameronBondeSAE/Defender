@@ -1,43 +1,53 @@
 using Defender;
 using UnityEngine;
 
-public class EMPGrenade : MonoBehaviour, IUsable, IPickup
+public class EMPGrenade : UsableItem_Base 
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-   
-    // variable declarations //
+    public float empRadius = 5f;
+    private float empCountdown = 5f;
+
+
+    private void PowerOut()
+    {
+        base.Awake();
+        activationCountdown = empCountdown;
+    }
+
+    public override void Use(CharacterBase characterTryingToUse)
+    {
+        // Launch itself forward (when used)
+        if (characterTryingToUse != null)
+        {
+            Debug.Log("Grenade thrown!");
+            Launch(characterTryingToUse.transform.forward, launchForce);
+            base.Use(characterTryingToUse); // starts the activation countdown
+        }
+    }
+
+    public override void Pickup(CharacterBase whoIsPickupMeUp)
+    {
+        base.Pickup(whoIsPickupMeUp); // plays audio, sets IsCarried, disables physics
+        // detect and store the carrier
+        Debug.Log("EMP Acquired");
+    }
+
+    protected override void ActivateItem() // activates rhe grenade and activates the alien check
+    {
+        AlienCheck();
+    }
+    private void AlienCheck() // checks for aliens 
+    {
+        Collider[] Alienrange = Physics.OverlapSphere(transform.position, empRadius);
+       
+         foreach (Collider c in Alienrange)
+         {
+             if (c.CompareTag("Alien"))
+             {
+                 Debug.Log("EMP Activated");
+                 c.GetComponent<Rigidbody>().isKinematic = true;
+                 PowerOut();
+             }
+         }
+    }
     
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void Use(CharacterBase characterTryingToUse)
-    {
-        throw new System.NotImplementedException(); // if player input
-        
-    }
-
-    public void StopUsing()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Pickup(CharacterBase whoIsPickupMeUp)
-    {
-        throw new System.NotImplementedException(); // turn the grenade green
-    }
-
-    public void Drop()
-    {
-        throw new System.NotImplementedException();
-    }
 }
-
-// the goal for the emp grenade is to disable the motherships and stub aliens
