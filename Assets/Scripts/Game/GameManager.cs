@@ -69,10 +69,13 @@ namespace DanniLi
 		public override void OnNetworkSpawn()
 		{
 			base.OnNetworkSpawn();
-			NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoin;
-			NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
-			NetworkManager.Singleton.OnConnectionEvent         += SingletonOnOnConnectionEvent;
-			
+			var networkManager = NetworkManager;
+			if (networkManager != null)
+			{
+				NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoin;
+				NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
+				NetworkManager.Singleton.OnConnectionEvent         += SingletonOnOnConnectionEvent;
+			}
 			if (uiManager == null)
 				uiManager = FindObjectOfType<UIManager>();
 
@@ -86,6 +89,36 @@ namespace DanniLi
 			if (startFlowCoroutine != null) StopCoroutine(startFlowCoroutine);
 			startFlowCoroutine = StartCoroutine(StartFlowWhenUIReady());
 		}
+		
+		public override void OnNetworkDespawn()
+		{
+			var networkManager = NetworkManager;
+			if (networkManager != null)
+			{
+				networkManager.OnClientConnectedCallback -= OnPlayerJoin;                
+				networkManager.OnClientDisconnectCallback -= OnPlayerLeave;               
+				networkManager.OnConnectionEvent         -= SingletonOnOnConnectionEvent; 
+			}
+			if (IsServer)
+			{
+				if (mothershipBases != null)
+				{
+					foreach (var mothershipBase in mothershipBases)
+						mothershipBase.AlienSpawned_Event -= MothershipBaseOnAlienSpawned_Event;
+				}
+
+				if (civilians != null)
+				{
+					foreach (var civ in civilians)
+					{
+						var health = civ.GetComponent<Health>();
+						if (health != null) health.OnDeath -= OnCivDeath;
+					}
+				}
+			}
+
+			base.OnNetworkDespawn();
+		}
 
 		private void SingletonOnOnConnectionEvent(NetworkManager arg1, ConnectionEventData arg2)
 		{
@@ -97,27 +130,7 @@ namespace DanniLi
 
 		private void OnDisable()
 		{
-			if (IsClient) // Camera is client side only for now
-			{
-				NetworkManager.Singleton.OnClientConnectedCallback -= OnPlayerJoin;
-				NetworkManager.Singleton.OnClientDisconnectCallback -= OnPlayerLeave;
-			}
-
-			if (!IsServer) return; // server side cleaning up from now on
-			if (mothershipBases != null)
-			{
-				foreach (var mothershipBase in mothershipBases)
-					mothershipBase.AlienSpawned_Event -= MothershipBaseOnAlienSpawned_Event;
-			}
-
-			if (civilians != null)
-			{
-				foreach (var civ in civilians)
-				{
-					var health = civ.GetComponent<Health>();
-					if(health != null) health.OnDeath -= OnCivDeath;
-				}
-			}
+		
 		}
 		
 		public void OnLevelLoaded()
@@ -138,7 +151,7 @@ namespace DanniLi
 
 			// Initialize UI on server now that it's spawned
 			if (uiManager != null && uiManager.IsSpawned)
-				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves);
+				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves, totalAliensPlanned);
 
 			// NOW start the first wave
 			StartWave();
@@ -177,6 +190,7 @@ namespace DanniLi
 				aliensIncomingFromAllShips        += mothershipBase.totalAlienSpawnCount;
 				mothershipBase.AlienSpawned_Event += MothershipBaseOnAlienSpawned_Event;
 			}
+			totalAliensPlanned = aliensIncomingFromAllShips; 
 			Debug.Log("Aliens Incoming: " + aliensIncomingFromAllShips);
 			
 			//--------------------------------------------------CIVILIANS-------------------------------------------------------------
@@ -195,7 +209,7 @@ namespace DanniLi
 			//--------------------------------------------------GAME FLOW-------------------------------------------------------------
 			if (uiManager != null)
 			{
-				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves);
+				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves, totalAliensPlanned);
 			}
 			// TODO coroutine to space it out
 			GetReady_Event?.Invoke();
@@ -207,7 +221,7 @@ namespace DanniLi
 		{
 			if (ui != null && ui.IsSpawned)
 			{
-				ui.InitializeUI(totalCivilians, civiliansAlive, totalWaves);
+				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves, totalAliensPlanned);
 				if (waveInProgress)
 					ui.OnWaveStart(currentWaveNumber);
 				else
@@ -228,10 +242,12 @@ namespace DanniLi
 		}
 		private void OnAlienDeath()
 		{
+			aliensDeadSoFar++;
+
 			if (uiManager != null)
 				uiManager.OnAlienKilled();
-			GameObject[] aliens = GameObject.FindGameObjectsWithTag("Alien");
 
+			GameObject[] aliens = GameObject.FindGameObjectsWithTag("Alien");
 			if (aliens.Length <= 0)
 			{
 				Debug.Log("Game Over: Win");
