@@ -1,10 +1,11 @@
 using Defender;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 
 namespace NicholasScripts
 {
     /// <summary>
-    /// 
+    /// Turret MVC model: holds state (power/activate), fire rates, range, and firing timers.
     /// </summary>
     [System.Serializable]
     public class Model_Turret : UsableItem_Base 
@@ -64,5 +65,7 @@ namespace NicholasScripts
         {
             
         }
+
+
     }
 }

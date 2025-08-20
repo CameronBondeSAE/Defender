@@ -6,7 +6,7 @@
     namespace NicholasScripts
     {
         /// <summary>
-        /// 
+        /// Usable generator: after a startup delay, powers nearby IPowerable objects within range.
         /// </summary>
         public class Generator : UsableItem_Base
         {
