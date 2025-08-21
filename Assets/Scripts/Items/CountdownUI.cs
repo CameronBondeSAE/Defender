@@ -9,6 +9,7 @@ public class CountdownUI : MonoBehaviour
     [Header("Colors")]
     public Color normalCountdownColor = Color.white;
     public Color expiryCountdownColor = Color.red; 
+    public Color crateCountdownColor = Color.green;
 
     [Header("Offsets")]
     public Vector3 offset = new Vector3(0, 2.5f, 0);

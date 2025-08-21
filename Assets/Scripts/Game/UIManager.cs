@@ -19,6 +19,7 @@ namespace DanniLi
         [SerializeField] private Text winCivsPercentageText;
         [SerializeField] private Button winNextLevelButton;
         [SerializeField] private Button winMainMenuButton;
+        [SerializeField] private Button quitButton;
         
         [Header("Lose Screen")]
         [SerializeField] private GameObject loseScreen;
@@ -26,6 +27,11 @@ namespace DanniLi
         [SerializeField] private Text loseCivsPercentageText;
         [SerializeField] private Button loseTryAgainButton;
         [SerializeField] private Button loseMainMenuButton;
+        
+        [Header("Item Info Panel")]
+        [SerializeField] private GameObject itemInfoPanel;
+        [SerializeField] private Text itemNameText;
+        [SerializeField] private Text itemDescriptionText;
         
         [Header("References")]
         [SerializeField] private GameManager gameManager;
@@ -44,6 +50,8 @@ namespace DanniLi
             new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         private NetworkVariable<bool> networkWaveInProgress =
             new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private NetworkVariable<int> networkTotalAliens =
+            new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         
         public override void OnNetworkSpawn()
         {
@@ -59,6 +67,7 @@ namespace DanniLi
             networkCurrentWave.OnValueChanged += OnCurrentWaveChanged;
             networkTotalWaves.OnValueChanged += OnTotalWavesChanged;
             networkAliensKilled.OnValueChanged += OnAliensKilledChanged;
+            networkTotalAliens.OnValueChanged += OnTotalAliensChanged;
             networkWaveInProgress.OnValueChanged += OnWaveProgressChanged;
             
             // Subscribe to game events (server only)
@@ -74,7 +83,7 @@ namespace DanniLi
             UpdateAllUI();
             // hide screens initially
             HideAllScreens();
-            
+            HideItemPanel(); 
             // if (IsServer && gameManager != null && networkTotalWaves.Value <= 0)
             // {
             //     gameManager.ForceInitializeUI(this);
@@ -93,6 +102,7 @@ namespace DanniLi
             networkCurrentWave.OnValueChanged -= OnCurrentWaveChanged;
             networkTotalWaves.OnValueChanged -= OnTotalWavesChanged;
             networkAliensKilled.OnValueChanged -= OnAliensKilledChanged;
+            networkTotalAliens.OnValueChanged -= OnTotalAliensChanged;
             networkWaveInProgress.OnValueChanged -= OnWaveProgressChanged;
             if (gameManager != null)
             {
@@ -124,6 +134,11 @@ namespace DanniLi
         }
         
         private void OnAliensKilledChanged(int oldValue, int newValue)
+        {
+            UpdateAliensKilledUI();
+        }
+        
+        private void OnTotalAliensChanged(int oldValue, int newValue) 
         {
             UpdateAliensKilledUI();
         }
@@ -176,44 +191,23 @@ namespace DanniLi
         {
             if (aliensKilledText != null)
             {
-                aliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}";
+                aliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value}";
             }
         }
         #endregion
         
         #region Server-Only Update Methods
-        // [ServerRpc(RequireOwnership = false)]
-        // public void UpdateCiviliansServerRpc(int alive, int total)
-        // {
-        //     networkCiviliansAlive.Value = alive;
-        //     networkTotalCivilians.Value = total;
-        // }
-        //
-        // [ServerRpc(RequireOwnership = false)]
-        // public void UpdateWaveServerRpc(int currentWave, int totalWaves, bool inProgress)
-        // {
-        //     networkCurrentWave.Value = currentWave;
-        //     networkTotalWaves.Value = totalWaves;
-        //     networkWaveInProgress.Value = inProgress;
-        // }
-        //
-        // [ServerRpc(RequireOwnership = false)]
-        // public void UpdateAliensKilledServerRpc(int killed)
-        // {
-        //     networkAliensKilled.Value = killed;
-        // }
-        
-        // called by GameManager when initializing
-        public void InitializeUI(int totalCivs, int aliveCivs, int totalWaves)
+        public void InitializeUI(int totalCivs, int aliveCivs, int totalWaves, int totalAliens)
         {
             if (!IsServer) return;
-            
+
             networkTotalCivilians.Value = totalCivs;
             networkCiviliansAlive.Value = aliveCivs;
-            networkTotalWaves.Value = totalWaves;
-            networkCurrentWave.Value = 0;
-            networkAliensKilled.Value = 0;
+            networkTotalWaves.Value     = totalWaves;
+            networkCurrentWave.Value    = 0;
+            networkAliensKilled.Value   = 0;
             networkWaveInProgress.Value = false;
+            networkTotalAliens.Value    = totalAliens; 
         }
         
         public void OnCivilianDeath(int currentAlive)
@@ -317,6 +311,18 @@ namespace DanniLi
                 loseCivsPercentageText.text = $"Civilians Saved: {networkCiviliansAlive.Value}/{networkTotalCivilians.Value} ({percentage:F1}%)";
             }
         }
+        
+        public void ShowItemPanel(string nameString, string descString)
+        {
+            if (itemInfoPanel) itemInfoPanel.SetActive(true);
+            if (itemNameText) itemNameText.text = nameString ?? string.Empty;
+            if (itemDescriptionText) itemDescriptionText.text = descString ?? string.Empty;
+        }
+
+        public void HideItemPanel()
+        {
+            if (itemInfoPanel) itemInfoPanel.SetActive(false);
+        }
         #endregion
         
         #region Button Setup and Handlers
@@ -333,6 +339,9 @@ namespace DanniLi
                 loseTryAgainButton.onClick.AddListener(OnTryAgainClicked);
             if (loseMainMenuButton != null)
                 loseMainMenuButton.onClick.AddListener(OnMainMenuClicked);
+            
+            if (quitButton != null)
+                quitButton.onClick.AddListener(QuitGame);
         }
         
         private void OnNextLevelClicked()
@@ -358,20 +367,11 @@ namespace DanniLi
                 levelLoader.LoadMainMenuServerRpc();
             }
         }
-        
-        /// moveed these to LevelLoader
-        // [ServerRpc(RequireOwnership = false)]
-        // private void LoadMainMenuServerRpc()
-        // {
-        //     LoadMainMenuRpc();
-        // }
-        //
-        // [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
-        // private void LoadMainMenuRpc()
-        // {
-        //     // Replace "MainMenu" with your actual main menu scene name
-        //     SceneManager.LoadScene("MainMenu");
-        // }
+
+        private void QuitGame()
+        {
+            Application.Quit();
+        }
         #endregion
     }
 }

@@ -4910,7 +4910,8 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   particles: {fileID: 4121705749520891253}
   desiredSize: {x: 3, y: 3, z: 0}
-  enlargeSpeed: 0.6
+  enlargeSpeed:
+    m_InternalValue: 5
   despawnTimer: 20
   characterFallDuration: 5
   fallingSpeed: 1000

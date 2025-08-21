@@ -16,31 +16,13 @@ namespace DanniLi
 		public Object scene;
 		public int    civiliansToSave; // this is optional now
 
-		[Header("Level Props")]
-		[SerializeField]
-		public GameObject wallPrefab;
-		[SerializeField]
-		public int wallSpawnCount = 10;
-		[SerializeField]
-		public GameObject cratePrefab;
-		[SerializeField]
-		public int crateSpawnCount = 5;
+		[Header("Crates")]
+		[SerializeField] public GameObject cratePrefab;
+		[SerializeField] public int crateSpawnCount = 5;
+		// spawn points for crates (they will be spawned in list order)
+		[SerializeField] public List<Transform> crateSpawnPoints = new List<Transform>();
 
 		[Header("Win Conditions")] [Range(0, 100)]
 		public int percentCiviliansAliveToWin = 50;
-		
-		/// <summary>
-		/// If needed, this returns a random item from the available items list:)
-		/// </summary>
-		public ItemSO GetRandomItem()
-		{
-			if (availableItems.Count == 0)
-			{
-				Debug.LogWarning("No items available in level info!");
-				return null;
-			}
-			int randomIndex = Random.Range(0, availableItems.Count);
-			return availableItems[randomIndex];
-		}
 	}
 }

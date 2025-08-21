@@ -5104,12 +5104,14 @@ MonoBehaviour:
   activationTrigger: 1
   allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 0}
+  itemName: Beer Barrel
+  description: Will make the floor slippery...
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
-  barrel: {fileID: 7006887331562838926}
   rotationSpeed: 50
   xAxisRotateToAngle: 80
   despawnTimer: 5
+  barrel: {fileID: 7006887331562838926}
   waterParticles: {fileID: 5591726657179885425}
   slipperyFloorPrefab: {fileID: 4245056726475973048, guid: c3979ea14a67f8146a1894a7b7b1567c, type: 3}
   state: 0

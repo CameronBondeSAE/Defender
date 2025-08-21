@@ -5949,7 +5949,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1898363070
+  GlobalObjectIdHash: 1767720467
   InScenePlacedSourceGlobalObjectIdHash: 1767720467
   DeferredDespawnTick: 0
   Ownership: 1
@@ -5984,7 +5984,11 @@ MonoBehaviour:
   isConsumable: 1
   expiryDuration: 0
   activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
+  itemName: Suicide Vest
+  description: Put this on someone and it will explode shortly
   launchForce: 0
   launchDirection: {x: 0, y: 0, z: 1}
   damageAmount: 100
@@ -5993,6 +5997,7 @@ MonoBehaviour:
   owner: {fileID: 0}
   explosionRadiusVisual: {fileID: 2469377003221255229}
   state: 0
+  attachActivationDelay: 5
   sparkParticles: {fileID: 1117566793841314394}
   entityAttachedTo: {fileID: 0}
   vestTrigger: {fileID: 8313896342270367413}
