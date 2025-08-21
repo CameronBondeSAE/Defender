@@ -1,14 +1,14 @@
 using System;
+using Defender;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Teleporter : NetworkBehaviour
+public class Teleporter : UsableItem_Base
 {
     [Header("Teleporter Settings")]
     public Transform destination; // The exit teleporter
     public AudioClip teleportClip;
     public float audioHearingRadius = 15f;
-    public AudioSource audioSource;
     
     private void Awake()
     {
@@ -18,19 +18,30 @@ public class Teleporter : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!IsServer) return;
-
-        var playerObject = other.GetComponentInParent<NetworkObject>();
-        if (playerObject != null)
+        Rigidbody otherRigidbody = other.GetComponent<Rigidbody>();
+        if (otherRigidbody != null)
         {
-            playerObject.transform.position = destination.position;
-            PlayTeleportSFXRpc(playerObject.OwnerClientId, destination.position);
+            otherRigidbody.transform.position = destination.position;
         }
     }
-
-    [Rpc(SendTo.Everyone, RequireOwnership = false)]
-    private void PlayTeleportSFXRpc(ulong teleportingPlayerId, Vector3 teleportPosition)
+    
+    public override void Use(CharacterBase characterTryingToUse)
     {
-        
+        throw new System.NotImplementedException(); 
+    }
+
+    public void StopUsing()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Pickup(CharacterBase whoIsPickupMeUp)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Drop()
+    {
+        throw new System.NotImplementedException();
     }
 }
