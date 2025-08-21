@@ -1,13 +1,22 @@
+using System;
 using Defender;
 using UnityEngine;
 
 public class BlowingFanScript : UsableItem_Base
-{ 
-    //Push Control
-    void OnTriggerStay(Collider other)
+{
+    private void Start()
     {
+        particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+    }
+
+    public bool fanOn;
+    
+    //Push Control
+    public void OnTriggerStay(Collider other)
+    {
+        
         Rigidbody otherRigidbody = other.GetComponent<Rigidbody>();
-        if (otherRigidbody != null)
+        if (fanOn == true && otherRigidbody != null)
         {
             Vector3 pushDirection = (other.transform.position - transform.position).normalized;
             otherRigidbody.AddForce(pushDirection * pushForce, ForceMode.Acceleration);
@@ -18,9 +27,10 @@ public class BlowingFanScript : UsableItem_Base
     [SerializeField] private float pushForce;
     public ParticleSystem particleSystem;
 
-    public void Use(CharacterBase characterTryingToUse)
+    public override void Use(CharacterBase characterTryingToUse)
     {
-        throw new System.NotImplementedException();
+        particleSystem.Play();
+        fanOn = true;
     }
 
     public void StopUsing()
