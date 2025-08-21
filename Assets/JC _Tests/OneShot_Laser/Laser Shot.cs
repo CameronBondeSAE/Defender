@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Defender;
 using UnityEngine;
@@ -15,26 +16,33 @@ public class LaserShot : UsableItem_Base
     
     public bool isCharging = false;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public LaserBeam laserBeam; // laser beam script reference
+    
+    private void BeamFire()
+    {
+        Instantiate(LBeam, transform.position, transform.rotation);
+    }
+
+    private void ScaleBeam(GameObject LBeam) // scales an instance of the laser beam 
+    {
+        if (!isCharging)
+            LBeam.transform.localScale = Vector3.one * Mathf.Lerp(1f, 3f, Mathf.Clamp01(chargeTime / maxCharge));
+    }
+
+    
     void Start()
     {
-        LBeam.SetActive(false);
         AimBeam.SetActive(false);
     }
     
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void ShotCharge()
     {
-        if (Mouse.current.leftButton.isPressed)
+        if (!isCharging)
         {
-            isCharging = true;
+           isCharging = true;
             StartCoroutine(LaserCharge());
+            GameObject beam = Instantiate(LBeam, transform.position, transform.rotation);
         }
     }
 
@@ -54,16 +62,10 @@ public class LaserShot : UsableItem_Base
             Debug.Log("Max Charge");
         }
 
-        yield return null;
+        yield return new WaitForSeconds(chargeTime);
     }
-
-    private void FireLaser()
-    {
-        GameObject beamInstance = Instantiate(LBeam, transform.position, transform.rotation);
-        float t = chargeTime;
-    }
-
-    public override void Use(CharacterBase characterTryingToUse)
+    
+    public void Use(CharacterBase characterTryingToUse)
     {
         if (isCharging)
         {
@@ -72,11 +74,30 @@ public class LaserShot : UsableItem_Base
         }
     }
 
-    public override void StopUsing()
+    public void StopUsing() // weapon has been fired then is destoryed 
     {
-        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        if (LBeam != null && isCharging == false) // if a laser beam has been fired
         {
-            isCharging = false;
+            if (chargeTime < 2f)
+            {
+                ScaleBeam(LBeam);
+                laserBeam.LaserDamage = 5;
+                BeamFire();
+            }
+
+            else if (chargeTime > 4.5f)
+            {
+                ScaleBeam(LBeam);
+                laserBeam.LaserDamage = 10;
+                BeamFire();
+            }
+
+            else if (chargeTime > 5.2f)
+            {
+                ScaleBeam(LBeam);
+                laserBeam.LaserDamage = 15;
+                BeamFire();
+            }
             chargeTime = 0f;
         }
     }

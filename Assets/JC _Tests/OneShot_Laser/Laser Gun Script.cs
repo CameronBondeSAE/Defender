@@ -68,7 +68,7 @@ public class Laser_Gun_Script : UsableItem_Base
 
 
 
-    public void StopUsing() // weapon has been fired 
+    public void StopUsing() // weapon has been fired then is destoryed 
     {
         if (LBeam != null && isCharging == false) // if a laser beam has been fired
         {
