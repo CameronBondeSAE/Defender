@@ -20,6 +20,7 @@ namespace DanniLi
         [SerializeField] private Button winNextLevelButton;
         [SerializeField] private Button winMainMenuButton;
         [SerializeField] private Button quitButton;
+        [SerializeField] private Button onScreenMenuButton;
         
         [Header("Lose Screen")]
         [SerializeField] private GameObject loseScreen;
@@ -381,6 +382,8 @@ namespace DanniLi
             
             if (quitButton != null)
                 quitButton.onClick.AddListener(QuitGame);
+            if (onScreenMenuButton != null)
+                onScreenMenuButton.onClick.AddListener(OnMainMenuClicked);
         }
         
         private void OnNextLevelClicked()

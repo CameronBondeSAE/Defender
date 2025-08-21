@@ -2,6 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using DanniLi;
@@ -320,20 +321,51 @@ public class LevelLoader : NetworkBehaviour
    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
    private void LoadMainMenuRpc()
    {
-      // disconnect from session first
-      if (NetworkManager.Singleton != null)
+      // // disconnect from session first
+      // if (NetworkManager.Singleton != null)
+      // {
+      //    if (NetworkManager.Singleton.IsHost)
+      //    {
+      //       NetworkManager.Singleton.Shutdown();
+      //    }
+      //    else if (NetworkManager.Singleton.IsClient)
+      //    {
+      //       NetworkManager.Singleton.Shutdown();
+      //    }
+      // }
+      // // load main menu scene
+      // SceneManager.LoadScene(mainMenuSceneName);
+      StartCoroutine(ShutdownAndLoadMenu());
+   }
+   
+   private IEnumerator ShutdownAndLoadMenu()
+   {
+      // undo scene callbacks
+      if (NetworkManager != null && NetworkManager.SceneManager != null)
       {
-         if (NetworkManager.Singleton.IsHost)
-         {
-            NetworkManager.Singleton.Shutdown();
-         }
-         else if (NetworkManager.Singleton.IsClient)
-         {
-            NetworkManager.Singleton.Shutdown();
-         }
+         NetworkManager.SceneManager.OnLoadEventCompleted -= OnLoadEventCompleted;
       }
-      // load main menu scene
-      SceneManager.LoadScene(mainMenuSceneName);
+      
+      if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+      {
+         NetworkManager.Singleton.Shutdown();
+      }
+      yield return null; // one frame for unity transport
+      // until fully stopped
+      while (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+         yield return null;
+
+      // nuke persistent networkmanager so a fresh one can spawn later
+      var networkManager = NetworkManager.Singleton;
+      if (networkManager != null && networkManager.gameObject.scene.name == "DontDestroyOnLoad")
+      {
+         Destroy(networkManager.gameObject);
+         yield return null;
+      }
+      loadedLevelScenes.Clear();
+      currentAdditiveSceneName = null;
+      pendingSetActiveSceneName = null;
+      yield return SceneManager.LoadSceneAsync(mainMenuSceneName, LoadSceneMode.Single);
    }
    
    // helper to manually add scenes to tracking if we need
