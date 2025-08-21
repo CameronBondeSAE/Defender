@@ -7771,7 +7771,7 @@ MonoBehaviour:
   - _gameObject: {fileID: 914033679}
     _prefab: Assets/Prefabs/Items/Turret/Turret.prefab
   - _gameObject: {fileID: 2013514529}
-    _prefab: Assets/SolStuff/DecoyItem/DecoyItem.prefab
+    _prefab: Assets/Prefabs/Items/DecoyItem/DecoyItem.prefab
   - _gameObject: {fileID: 1746595130}
     _prefab: Assets/Prefabs/Items/HealBomb/HealBomb.prefab
   - _gameObject: {fileID: 1621829435}
@@ -8751,6 +8751,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5605265381611064125, guid: 200f26695da8fa649a8a75894d3711e3, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553667998526275733, guid: 200f26695da8fa649a8a75894d3711e3, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8553667998526275733, guid: 200f26695da8fa649a8a75894d3711e3, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
