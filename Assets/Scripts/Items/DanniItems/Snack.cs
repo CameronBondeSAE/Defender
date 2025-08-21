@@ -8,6 +8,8 @@ public class Snack : UsableItem_Base
 {
       [Header("Attraction")]
     [SerializeField] private float attractionRadius = 6f;
+    [SerializeField] private float attractionInterval = 0.2f; // how often to rescan
+    private Coroutine attractionLoopRoutine;
 
     [Header("Snack Object")]
     [SerializeField] private SnackObject snackObject;
@@ -15,7 +17,6 @@ public class Snack : UsableItem_Base
     [Header("Visuals (Wrapper ↔ Snack)")]
     [SerializeField] private GameObject wrapperVisual;
     [SerializeField] private GameObject snackVisual;
-
     protected override void Awake()
     {
         base.Awake();
@@ -25,6 +26,16 @@ public class Snack : UsableItem_Base
             snackObject = GetComponentInChildren<SnackObject>(true);
         if (wrapperVisual) wrapperVisual.SetActive(true);
         if (snackVisual)   snackVisual.SetActive(false);
+    }
+    
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        if (attractionLoopRoutine != null)
+        {
+            StopCoroutine(attractionLoopRoutine);
+            attractionLoopRoutine = null;
+        }
     }
     
     protected override void OnManualUse(CharacterBase characterTryingToUse)
@@ -39,8 +50,36 @@ public class Snack : UsableItem_Base
         SetSnackVisualStateClientRpc(makeSnackVisible);
         if (IsServer && makeSnackVisible)
         {
-            AttractAllCiviliansInRange_Server();
+            AttractAllCiviliansInRangeServer(); // attract immediately once
+            StartAttractionLoopServer(); // then continue to attract as long s is unwrapped
         }
+    }
+    
+    private void StartAttractionLoopServer()
+    {
+        if (!IsServer) return;
+
+        // no double-start
+        if (attractionLoopRoutine != null)
+            StopCoroutine(attractionLoopRoutine);
+
+        attractionLoopRoutine = StartCoroutine(AttractionLoop());
+    }
+    private IEnumerator AttractionLoop()
+    {
+        var wait = new WaitForSeconds(attractionInterval);
+
+        // keep going while it's server + have a snack object with health + and it’s not dead
+        while (IsServer &&
+               snackObject != null &&
+               snackObject.snackHealth != null &&
+               !snackObject.snackHealth.isDead)
+        {
+            AttractAllCiviliansInRangeServer();
+            yield return wait;
+        }
+
+        attractionLoopRoutine = null;
     }
 
     [Rpc(SendTo.Everyone, Delivery = RpcDelivery.Reliable)]
@@ -51,7 +90,7 @@ public class Snack : UsableItem_Base
     }
 
     // Server - find all civs and lure them to the snack.
-    private void AttractAllCiviliansInRange_Server()
+    private void AttractAllCiviliansInRangeServer()
     {
         if (snackObject == null) return;
 

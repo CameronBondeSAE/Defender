@@ -7,8 +7,9 @@ namespace NicholasScripts
     {
         protected override void Fire()
         {
-            view.FireEffect();
-            view.Fire();
+            // view.FireEffect();
+            if (view != null)
+                view.FireServer(); 
         }
     }
 }

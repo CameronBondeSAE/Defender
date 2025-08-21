@@ -422,7 +422,6 @@ namespace DanniLi
 		private void StartWave()
 		{
 			currentWaveNumber++;
-
 			if (uiManager == null) uiManager = FindObjectOfType<DanniLi.UIManager>();
 			var uiNO = uiManager ? uiManager.GetComponent<NetworkObject>() : null;
 

@@ -25,7 +25,7 @@ public class MoveToBeamState : IAIState
         }
         else
         {
-            Debug.LogWarning("ai is disabled on this civ");
+            // Debug.LogWarning("ai is disabled on this civ");
         }
     }
     public void Stay()
