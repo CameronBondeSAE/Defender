@@ -52,6 +52,10 @@ namespace DanniLi
             new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         private NetworkVariable<int> networkTotalAliens =
             new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        // new netvar to track aliens spawned so far as they dynamically spawn
+        private NetworkVariable<int> networkAliensSpawned =
+            new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
         
         public override void OnNetworkSpawn()
         {
@@ -69,6 +73,7 @@ namespace DanniLi
             networkAliensKilled.OnValueChanged += OnAliensKilledChanged;
             networkTotalAliens.OnValueChanged += OnTotalAliensChanged;
             networkWaveInProgress.OnValueChanged += OnWaveProgressChanged;
+            networkAliensSpawned.OnValueChanged += OnAliensSpawnedChanged;
             
             // Subscribe to game events (server only)
             if (IsServer && gameManager != null)
@@ -104,6 +109,7 @@ namespace DanniLi
             networkAliensKilled.OnValueChanged -= OnAliensKilledChanged;
             networkTotalAliens.OnValueChanged -= OnTotalAliensChanged;
             networkWaveInProgress.OnValueChanged -= OnWaveProgressChanged;
+            networkAliensSpawned.OnValueChanged -= OnAliensSpawnedChanged;
             if (gameManager != null)
             {
                 gameManager.WinGameOver_Event -= OnWinGameOver;
@@ -146,6 +152,11 @@ namespace DanniLi
         private void OnWaveProgressChanged(bool oldV, bool newV)
         {
             UpdateWaveUI();
+        }
+        
+        private void OnAliensSpawnedChanged(int oldValue, int newValue)
+        {
+            UpdateAliensKilledUI();
         }
         #endregion
         
@@ -191,7 +202,16 @@ namespace DanniLi
         {
             if (aliensKilledText != null)
             {
-                aliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value}";
+                if (networkAliensSpawned.Value > 0)
+                {
+                    // "Aliens Killed: 5/8 (Spawned: 6/12)"
+                    aliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value} (Spawned: {networkAliensSpawned.Value}/{networkTotalAliens.Value})";
+                }
+                else
+                {
+                    // fallback to old if spawned count isn't tracked
+                    aliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value}";
+                }
             }
         }
         #endregion
@@ -208,6 +228,7 @@ namespace DanniLi
             networkAliensKilled.Value   = 0;
             networkWaveInProgress.Value = false;
             networkTotalAliens.Value    = totalAliens; 
+            networkAliensSpawned.Value  = 0; 
         }
         
         public void OnCivilianDeath(int currentAlive)
@@ -235,6 +256,24 @@ namespace DanniLi
             if (!IsServer) return;
             networkCurrentWave.Value = waveNumber;
             networkWaveInProgress.Value = false;
+        }
+        
+        public void UpdateTotalAliens(int newTotal)
+        {
+            if (!IsServer) return;
+            networkTotalAliens.Value = newTotal;
+            Debug.Log($"[UI][SERVER] UpdateTotalAliens: {newTotal}");
+        }
+        
+        public void UpdateAlienProgress(int spawned, int total)
+        {
+            if (!IsServer) return;
+            networkAliensSpawned.Value = spawned;
+            if (total > networkTotalAliens.Value)
+            {
+                networkTotalAliens.Value = total;
+            }
+            Debug.Log($"[UI][SERVER] UpdateAlienProgress: {spawned}/{total}");
         }
         #endregion
         

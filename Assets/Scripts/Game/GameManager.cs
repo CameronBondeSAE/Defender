@@ -40,6 +40,7 @@ namespace DanniLi
 		private int totalAliensPlanned;
 		private int aliensSpawnedSoFar;
 		private int aliensDeadSoFar;
+		private int aliensPerWaveFromAllShips;
 		
 		[Header("Civilian Params")]
 		public int totalCivilians;
@@ -195,7 +196,8 @@ namespace DanniLi
 			}
 			//--------------------------------------------------MOTHERSHIP & ALIENS-------------------------------------------------------------
 			mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-			aliensIncomingFromAllShips = 0;
+			// aliensIncomingFromAllShips = 0;
+			aliensPerWaveFromAllShips = 0;
 			foreach (MothershipBase mothershipBase in mothershipBases)
 			{
 				aliensIncomingFromAllShips        += mothershipBase.totalAlienSpawnCount;
@@ -232,6 +234,9 @@ namespace DanniLi
 		{
 			if (ui != null && ui.IsSpawned)
 			{
+				// recalculate total aliens planned in case it wasn't
+				if (totalAliensPlanned <= 0)
+					totalAliensPlanned = aliensPerWaveFromAllShips * totalWaves;
 				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves, totalAliensPlanned);
 				if (waveInProgress)
 					ui.OnWaveStart(currentWaveNumber);
@@ -250,6 +255,22 @@ namespace DanniLi
 			{
 				health.OnDeath += OnAlienDeath;
 			}
+			// now updates the total aliens planned dynamically as they spawn
+			// because it seems like more aliens are spawned than planned/calculated from the mothership
+			aliensSpawnedSoFar++;
+			// if not spawning more aliens than planned, update the total
+			if (aliensSpawnedSoFar > totalAliensPlanned)
+			{
+				totalAliensPlanned = aliensSpawnedSoFar + (aliensPerWaveFromAllShips * (totalWaves - currentWaveNumber));
+            
+				// Update UI with new total
+				if (uiManager != null && uiManager.IsSpawned)
+					uiManager.UpdateTotalAliens(totalAliensPlanned);
+				Debug.Log($"updated total aliens planned to: {totalAliensPlanned}");
+			}
+			// update UI with current total
+			if (uiManager != null && uiManager.IsSpawned)
+				uiManager.UpdateAlienProgress(aliensSpawnedSoFar, totalAliensPlanned);
 		}
 		private void OnAlienDeath()
 		{
