@@ -40,7 +40,7 @@ public class MoveToBeamState : IAIState
             ai.StartSuckUp(5f, 1.5f);
             return;
         }
-        if (distance < 0.5f)
+        if (distance < 1f)
         {
             Debug.Log("civ is getting sucked up correctly");
             animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
@@ -54,7 +54,7 @@ public class MoveToBeamState : IAIState
         }
         else
         {
-            Debug.LogWarning("ai is disabled on this civ, suck up anyway");
+            // Debug.LogWarning("ai is disabled on this civ, suck up anyway");
             startedSuckUp = true;
             ai.StartSuckUp(5f, 1.5f);
         }
