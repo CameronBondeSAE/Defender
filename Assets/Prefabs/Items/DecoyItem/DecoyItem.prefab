@@ -552,7 +552,7 @@ GameObject:
   - component: {fileID: 8744476951376885218}
   m_Layer: 0
   m_Name: DecoyItem
-  m_TagString: Civilian
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -654,6 +654,8 @@ MonoBehaviour:
   activationTrigger: 0
   allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 0}
+  itemName: 
+  description: 
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
   blnIsPlaced: 1
@@ -668,6 +670,7 @@ MonoBehaviour:
   - {fileID: 4930124753546617180}
   - {fileID: 8727144500373607302}
   - {fileID: 7154545419769710810}
+  blnDie: 0
 --- !u!195 &9132931991084879948
 NavMeshAgent:
   m_ObjectHideFlags: 0

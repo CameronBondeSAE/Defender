@@ -17,7 +17,7 @@ public class DecoyItem : UsableItem_Base // UsableItem_Base
 		base.Awake();
 		IsDecoy(false);
 
-		//transform.tag = "Untagged";
+
 		
 		
 	}
