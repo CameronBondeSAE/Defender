@@ -58,15 +58,14 @@ public class CreditsSequenceController : MonoBehaviour
             {
                 SetPanelActive(panel, true);
                 BringPanelToFront(panel);
-                yield return null; // let layout settle
+                yield return null;
 
                 string displayName = authorCluster.authorName != null ? authorCluster.authorName : "";
                 string displayDescription = authorCluster.description != null ? authorCluster.description : "";
                 Texture targetTexture = sharedRenderTexture != null ? sharedRenderTexture : null;
 
                 panel.Prepare(displayName, displayDescription, targetTexture);
-
-                // Calculate how long to stay: override > sum of clips (unknowns use fallback) > plain fallback
+                
                 float totalPlannedSeconds = 0f;
                 bool hasAnyClip = authorCluster.clips != null && authorCluster.clips.Count > 0;
 
@@ -115,7 +114,6 @@ public class CreditsSequenceController : MonoBehaviour
                         }
                         else
                         {
-                            // No valid clip to play, just wait the duration slice to maintain timing
                             if (secondsToPlayThisClip > 0f)
                                 yield return new WaitForSeconds(secondsToPlayThisClip);
                         }
