@@ -1,14 +1,20 @@
 using System;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     private Rigidbody rb;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 8f;
     [SerializeField] private Camera gameCamera;
+    
+    private bool isMovingForAnim = false;
+    private const float RunStartSpeed = 0.20f; // start running when above this
+    private const float RunStopSpeed  = 0.05f; 
+    
     public Vector3 moveDirection;
     private PlayerCombat playerCombat;
     private PlayerInputHandler2 inputHandler;
@@ -22,7 +28,6 @@ public class PlayerMovement : MonoBehaviour
         set => moveSpeed = value;
     }
 
-
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -34,17 +39,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-	    inputHandler.onMove += OnMovefff;
+        inputHandler.onMove += OnMovefff;
     }
     
     private void OnDisable()
     {
-	    inputHandler.onMove -= OnMovefff;
+        inputHandler.onMove -= OnMovefff;
     }
 
     private void OnMovefff(Vector2 obj)
     {
-	    inputVector = obj;
+        inputVector = obj;
     }
 
     void FixedUpdate()
@@ -62,44 +67,26 @@ public class PlayerMovement : MonoBehaviour
         {
             Quaternion targetRotation = Quaternion.LookRotation(horizontalVelocity);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * moveSpeed);
-           playerAnimation.RequestState(PlayerAnimation.PlayerState.Run);
+            // playerAnimation.RequestState(PlayerAnimation.PlayerState.Run);
         }
         else
         {
-            playerAnimation.RequestState(PlayerAnimation.PlayerState.Idle);
+            // playerAnimation.RequestState(PlayerAnimation.PlayerState.Idle);
+        }
+        
+        if (isMovingForAnim)
+        {
+            if (velocityMagnitude < RunStopSpeed) isMovingForAnim = false;
+        }
+        else
+        {
+            if (velocityMagnitude > RunStartSpeed) isMovingForAnim = true;
+        }
+        if (IsServer)
+        {
+            playerAnimation.RequestState(
+                isMovingForAnim ? PlayerAnimation.PlayerState.Run
+                    : PlayerAnimation.PlayerState.Idle);
         }
     }
 }
-
-
-// moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
-        //
-        // // rotate relative to camera
-        // // Quaternion cameraRotation = Quaternion.Euler(0, 0, 0);
-        // // moveDirection = cameraRotation * moveDirection;
-        //
-        // Vector3 targetVelocity = moveDirection * MoveSpeed;
-        // // realistic movement
-        // rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
-        //
-        // // player to face direction of his movement actually
-        // if (moveDirection.magnitude > 0.1 || moveDirection.magnitude > 0.1 && playerCombat.isShooting)
-        // {
-        //     Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        //     transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 8f);
-        //     // PlayerEventManager.instance.events.onMove.Invoke();
-        //     Animator animator = GetComponentInChildren<Animator>();
-        //     if (animator != null)
-        //     {
-        //      animator.Play("Run");
-        //     }
-        // }
-        // else
-        // {
-        //     // PlayerEventManager.instance.events.onIdle.Invoke();
-        //     Animator animator = GetComponentInChildren<Animator>();
-        //     if (animator != null)
-        //     {
-        //      animator.Play("Idle");
-        //     }
-        // }

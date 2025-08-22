@@ -173,7 +173,7 @@ public class AIBase : CharacterBase
 					stuckTime += Time.fixedDeltaTime;
 					if (stuckTime > maxStuckTime)
 					{
-						Debug.Log("AI STUCK! : Recalculating path");
+						// Debug.Log("AI STUCK! : Recalculating path");
 						MoveTo(lastDestination);
 						stuckTime = 0;
 					}
