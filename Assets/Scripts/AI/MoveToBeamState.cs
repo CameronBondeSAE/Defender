@@ -37,15 +37,19 @@ public class MoveToBeamState : IAIState
         {
             Debug.Log("Timed out reaching beam, sucking up anyways");
             startedSuckUp = true;
+            var anim = ai.gameObject.GetComponentInChildren<AIAnimationController>();
+            if (anim != null)
+                anim.SetAnimation(AIAnimationController.AnimationState.GettingSucked);
             ai.StartSuckUp(5f, 1.5f);
             return;
         }
         if (distance < 1f)
         {
             Debug.Log("civ is getting sucked up correctly");
-            animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
-            animController.SetAnimation(AIAnimationController.AnimationState.GettingSucked);
             startedSuckUp = true;
+            var anim = ai.gameObject.GetComponentInChildren<AIAnimationController>();
+            if (anim != null)
+                anim.SetAnimation(AIAnimationController.AnimationState.GettingSucked);
             ai.StartSuckUp(5f, 1.5f);
         }
         else if (ai != null)
@@ -56,6 +60,9 @@ public class MoveToBeamState : IAIState
         {
             // Debug.LogWarning("ai is disabled on this civ, suck up anyway");
             startedSuckUp = true;
+            var anim = ai.gameObject.GetComponentInChildren<AIAnimationController>();
+            if (anim != null)
+                anim.SetAnimation(AIAnimationController.AnimationState.GettingSucked);
             ai.StartSuckUp(5f, 1.5f);
         }
     }

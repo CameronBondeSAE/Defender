@@ -213,7 +213,7 @@ namespace DanniLi
 			Debug.Log("Civilians Alive: " + civiliansAlive);
 			foreach (GameObject civilian in civilians)
 			{
-				Health health = civilian.GetComponent<Health>();
+				Health health = civilian.GetComponent<AIHealth>() ?? GetComponentInChildren<AIHealth>();
 				if (health != null)
 				{
 					health.OnDeath += OnCivDeath;
@@ -298,7 +298,8 @@ namespace DanniLi
 
 		private void OnCivDeath()
 		{
-			civiliansAlive--;
+			civiliansAlive = Mathf.Max(0, civiliansAlive - 1);
+			Debug.Log($"[GM][SERVER] OnCivDeath -> Alive {civiliansAlive}/{totalCivilians}");
 			if (uiManager != null)
 				uiManager.OnCivilianDeath(civiliansAlive);
 			// Game over. Too many civs dead
