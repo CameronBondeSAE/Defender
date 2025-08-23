@@ -262,7 +262,7 @@ namespace CameronBonde
 
 		private void CallbacksOnDataChanged(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> obj)
 		{
-			Debug.Log("Data changed event : " + obj);
+			// Debug.Log("Data changed event : " + obj);
 			
 			// TODO more than just relaycode, presumably lobby name changes etc
 			if (obj.TryGetValue("RelayJoinCode", out ChangedOrRemovedLobbyValue<DataObject> relayJoinCode))
@@ -275,7 +275,7 @@ namespace CameronBonde
 		{
 			while (true)
 			{
-				Debug.Log("Heartbeating lobby "+Random.Range(0,1000));
+				// Debug.Log("Heartbeating lobby "+Random.Range(0,1000));
 				LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
 				yield return new WaitForSecondsRealtime(waitTimeSeconds);
 			}

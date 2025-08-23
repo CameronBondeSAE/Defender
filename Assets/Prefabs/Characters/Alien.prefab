@@ -1330,6 +1330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  animator: {fileID: 0}
   networkAnimator: {fileID: 9050013571413473896}
 --- !u!1 &5880721992343391638
 GameObject:
@@ -2043,7 +2044,7 @@ MonoBehaviour:
   patrolPoints: []
   patrolPointsCount: 3
   rotationSpeed: 80
-  maxSpeed: 8
+  maxSpeed: 10
   forwardForce: 300
   followDistance: 0
   IsAbducted: 0
