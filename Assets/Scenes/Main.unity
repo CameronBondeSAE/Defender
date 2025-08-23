@@ -1238,6 +1238,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1429736000003311137, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1552200201}
     - target: {fileID: 1732726295342944604, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.97
@@ -1301,6 +1305,11 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1732726295342944604, guid: 145ecd1cb09d30a4b8335ab91e763a16, type: 3}
   m_PrefabInstance: {fileID: 302250212}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &304407672 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3808081602761358926, guid: 9defdaf93d256da46ac6e8b9a4dda61a, type: 3}
+  m_PrefabInstance: {fileID: 1977532218}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &309136403 stripped
 Transform:
@@ -7210,6 +7219,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4007988770077996057, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
   m_PrefabInstance: {fileID: 1552200199}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &1552200201 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4106365954733926610, guid: bfcfc9fde63494e4da551485935ed03c, type: 3}
+  m_PrefabInstance: {fileID: 1552200199}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1582309439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7836,14 +7850,20 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Items/Snack/Snack.prefab
   - _gameObject: {fileID: 1621829436}
     _prefab: Assets/Art/Kenney - Food/burger.fbx
+  - _gameObject: {fileID: 1888258544}
+    _prefab: Assets/Art/Kenney - Food/bag.fbx
   - _gameObject: {fileID: 1620427066}
     _prefab: Assets/Prefabs/Items/Snack/Snack.prefab
   - _gameObject: {fileID: 1620427067}
     _prefab: Assets/Art/Kenney - Food/burger.fbx
+  - _gameObject: {fileID: 1930698740}
+    _prefab: Assets/Art/Kenney - Food/bag.fbx
   - _gameObject: {fileID: 1977532219}
     _prefab: Assets/Prefabs/Items/Snack/Snack.prefab
   - _gameObject: {fileID: 1977532220}
     _prefab: Assets/Art/Kenney - Food/burger.fbx
+  - _gameObject: {fileID: 304407672}
+    _prefab: Assets/Art/Kenney - Food/bag.fbx
   - _gameObject: {fileID: 1693344813}
     _prefab: Assets/Prefabs/Items/NintendoTrademarkedThrowingCaptureMechanic/NintendoTrademarkedThrowingCaptureMechanic.prefab
   - _gameObject: {fileID: 2122119418}
@@ -8241,6 +8261,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1148814856502129443, guid: 8e75a91b70fd52d4aaef3475f20cb13e, type: 3}
   m_PrefabInstance: {fileID: 1715496361}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1888258544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3808081602761358926, guid: 9defdaf93d256da46ac6e8b9a4dda61a, type: 3}
+  m_PrefabInstance: {fileID: 1621829434}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1892291082 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7214323903650827927, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
@@ -8313,6 +8338,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bceb7f503edda394a9e6f869747f1219, type: 3}
+--- !u!1 &1930698740 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3808081602761358926, guid: 9defdaf93d256da46ac6e8b9a4dda61a, type: 3}
+  m_PrefabInstance: {fileID: 1620427065}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1944344461
 GameObject:
   m_ObjectHideFlags: 0
@@ -9068,21 +9098,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1185093129443110733, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.807697
+      objectReference: {fileID: 0}
+    - target: {fileID: 1185093129443110733, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0000018888754
+      objectReference: {fileID: 0}
+    - target: {fileID: 1185093129443110733, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -11.899552
+      objectReference: {fileID: 0}
     - target: {fileID: 1898117229206799082, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
       propertyPath: m_Name
       value: Teleportation
       objectReference: {fileID: 0}
     - target: {fileID: 3852201103896132475, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.777836
+      value: 0.56021285
       objectReference: {fileID: 0}
     - target: {fileID: 3852201103896132475, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.66681576
+      value: -0.6668148
       objectReference: {fileID: 0}
     - target: {fileID: 3852201103896132475, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.6617489
+      value: 26.74504
       objectReference: {fileID: 0}
     - target: {fileID: 3852201103896132475, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9116,6 +9158,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2533229123
       objectReference: {fileID: 0}
+    - target: {fileID: 6953191667115484606, guid: 2d103c948c7420b4594384fa41f09546, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c66ed540cd0994cb1bb7fde5bd81f9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
