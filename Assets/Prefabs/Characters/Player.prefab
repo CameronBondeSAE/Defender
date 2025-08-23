@@ -119,19 +119,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.99
+      value: -5.97
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.66682
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.73
+      value: 33.76
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.9427909
+      value: -0.5936302
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalRotation.x
@@ -139,7 +139,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.33338466
+      value: 0.8047379
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalRotation.z
@@ -151,7 +151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 321.051
+      value: 252.83
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -533,6 +533,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8962850928172692104}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1429736000003311137}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8768811991828878090}
   m_SourcePrefab: {fileID: 100100000, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
 --- !u!1 &1387163446135835622 stripped
 GameObject:
@@ -631,7 +637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3683667178
+  GlobalObjectIdHash: 1764871362
   InScenePlacedSourceGlobalObjectIdHash: 3683667178
   DeferredDespawnTick: 0
   Ownership: 1
@@ -852,6 +858,36 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   health: {fileID: 4433308929451714180}
   playerInput: {fileID: 6310878697514803470}
+--- !u!114 &1429736000003311137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387163446135835622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3c0adb583cbd34b85a349187f03d67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  boostForce: 50
+  audioHearingRadius: 15
+  audioSource: {fileID: 0}
+  boostClip: {fileID: 8300000, guid: e7ed681082e452b4d86e6df585fa3331, type: 3}
+--- !u!114 &8768811991828878090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387163446135835622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de39b8121a90cb4190af24c325c65b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!4 &1732726295342944604 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
