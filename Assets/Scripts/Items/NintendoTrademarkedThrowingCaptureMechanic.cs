@@ -14,7 +14,7 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
     [SerializeField] float throwForce = 4f;
     [SerializeField] float releaseTimer = 30f;
     private bool released = false;
-    [SerializeField] private bool hideObject = true;
+    [SerializeField] private bool hideObject = false;
 
     private void Start()
     {
