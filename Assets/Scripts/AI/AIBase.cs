@@ -62,6 +62,7 @@ public class AIBase : CharacterBase
 	}
 
 	protected IAIState currentState; // A reference to current AI state (using interface)
+	private IAIState previousState;
 
 	public IAIState CurrentState
 	{
@@ -186,6 +187,7 @@ public class AIBase : CharacterBase
 	// Change state logic
 	public void ChangeState(IAIState newState)
 	{
+		previousState = currentState;
 		CurrentState?.Exit();
 		currentState = newState;
 		CurrentState.Enter();
@@ -365,6 +367,15 @@ public class AIBase : CharacterBase
 			Debug.LogWarning($"AIHealth null during suck-up.");
 		}
 		//Destroy(this.gameObject);
+	}
+	
+	public virtual IAIState GetDefaultState()
+	{
+		return previousState ?? currentState;
+	}
+	public void ClearPreviousState() // ok this is added for when we DONT want to return to previous state
+	{
+		previousState = null;
 	}
 
 	private void OnDrawGizmos()

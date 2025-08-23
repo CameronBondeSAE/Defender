@@ -27,4 +27,12 @@ public class AlienAI : AIBase
             ChangeState(new SearchState(this));
         }
     }
+    
+    public void FleeFromPosition(Vector3 repellentPosition, float radius, float duration)
+    {
+        if (!(currentState is FleeState))
+        {
+            ChangeState(new FleeState(this, repellentPosition, radius, duration));
+        }
+    }
 }
