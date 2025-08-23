@@ -3,6 +3,7 @@ using Defender;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using DanniLi;
 
 public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
 {
@@ -13,13 +14,12 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
     [SerializeField] float throwForce = 4f;
     [SerializeField] float releaseTimer = 30f;
     private bool released = false;
+    [SerializeField] private bool hideObject = true;
 
     private void Start()
     {
         SetCollidersEnabled(true);
     }
-
-
 
     public override void Use(CharacterBase characterTryingToUse)
     {
@@ -70,18 +70,29 @@ public class NintendoTrademarkedThrowingCaptureMechanic : UsableItem_Base
             if (characterTryingToUse.gameObject != capturedObject)
             {
                 capturedObject.transform.parent = transform;
-                capturedObject.SetActive(false);
+                if (hideObject) ToggleActiveState_Rpc(capturedObject.GetComponent<NetworkObject>().NetworkObjectId, false);
                 StartCoroutine(ReleaseTimer());
             }
             else capturedObject = null;
         }
     }
 
+
+    [Rpc(SendTo.Everyone, RequireOwnership = false, Delivery = RpcDelivery.Unreliable)] // Unreliable for the memes
+    void ToggleActiveState_Rpc(ulong objectId, bool activeState)
+    {
+        if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(objectId, out NetworkObject netObj))
+        {
+            netObj.gameObject.SetActive(activeState);
+        }
+    }
+
+
     void Release()
     {
         released = true;
         capturedObject.transform.parent = null;
-        capturedObject.SetActive(true);
+        if (hideObject) ToggleActiveState_Rpc(capturedObject.GetComponent<NetworkObject>().NetworkObjectId, true);
         capturedObject.transform.position = transform.position;
         capturedObject = null;
         GetComponent<NetworkObject>().Despawn();
