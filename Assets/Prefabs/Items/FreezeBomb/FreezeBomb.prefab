@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 8437680883679741453}
   - component: {fileID: 3904721607460801180}
   - component: {fileID: 1910325622651831406}
-  - component: {fileID: 6313707419370869817}
   - component: {fileID: 5915006179928255839}
   - component: {fileID: 6850157470268867459}
+  - component: {fileID: -1506719631197540055}
   m_Layer: 7
   m_Name: FreezeBomb
   m_TagString: Pickup
@@ -185,39 +185,6 @@ MonoBehaviour:
   Interpolate: 0
   SlerpPosition: 0
   StaleDataHandling: 1
---- !u!114 &6313707419370869817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003757342820223510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 513226204f5b45745b4441634bd6b257, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  audioSource: {fileID: 0}
-  pickupClip: {fileID: 0}
-  dropClip: {fileID: 0}
-  useClip: {fileID: 0}
-  timerBeepClip: {fileID: 0}
-  timerActivatedClip: {fileID: 0}
-  isConsumable: 1
-  expiryDuration: 0
-  activationCountdown: 0
-  activationTrigger: 0
-  allowMultipleActivations: 0
-  countdownUIPrefab: {fileID: 0}
-  itemName: Freeze Bomb
-  description: Freezes whomever it hits
-  launchForce: 10
-  launchDirection: {x: 0, y: 0, z: 1}
-  effectRadius: 5
-  healingAmount: 10
-  capturedObject: {fileID: 0}
-  throwForce: 4
 --- !u!114 &5915006179928255839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,3 +227,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1506719631197540055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003757342820223510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4ca7c7885cfc0847b80466bdb796ec8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  audioSource: {fileID: 0}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
+  expiryDuration: 0
+  activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
+  countdownUIPrefab: {fileID: 0}
+  itemName: Freeze Bomb
+  description: Freezes whomever it hits
+  launchForce: 10
+  launchDirection: {x: 0, y: 0, z: 1}
+  effectRadius: 5
+  healingAmount: 10
+  throwForce: 4
+  frozenTime: 10
