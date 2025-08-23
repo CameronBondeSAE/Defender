@@ -21,7 +21,7 @@ namespace NicholasScripts
 
         // Networked state
         private NetworkVariable<bool> netIsUsed = new NetworkVariable<bool>(
-            defaultValue: false,
+            default,
             NetworkVariableReadPermission.Everyone,
             NetworkVariableWritePermission.Server
         );
