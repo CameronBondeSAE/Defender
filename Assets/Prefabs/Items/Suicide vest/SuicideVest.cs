@@ -23,7 +23,6 @@ public class SuicideVest : UsableItem_Base
     [SerializeField] private GameObject sparkParticles;
 
     public CharacterBase entityAttachedTo;
-    //private NetworkVariable<NetworkObjectReference> networkedEntityAttachedTo = new NetworkVariable<NetworkObjectReference (default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     public Collider vestTrigger;
 
@@ -75,12 +74,6 @@ public class SuicideVest : UsableItem_Base
                 }
             }
         }
-    }
-
-    
-    private void SendAttachedObjectToClient_RPC()
-    {
-        
     }
 
     [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Unreliable, RequireOwnership = false)]
