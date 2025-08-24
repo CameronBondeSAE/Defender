@@ -5,6 +5,10 @@ using Defender;
 using Unity.Netcode;
 using UnityEngine;
 
+/// <summary>
+/// this crate spawns a random item on a countdown, lets players pick it up,
+/// then resets and repeats. the server owns all timers and spawning; clients get ui + audio
+/// </summary>
 public class NetworkedCrate : NetworkBehaviour, IUsable
 {
      [Header("Crate Config")]

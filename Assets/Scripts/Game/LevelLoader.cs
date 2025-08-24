@@ -9,6 +9,12 @@ using DanniLi;
 using Unity.VisualScripting;
 using UnityEditor;
 
+/// <summary>
+/// This class loads/unloads additive level scenes, this is server-authoritative
+/// - the server runs all scene loads/unloads and sets the active scene when a load completes
+/// - clients just follow along via netcode's scene manager
+/// - public functions (and server rpcs too) for ui buttons: next level, reload, back to main menu
+/// </summary>
 public class LevelLoader : NetworkBehaviour
 {
    public DanniLi.LevelInfo[] levelOrder;
@@ -111,6 +117,9 @@ public class LevelLoader : NetworkBehaviour
       LoadMainMenuRpc();
    }
 
+   /// <summary>
+   /// get next level index, hide ui, unload old level scenes, and additive-load the next scene
+   /// once the load completes, OnLoadEventCompleted sets it active
    private void DoLoadNext()
    {
       var levels = GetLevels();
@@ -165,6 +174,9 @@ public class LevelLoader : NetworkBehaviour
       // // don't set active here, wait fot event (below)
    }
    
+   /// <summary>
+   /// unload every tracked level scene except the manager, also safety checks so we never leave zero scenes loaded
+   /// </summary>
    private void UnloadAllLevelScenes()
    {
       // check if we have enough scenes to safely unload
@@ -211,6 +223,10 @@ public class LevelLoader : NetworkBehaviour
       loadedLevelScenes.RemoveAll(sceneName => sceneName != managerSceneName);
    }
    
+   /// <summary>
+   /// server callback when a networked scene load completes. if this was the scene we were waiting for,
+   /// set it active, unload older levels, and tell the game manager a new level is ready
+   /// </summary>
    private void OnLoadEventCompleted(string sceneName, LoadSceneMode loadscenemode, List<ulong> clientscompleted, List<ulong> clientstimedout)
    {
       if (loadscenemode != LoadSceneMode.Additive) return;
@@ -245,6 +261,10 @@ public class LevelLoader : NetworkBehaviour
          pendingSetActiveSceneName = null;
       }
    }
+   
+   /// <summary>
+   /// unload any tracked level scenes except the one we want to keep (like the manager scene)
+   /// </summary>
    private void UnloadOldLevelScenes(string keepSceneName)
    {
       // unload all tracked level scenes except the one we want to keep and the manager
@@ -263,6 +283,10 @@ public class LevelLoader : NetworkBehaviour
          }
       }
    }
+   /// <summary>
+   /// reload the current level: hides ui, unloads the existing copy if loaded, then additive-loads a fresh copy - was doing me head in this part xD
+   /// OnLoadEventCompleted will make it active
+   /// </summary>
    private void DoReloadCurrent()
    {
       var levels = GetLevels();
