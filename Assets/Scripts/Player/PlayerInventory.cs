@@ -18,8 +18,9 @@ public class PlayerInventory : NetworkBehaviour
 	[Header("Current State")]
 	// public ItemSO CurrentItem { get; private set; }
 	public IPickup CurrentItem { get; private set; }
-	
-
+	// added netvar to sync held items to clients
+	private NetworkVariable<NetworkObjectReference> networkedHeldItem = new NetworkVariable<NetworkObjectReference>(
+		default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 	[SerializeField]
 	private GameObject currentItemInstance;
 
@@ -34,21 +35,7 @@ public class PlayerInventory : NetworkBehaviour
 	public bool HasItem => CurrentItemInstance != null;
 
 	public PlayerInputHandler2 playerInput;
-
-	// [Header("Inventory Tracking")]
-	// private List<ItemSO> itemsCollected = new List<ItemSO>();
-	// private List<ItemSO> itemsUsed = new List<ItemSO>();
-	// private List<ItemSO> availableItems = new List<ItemSO>();
-	// public IReadOnlyList<ItemSO> AvailableItems => availableItems;
-
-	// Events for UI updates if needed
 	public event Action<IPickup> OnItemPickedUp;
-	// public event Action<ItemSO> OnItemUsed;
-	// public event Action OnItemSlotCleared;
-
-	// public List<ItemSO> ItemsCollected => new List<ItemSO>(itemsCollected);
-	// public List<ItemSO> ItemsUsed => new List<ItemSO>(itemsUsed);
-
 	private void Start()
 	{
 		if (itemHolder == null)
@@ -57,6 +44,81 @@ public class PlayerInventory : NetworkBehaviour
 		}
 	}
 
+	public override void OnNetworkSpawn()
+	{
+		base.OnNetworkSpawn();
+		networkedHeldItem.OnValueChanged += OnHeldItemChanged;
+		if (!IsServer && networkedHeldItem.Value.TryGet(out NetworkObject heldObj))
+		{
+			OnHeldItemChanged(default, networkedHeldItem.Value);
+		}
+	}
+
+	public override void OnNetworkDespawn()
+	{
+		if (networkedHeldItem != null)
+		{
+			networkedHeldItem.OnValueChanged -= OnHeldItemChanged;
+		}
+		base.OnNetworkDespawn();
+	}
+
+	private void OnHeldItemChanged(NetworkObjectReference previous, NetworkObjectReference current)
+	{
+		if (previous.TryGet(out NetworkObject prevObj))
+		{
+			Debug.Log($"[OnHeldItemChanged] Clearing previous item: {prevObj.name}");
+			ClearItemVisually(prevObj.gameObject);
+		}
+		if (current.TryGet(out NetworkObject newObj))
+		{
+			Debug.Log($"[OnHeldItemChanged] Setting up new item: {newObj.name}");
+			SetupItemVisually(newObj.gameObject);
+            
+			CurrentItem = newObj.GetComponent<IPickup>();
+			CurrentItemInstance = newObj.gameObject;
+			OnItemPickedUp?.Invoke(CurrentItem);
+			ShowHeldItemInfo_FromCurrent();
+		}
+		else
+		{
+			CurrentItem = null;
+			CurrentItemInstance = null;
+			RequestHideHeldItemInfoRpc();
+		}
+	}
+
+	private void SetupItemVisually(GameObject item)
+	{
+		// parent to item holder
+		item.transform.SetParent(itemHolder);
+		item.transform.localPosition = Vector3.zero;
+		item.transform.localRotation = Quaternion.identity;
+        
+		// make kinematic and disable colliders
+		Rigidbody rb = item.GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.isKinematic = true;
+			rb.useGravity = false;
+		}
+        
+		Collider[] colliders = item.GetComponentsInChildren<Collider>();
+		foreach (var col in colliders)
+		{
+			col.enabled = false;
+		}
+	}
+
+	private void ClearItemVisually(GameObject item)
+	{
+		item.transform.SetParent(null);
+		Collider[] colliders = item.GetComponentsInChildren<Collider>();
+		foreach (var col in colliders)
+		{
+			col.enabled = true;
+		}
+	}
 
 	void LateUpdate()
 	{
@@ -69,99 +131,45 @@ public class PlayerInventory : NetworkBehaviour
 				                                                    );
 		}
 	}
-
-	/// <summary>
-	/// Registers list of available items on this level from game manager
-	/// </summary>
-	// public void RegisterAvailableItem(ItemSO item)
-	// {
-	//     if (!availableItems.Contains(item))
-	//     {
-	//         availableItems.Add(item);
-	//         Debug.Log($"Registered item: {item.name}");
-	//     }
-	// }
-
-	/// <summary>
-	/// Tries to pick up an item. Returns true if successful.
-	/// </summary>
-	// public bool TryPickupItem(IPickup item)
-	// public bool TryPickupItem(NetworkObjectReference _item)
 	public bool TryPickupItem(IPickup item)
 	{
-		// NetworkObject itemObject;
-		// _item.TryGet(out itemObject);
-		//
-		// if (itemObject == null)
-		// {
-		// 	Debug.LogWarning("Item object is null!");
-		// 	return false;
-		// }
-		// IPickup item = itemObject.GetComponent<IPickup>();
-		
-		// if (HasItem)
-		// {
-		// 	Debug.Log("Cannot pick up item - inventory is full! - Dropping instead");
-		// 	DropHeldItem();
-		// 	return false;
-		// }
-		//
-		// if(item == null)
-		// 	return false;
-		//
-		// // Set current item
-		// CurrentItem         = item;
-		// CurrentItemInstance = (CurrentItem as MonoBehaviour)?.gameObject;
-		// if (CurrentItemInstance != null)
-		// {
-		// 	CurrentItemInstance.transform.SetParent(itemHolder);
-		// 	CurrentItemInstance.transform.localPosition = Vector3.zero;
-		// 	CurrentItemInstance.transform.localRotation = Quaternion.identity;
-		//
-		// 	// Sets up this item to be held in inventory (kinematic)
-		// 	SetupItemForInventory(CurrentItemInstance);
-		// }
-		//
-		// OnItemPickedUp?.Invoke(item);
-		// Debug.Log($"Picked up: {CurrentItemInstance.name}");
-		//
-		// return true;
+		if (!IsServer)
+		{
+			return false;
+		}
 
 		if (item == null)
 		{
 			Debug.Log("[TryPickupItem] Item is null.");
 			return false;
 		}
-
-		Debug.Log($"[TryPickupItem] Called for: {(item as MonoBehaviour)?.name}");
-		// if (HasItem)
-		// {
-		// 	Debug.Log("[TryPickupItem] Inventory full, dropping held item.");
-		// 	DropHeldItem();
-		// 	return false;
-		// }
-		//
-		
+		if (HasItem)
+		{
+			Debug.Log("[TryPickupItem] Inventory full, dropping held item.");
+			DropHeldItem();
+		}
 		// Get concrete references to real GOs
 		CurrentItem         = item;
 		CurrentItemInstance = (CurrentItem as MonoBehaviour)?.gameObject;
-		
-		if (CurrentItemInstance != null)
-		{
-			Debug.Log($"[TryPickupItem] Parenting {CurrentItemInstance.name} to itemHolder {itemHolder.name}");
-			// CurrentItemInstance.transform.SetParent(itemHolder);
-			SetupItemForInventory(CurrentItemInstance);
-			
-			CurrentItemInstance.transform.localPosition = Vector3.zero;
-			CurrentItemInstance.transform.localRotation = Quaternion.identity;
-			CurrentItem.Pickup(GetComponent<CharacterBase>());
-			CurrentItemInstance.GetComponent<UsableItem_Base>().CurrentCarrier = transform;
-		}
-		else
+		if (CurrentItemInstance == null)
 		{
 			Debug.LogWarning("[TryPickupItem] CurrentItemInstance is null!");
+			return false;
 		}
-
+		NetworkObject itemNetObj = CurrentItemInstance.GetComponent<NetworkObject>();
+		if (itemNetObj == null) return false;
+		
+		
+		Debug.Log($"[TryPickupItem] Parenting {CurrentItemInstance.name} to itemHolder {itemHolder.name}");
+		// CurrentItemInstance.transform.SetParent(itemHolder);
+		SetupItemForInventory(CurrentItemInstance);
+		CurrentItemInstance.transform.localPosition = Vector3.zero;
+		CurrentItemInstance.transform.localRotation = Quaternion.identity;
+		CurrentItem.Pickup(GetComponent<CharacterBase>());
+		CurrentItemInstance.GetComponent<UsableItem_Base>().CurrentCarrier = transform;
+		// Update the networked variable (this will trigger OnHeldItemChanged on all clients)
+		// update the held netvar
+		networkedHeldItem.Value = itemNetObj;
 		OnItemPickedUp?.Invoke(item);
 		Debug.Log($"[TryPickupItem] Picked up: {CurrentItemInstance?.name}");
 		return true;
@@ -169,6 +177,10 @@ public class PlayerInventory : NetworkBehaviour
 
 	public bool DropHeldItem()
 	{
+		if (!IsServer)
+		{
+			return false;
+		}
 		if (!HasItem)
 		{
 			return false;
@@ -177,43 +189,37 @@ public class PlayerInventory : NetworkBehaviour
 		// Move item to fire position
 		if (CurrentItemInstance != null)
 		{
-			CurrentItemInstance.transform.position = itemHolder.position + transform.forward * 1.5f;
-			CurrentItemInstance.transform.rotation = Quaternion.identity;
-
-			// Unparent the item from player
-			// CurrentItemInstance.transform.SetParent(null);
-
-			// TODO: This has moved to UsableItem_Base
-			// Re-enable physics
-			// Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
-			// if (rb != null)
-			// {
-			// 	rb.isKinematic = false;
-			// 	rb.useGravity  = true;
-			//
-			// 	// Apply throwing force
-			// 	Vector3 worldThrowDirection = transform.forward;
-			// 	
-			// 	// TODO might be better to leave up to items themselves
-			// 	rb.AddForce(worldThrowDirection * smallDropForce, ForceMode.VelocityChange);
-			// }
-			// else
-			// {
-			// 	Debug.LogWarning("Item doesn't have a Rigidbody component!");
-			// }
-
-			// Re-enable colliders
-			Collider[] colliders = CurrentItemInstance.GetComponentsInChildren<Collider>();
-			foreach (var col in colliders)
+			Vector3 dropPosition = itemHolder.position + transform.forward * 1.5f;
+			// call drop on interface (for sfx)
+			CurrentItem?.Drop();
+			// Use the item base to Drop
+			UsableItem_Base usableItem = CurrentItemInstance.GetComponent<UsableItem_Base>();
+			if (usableItem != null)
 			{
-				col.enabled = true;
+				usableItem.Drop(dropPosition);
 			}
-
-			CurrentItem = null;
+			else
+			{
+				// for cases if it's not using my UsableItemBase
+				CurrentItemInstance.transform.position = dropPosition;
+				CurrentItemInstance.transform.SetParent(null, true);
+				Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
+				if (rb != null)
+				{
+					rb.isKinematic = false;
+					rb.useGravity = true;
+					rb.AddForce(transform.forward * smallDropForce, ForceMode.VelocityChange);
+				}
+				Collider[] colliders = CurrentItemInstance.GetComponentsInChildren<Collider>();
+				foreach (var col in colliders)
+				{
+					col.enabled = true;
+				}
+			}
 		}
-
+		networkedHeldItem.Value = default;
+		CurrentItem = null;
 		CurrentItemInstance = null;
-		
 		return true;
 	}
 
@@ -252,23 +258,6 @@ public class PlayerInventory : NetworkBehaviour
 		IUsable currentUsable = CurrentItem as IUsable;
 		currentUsable?.Use(GetComponent<CharacterBase>());
 		// TODO: Need the item to tell us if it's been destroy. Event we sub to on collecting? Yes
-
-
-		// // Add to used items list
-		// itemsUsed.Add(CurrentItem);
-		//
-		// // Fire event before clearing
-		// OnItemUsed?.Invoke(CurrentItem);
-		//
-		// Debug.Log($"Used: {CurrentItem.Name}");
-		//
-		// // Destroy the item instance and clear references
-		// if (CurrentItemInstance != null)
-		// {
-		//     Destroy(CurrentItemInstance);
-		// }
-
-		// ClearInventorySlot();
 	}
 
 	/// <summary>
@@ -276,57 +265,65 @@ public class PlayerInventory : NetworkBehaviour
 	/// </summary>
 	public void ClearCurrentItemWithoutDestroy()
 	{
+		if (!IsServer)
+		{
+			Debug.LogWarning("Should only be called on server!");
+			return;
+		}
 		if (!HasItem)
 		{
 			Debug.Log("No item to clear!");
 			return;
 		}
-
-		// Add to used items list for tracking
-		// itemsUsed.Add(CurrentItem);
-		// Fire event before clearing
-		// OnItemUsed?.Invoke(CurrentItem);
-		// Debug.Log($"Used: {CurrentItem.Name}");
-		// Clear references without destroying the instance (the latter is handled in PlayerCombat)
-		ClearInventorySlot();
+		Debug.Log("[PlayerInventory] Clearing item");
+		networkedHeldItem.Value = default;
+		CurrentItem = null;
+		CurrentItemInstance = null;
 	}
 
-	/// <summary>
-	/// Clears the inventory slot references
-	/// </summary>
-	private void ClearInventorySlot()
+	#region Item Description UI Rpcs
+
+	[Rpc(SendTo.Server)]
+	public void RequestShowHeldItemInfoRpc(NetworkObjectReference itemRef)
 	{
-		// CurrentItem = null;
-		// CurrentItemInstance = null;
-		// OnItemSlotCleared?.Invoke();
+		string nameStr = string.Empty, descStr = string.Empty;
+
+		if (itemRef.TryGet(out NetworkObject itemNO) &&
+		    itemNO && itemNO.TryGetComponent<IDescribable>(out var describable))
+		{
+			nameStr = describable.ItemName ?? string.Empty;
+			descStr = describable.Description ?? string.Empty;
+		}
+
+		ShowHeldItemInfoRpc(nameStr, descStr); 
+	}
+	public void ShowHeldItemInfo_FromCurrent()
+	{
+		NetworkObject networkObject = null;
+		if (currentItemInstance) networkObject = currentItemInstance.GetComponent<NetworkObject>();
+		var itemRef = (networkObject != null) ? new NetworkObjectReference(networkObject) : default;
+		RequestShowHeldItemInfoRpc(itemRef);
 	}
 
-	/// Here are some helper functions if you guys want to show UI messages etc about player's item usage info :)
-	/// <summary>
-	/// Checks if player has used a specific item
-	/// </summary>
-	// public bool HasUsedItem(ItemSO item)
-	// {
-	//     return itemsUsed.Contains(item);
-	// }
-	/// <summary>
-	/// Checks if player has collected a specific item
-	/// </summary>
-	// public bool HasCollectedItem(ItemSO item)
-	// {
-	//     return itemsCollected.Contains(item);
-	// }
-	/// <summary>
-	/// Gets the count of how many times an item has been used
-	/// e.g. At end of game, UI shows "you have used X amount of grenade! You love it."
-	/// </summary>
-	// public int GetItemUsedCount(ItemSO item)
-	// {
-	//     int count = 0;
-	//     foreach (var usedItem in itemsUsed)
-	//     {
-	//         if (usedItem == item) count++;
-	//     }
-	//     return count;
-	// }
+	[Rpc(SendTo.Server)]
+	public void RequestHideHeldItemInfoRpc()
+	{
+		HideHeldItemInfoRpc();
+	}
+
+	[Rpc(SendTo.Owner)]
+	private void ShowHeldItemInfoRpc(string nameStr, string descStr)
+	{
+		var ui = FindFirstObjectByType<DanniLi.UIManager>();
+		if (ui != null) ui.ShowItemPanel(nameStr, descStr);
+	}
+
+	[Rpc(SendTo.Owner)]
+	private void HideHeldItemInfoRpc()
+	{
+		var ui = FindFirstObjectByType<DanniLi.UIManager>();
+		if (ui != null) ui.HideItemPanel();
+	}
+
+	#endregion
 }

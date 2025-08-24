@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Defender;
@@ -12,7 +13,7 @@ using UnityEngine.UIElements;
 /// Base for any inventory item you can use, arm (start a countdown), or launch (throw).
 /// Inherit and override Use, OnArmed, Explode, etc for your specific item logic.
 /// </summary>
-public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
+public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
 {
        [Header("Audio")]
     [Tooltip("audio source for all sfx (pickup, drop, use, beep, activated). null = mute.")]
@@ -40,6 +41,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     // local UI coroutine for expiry
     private Coroutine expiryUICoroutine;
+    private bool _awaitingExpiryUiStart; // to fix out of order netvar sync
 
     [Header("Activation Settings")]
     [Tooltip("delay before activation. 0 = immediate. OnUse: Use() starts it. Manual: start via code.")]
@@ -71,6 +73,12 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     private CountdownUI countdownUIPrefab; // drag the child UI here:D
     // prefab instance (not parented to the item!)
     private CountdownUI countdownUIInstance;
+    
+    [Header("Item Description")]
+    [SerializeField] private string itemName;
+    [SerializeField] private string description;
+    public string ItemName => itemName;
+    public string Description => description;
 
     // tracking settings
     [Tooltip("set in Pickup()/Drop(). debug only.")]
@@ -120,20 +128,48 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         isArmedNetworked.OnValueChanged += OnArmedStateChanged;
         countdownTimeRemaining.OnValueChanged += OnCountdownTimeChanged;
         isCountdownActive.OnValueChanged += OnCountdownActiveChanged;
+        expiryTimeRemaining.OnValueChanged += OnExpiryTimeChanged;
+        isExpiryActive.OnValueChanged += OnExpiryActiveChanged;
+        
+        if (!IsServer) // Only needed on clients
+        {
+            // Check if armed and invoke handler if needed
+            if (isArmedNetworked.Value)
+            {
+                Debug.Log($"Client late-join: Manually invoking OnArmedStateChanged");
+                OnArmedStateChanged(false, isArmedNetworked.Value);
+            }
+        
+            // Check if countdown is active and invoke handler if needed
+            if (isCountdownActive.Value)
+            {
+                Debug.Log($"Client late-join: Manually invoking OnCountdownActiveChanged");
+                OnCountdownActiveChanged(false, isCountdownActive.Value);
+            }
+        
+            // Check if expiry is active and invoke handler if needed
+            if (isExpiryActive.Value)
+            {
+                Debug.Log($"Client late-join: Manually invoking OnExpiryActiveChanged");
+                OnExpiryActiveChanged(false, isExpiryActive.Value);
+            }
+        }
+
         // init ui in case its armed when we spawn
         if (isArmedNetworked.Value && isCountdownActive.Value)
         {
             StartActivationCountdown_LocalUI(Mathf.CeilToInt(countdownTimeRemaining.Value));
         }
-        
-        expiryTimeRemaining.OnValueChanged += OnExpiryTimeChanged;
-        isExpiryActive.OnValueChanged += OnExpiryActiveChanged;
-
         // if we spawned while expiry already running, bring UI back JUST IN CASE
         if (isExpiryActive.Value)
         {
             StartExpiryCountdown_LocalUI(Mathf.CeilToInt(expiryTimeRemaining.Value));
         }
+        
+        Debug.Log($"OnNetworkSpawn on {(IsServer ? "Server" : "Client")}: " +
+                  $"isCountdownActive={isCountdownActive.Value}, " +
+                  $"isExpiryActive={isExpiryActive.Value}, " +
+                  $"expiryTimeRemaining={expiryTimeRemaining.Value}");
     }
 
     public override void OnNetworkDespawn()
@@ -147,6 +183,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         expiryTimeRemaining.OnValueChanged -= OnExpiryTimeChanged;
         isExpiryActive.OnValueChanged -= OnExpiryActiveChanged;
         DestroyCountdownUI();
+        Debug.Log($"OnNetworkDespawn on {(IsServer ? "Server" : "Client")} NO={NetworkObject?.NetworkObjectId}");
         base.OnNetworkDespawn();
     }
 
@@ -159,6 +196,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     #region NetVar Change Handlers (Activation & Expiry)
     private void OnCountdownActiveChanged(bool previousvalue, bool newvalue)
     {
+        Debug.Log($"OnCountdownActiveChanged: {previousvalue} -> {newvalue} on {(IsServer ? "Server" : "Client")}");
         if (newvalue && isArmedNetworked.Value)
         {
             StartActivationCountdown_LocalUI(Mathf.CeilToInt(countdownTimeRemaining.Value));
@@ -190,10 +228,22 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     {
         if (nowActive)
         {
-            StartExpiryCountdown_LocalUI(Mathf.CeilToInt(expiryTimeRemaining.Value));
+            int start = Mathf.CeilToInt(expiryTimeRemaining.Value);
+            if (start > 0)
+            {
+                StartExpiryCountdown_LocalUI(start);
+                _awaitingExpiryUiStart = false;
+            }
+            else
+            {
+                // time hasn't arrived yet; wait for OnExpiryTimeChanged to kick UI off
+                _awaitingExpiryUiStart = true;
+            }
         }
         else
         {
+            _awaitingExpiryUiStart = false;
+
             if (countdownUIInstance != null)
             {
                 countdownUIInstance.Hide();
@@ -208,40 +258,45 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 
     private void OnExpiryTimeChanged(float prev, float nowVal)
     {
-        if (countdownUIInstance != null && isExpiryActive.Value)
+        if (!isExpiryActive.Value) return;
+
+        int now = Mathf.CeilToInt(nowVal);
+
+        // on the first non-zero tick, start or restart the UI HERE
+        if (_awaitingExpiryUiStart && now > 0)
         {
-            countdownUIInstance.SetCountdown(Mathf.CeilToInt(nowVal));
+            StartExpiryCountdown_LocalUI(now);
+            _awaitingExpiryUiStart = false;
+            return;
+        }
+        // normal live update path
+        if (countdownUIInstance != null)
+        {
+            countdownUIInstance.SetCountdown(now);
+            countdownUIInstance.Show(); 
         }
     }
 
     private void OnArmedStateChanged(bool previousvalue, bool newvalue)
     {
-        // isArmed = newvalue;
-        // if (!newvalue)
-        // {
-        //     DestroyCountdownUI();
-        //     if (activationCoroutine != null)
-        //     {
-        //         StopCoroutine(activationCoroutine);
-        //         activationCoroutine = null;
-        //     }
-        // }
+        Debug.Log($"OnArmedStateChanged: {previousvalue} -> {newvalue} on {(IsServer ? "Server" : "Client")}");
+    
         isArmed = newvalue;
 
         if (!newvalue)
         {
-            // Do NOT Destroy the UI here so that it doesn't race the expiry UI start.
+            // NOT destroying the UI here so that it won't race the expiry UI start
             if (countdownUIInstance != null)
             {
-                // if expiry is active (or about to be active), ensure style is correct.
                 if (isExpiryActive.Value)
                 {
+                    Debug.Log($"Armed->Disarmed but expiry active, switching UI to expiry style on {(IsServer ? "Server" : "Client")}");
                     countdownUIInstance.SetExpiryStyle(true);
                     countdownUIInstance.Show();
                 }
                 else if (!isCountdownActive.Value)
                 {
-                    // if no activation + no expiry just hide (still keep instance for reuse)
+                    Debug.Log($"Armed->Disarmed, no expiry/countdown, hiding UI on {(IsServer ? "Server" : "Client")}");
                     countdownUIInstance.Hide();
                 }
             }
@@ -255,7 +310,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     }
     #endregion
 
-    #region Helpers: Colliders, UI destroy, Carrier
+    #region Helpers: Colliders, UI destroy, Carrier, Description
     protected void DestroyCountdownUI()
     {
         if (countdownUIInstance)
@@ -277,19 +332,23 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     {
         CurrentCarrier = carrier;
     }
+    
     #endregion
 
     #region Interface Implementation: IPickup / IUsable
     // IPickup
     public virtual void Pickup(CharacterBase whoIsPickupMeUp)
     {
-        if (audioSource && pickupClip) audioSource.PlayOneShot(pickupClip);
+        // synced audio
+        if (audioSource && pickupClip) 
+        {
+            audioSource.PlayOneShot(pickupClip);
+            if (IsServer)
+                PlayPickupAudioClientRpc();
+        }
         IsCarried = true;
         
 		SetCarrier(whoIsPickupMeUp.transform);
-        // SetCarrier(CurrentCarrier);
-        //CurrentCarrier = transform.parent;
-
         // Disable physics and colliders while in inventory
         if (rb != null)
         {
@@ -297,6 +356,14 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 	        rb.useGravity  = false;
         }
         SetCollidersEnabled(false);
+    }
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+    private void PlayPickupAudioClientRpc()
+    {
+        if (!IsServer && audioSource && pickupClip)
+        {
+            audioSource.PlayOneShot(pickupClip);
+        }
     }
 
     public virtual void Drop()
@@ -313,13 +380,31 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
 	        rb.useGravity             = true;
 	        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         }
-        if (audioSource && dropClip) audioSource.PlayOneShot(dropClip);
+        if (audioSource && dropClip)
+        {
+            audioSource.PlayOneShot(dropClip);
+            if (IsServer)
+                PlayDropAudioClientRpc();
+        }
+    }
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+    private void PlayDropAudioClientRpc()
+    {
+        if (!IsServer && audioSource && dropClip)
+        {
+            audioSource.PlayOneShot(dropClip);
+        }
     }
 
     // IUsable
     public virtual void Use(CharacterBase characterTryingToUse)
     {
-        if (audioSource && useClip) audioSource.PlayOneShot(useClip);
+        if (audioSource && useClip)
+        {
+            audioSource.PlayOneShot(useClip);
+            if (IsServer)
+                PlayUseAudioClientRpc();
+        }
 
         // if already going/expired/used, ignore
         if (hasActivated.Value && !allowMultipleActivations) return;
@@ -343,6 +428,14 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
             // subclasses can override and still call base.Use(...) to get sfx n stuff
             // here's a hook for subclasses if needed:D
             OnManualUse(characterTryingToUse);
+        }
+    }
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+    private void PlayUseAudioClientRpc()
+    {
+        if (!IsServer && audioSource && useClip)
+        {
+            audioSource.PlayOneShot(useClip);
         }
     }
 
@@ -390,27 +483,9 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         TryStartActivation_Server(seconds, force);
     }
     
-    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
-    private void RequestImmediateActivationServerRpc()
-    {
-        if (hasActivated.Value || isCountdownActive.Value || isExpiryActive.Value) return;
-        ActivateItem();
-    }
-
-    [Rpc(SendTo.Server, Delivery = RpcDelivery.Reliable)]
-    private void RequestActivationServerRpc()
-    {
-        if (hasActivated.Value || isCountdownActive.Value || isExpiryActive.Value) return; 
-        StartActivationCountdown_Server();
-    }
     #endregion
 
     #region Activation UI RPCs
-    public virtual void StartActivationCountdown_Server()
-    {
-        // keep old entry but route to the new explicit-seconds overload
-        StartActivationCountdown_Server(activationCountdown);
-    }
 
     // subclasses choose their own duration
     public void StartActivationCountdown_Server(float seconds)
@@ -433,13 +508,6 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         {
             ActivateItem();
         }
-    }
-
-    protected virtual IEnumerator ActivationCountdownRoutine_Server()
-    {
-        // redirect manual activation routine to the internal routine so everything uses one code path
-        // to save myself from fixing each one...
-        yield return ActivationCountdownRoutine_Server_Internal(activationCountdown);
     }
 
     // fix: internal routine that runs with an explicit duration (manual starts/overrides can now be used:D)
@@ -537,20 +605,19 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     public void StartExpiryCountdown_Server()
     {
         if (!IsServer) return;
-
-        isExpiryActive.Value = true;
+        // set the time first so clients can read a non-zero value
         expiryTimeRemaining.Value = expiryDuration;
-
+        // THEN mark active cuz ordering across different netvars isn't freaking guaranteed
+        isExpiryActive.Value = expiryDuration > 0f;
         if (activationCoroutine != null)
         {
             StopCoroutine(activationCoroutine);
             activationCoroutine = null;
         }
-
-        // kick clients to show expiry UI in expiry color
-        StartExpiryUIClientRpc(Mathf.CeilToInt(expiryDuration));
-
-        StartCoroutine(ExpiryCountdownRoutine_Server());
+        if (isExpiryActive.Value)
+        {
+            StartCoroutine(ExpiryCountdownRoutine_Server());
+        }
     }
 
     private IEnumerator ExpiryCountdownRoutine_Server()
@@ -568,14 +635,16 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
         DestroyItem_Server();
     }
 
-    [Rpc(SendTo.Everyone, Delivery = RpcDelivery.Reliable)]
-    private void StartExpiryUIClientRpc(int startSeconds)
-    {
-        StartExpiryCountdown_LocalUI(startSeconds);
-    }
+    // [Rpc(SendTo.Everyone, Delivery = RpcDelivery.Reliable)]
+    // private void StartExpiryUIClientRpc(int startSeconds)
+    // {
+    //     Debug.Log($"StartExpiryUIClientRpc called with {startSeconds} seconds on {(IsServer ? "Server" : "Client")}");
+    //     StartExpiryCountdown_LocalUI(startSeconds);
+    // }
 
     public void StartExpiryCountdown_LocalUI(int startSeconds)
     {
+        Debug.Log($"StartExpiryCountdown_LocalUI called");
         if (!countdownUIPrefab) { Debug.LogWarning($"[{name}] No countdownUIPrefab"); return; }
 
         if (!countdownUIInstance)
@@ -643,24 +712,43 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     /// </summary>
     protected virtual void DestroyItem_Server()
     {
+        if (!IsServer) return;
+        if (activationCoroutine != null) { StopCoroutine(activationCoroutine); activationCoroutine = null; }
+        if (expiryUICoroutine != null)   { StopCoroutine(expiryUICoroutine);   expiryUICoroutine   = null; }
+        Debug.Log($"DestroyItem_Server Destroying {gameObject.name}");
+        ClearFromInventoryBeforeDestroy();
         // clean netvars
         isArmedNetworked.Value = false;
         isCountdownActive.Value = false;
         countdownTimeRemaining.Value = 0f;
         isExpiryActive.Value = false;
         expiryTimeRemaining.Value = 0f;
-
         // despawn or destroy
-        var no = GetComponent<NetworkObject>();
+        var no = NetworkObject;
         if (no && no.IsSpawned)
         {
+            Debug.Log($"[DestroyItem_Server] Despawning NO={no.NetworkObjectId} (pool-friendly).");
             no.Despawn(true); // destruction point
         }
         else
         {
-            Destroy(gameObject);
+            Debug.LogError($"[DestroyItem_Server] NetworkObject null or !IsSpawned. Clients will NOT despawn!");
         }
     }
+
+    private void ClearFromInventoryBeforeDestroy()
+    {
+        if (CurrentCarrier != null)
+        {
+            PlayerInventory inventory = CurrentCarrier.GetComponent<PlayerInventory>();
+            if (inventory != null && inventory.CurrentItemInstance == this.gameObject)
+            {
+                Debug.Log($"Clearing {gameObject.name} from {CurrentCarrier.name}'s inventory");
+                inventory.ClearCurrentItemWithoutDestroy();
+            }
+        }
+    }
+
     #endregion
 
     #region Disarm (and its RPCs)
@@ -705,10 +793,9 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable
     // Launch/drop (NOTE: don't call Drop() inside Drop(Vector3))
     public virtual void Launch(Vector3 direction, float force)
     {
+        Drop();
         SetCollidersEnabled(true);
-        
-        transform.parent = null;
-
+        // transform.parent = null;
         if (rb == null) rb = GetComponent<Rigidbody>();
 
         if (rb != null)

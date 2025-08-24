@@ -36,6 +36,7 @@ public class AIBase : CharacterBase
 
 	[Header("Civ Params")]
 	public bool IsAbducted;
+	private bool isBeingSucked;
 
 	[HideInInspector]
 	public AlienAI escortingAlien;
@@ -61,6 +62,7 @@ public class AIBase : CharacterBase
 	}
 
 	protected IAIState currentState; // A reference to current AI state (using interface)
+	private IAIState previousState;
 
 	public IAIState CurrentState
 	{
@@ -173,7 +175,7 @@ public class AIBase : CharacterBase
 					stuckTime += Time.fixedDeltaTime;
 					if (stuckTime > maxStuckTime)
 					{
-						Debug.Log("AI STUCK! : Recalculating path");
+						// Debug.Log("AI STUCK! : Recalculating path");
 						MoveTo(lastDestination);
 						stuckTime = 0;
 					}
@@ -185,6 +187,7 @@ public class AIBase : CharacterBase
 	// Change state logic
 	public void ChangeState(IAIState newState)
 	{
+		previousState = currentState;
 		CurrentState?.Exit();
 		currentState = newState;
 		CurrentState.Enter();
@@ -314,13 +317,25 @@ public class AIBase : CharacterBase
 	public void StartSuckUp(float height = 5f, float duration = 5f)
 	{
 		Debug.Log("[DropZone] Civilian entered zone, starting suck up!");
+		if (!IsServer || isBeingSucked) return;
+		isBeingSucked = true;
+		// stops the civ first!
+		if (useRigidbody && rb != null)
+		{
+			rb.linearVelocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
+			rb.isKinematic = true;  // cancles physics
+		}
+
+		// cancels cam's path, maybe will fix?
+		path = null;
+		cornerIndex = 0;
 		StartCoroutine(SuckUpRoutine(height, duration));
 	}
 
 	private IEnumerator SuckUpRoutine(float height, float duration)
 	{
-		if(!IsServer)
-			yield return null;
+		if(!IsServer) yield break;
 
 		Debug.Log("being sucked now");
 		float   elapsed  = 0f;
@@ -342,17 +357,25 @@ public class AIBase : CharacterBase
 		transform.position = endPos;
 		// play a scream sound here...?
 		// or pool
-		var health = GetComponent<AIHealth>();
-		if (health != null)
+		AIHealth aiHealth = GetComponent<AIHealth>() ?? GetComponentInChildren<AIHealth>();
+		if (aiHealth != null)
 		{
-			Debug.Log("[SuckUpRoutine] Calling Kill()");
-			health.Kill();
+			aiHealth.Kill(); 
 		}
 		else
 		{
-			Debug.Log("health is null on this civ");
+			Debug.LogWarning($"AIHealth null during suck-up.");
 		}
 		//Destroy(this.gameObject);
+	}
+	
+	public virtual IAIState GetDefaultState()
+	{
+		return previousState ?? currentState;
+	}
+	public void ClearPreviousState() // ok this is added for when we DONT want to return to previous state
+	{
+		previousState = null;
 	}
 
 	private void OnDrawGizmos()

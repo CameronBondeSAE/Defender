@@ -5912,6 +5912,7 @@ GameObject:
   - component: {fileID: 7479966474188594154}
   - component: {fileID: 8313896342270367413}
   - component: {fileID: 6547316384023548197}
+  - component: {fileID: 6271151804996439013}
   m_Layer: 7
   m_Name: Suicide Vest
   m_TagString: Untagged
@@ -5949,7 +5950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1898363070
+  GlobalObjectIdHash: 1767720467
   InScenePlacedSourceGlobalObjectIdHash: 1767720467
   DeferredDespawnTick: 0
   Ownership: 1
@@ -5984,7 +5985,11 @@ MonoBehaviour:
   isConsumable: 1
   expiryDuration: 0
   activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
+  itemName: Suicide Vest
+  description: Put this on someone and it will explode shortly
   launchForce: 0
   launchDirection: {x: 0, y: 0, z: 1}
   damageAmount: 100
@@ -5993,6 +5998,7 @@ MonoBehaviour:
   owner: {fileID: 0}
   explosionRadiusVisual: {fileID: 2469377003221255229}
   state: 0
+  attachActivationDelay: 5
   sparkParticles: {fileID: 1117566793841314394}
   entityAttachedTo: {fileID: 0}
   vestTrigger: {fileID: 8313896342270367413}
@@ -6051,7 +6057,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Radius: 1.5385327
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6547316384023548197
 Rigidbody:
@@ -6080,6 +6086,52 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6271151804996439013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6705771452250497905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 0
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 0
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &7185062964380779520
 GameObject:
   m_ObjectHideFlags: 0

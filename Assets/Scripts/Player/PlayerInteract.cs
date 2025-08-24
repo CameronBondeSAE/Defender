@@ -7,7 +7,7 @@ public class PlayerInteract : NetworkBehaviour
 {
 	[Header("Pickup Settings")]
 	[SerializeField]
-	private float interactionRange = 2f;
+	private float interactionRange = 5f;
 
 	public Transform interactMount;
 	
@@ -183,7 +183,7 @@ public class PlayerInteract : NetworkBehaviour
 			if( c == null ) continue; // Because I preallocate a fixed array size
 			
 			Debug.DrawLine(transform.position, c.transform.position, Color.green, 1f);
-			Debug.Log("Nearby pickup = "+c.name);
+			// Debug.Log("Nearby pickup = "+c.name);
 			IPickup pickup = c.GetComponent<IPickup>(); // Assumes collider and IUsables are on the same GO
 			if (pickup != null)
 			{

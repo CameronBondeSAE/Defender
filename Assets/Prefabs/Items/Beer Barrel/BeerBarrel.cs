@@ -38,13 +38,13 @@ public class BeerBarrel : UsableItem_Base
         Debug.Log("Pouring Beer");
 
         characterTryingToUse.gameObject.GetComponent<PlayerInventory>().DropHeldItem();
+        gameObject.transform.rotation = new Quaternion(0,0,0,0);
+
         state = PouringState.used;
     }
 
     private void Update()
     {
-        if (!IsServer) { return; }
-
         if (state == PouringState.used)
         {
             RotateBarrel();
@@ -55,6 +55,8 @@ public class BeerBarrel : UsableItem_Base
     private bool firstRotation = false; // temp solution for identifying when to stop rotating -- else it will continuesly loop
     private void RotateBarrel()
     {
+        if (!IsServer) { return; }
+
         //Debug.Log(barrel.transform.localEulerAngles.x);
         barrel.GetComponent<Collider>().enabled = false;
 
@@ -104,6 +106,31 @@ public class BeerBarrel : UsableItem_Base
     {
         yield return new WaitForSeconds(despawnTimer);
 
-        gameObject.GetComponent<NetworkObject>().Despawn();
+        if (IsServer)
+        {
+            DespawnNetworkObjectClient_RPC();
+        }
+        else
+        {
+            DestroyObject();
+        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = false)]
+    private void DespawnNetworkObjectClient_RPC()
+    {
+        if (IsServer && gameObject.GetComponent<NetworkObject>().IsSpawned == true)
+        {
+            gameObject.GetComponent<NetworkObject>().Despawn();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 }

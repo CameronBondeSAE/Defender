@@ -87,7 +87,7 @@ MonoBehaviour:
   patrolPoints: []
   patrolPointsCount: 0
   rotationSpeed: 40
-  maxSpeed: 8
+  maxSpeed: 10
   forwardForce: 400
   followDistance: 2
   IsAbducted: 0
@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  animator: {fileID: 0}
   networkAnimator: {fileID: 3610845311785406197}
 --- !u!114 &3041347553923978941
 MonoBehaviour:
