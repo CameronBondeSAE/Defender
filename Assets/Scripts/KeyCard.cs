@@ -1,5 +1,5 @@
-using System;
 using Defender;
+using Unity.Netcode;
 using UnityEngine;
 
 public class KeyCard : UsableItem_Base
@@ -23,16 +23,31 @@ public class KeyCard : UsableItem_Base
         if (currentGate != null && !inUse)
         {
             base.Use(characterTryingToUse);
-            inUse = true;
-            Debug.Log("KeyCard used");
-            GetComponentInChildren<MeshRenderer>().material =  keycardUsedMat;
 		
             if (activationCountdown > 0)
                 StartActivationCountdown_LocalUI(Mathf.CeilToInt(activationCountdown));
+            
+            UseClient_Rpc();
         }
     }
     
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void UseClient_Rpc()
+    {
+        inUse = true;
+        Debug.Log("KeyCard used");
+        GetComponentInChildren<MeshRenderer>().material =  keycardUsedMat;
+    }
+    
     protected override void ActivateItem()
+    {
+        base.ActivateItem();
+		
+        ActivateItemClient_Rpc();
+    }
+    
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+    private void ActivateItemClient_Rpc()
     {
         Debug.Log("DemoItem ACTIVATED!");
         GetComponentInChildren<MeshRenderer>().material.color = Color.yellow;

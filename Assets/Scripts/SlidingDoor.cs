@@ -19,8 +19,8 @@ public class SlidingDoor : MonoBehaviour
     {
         if (isOpen)
         {
-            //
             transform.position = Vector3.Lerp(transform.position, startPosition + movement, Time.deltaTime);
+            //transform.position = startPosition + movement;
         }
     }
 }
