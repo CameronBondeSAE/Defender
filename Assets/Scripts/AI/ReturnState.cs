@@ -65,7 +65,7 @@ public class ReturnState : IAIState
         {
             hasReachedDropZone = true;
             reachedDropZoneTime = Time.time;
-            Debug.Log(ai.name + " has reached the drop zone");
+            // Debug.Log(ai.name + " has reached the drop zone");
             ai.StopMoving();
         }
         else if (!hasReachedDropZone)

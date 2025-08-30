@@ -1,4 +1,5 @@
 using Defender;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
@@ -18,6 +19,13 @@ namespace NicholasScripts
         [Header("State")]
         public bool isPowered = false;    // still influences fire rate
         public bool isActivated = false;  
+        
+        // Danni's networked activation to sync sphere of influence color change
+        private NetworkVariable<bool> activatedNetVar =
+            new NetworkVariable<bool>(
+                false,
+                NetworkVariableReadPermission.Everyone,
+                NetworkVariableWritePermission.Server);
 
         [Header("Targeting")]
         public float range = 6f; 
@@ -26,6 +34,27 @@ namespace NicholasScripts
         public float fireTimer = 0f;
 
         public float CurrentFireRate => isPowered ? poweredFireRate : baseFireRate;
+        
+        /// <summary>
+        /// networked activation
+        /// </summary>
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            isActivated = activatedNetVar.Value;
+            activatedNetVar.OnValueChanged += OnActivatedChanged;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            activatedNetVar.OnValueChanged -= OnActivatedChanged;
+            base.OnNetworkDespawn();
+        }
+        
+        private void OnActivatedChanged(bool previous, bool current)
+        {
+            isActivated = current; 
+        }
 
         public void UpdateTimer(float deltaTime)
         {
@@ -45,13 +74,15 @@ namespace NicholasScripts
         public override void Use(CharacterBase characterTryingToUse)
         {
             base.Use(characterTryingToUse);
-            isActivated = true;
+            //isActivated = true;
+            if (IsServer) activatedNetVar.Value = true;
          
         }
 
         public override void StopUsing()
         {
-            isActivated = false;
+            //isActivated = false;
+            if (IsServer) activatedNetVar.Value = false;
 
         }
 

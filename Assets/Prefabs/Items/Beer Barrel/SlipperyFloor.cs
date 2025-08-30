@@ -17,7 +17,7 @@ public class SlipperyFloor : NetworkBehaviour
     [Tooltip("The size the liquid area will grow to")]
     public Vector3 desiredSize;
     [Tooltip("The speed the liquid grows to the desired size")]
-    [SerializeField] private float enlargeSpeed;
+    [SerializeField] private NetworkVariable<float> enlargeSpeed;
     [Tooltip("The time limit for the liquid to despawn")]
     [SerializeField] private float despawnTimer;
 
@@ -38,6 +38,7 @@ public class SlipperyFloor : NetworkBehaviour
     {
         base.OnNetworkSpawn();
 
+        // resets any characters within the characterbases list upon spawning incase of clutter
         foreach (CharacterBase characterBase in characterBases)
         {
             Debug.Log("Reset " + characterBase.gameObject.name + "'s changed variables");
@@ -45,7 +46,27 @@ public class SlipperyFloor : NetworkBehaviour
         }
     }
 
-    private void Update()
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        // resets any characters within the characterbases list upon despawning for any clean up
+        foreach (CharacterBase characterBase in characterBases)
+        {
+            Debug.Log("Reset " + characterBase.gameObject.name + "'s changed variables");
+            ResetChangedVariablesOnDespawn(characterBase.GetComponent<Collider>());
+        }
+    }
+
+    //private void Update()
+    //{
+    //    if (!IsServer) { return; }
+
+    //    StartCoroutine(DespawnNetworkObjectDelay_Coroutine());
+    //    EnlargePuddleSize();
+    //}
+
+    private void FixedUpdate()
     {
         if (!IsServer) { return; }
 
@@ -59,10 +80,31 @@ public class SlipperyFloor : NetworkBehaviour
 
         if (particles.transform.localScale.x < desiredSize.x || particles.transform.localScale.y < desiredSize.y)
         {
-            //Debug.Log("enlarging");
-            particles.transform.localScale += new Vector3(1, 1, 0) * enlargeSpeed * Time.deltaTime;
-            gameObject.GetComponent<SphereCollider>().radius = desiredSize.x;
+            Debug.Log("enlarging");
+
+            particles.transform.localScale += new Vector3(1, 1, 0) * enlargeSpeed.Value * Time.deltaTime;
+
+            UpdateParticlesScaleClient_RPC(particles.transform.localScale);
+            UpdateSphereColliderRadiusServer_RPC(desiredSize.x);
         }
+    }
+
+    [Rpc(SendTo.Server, Delivery = RpcDelivery.Unreliable, RequireOwnership = false)]
+    private void UpdateSphereColliderRadiusServer_RPC(float desiredSize)
+    {
+        RequestUpdateSphereColliderRadiusClient_RPC(desiredSize);
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Unreliable, RequireOwnership = false)]
+    private void RequestUpdateSphereColliderRadiusClient_RPC(float desiredSize)
+    {
+        gameObject.GetComponent<SphereCollider>().radius = desiredSize;
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Unreliable, RequireOwnership = false)]
+    private void UpdateParticlesScaleClient_RPC(Vector3 newScale)
+    {
+        particles.transform.localScale = newScale;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -79,6 +121,7 @@ public class SlipperyFloor : NetworkBehaviour
         if (other.GetComponent<CharacterBase>() != null)
         {
             characterBases.Remove(other.GetComponent<CharacterBase>());
+            ResetChangedVariablesOnDespawn(other.GetComponent<CharacterBase>().GetComponent<Collider>());
         }
     }
 

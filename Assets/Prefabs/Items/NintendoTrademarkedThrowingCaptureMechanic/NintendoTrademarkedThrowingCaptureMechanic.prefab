@@ -205,14 +205,21 @@ MonoBehaviour:
   timerBeepClip: {fileID: 0}
   timerActivatedClip: {fileID: 0}
   isConsumable: 1
+  expiryDuration: 0
   activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 0}
+  itemName: 
+  description: 
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
   effectRadius: 5
   healingAmount: 10
   capturedObject: {fileID: 0}
   throwForce: 4
+  releaseTimer: 30
+  hideObject: 0
 --- !u!114 &5915006179928255839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,6 +233,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useCullingMasks: 0
+  colour: {r: 0, g: 1, b: 0, a: 0.02}
+  radius: 5
 --- !u!54 &6850157470268867459
 Rigidbody:
   m_ObjectHideFlags: 0

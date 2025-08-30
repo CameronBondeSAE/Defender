@@ -5,12 +5,18 @@ public class SpeedBoost : NetworkBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsServer) return; // Server is authoritative for physics and triggering
         var boostable = other.GetComponentInParent<CharacterBoost>();
-        
-        if (boostable != null)
+        if (boostable == null) return;
+
+        if (IsServer)
         {
-            boostable.RequestBoost(); // Direct call on server-side instance
+            // Host/server directly applies boost
+            boostable.RequestBoost();
+        }
+        else if (IsClient && boostable.IsOwner)
+        {
+            // Client tells server to apply boost for them
+            boostable.RequestBoostServerRpc();
         }
     }
 }

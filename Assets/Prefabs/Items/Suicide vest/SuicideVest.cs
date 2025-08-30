@@ -23,7 +23,7 @@ public class SuicideVest : UsableItem_Base
     [SerializeField] private GameObject sparkParticles;
 
     public CharacterBase entityAttachedTo;
-    
+
     public Collider vestTrigger;
 
     private void LateUpdate()
@@ -67,14 +67,25 @@ public class SuicideVest : UsableItem_Base
                 if (collision.gameObject != owner.gameObject)
                 {
 	                owner.GetComponent<PlayerInventory>().DropHeldItem(); // HACK: Need a better way to inform inventory of destroy/unattaching
-	                
-                    entityAttachedTo = collision.gameObject.GetComponent<CharacterBase>();
 
+                    entityAttachedTo = collision.gameObject.GetComponent<CharacterBase>();
                     state = VestState.isAttached;
-                    StartCoroutine(Explode());
+                    ExplodeClient_RPC();
                 }
             }
         }
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Unreliable, RequireOwnership = false)]
+    private void SparkParticlesClient_RPC()
+    {
+        sparkParticles.SetActive(true);
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Unreliable, RequireOwnership = false)]
+    private void ExplodeClient_RPC()
+    {
+        StartCoroutine(Explode());
     }
 
     private IEnumerator Explode()
@@ -83,7 +94,8 @@ public class SuicideVest : UsableItem_Base
 
         if (state == VestState.isAttached)
         {
-            sparkParticles.SetActive(true);
+            //sparkParticles.SetActive(true);
+            SparkParticlesClient_RPC();
             explosionRadiusVisual.enabled = true;
 
             activationCountdown = 5f;
@@ -101,7 +113,18 @@ public class SuicideVest : UsableItem_Base
                 {
                     if (collider.GetComponent<CharacterBase>())
                     {
-                        collider.gameObject.GetComponent<Health>().TakeDamage(damageAmount);
+                        if (collider.gameObject.GetComponent<Health>() != null)
+                        {
+                            collider.gameObject.GetComponent<Health>().TakeDamage(damageAmount);
+                        }
+                        else if (collider.gameObject.GetComponent<AIHealth>())
+                        {
+                            collider.gameObject.GetComponent<AIHealth>().TakeDamage(damageAmount);
+                        }
+                        else
+                        {
+                            continue;
+                        }
                     }
                 }
                 else
@@ -112,7 +135,32 @@ public class SuicideVest : UsableItem_Base
 
             Debug.Log("Exploded");
 
+            if (IsServer)
+            {
+                DespawnNetworkObjectClient_RPC();
+            }
+            else
+            {
+                DestroyObject();
+            }
+        }
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = false)]
+    private void DespawnNetworkObjectClient_RPC()
+    {
+        if (IsServer && gameObject.GetComponent<NetworkObject>().IsSpawned == true)
+        {
             gameObject.GetComponent<NetworkObject>().Despawn();
         }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 }
