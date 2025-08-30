@@ -48,10 +48,6 @@ public class KeyCard : UsableItem_Base
         }
     }
 
-    public override void Pickup()
-    {
-        base.Pickup(); // Plays pickup sound, etc
-    }
 
     public override void Drop()
     {
