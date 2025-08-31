@@ -3,24 +3,23 @@ using UnityEngine;
 
 public class SlidingDoor : MonoBehaviour
 {
-    public Vector3 startPosition;
+    Vector3 startPosition;
     public Vector3 movement;
-    //public bool isOpen;
-
-    public bool isOpen;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [HideInInspector] public bool isOpen;
+    public float speed = 1;
     void Start()
     {
+        //set the startPosition to the current position
         startPosition = transform.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //if this sliding door isOpen
         if (isOpen)
         {
-            transform.position = Vector3.Lerp(transform.position, startPosition + movement, Time.deltaTime);
-            //transform.position = startPosition + movement;
+            //lerp the position of the door by the movement amount based on the speed
+            transform.position = Vector3.Lerp(transform.position, startPosition + movement, Time.deltaTime * speed);
         }
     }
 }
