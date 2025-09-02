@@ -62,7 +62,7 @@ public class KeyCard : UsableItem_Base
     {
         Debug.Log("DemoItem ACTIVATED!");
         //tell the gate its open
-        currentGate.GetComponent<SlidingDoor>().isOpen = true;
+        currentGate.GetComponent<SlidingDoor>().ToggleDoor_Rpc();
         //destroy self
         Destroy(gameObject);
     }
