@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : NetworkBehaviour
 {
     private Rigidbody rb;
-    [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float acceleration = 8f;
     [SerializeField] private Camera gameCamera;
     
@@ -22,11 +21,8 @@ public class PlayerMovement : NetworkBehaviour
 
     Vector2 inputVector;
 
-    public float MoveSpeed
-    {
-        get => moveSpeed;
-        set => moveSpeed = value;
-    }
+    // WHY isn't speed variable in here? Because we put it in characterBase so we could alter the speed of ANY character with items, without hardcoding to PlayerMovement etc. We could also have used this script on the NPCs, but not all NPCs move the same
+    public Player_Model playerModel;
 
     void Awake()
     {
@@ -35,6 +31,7 @@ public class PlayerMovement : NetworkBehaviour
         playerCombat = GetComponent<PlayerCombat>();
         inputHandler = GetComponent<PlayerInputHandler2>();
         playerAnimation = GetComponent<PlayerAnimation>();
+        playerModel = GetComponent<Player_Model>();
     }
 
     private void OnEnable()
@@ -57,7 +54,7 @@ public class PlayerMovement : NetworkBehaviour
         // Vector2 inputVector = inputHandler.moveInput;
         Vector3 moveDirection = new Vector3(inputVector.x, 0, inputVector.y);
 
-        Vector3 targetVelocity = moveDirection * moveSpeed;
+        Vector3 targetVelocity = moveDirection * playerModel.MoveSpeed;
         rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
 
         Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
@@ -66,7 +63,7 @@ public class PlayerMovement : NetworkBehaviour
         if (velocityMagnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(horizontalVelocity);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * moveSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * playerModel.MoveSpeed);
             // playerAnimation.RequestState(PlayerAnimation.PlayerState.Run);
         }
         else
