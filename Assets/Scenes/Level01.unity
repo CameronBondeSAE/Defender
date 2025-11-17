@@ -3564,7 +3564,7 @@ GameObject:
   - component: {fileID: 823518839}
   - component: {fileID: 823518838}
   - component: {fileID: 823518837}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: UModeler Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6252,7 +6252,7 @@ MonoBehaviour:
     activePolygonGroupId: 0
   backfaces_: 0
   materials:
-  - {fileID: 2100000, guid: 7f8d9028ded56eb438c19d87ce6b0ac9, type: 2}
+  - {fileID: 2100000, guid: 6d4a70bd70ab5614198655871c6db36a, type: 2}
   - {fileID: 2100000, guid: 4aeabd92732b8431c8eab69d560c9dfa, type: 2}
   originalMaterials: []
   editMode: 1
@@ -9978,6 +9978,14 @@ PrefabInstance:
     - target: {fileID: 4477475366770185476, guid: a0759c79f9edd9a498c07382620b408b, type: 3}
       propertyPath: m_Name
       value: WalkingCiv (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864699207639565352, guid: a0759c79f9edd9a498c07382620b408b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6387018700346189093, guid: a0759c79f9edd9a498c07382620b408b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7896061697788204804, guid: a0759c79f9edd9a498c07382620b408b, type: 3}
       propertyPath: m_LocalPosition.x

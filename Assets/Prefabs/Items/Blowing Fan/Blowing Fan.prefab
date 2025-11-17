@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 71621090082382967}
   - component: {fileID: 1801149633978107117}
   - component: {fileID: 7746757109896915287}
-  - component: {fileID: 5760820630763232936}
   - component: {fileID: 2885784682846476781}
+  - component: {fileID: 8619463467090366879}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -89,29 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &5760820630763232936
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545204996110960248}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!82 &2885784682846476781
 AudioSource:
   m_ObjectHideFlags: 0
@@ -209,6 +186,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &8619463467090366879
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545204996110960248}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0000002, y: 14.08838, z: 0.29443827}
+  m_Center: {x: 0.00000007719732, y: 0.22744714, z: -0.35278112}
 --- !u!1 &1588935079522569844
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,10 +360,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2349094144401789116}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -415,7 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3500919875
+  GlobalObjectIdHash: 3915393768
   InScenePlacedSourceGlobalObjectIdHash: 3915393768
   DeferredDespawnTick: 0
   Ownership: 1
@@ -453,11 +451,21 @@ MonoBehaviour:
   activationTrigger: 0
   allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 0}
+  itemName: Blowing Fan
+  description: Blows enemies away!
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
-  fanOn: 0
-  pushForce: 25
+  pushForce: 100
+  pushMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
   particleSystem: {fileID: 8698782806151574404}
+  groundRaycastDistance: 2
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 512
+  snapOnSpawn: 1
+  snapOnActivate: 1
 --- !u!114 &6987791782636119100
 MonoBehaviour:
   m_ObjectHideFlags: 0
