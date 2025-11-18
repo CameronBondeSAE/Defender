@@ -1648,6 +1648,73 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e738b699983ba2c4590499f0c294bb9f, type: 3}
+--- !u!1 &386799510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 386799512}
+  - component: {fileID: 386799511}
+  m_Layer: 0
+  m_Name: AIGrid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &386799511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386799510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17bb75eb0ef35344d8b80ea226c2c7c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  disableMove: 0
+  checkDistance: {x: 70, y: 20, z: 60}
+  cellSize: {x: 1, y: 1, z: 1}
+  scaledCheckDistance: {x: 0, y: 0, z: 0}
+  scaledCellSize: {x: 0, y: 0, z: 0}
+  layers:
+  - serializedVersion: 2
+    m_Bits: 512
+  alwaysInvalidLayers: []
+  extraCosts: []
+  extraCostsNames: []
+  unwalkableGrid: []
+  airGrid: []
+  showVisualisations: 1
+  showVisualisationUnwalkable: 1
+  showVisualisationStairs: 1
+  showVisualisationWalkable: 1
+  showVisualisationAir: 0
+  showVisualisationCalculatedPath: 0
+  showVisualisationJump: 0
+  showVisualisationPathTo: 0
+  showVisualisationGoal: 0
+  showVisualisationError: 0
+--- !u!4 &386799512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386799510}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -50.2, y: -5.1, z: -11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &390178359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13481,3 +13548,4 @@ SceneRoots:
   - {fileID: 482073165}
   - {fileID: 1022437700}
   - {fileID: 1944278937}
+  - {fileID: 386799512}
