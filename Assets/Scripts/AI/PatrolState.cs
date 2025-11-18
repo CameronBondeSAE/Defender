@@ -59,6 +59,28 @@ public class PatrolState : IAIState
                 ai.MoveTo(ai.patrolPoints[currentPoint].position);
             }
         }
+        
+        if (animController != null)
+        {
+            bool isMoving = false;
+
+            if (ai.useRigidbody && ai.rb != null)
+            {
+                // if rb
+                isMoving = ai.rb.linearVelocity.sqrMagnitude > 0.05f;
+            }
+            else if (ai.Agent != null && ai.Agent.enabled)
+            {
+                // if navmesh
+                isMoving = ai.Agent.velocity.sqrMagnitude > 0.05f;
+            }
+
+            animController.SetAnimation(
+                isMoving
+                    ? AIAnimationController.AnimationState.Walk
+                    : AIAnimationController.AnimationState.Idle
+            );
+        }
     
         // if (hasReachedDestination)
         // {
@@ -68,5 +90,6 @@ public class PatrolState : IAIState
         // }
     }
 
+    
     public void Exit() { }
 }

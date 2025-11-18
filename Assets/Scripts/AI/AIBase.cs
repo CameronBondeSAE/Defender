@@ -37,6 +37,7 @@ public class AIBase : CharacterBase
 	[Header("Civ Params")]
 	public bool IsAbducted;
 	private bool isBeingSucked;
+	private bool isCivilian = true;
 
 	[HideInInspector]
 	public AlienAI escortingAlien;

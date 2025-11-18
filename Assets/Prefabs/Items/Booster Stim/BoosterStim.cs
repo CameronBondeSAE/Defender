@@ -91,7 +91,7 @@ public class BoosterStim : UsableItem_Base
         stimUsed = true;
         //Debug.Log("Stim Boost Active");
 
-        playerMovement.MoveSpeed += speedIncrease;  // gives speed to player
+        playerMovement.playerModel.MoveSpeed += speedIncrease;  // gives speed to player
         StartCoroutine(BoosterStimDuration());
     }
 
@@ -105,7 +105,7 @@ public class BoosterStim : UsableItem_Base
     [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
     public void DeactivateBoosterStim_Rpc() // end
     {
-        playerMovement.MoveSpeed -= speedIncrease; // removes speed from player
+        playerMovement.playerModel.MoveSpeed -= speedIncrease; // removes speed from player
         //Debug.Log("Stim Boost Deactive");
 
         GetComponent<NetworkObject>().Despawn();

@@ -51,10 +51,17 @@ public class BlowingFanScript : UsableItem_Base
     // }
     
       [Header("Push Settings")]
-    [SerializeField] private float pushForce = 15f;
+    [SerializeField] private float pushForce = 30f;
     [SerializeField] private LayerMask pushMask = 0;
     [Header("Visuals")]
     [SerializeField] private ParticleSystem particleSystem;
+    
+    [Header("Grounding")]
+    [SerializeField] private float groundRaycastDistance = 2f;
+    [SerializeField] private LayerMask groundMask = ~0;
+    [SerializeField] private bool snapOnSpawn = true;
+    [SerializeField] private bool snapOnActivate = true;
+    private bool anchorWhenOn = true;
 
     // NETWORKED STATE (server writes; everyone reads)
     private readonly NetworkVariable<bool> fanOnNetVar =
@@ -75,6 +82,11 @@ public class BlowingFanScript : UsableItem_Base
         // sync for late joiner
         ApplyFanVisual(fanOnNetVar.Value);
         fanOnNetVar.OnValueChanged += OnFanStateChanged;
+        
+        if (IsServer && snapOnSpawn && transform.parent == null)
+        {
+            SnapToGroundAndAlign();
+        }
     }
 
     public override void OnNetworkDespawn()
@@ -108,6 +120,7 @@ public class BlowingFanScript : UsableItem_Base
         // immediate activation on button press
         TryStartActivationNow(force: true);
         ToggleFanServerRpc(true);
+        SnapToGroundAndAlign();
     }
 
     protected override void ActivateItem()
@@ -115,6 +128,10 @@ public class BlowingFanScript : UsableItem_Base
         base.ActivateItem();
         if (IsServer)
         {
+            if (snapOnActivate && transform.parent == null)
+            {
+                SnapToGroundAndAlign();
+            }
             fanOnNetVar.Value = true;
             SetFanVisualClientRpc(true); 
         }
@@ -128,6 +145,14 @@ public class BlowingFanScript : UsableItem_Base
     
     private void SetFan(bool on)
     {
+        if (!IsServer) return;
+        if (on && anchorWhenOn && transform.parent == null)
+        {
+            // anchor if it’s placed
+            SnapToGroundAndAlign();
+            AnchorFanOnGround();
+        }
+
         fanOnNetVar.Value = on;
         SetFanVisualClientRpc(on);
     }
@@ -139,15 +164,51 @@ public class BlowingFanScript : UsableItem_Base
     }
     private void OnTriggerStay(Collider other)
     {
-        if (!IsServer) return;
+        // if (!IsServer) return;
         if (!fanOnNetVar.Value) return;
         Rigidbody otherRigidbody = other.attachedRigidbody;
         if (otherRigidbody == null) return;
         if (otherRigidbody.isKinematic) return;
+
+        if (((1 << other.gameObject.layer) & pushMask) == 0) return;
         // push away from the fan's position
         Vector3 pushDirection = (otherRigidbody.worldCenterOfMass - transform.position).normalized;
         otherRigidbody.AddForce(pushDirection * pushForce, ForceMode.Acceleration);
     }
+    
+    private void SnapToGroundAndAlign()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
+        RaycastHit hit;
+
+        if (Physics.Raycast(origin, Vector3.down, out hit, groundRaycastDistance, groundMask))
+        {
+            transform.position = hit.point;
+            // keep Y rot, no X/Z so it's upright
+            Vector3 euler = transform.eulerAngles;
+            transform.rotation = Quaternion.Euler(0f, euler.y, 0f);
+        }
+    }
+    
+    private void AnchorFanOnGround()
+    {
+        if (rb == null) return;
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    // make it moveable again, call this:
+    private void ReleaseFan()
+    {
+        if (rb == null) return;
+
+        rb.isKinematic = false;
+        rb.constraints = RigidbodyConstraints.None;
+    }
+    
     public override void Use(CharacterBase characterTryingToUse)
     {
         OnManualUse(characterTryingToUse);
@@ -157,6 +218,9 @@ public class BlowingFanScript : UsableItem_Base
     {
         ToggleFanServerRpc(false);
         if (IsServer)
+        {
+            ReleaseFan();
             SetFan(false); 
+        }
     }
 }

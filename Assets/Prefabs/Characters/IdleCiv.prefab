@@ -83,6 +83,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  moveSpeed: 5
+  defaultSpeed: 5
   agent: {fileID: 0}
   patrolPoints: []
   patrolPointsCount: 0
@@ -204,10 +206,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468782042391114676}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 25
-  m_LinearDamping: 5
-  m_AngularDamping: 5
+  m_Drag: 5
+  m_AngularDrag: 5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
