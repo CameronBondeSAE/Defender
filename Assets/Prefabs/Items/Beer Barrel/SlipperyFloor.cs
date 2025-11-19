@@ -1,3 +1,4 @@
+using System;
 using Defender;
 using System.Collections;
 using System.Collections.Generic;
@@ -123,6 +124,11 @@ public class SlipperyFloor : NetworkBehaviour
             characterBases.Remove(other.GetComponent<CharacterBase>());
             ResetChangedVariablesOnDespawn(other.GetComponent<CharacterBase>().GetComponent<Collider>());
         }
+    }
+
+    private void OnDisable()
+    {
+	    
     }
 
     private IEnumerator SlipAndFall_Coroutine(Collider other)

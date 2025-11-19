@@ -12,7 +12,7 @@ public class CharacterSlow : NetworkBehaviour
     {
         playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement != null)
-            originalSpeed = playerMovement.MoveSpeed;
+            originalSpeed = playerMovement.playerModel.DefaultSpeed;
     }
 
     public override void OnNetworkSpawn()
@@ -23,7 +23,7 @@ public class CharacterSlow : NetworkBehaviour
             playerMovement = GetComponent<PlayerMovement>();
 
         if (playerMovement != null && Mathf.Approximately(originalSpeed, 0f))
-            originalSpeed = playerMovement.MoveSpeed;
+            originalSpeed = playerMovement.playerModel.DefaultSpeed;
     }
 
     public void ApplySlow(float multiplier, float duration)
@@ -52,15 +52,15 @@ public class CharacterSlow : NetworkBehaviour
         if (playerMovement == null) return;
 
         if (Mathf.Approximately(originalSpeed, 0f))
-            originalSpeed = playerMovement.MoveSpeed;
+            originalSpeed = playerMovement.playerModel.MoveSpeed;
 
-        playerMovement.MoveSpeed *= multiplier;
+        playerMovement.playerModel.MoveSpeed *= multiplier;
     }
 
     [Rpc(SendTo.ClientsAndHost, RequireOwnership = false)]
     private void ResetSpeedRpc()
     {
         if (playerMovement != null)
-            playerMovement.MoveSpeed = originalSpeed;
+            playerMovement.playerModel.MoveSpeed = originalSpeed;
     }
 }

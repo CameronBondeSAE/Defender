@@ -213,7 +213,9 @@ namespace DanniLi
 			Debug.Log("Civilians Alive: " + civiliansAlive);
 			foreach (GameObject civilian in civilians)
 			{
-				Health health = civilian.GetComponent<AIHealth>() ?? GetComponentInChildren<AIHealth>();
+				Health health = civilian.GetComponent<Health>() 
+				                ?? civilian.GetComponentInChildren<Health>();
+
 				if (health != null)
 				{
 					health.OnDeath += OnCivDeath;
