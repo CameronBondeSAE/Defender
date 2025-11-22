@@ -422,18 +422,18 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   pickupClip: {fileID: 0}
   dropClip: {fileID: 0}
-  useClip: {fileID: 0}
+  useClip: {fileID: 8300000, guid: 286638ac636aa5047a362efa6e8ee6af, type: 3}
   timerBeepClip: {fileID: 0}
-  timerActivatedClip: {fileID: 0}
+  timerActivatedClip: {fileID: 8300000, guid: ccff5704c2c464343822c8ae3aeb114c, type: 3}
   isConsumable: 1
   expiryDuration: 0
   activationCountdown: 0
   activationTrigger: 0
   allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 0}
-  itemName: 
-  description: 
-  launchForce: 10
+  itemName: Vortex
+  description: Throw a Tornado Vortex at the Aliens!
+  launchForce: 20
   launchDirection: {x: 0, y: 0, z: 1}
 --- !u!1 &5222261008046839601
 GameObject:

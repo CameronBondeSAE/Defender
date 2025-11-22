@@ -13027,6 +13027,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: useClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 62a745fc51e73d94f9cdc68292e71510, type: 3}
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: itemName
+      value: Vortex
+      objectReference: {fileID: 0}
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: description
+      value: Throw a tornado at the aliens!
+      objectReference: {fileID: 0}
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: launchForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: isConsumable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1455124744344949864, guid: 143773804ea04414082cdf610ca51e25, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 678374248
