@@ -6936,7 +6936,7 @@ MonoBehaviour:
   playerPos: {fileID: 1831447827}
   shroudMaterial: {fileID: 2100000, guid: f2e0e5c42022d3f4ca219877f7a15978, type: 2}
   shroudSpreadSpeed: 1
-  maxShroudCost: -1
+  maxShroudCost: 10
   shroudAlphaName: 
   shroudDistanceName: _Raymarch_Distance
   shroudDensityName: _Density
@@ -10318,10 +10318,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowVerticalNeighbours: 0
   baseMovementCost: 1
+  maxMovementCost: 0
   gasBlockerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  gasBlockCheckHalfExtents: {x: 1, y: 1, z: 1}
+  gasBlockCheck: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!4 &1621810577
 Transform:
   m_ObjectHideFlags: 0

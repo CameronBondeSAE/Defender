@@ -11,7 +11,7 @@ public class Shroud : MonoBehaviour
     public Transform playerPos;
     public Material shroudMaterial;
     public float shroudSpreadSpeed = 1.0f;
-    public float maxShroudCost = -1.0f;
+    public float maxShroudCost = 10f;
 
     [Header("Shroud Params (material properties)")]
     // fields from the actual material, which this script will configure

@@ -12,10 +12,11 @@ public class DijkstraPathfinder : MonoBehaviour
     [Header("Neighbour Settings")]
     public bool allowVerticalNeighbours = true; 
     public float baseMovementCost = 1.0f;
+    public float maxMovementCost;
 
     [Header("Gas Blocking Params")]
     public LayerMask gasBlockerMask = ~0; // everything for now, since our level is one layer
-    public Vector3 gasBlockCheckHalfExtents = new Vector3(0.5f, 0.5f, 0.5f); // half sized cell boxes to cast to check for walls
+    public Vector3 gasBlockCheck = new Vector3(0.5f, 0.5f, 0.5f); // half sized cell boxes to cast to check for walls
 
 
     private void Awake()
@@ -162,7 +163,7 @@ public class DijkstraPathfinder : MonoBehaviour
                     // cast a small box between the two cell centres
                     if (Physics.BoxCast(
                             from,
-                            gasBlockCheckHalfExtents,
+                            gasBlockCheck,
                             direction,
                             out RaycastHit hitInfo,
                             Quaternion.identity,
@@ -182,6 +183,11 @@ public class DijkstraPathfinder : MonoBehaviour
                 float movementCost = baseMovementCost + neighbourCell.eCost;
                 float candidateNewCost = currentCell.gCost + movementCost;
 
+                if (maxMovementCost > 0.0f && candidateNewCost > maxMovementCost)
+                {
+                    // if this cell is outside the shroud radius, skip
+                    continue;
+                }
                 if (candidateNewCost < neighbourCell.gCost)
                 {
                     neighbourCell.gCost = candidateNewCost;
@@ -210,7 +216,7 @@ public class DijkstraPathfinder : MonoBehaviour
     /// if maximumTotalCost > 0, stop exploring when the next cost
     /// to explore would exceed this value
     /// <summary>
-    public List<AIGridCell> CalculateGasDistanceField(Vector3 sourceWorldPosition, float maximumTotalCost = -1.0f)
+    public List<AIGridCell> CalculateGasDistanceField(Vector3 sourceWorldPosition, float maxMovementCost = -1.0f)
     {
         AIGrid gridComponent = AIGrid.instance;
         if (gridComponent == null || gridComponent.grid == null)
@@ -244,7 +250,7 @@ public class DijkstraPathfinder : MonoBehaviour
             visitedCells.Add(currentCell);
             
             // stop spreading if current cell cost exceeds maximumTotalCost (for limited radius spread)
-            if (maximumTotalCost > 0.0f && currentCell.gCost > maximumTotalCost)
+            if (this.maxMovementCost > 0.0f && currentCell.gCost > maxMovementCost)
             {
                 continue;
             }
@@ -273,7 +279,7 @@ public class DijkstraPathfinder : MonoBehaviour
                 float movementCost = baseMovementCost + neighbourCell.eCost;
                 float candidateNewCost = currentCell.gCost + movementCost;
                 
-                if (maximumTotalCost > 0.0f && candidateNewCost > maximumTotalCost)
+                if (this.maxMovementCost > 0.0f && candidateNewCost > this.maxMovementCost)
                 {
                     continue;
                 }
