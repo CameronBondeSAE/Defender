@@ -13,6 +13,11 @@ public class DijkstraPathfinder : MonoBehaviour
     public bool allowVerticalNeighbours = true; 
     public float baseMovementCost = 1.0f;
 
+    [Header("Gas Blocking Params")]
+    public LayerMask gasBlockerMask = ~0; // everything for now, since our level is one layer
+    public Vector3 gasBlockCheckHalfExtents = new Vector3(0.5f, 0.5f, 0.5f); // half sized cell boxes to cast to check for walls
+
+
     private void Awake()
     {
         if (instance == null)
@@ -90,16 +95,90 @@ public class DijkstraPathfinder : MonoBehaviour
                 {
                     continue;
                 }
-
-                if (neighbourCell.state == AIGrid.GridStates.unwalkable)
+                
+                // so my shroud ONLY permeate vertically/stays on the same floor, 
+                // because Jayden treats unwalkable as having at least 3 stacked cells high
+                // and our level walls aren't that tall
+                if (Mathf.Abs(neighbourCell.position.y - currentCell.position.y) > 0.1f)
                 {
                     continue;
                 }
+                // treating air as unwalkable too, so it doesn't seep over/past walls
+                /* if (neighbourCell.state != AIGrid.GridStates.walkable &&
+                   neighbourCell.state != AIGrid.GridStates.stairs)
+                {
+                   continue;
+                }*/
+                
+                // only step through walkables
+                if (!IsWalkableCell(neighbourCell))
+                {
+                    continue;
+                }
+                
+                Vector3Int currentIndex   = GetCellIndex(currentCell);
+                Vector3Int neighbourIndex = GetCellIndex(neighbourCell);
+
+                bool isDiagonal =
+                    currentIndex.x != neighbourIndex.x &&
+                    currentIndex.z != neighbourIndex.z;
+
+                if (isDiagonal)
+                {
+                    // horizontal step only
+                    int side1X = neighbourIndex.x;
+                    int side1Z = currentIndex.z;
+
+                    // vertical step only
+                    int side2X = currentIndex.x;
+                    int side2Z = neighbourIndex.z;
+
+                    // clamp ust in case
+                    side1X = Mathf.Clamp(side1X, 0, gridComponent.grid.GetLength(0) - 1);
+                    side2X = Mathf.Clamp(side2X, 0, gridComponent.grid.GetLength(0) - 1);
+                    side1Z = Mathf.Clamp(side1Z, 0, gridComponent.grid.GetLength(2) - 1);
+                    side2Z = Mathf.Clamp(side2Z, 0, gridComponent.grid.GetLength(2) - 1);
+
+                    AIGridCell sideCell1 = gridComponent.grid[side1X, currentIndex.y, side1Z];
+                    AIGridCell sideCell2 = gridComponent.grid[side2X, currentIndex.y, side2Z];
+
+                    // if either side is not walkable, block diagonal
+                    if (!IsWalkableCell(sideCell1) || !IsWalkableCell(sideCell2))
+                    {
+                        continue;
+                    }
+                }
+                
+                // don't step through actual walls
+               /* Vector3 from = currentCell.position;
+                Vector3 to = neighbourCell.position;
+                Vector3 direction = to - from;
+                float distance = direction.magnitude;
+
+                if (distance > 0.001f)
+                {
+                    direction /= distance;
+
+                    // cast a small box between the two cell centres
+                    if (Physics.BoxCast(
+                            from,
+                            gasBlockCheckHalfExtents,
+                            direction,
+                            out RaycastHit hitInfo,
+                            Quaternion.identity,
+                            distance,
+                            gasBlockerMask))
+                    {
+                        // if there's some/any geometry between the two cells, treat as blocked
+                        continue;
+                    }
+                } */
 
                 if (closedSet.Contains(neighbourCell))
                 {
                     continue;
                 }
+
                 float movementCost = baseMovementCost + neighbourCell.eCost;
                 float candidateNewCost = currentCell.gCost + movementCost;
 
@@ -111,6 +190,7 @@ public class DijkstraPathfinder : MonoBehaviour
                     {
                         openSet.Add(neighbourCell);
                     }
+
                     cameFrom[neighbourCell] = currentCell;
                 }
             }
@@ -443,6 +523,32 @@ public class DijkstraPathfinder : MonoBehaviour
         worldPath.Reverse();
         return worldPath;
     }
+    
+    private bool IsWalkableCell(AIGridCell cell)
+    {
+        if (cell == null)
+        {
+            return false;
+        }
+
+        return cell.state == AIGrid.GridStates.walkable;
+    }
+
+    /// <summary>
+    /// convert a cell's world position back to grid indexes
+    /// </summary>
+    private Vector3Int GetCellIndex(AIGridCell cell)
+    {
+        AIGrid gridComponent = AIGrid.instance;
+        Vector3 localPosition = cell.position - gridComponent.transform.position;
+
+        int xIndex = Mathf.RoundToInt(localPosition.x);
+        int yIndex = Mathf.RoundToInt(localPosition.y);
+        int zIndex = Mathf.RoundToInt(localPosition.z);
+
+        return new Vector3Int(xIndex, yIndex, zIndex);
+    }
+
 
     #endregion
 }

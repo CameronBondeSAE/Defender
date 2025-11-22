@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
+using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Shroud : MonoBehaviour
 {
-    [Header("Scene References")]
+    [Header("Scene Refs")]
     public Transform shroudSourcePos;
     public Transform playerPos;
     public Material shroudMaterial;
@@ -23,16 +25,24 @@ public class Shroud : MonoBehaviour
     public float baseAlphaAroundPlayer = 0.0f;
     public float maxAlphaAroundPlayer = 0.6f;
     public float playerShroudWrapCost = 2.0f; // how many cost units after arrival until the shroud fully envelopes the player
+    
+    [Header("Shroud Visual")]
+    public GameObject gasPrefab;
+    public Transform gasParent;
+    public float gasHeightOffset = 0.05f;
+    public float gasSpawnLeadTime = 0.1f;
+    
+    private HashSet<AIGridCell> gasCellsWithVisuals = new HashSet<AIGridCell>();
 
     // internal states
     private float currentGasTime = 0.0f;
     private List<AIGridCell> reachableGasCells = new List<AIGridCell>();
-    private float maximumReachableGasCost = 0.0f;
-    private bool gasHasBeenInitialized = false;
+    private float maxReachableCost = 0.0f;
+    private bool shroudInitialized = false;
 
     private void Start()
     {
-        if (shroudSourcePos != null)
+        if (shroudSourcePos != null && shroudSourcePos != null)
         {
             StartShroud(); // automatic for now, later will be triggered manually
         }
@@ -40,16 +50,8 @@ public class Shroud : MonoBehaviour
 
     private void Update()
     {
-        if (!gasHasBeenInitialized)
-        {
-            return;
-        }
-
-        if (shroudSpreadSpeed <= 0.0f)
-        {
-            return;
-        }
-        
+        if (!shroudInitialized) return;
+        if (shroudSpreadSpeed <= 0.0f) return;
         float deltaTime = Time.deltaTime;
         currentGasTime += shroudSpreadSpeed * deltaTime; // shroud timer
 
@@ -58,9 +60,9 @@ public class Shroud : MonoBehaviour
         {
             currentGasTime = maxShroudCost;
         }
-
-        UpdateGlobalFogFromGas();
-        UpdateLocalThickness();
+        // UpdateDensityFromSpread();
+        // UpdateLocalThickness();
+        UpdateVisuals();
     }
     
     public void StartShroud()
@@ -72,11 +74,11 @@ public class Shroud : MonoBehaviour
             Debug.Log("no DijkstraPathfinder");
             return;
         }
-
+        gasCellsWithVisuals.Clear();
         reachableGasCells = DijkstraPathfinder.instance
             .CalculateGasDistanceField(shroudSourcePos.position, maxShroudCost);
         
-        maximumReachableGasCost = 0.0f;
+        maxReachableCost = 0.0f;
         for (int i = 0; i < reachableGasCells.Count; i++)
         {
             AIGridCell cell = reachableGasCells[i];
@@ -85,21 +87,21 @@ public class Shroud : MonoBehaviour
                 continue;
             }
 
-            if (cell.gCost != float.MaxValue && cell.gCost > maximumReachableGasCost)
+            if (cell.gCost != float.MaxValue && cell.gCost > maxReachableCost)
             {
                 // getting the max reachable cost to normalize global spread
-                maximumReachableGasCost = cell.gCost; 
+                maxReachableCost = cell.gCost; 
             }
         }
         currentGasTime = 0.0f;
-        gasHasBeenInitialized = true;
+        shroudInitialized = true;
     }
 
     /// <summary>
     /// Updates the shroud distance / density based on how far it has spread over the entire level/grid
     ///as the waves propagates through the level
     /// </summary>
-    private void UpdateGlobalFogFromGas()
+    private void UpdateDensityFromSpread()
     {
         if (shroudMaterial == null)
         {
@@ -107,9 +109,9 @@ public class Shroud : MonoBehaviour
         }
 
         float globalSpreadNormalized = 0.0f;
-        if (maximumReachableGasCost > 0.0f)
+        if (maxReachableCost > 0.0f)
         {
-            globalSpreadNormalized = Mathf.Clamp01(currentGasTime / maximumReachableGasCost);
+            globalSpreadNormalized = Mathf.Clamp01(currentGasTime / maxReachableCost);
         }
 
         float currentFogDistance = Mathf.Lerp(baseShroudDistance, maxShroudDistance, globalSpreadNormalized);
@@ -155,11 +157,11 @@ public class Shroud : MonoBehaviour
             return;
         }
 
-        float costDelta = currentGasTime - arrivalCost;
+        float costDif = currentGasTime - arrivalCost;
 
         float normalizedInsideAmount = 0.0f;
 
-        if (costDelta <= 0.0f)
+        if (costDif <= 0.0f)
         {
             normalizedInsideAmount = 0.0f;
         }
@@ -171,7 +173,7 @@ public class Shroud : MonoBehaviour
             }
             else
             {
-                normalizedInsideAmount = Mathf.Clamp01(costDelta / playerShroudWrapCost);
+                normalizedInsideAmount = Mathf.Clamp01(costDif / playerShroudWrapCost);
             }
         }
 
@@ -202,19 +204,81 @@ public class Shroud : MonoBehaviour
     /// </summary>
     private AIGridCell GetClosestCellFromWorldPosition(Vector3 worldPosition)
     {
-        AIGrid gridComponent = AIGrid.instance;
-        if (gridComponent == null || gridComponent.grid == null)
+        AIGrid grid = AIGrid.instance;
+        if (grid == null || grid.grid == null)
         {
             return null;
         }
+        Vector3 localPosition = worldPosition - grid.transform.position;
 
-        Vector3 localPosition = worldPosition - gridComponent.transform.position;
+        int xIndex = Mathf.Clamp(Mathf.RoundToInt(localPosition.x), 0, grid.grid.GetLength(0) - 1);
+        int yIndex = Mathf.Clamp(Mathf.RoundToInt(localPosition.y), 0, grid.grid.GetLength(1) - 1);
+        int zIndex = Mathf.Clamp(Mathf.RoundToInt(localPosition.z), 0, grid.grid.GetLength(2) - 1);
 
-        int xIndex = Mathf.Clamp(Mathf.RoundToInt(localPosition.x), 0, gridComponent.grid.GetLength(0) - 1);
-        int yIndex = Mathf.Clamp(Mathf.RoundToInt(localPosition.y), 0, gridComponent.grid.GetLength(1) - 1);
-        int zIndex = Mathf.Clamp(Mathf.RoundToInt(localPosition.z), 0, gridComponent.grid.GetLength(2) - 1);
-
-        AIGridCell gridCell = gridComponent.grid[xIndex, yIndex, zIndex];
+        AIGridCell gridCell = grid.grid[xIndex, yIndex, zIndex];
         return gridCell;
+    }
+    
+    private void UpdateVisuals()
+    {
+        if (gasPrefab == null)
+        {
+            return;
+        }
+
+        if (reachableGasCells == null || reachableGasCells.Count == 0)
+        {
+            return;
+        }
+
+        // Take the shroud source Y as the "floor" we care about
+        float referenceFloorY = shroudSourcePos != null
+            ? shroudSourcePos.position.y
+            : 0.0f;
+
+        for (int i = 0; i < reachableGasCells.Count; i++)
+        {
+            AIGridCell cell = reachableGasCells[i];
+            if (cell == null)
+            {
+                continue;
+            }
+
+            // only use walkable cells
+            if (cell.state != AIGrid.GridStates.walkable)
+            {
+                continue;
+            }
+
+            // only spawn on the floor layer (same Y as source)
+            if (Mathf.Abs(cell.position.y - referenceFloorY) > .5f)
+            {
+                continue;
+            }
+
+            if (cell.gCost == float.MaxValue)
+            {
+                continue;
+            }
+
+            if (gasCellsWithVisuals.Contains(cell))
+            {
+                continue;
+            }
+
+            if (currentGasTime + gasSpawnLeadTime >= cell.gCost)
+            {
+                Vector3 spawnPosition = cell.position;
+                spawnPosition.y += gasHeightOffset;
+
+                GameObject newGasObject = Instantiate(gasPrefab, spawnPosition, Quaternion.identity);
+                if (gasParent != null)
+                {
+                    newGasObject.transform.SetParent(gasParent, true);
+                }
+
+                gasCellsWithVisuals.Add(cell);
+            }
+        }
     }
 }

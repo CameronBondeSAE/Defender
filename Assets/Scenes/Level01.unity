@@ -1595,7 +1595,7 @@ Transform:
   m_GameObject: {fileID: 333580090}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.3897295, y: 0.74666023, z: 30.66}
+  m_LocalPosition: {x: -3.3897295, y: 0.3, z: 24.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1724,7 +1724,7 @@ MonoBehaviour:
   showVisualisations: 1
   showVisualisationUnwalkable: 1
   showVisualisationStairs: 1
-  showVisualisationWalkable: 1
+  showVisualisationWalkable: 0
   showVisualisationAir: 0
   showVisualisationCalculatedPath: 0
   showVisualisationJump: 0
@@ -6947,6 +6947,10 @@ MonoBehaviour:
   baseAlphaAroundPlayer: 0
   maxAlphaAroundPlayer: 0.6
   playerShroudWrapCost: 2
+  gasPrefab: {fileID: 6078486353860740558, guid: fd801fd30f582214aa9f29be45b990d7, type: 3}
+  gasParent: {fileID: 333580091}
+  gasHeightOffset: 0.05
+  gasSpawnLeadTime: 0.1
 --- !u!4 &926631925
 Transform:
   m_ObjectHideFlags: 0
@@ -10312,8 +10316,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71312b67110be0d488e05aa528d1038d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowVerticalNeighbours: 1
+  allowVerticalNeighbours: 0
   baseMovementCost: 1
+  gasBlockerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  gasBlockCheckHalfExtents: {x: 1, y: 1, z: 1}
 --- !u!4 &1621810577
 Transform:
   m_ObjectHideFlags: 0
