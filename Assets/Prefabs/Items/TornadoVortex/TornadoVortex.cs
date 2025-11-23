@@ -9,8 +9,7 @@ using UnityEngine.TextCore.Text;
 public class TornadoVortex : UsableItem_Base
 {
     [Header("Tornado Vortex")]
-    
-    [SerializeField] private List<GameObject> _nameOfObjectsNearItem;
+    [SerializeField] private List<GameObject> nameOfObjectsNearItem;
     private Rigidbody _rigidbody;
 
     public void Start()
@@ -37,8 +36,8 @@ public class TornadoVortex : UsableItem_Base
         if (_rigidbody != null)
         {
             other.gameObject.GetComponent<Rigidbody>();
-            _nameOfObjectsNearItem.Add(other.gameObject);
-            Debug.Log(_nameOfObjectsNearItem.Count);
+            nameOfObjectsNearItem.Add(other.gameObject);
+            Debug.Log("Item is now at " + nameOfObjectsNearItem.Count);
         }
     }
 
@@ -47,7 +46,7 @@ public class TornadoVortex : UsableItem_Base
         if (_rigidbody != null)
         {
             other.gameObject.GetComponent<Rigidbody>();
-            _nameOfObjectsNearItem.Remove(other.gameObject);
+            nameOfObjectsNearItem.Remove(other.gameObject);
         }
     }
 }
