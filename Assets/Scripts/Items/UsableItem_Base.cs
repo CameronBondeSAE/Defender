@@ -7,6 +7,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -107,7 +108,25 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
     protected bool isArmed = false;
     protected Coroutine activationCoroutine;
     private Coroutine activationUICoroutine;
+    
+    [FormerlySerializedAs("smartItemRole")]
+    [Header("Smart Alien Interactables")]
+    [SerializeField]
+    [Tooltip("what role is this item plays for the Smart Alien AI")]
+    private ItemRoleForAI itemRoleForAI = ItemRoleForAI.None;
+    public ItemRoleForAI RoleForAI
+    {
+        get { return itemRoleForAI; }
+    }
 
+        
+    public enum ItemRoleForAI
+    {
+        None = 0,
+        Snack = 1,
+        Threat = 2
+        // can be extended later
+    }
 
     #region Lifecycle
     protected virtual void Awake()
