@@ -86,5 +86,10 @@ public class UseSnackAtCrowd : AntAIState
         {
             agent.isStopped = false;
         }
+        // when snack is used:
+        control.snackDeployed   = true;
+        control.escortInProgress = true;
+        control.civsAtMothership = false;
+
     }
 }

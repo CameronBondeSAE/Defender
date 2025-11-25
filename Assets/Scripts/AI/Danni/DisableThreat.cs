@@ -45,22 +45,22 @@ public class DisableThreat : AntAIState
             return;
         }
 
-        float rangeToUse = control != null ? control.interactRange : 2.0f; 
+        float rangeToUse = (control != null) ? control.interactRange : interactRange;
         float dist = Vector3.Distance(agent.transform.position, target.transform.position);
-        if (dist <= interactRange)
+        if (dist <= rangeToUse)                  
         {
-            // turn it off
             IUsable usable = target as IUsable;
             if (usable != null)
             {
                 usable.StopUsing();
             }
-            // disarm countdown and expiry 
+            // disable countdown and disarm
             UsableItem_Base usableItemBase = target as UsableItem_Base;
             if (usableItemBase != null)
             {
                 usableItemBase.Disarm();
             }
+
             Finish();
         }
     }
@@ -71,5 +71,11 @@ public class DisableThreat : AntAIState
         {
             agent.isStopped = false;
         }
+        if (control != null)
+        {
+            control.needsScan = true;   
+            control.currentThreatTarget = null;
+        }
+
     }
 }

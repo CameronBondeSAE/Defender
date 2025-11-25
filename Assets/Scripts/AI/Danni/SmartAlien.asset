@@ -32,6 +32,12 @@ MonoBehaviour:
       name: NearCrate
     - id: 8
       name: HasUsefulItem
+    - id: 9
+      name: EscortInProgress
+    - id: 10
+      name: NeedsScan
+    - id: 11
+      name: IsMoving
   actions:
   - name: DisableThreat
     isDefault: 0
@@ -43,89 +49,142 @@ MonoBehaviour:
       value: 1
     - id: 5
       value: 1
+    - id: 9
+      value: 0
     post:
     - id: 4
       value: 0
+    - id: 5
+      value: 0
+    - id: 10
+      value: 1
   - name: GetSnack
-    isDefault: 1
+    isDefault: 0
     state: {fileID: 196283137238693336, guid: f080cd42b3c520a47b35e4de1a5e2683, type: 3}
     cost: 0
     position: {x: 400, y: 60}
     pre:
     - id: 0
       value: 0
+    - id: 5
+      value: 0
+    - id: 9
+      value: 0
     post:
     - id: 0
+      value: 1
+    - id: 8
+      value: 1
+    - id: 10
       value: 1
   - name: UseSnackAtCrowd
     isDefault: 0
     state: {fileID: 6996236113363865023, guid: 1754cbde35dcbfa47b403b004929c6f7, type: 3}
     cost: 0
-    position: {x: 591, y: 59}
+    position: {x: 591, y: 37}
     pre:
     - id: 0
       value: 1
     - id: 2
+      value: 1
+    - id: 9
       value: 0
     post:
     - id: 1
       value: 1
-    - id: 2
-      value: 1
     - id: 0
       value: 0
+    - id: 10
+      value: 0
+    - id: 9
+      value: 1
   - name: WaitForCivsToFollow
     isDefault: 0
     state: {fileID: 4740798839040438994, guid: 5001353475f325d4d918747eaf0168a7, type: 3}
     cost: 0
-    position: {x: 209, y: 267}
+    position: {x: 212, y: 334}
     pre:
     - id: 1
       value: 1
     - id: 2
       value: 1
+    - id: 9
+      value: 1
     post:
     - id: 2
       value: 1
+    - id: 9
+      value: 1
+    - id: 10
+      value: 0
   - name: EscortCivsToMothership
     isDefault: 0
     state: {fileID: 4112792445690495274, guid: 8a651be8a0ac5884783f626d761b0d67, type: 3}
     cost: 0
-    position: {x: 402, y: 261}
+    position: {x: 408, y: 333}
     pre:
     - id: 2
       value: 1
+    - id: 1
+      value: 1
+    - id: 9
+      value: 1
     post:
     - id: 3
+      value: 1
+    - id: 2
+      value: 0
+    - id: 1
+      value: 0
+    - id: 0
+      value: 0
+    - id: 8
+      value: 0
+    - id: 9
+      value: 0
+    - id: 10
       value: 1
   - name: MoveToCrateAndWait
     isDefault: 0
     state: {fileID: 1697708797679423648, guid: 63200e4a366a0f8418ccf52c469857ad, type: 3}
     cost: 0
-    position: {x: 596, y: 316}
+    position: {x: 601, y: 372}
     pre:
     - id: 0
       value: 0
-    - id: 4
-      value: 0
     - id: 6
       value: 1
+    - id: 8
+      value: 0
+    - id: 9
+      value: 0
     post:
     - id: 8
       value: 1
-    - id: 0
+    - id: 10
       value: 1
-  goals:
-  - name: CatchCivs
+  - name: ScanLevel
     isDefault: 1
-    position: {x: 405, y: 453}
+    state: {fileID: 1934381460703441072, guid: 58c68f305f6d09a439bf6d7f3f36b99f, type: 3}
+    cost: 0
+    position: {x: 400.94568, y: 686.93933}
+    pre:
+    - id: 10
+      value: 1
+    post:
+    - id: 10
+      value: 0
+  goals:
+  - name: WorkUntilDeath
+    isDefault: 1
+    position: {x: 605, y: 668}
     conditions:
+    - id: 11
+      value: 1
     - id: 3
       value: 1
-    - id: 0
-      value: 1
   worldStates:
-  - position: {x: 206, y: 487}
+  - position: {x: 203, y: 610}
     isAutoUpdate: 0
     list:
     - id: 0

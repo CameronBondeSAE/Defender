@@ -2,10 +2,14 @@ using Anthill.AI;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MoveToCrateAndWait : AntAIState
+public class ScanLevel : AntAIState
 {
     private SmartAlienControl control;
     private NavMeshAgent agent;
+    
+    public float idleDuration;
+
+    private float timer;
 
     public override void Create(GameObject aGameObject)
     {
@@ -15,39 +19,39 @@ public class MoveToCrateAndWait : AntAIState
 
     public override void Enter()
     {
-        if (control == null || control.currentCrateTarget == null)
+        if (control == null)
         {
             Finish();
             return;
         }
+        control.needsScan = true;      
+
+        timer = 0f;                   
 
         if (agent != null && agent.enabled)
         {
-            agent.isStopped = false;
-            agent.SetDestination(control.currentCrateTarget.transform.position);
+            agent.isStopped = true;
+            agent.ResetPath();
         }
     }
 
     public override void Execute(float aDeltaTime, float aTimeScale)
     {
-        if (control == null || control.currentCrateTarget == null)
+        if (control == null)
         {
             Finish();
             return;
         }
 
-        if (agent == null || !agent.enabled)
-        {
-            Finish();
-            return;
-        }
+        timer += aDeltaTime * aTimeScale;
 
-        if (control.IsAgentNear(
-                control.currentCrateTarget.transform.position,
-                control.interactRange))
+        float duration = (control.scanDuration > 0f)
+            ? control.scanDuration
+            : idleDuration;
+
+        if (timer >= duration)
         {
-            agent.isStopped = true;
-            // now AtCrate = true via sense
+            control.needsScan = false; 
             Finish();
         }
     }
@@ -58,9 +62,10 @@ public class MoveToCrateAndWait : AntAIState
         {
             agent.isStopped = false;
         }
+
         if (control != null)
         {
-            control.needsScan = true;   
+            control.needsScan = false; 
         }
     }
 }

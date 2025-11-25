@@ -28,10 +28,13 @@ public class SmartAlienControl : CharacterBase
     [Header("Held Item Settings")]  
     public Transform itemHoldPoint;
     
-    [Header("Planner Flags (set by states)")]
+    [Header("Planner Flags)")]
     public bool snackDeployed;
     public bool escortInProgress;
     public bool civsAtMothership;
+    public bool needsScan = true;
+    public float scanDuration;
+    public bool isMoving;
 
     private void Awake()
     {
@@ -39,6 +42,10 @@ public class SmartAlienControl : CharacterBase
         {
             agent = GetComponent<NavMeshAgent>();
         }
+        needsScan       = true;
+        civsAtMothership = false;
+        escortInProgress = false;
+        snackDeployed    = false;
     }
     
     // init item holding but does NOT call IPickup.Pickup; that's done by the crate or state
@@ -104,7 +111,7 @@ public class SmartAlienControl : CharacterBase
         return best;
     }
 
-    public void ComputeNearestCrowd(out Vector3 crowdCenter, out List<AIBase> crowdMembers)
+    public void FindNearestCrowd(out Vector3 crowdCenter, out List<AIBase> crowdMembers)
     {
         crowdCenter = Vector3.zero;
         crowdMembers = new List<AIBase>();

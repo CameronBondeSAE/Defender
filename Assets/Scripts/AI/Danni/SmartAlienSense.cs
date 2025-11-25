@@ -2,64 +2,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using Anthill.AI;
 using Defender;
+using UnityEngine.AI;
 
 public class SmartAlienSense : MonoBehaviour, ISense
 {
-    
-    // private void Awake()
-    // {
-    //     control = GetComponent<SmartAlienControl>();
-    //     transform = ((Component)this).transform;
-    // }
-    //
-    // public void CollectConditions(AntAIAgent aAgent, AntAICondition aWorldState)
-    // {
-    //     // find nearest snack and threat item to make decisions
-    //     UsableItem_Base nearestSnack = control.FindNearestItem(UsableItem_Base.ItemRoleForAI.Snack, control.snackSearchRadius);
-    //     UsableItem_Base nearestThreat = control.FindNearestItem(UsableItem_Base.ItemRoleForAI.Threat, control.threatSearchRadius);
-    //
-    //     control.currentSnackTarget = nearestSnack;
-    //     control.currentThreatTarget = nearestThreat;
-    //     control.currentCrateTarget = control.FindNearestCrate();
-    //
-    //     float snackDist = (nearestSnack != null) 
-    //         ? Vector3.Distance(transform.position, nearestSnack.transform.position)
-    //         : float.MaxValue;
-    //
-    //     float threatDist = (nearestThreat != null)
-    //         ? Vector3.Distance(transform.position, nearestThreat.transform.position)
-    //         : float.MaxValue;
-    //
-    //     bool hasSnackItem = (control.heldItem != null && control.heldItem.RoleForAI == UsableItem_Base.ItemRoleForAI.Snack);
-    //     bool threatNearby = (nearestThreat != null);
-    //     bool hasCrate = (control.currentCrateTarget != null);
-    //     bool threatCloserThanSnack = threatNearby && (threatDist < snackDist);
-    //     
-    //     aWorldState.BeginUpdate(aAgent.planner);
-    //     {
-    //         aWorldState.Set("Has Snack", hasSnackItem);
-    //         aWorldState.Set("Threat Nearby", threatNearby);
-    //         aWorldState.Set("Threat Closer Than Snack", threatCloserThanSnack);
-    //         aWorldState.Set("Has Crate", hasCrate);
-    //         
-    //         // aWorldState.Set("Snack Deployed", snackDeployed);
-    //         // aWorldState.Set("Has Civ Targets", hasCivTargets);
-    //         // aWorldState.Set("Civs Delivered", civDelivered);
-    //     }
-    //     aWorldState.EndUpdate();
-    // }
-    
-    private AntAIAgent agent;             
-    private SmartAlienControl control;    
-    private Transform selfTransform;    
+   private SmartAlienControl control;
+    private Transform selfTransform;
+    private AntAIAgent agent;
+    private NavMeshAgent navAgent;
+    private CharacterBase character;
 
-    [Header("Threat")]
-    public float threatSenseRadius = 20f;
-    public LayerMask threatMask; 
+    [Header("Threat Sensing")]
+    public float threatSenseRadius = 20f;  
+    public LayerMask threatMask;
 
     [Header("Debug Visuals")]
-    public bool showDebugRays = true;  
-    
+    public bool showDebugRays = false;
     public enum SmartAlien
     {
         HasSnack = 0,
@@ -70,39 +28,58 @@ public class SmartAlienSense : MonoBehaviour, ISense
         ThreatCloserThanSnack = 5,
         HasCrate = 6,
         NearCrate = 7,
-        HasUsefulItem = 8
+        HasUsefulItem = 8,
+        EscortInProgress = 9,
+        NeedsScan = 10,
+        IsMoving = 11
     }
 
     private void Awake()
     {
-        agent         = GetComponent<AntAIAgent>();
         control       = GetComponent<SmartAlienControl>();
         selfTransform = transform;
+        agent         = GetComponent<AntAIAgent>();
+        navAgent      = GetComponent<NavMeshAgent>();
+        character     = GetComponent<CharacterBase>();
     }
-    private void OnDrawGizmosSelected() // for threat radius
-    {
-        if (!showDebugRays) return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, threatSenseRadius);
-    }
-    
     public void CollectConditions(AntAIAgent aAgent, AntAICondition aWorldState)
     {
         if (control == null)
-            control = GetComponent<SmartAlienControl>();
-        if (selfTransform == null)
-            selfTransform = transform;
-        
-        UsableItem_Base nearestSnack  =
-            control.FindNearestItem(UsableItem_Base.ItemRoleForAI.Snack,  control.snackSearchRadius);
-        UsableItem_Base nearestThreat =
-            control.FindNearestItem(UsableItem_Base.ItemRoleForAI.Threat, control.threatSearchRadius);
+        {
+            return;
+        }
+        bool currentlyMoving = false;
+        if (navAgent != null && navAgent.enabled)
+        {
+            currentlyMoving =
+                !navAgent.isStopped &&
+                navAgent.hasPath &&
+                navAgent.remainingDistance > navAgent.stoppingDistance + 0.05f;
+        }
+        control.isMoving = currentlyMoving;
+        bool hasSnackItem =
+            (control.heldItem != null &&
+             control.heldItem.RoleForAI == UsableItem_Base.ItemRoleForAI.Snack);
+        UsableItem_Base nearestSnack  = control.FindNearestItem(
+            UsableItem_Base.ItemRoleForAI.Snack,
+            control.snackSearchRadius);
+
+        UsableItem_Base nearestThreat = control.FindNearestItem(
+            UsableItem_Base.ItemRoleForAI.Threat,
+            control.threatSearchRadius);
+
+        NetworkedCrate nearestCrate   = control.FindNearestCrate();
 
         control.currentSnackTarget  = nearestSnack;
         control.currentThreatTarget = nearestThreat;
-        control.currentCrateTarget  = control.FindNearestCrate();
+        control.currentCrateTarget  = nearestCrate;
 
+        Vector3 crowdCenter;
+        System.Collections.Generic.List<AIBase> crowdMembers;
+        control.FindNearestCrowd(out crowdCenter, out crowdMembers);
+        control.currentCrowdCenter = crowdCenter;
+        control.currentCivGroup    = crowdMembers;
+        
         float snackDist = (nearestSnack != null)
             ? Vector3.Distance(selfTransform.position, nearestSnack.transform.position)
             : float.MaxValue;
@@ -110,55 +87,64 @@ public class SmartAlienSense : MonoBehaviour, ISense
         float threatDist = (nearestThreat != null)
             ? Vector3.Distance(selfTransform.position, nearestThreat.transform.position)
             : float.MaxValue;
-        Vector3 crowdCenter;
-        List<AIBase> civs;
-        control.ComputeNearestCrowd(out crowdCenter, out civs);
-        control.currentCrowdCenter = crowdCenter;
-        control.currentCivGroup    = civs;
-        
 
-        bool hasSnackItem =
-            (control.heldItem != null &&
-             control.heldItem.RoleForAI == UsableItem_Base.ItemRoleForAI.Snack);
+        bool threatNearby          = (nearestThreat != null);
+        bool threatCloserThanSnack = threatNearby && (threatDist <= snackDist);
 
-        bool snackDeployed = control.snackDeployed;
+        bool hasCrate = (nearestCrate != null);
+        bool nearCrate = false;
+        if (hasCrate)
+        {
+            nearCrate = control.IsAgentNear(
+                nearestCrate.transform.position,
+                control.interactRange);
+        }
 
         bool hasCivTargets =
             (control.currentCivGroup != null &&
              control.currentCivGroup.Count > 0);
-        
-        bool civsDelivered = control.civsAtMothership;
 
-        bool threatNearby = (nearestThreat != null &&
-                             threatDist <= threatSenseRadius);
-
-        bool threatCloserThanSnack =
-            threatNearby && (threatDist < snackDist);
-
-        bool hasCrate = (control.currentCrateTarget != null);
-
-        bool nearCrate = false;
-        if (hasCrate)
+        bool hasUsefulItem = hasSnackItem || threatNearby || hasCrate;
+        if (control.escortInProgress)
         {
-            Vector3 cratePos = control.currentCrateTarget.transform.position;
-            nearCrate = control.IsAgentNear(cratePos, control.interactRange);
+            threatNearby          = false;
+            threatCloserThanSnack = false;
+            hasCrate              = false;
+            nearCrate             = false;
+            hasUsefulItem         = hasSnackItem;
         }
 
-        bool hasUsefulItem =
-            (control.heldItem != null &&
-             control.heldItem.RoleForAI != UsableItem_Base.ItemRoleForAI.None);
+        bool civsDelivered = control.civsAtMothership;
+        
+        if (showDebugRays && nearestThreat != null)
+        {
+            Debug.DrawLine(
+                selfTransform.position,
+                nearestThreat.transform.position,
+                Color.red);
+        }
 
+        if (showDebugRays && nearestSnack != null)
+        {
+            Debug.DrawLine(
+                selfTransform.position,
+                nearestSnack.transform.position,
+                Color.green);
+        }
         aWorldState.BeginUpdate(aAgent.planner);
         {
-            aWorldState.Set((int)SmartAlien.HasSnack,             hasSnackItem);
-            aWorldState.Set((int)SmartAlien.SnackDeployed,        snackDeployed);
-            aWorldState.Set((int)SmartAlien.HasCivTargets,        hasCivTargets);
-            aWorldState.Set((int)SmartAlien.CivsDelivered,        civsDelivered);
-            aWorldState.Set((int)SmartAlien.ThreatNearby,         threatNearby);
+            aWorldState.Set((int)SmartAlien.HasSnack,           hasSnackItem);
+            aWorldState.Set((int)SmartAlien.SnackDeployed,      control.snackDeployed);
+            aWorldState.Set((int)SmartAlien.HasCivTargets,      hasCivTargets);
+            aWorldState.Set((int)SmartAlien.CivsDelivered,      civsDelivered);
+            aWorldState.Set((int)SmartAlien.ThreatNearby,       threatNearby);
             aWorldState.Set((int)SmartAlien.ThreatCloserThanSnack, threatCloserThanSnack);
-            aWorldState.Set((int)SmartAlien.HasCrate,             hasCrate);
-            aWorldState.Set((int)SmartAlien.NearCrate,            nearCrate);
-            aWorldState.Set((int)SmartAlien.HasUsefulItem,        hasUsefulItem);
+            aWorldState.Set((int)SmartAlien.HasCrate,           hasCrate);
+            aWorldState.Set((int)SmartAlien.NearCrate,          nearCrate);
+            aWorldState.Set((int)SmartAlien.HasUsefulItem,      hasUsefulItem);
+            aWorldState.Set((int)SmartAlien.EscortInProgress,   control.escortInProgress);
+            aWorldState.Set((int)SmartAlien.NeedsScan,          control.needsScan);
+            aWorldState.Set((int)SmartAlien.IsMoving,           control.isMoving);
         }
         aWorldState.EndUpdate();
     }
