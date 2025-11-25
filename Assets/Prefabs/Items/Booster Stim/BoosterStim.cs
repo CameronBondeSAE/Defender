@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class BoosterStim : UsableItem_Base
 {
+    public BoosterStimController stimController;
+    public StimView stimView;
     [Header("Booster Stim Stats")]
     [SerializeField] private float stimDuration = 10f;
     [SerializeField] private float speedIncrease = 4f;

@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 7726745093567529986}
   - component: {fileID: 9186378245177754132}
   - component: {fileID: 7534658758538071565}
+  - component: {fileID: 4202254189518786704}
   m_Layer: 7
   m_Name: Booster Stim
   m_TagString: Untagged
@@ -208,10 +209,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747852157601389569}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -240,7 +241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2798466215
+  GlobalObjectIdHash: 3568599788
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -278,6 +279,8 @@ MonoBehaviour:
   activationTrigger: 0
   allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
+  itemName: 
+  description: 
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
   stimDuration: 10
@@ -347,6 +350,18 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &4202254189518786704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747852157601389569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b92f9489a3b203e4eaef5b6a215d0c28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1759960081170471699
 GameObject:
   m_ObjectHideFlags: 0
