@@ -35,9 +35,12 @@ public class TornadoVortex : UsableItem_Base
     {
         if (_rigidbody != null)
         {
-            other.gameObject.GetComponent<Rigidbody>();
-            nameOfObjectsNearItem.Add(other.gameObject);
-            Debug.Log("Item is now at " + nameOfObjectsNearItem.Count);
+            if (!nameOfObjectsNearItem.Contains(other.gameObject))
+            {
+                nameOfObjectsNearItem.Add(other.gameObject);
+                Debug.Log("Item is now at " + nameOfObjectsNearItem.Count);
+            }
+            
         }
     }
 
