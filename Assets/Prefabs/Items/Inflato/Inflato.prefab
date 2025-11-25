@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 3204737145196010195}
   - component: {fileID: 8758704044973123256}
   m_Layer: 7
-  m_Name: Get Tiny
+  m_Name: Inflato
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -348,14 +348,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1451752049
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3160261298
+  InScenePlacedSourceGlobalObjectIdHash: 1899164553
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
+  SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -469,6 +469,8 @@ MonoBehaviour:
   description: Shrinks things in a radius
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  renderer: {fileID: 1091751792718493530}
+  rb: {fileID: 4159771251007481282}
 --- !u!1 &9212886512294030340
 GameObject:
   m_ObjectHideFlags: 0
