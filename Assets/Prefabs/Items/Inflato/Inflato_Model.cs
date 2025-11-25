@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Inflato_Model : UsableItem_Base
 {
-	public Renderer  renderer;
-	public Rigidbody rb;
+	public Renderer       renderer;
+	public Rigidbody      rb;
+	public ParticleSystem ps;
 	
 	public override void Pickup(CharacterBase whoIsPickupMeUp)
 	{
@@ -20,10 +21,17 @@ public class Inflato_Model : UsableItem_Base
 		
 		Debug.Log("Use GetTiny_Model : By "+characterTryingToUse.name);
 		
-		transform.DOScale(3f, 1f).SetEase(Ease.InOutElastic);
+		transform.DOScale(new Vector3(3f,3f,3f), 1f).OnComplete(CompletedEffects).SetEase(Ease.InCubic);
 		
 		rb.mass = 100f;
 		ChangeColour(Color.red);
+	}
+
+	void CompletedEffects()
+	{
+		ChangeColour(Color.green);
+		ps.Emit(20);
+		transform.DOScale(new Vector3(1f,1f,1f), 1f).OnComplete(CompletedEffects);
 	}
 
 	public override void StopUsing()
