@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3568599788
+  GlobalObjectIdHash: 4289426730
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -283,6 +283,8 @@ MonoBehaviour:
   description: 
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  stimController: {fileID: 0}
+  stimView: {fileID: 0}
   stimDuration: 10
   speedIncrease: 4
   stimUsed: 0
@@ -362,6 +364,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b92f9489a3b203e4eaef5b6a215d0c28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  audioSource: {fileID: 0}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
+  expiryDuration: 0
+  activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
+  countdownUIPrefab: {fileID: 0}
+  itemName: 
+  description: 
+  launchForce: 10
+  launchDirection: {x: 0, y: 0, z: 1}
+  StimModel: {fileID: 0}
+  StimView: {fileID: 0}
+  SpaceBar: 0
 --- !u!1 &1759960081170471699
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,7 +494,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2179051487537210168}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -486,7 +508,7 @@ Transform:
   - {fileID: 6400083151957542986}
   - {fileID: 3919674166086525355}
   m_Father: {fileID: 4641844733280389271}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &2884760618191452726
 GameObject:
   m_ObjectHideFlags: 0

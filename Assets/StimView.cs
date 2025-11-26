@@ -8,6 +8,7 @@ public class StimView : UsableItem_Base
 {
     public BoosterStimController stimController;
     public BoosterStim stim;
+    public ParticleSystem stimParticle;
     public AudioSource stimSound;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,5 +27,13 @@ public class StimView : UsableItem_Base
     public void StimSound_RPC()
     {
      stimSound.Play();   
+    }
+
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
+
+    public void StimParticle_RPC()
+    {
+     stimParticle.Play();
+     stimParticle.loop = true;
     }
 }

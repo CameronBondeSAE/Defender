@@ -21,6 +21,7 @@ public class BoosterStimController : UsableItem_Base
         {
          StimModel.ActivateBoosterStim_Rpc();
          StimView.StimSound_RPC();
+         StimView.StimParticle_RPC();
         }     
        
     }
