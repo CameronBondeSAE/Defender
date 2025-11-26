@@ -21,7 +21,7 @@ public class StimView : UsableItem_Base
         
     }
 
-    [Rpc(SendTo.ClientsAndHost, RequireOwnership = true, Delivery = RpcDelivery.Unreliable)]
+    [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
 
     public void StimSound_RPC()
     {

@@ -92,7 +92,7 @@ public class BoosterStim : UsableItem_Base
     {
         stimUsed = true;
         //Debug.Log("Stim Boost Active");
-
+    
         playerMovement.playerModel.MoveSpeed += speedIncrease;  // gives speed to player
         StartCoroutine(BoosterStimDuration());
     }

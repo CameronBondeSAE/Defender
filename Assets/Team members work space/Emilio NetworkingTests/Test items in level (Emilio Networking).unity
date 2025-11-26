@@ -7007,7 +7007,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   pickupClip: {fileID: 0}
   dropClip: {fileID: 0}
-  useClip: {fileID: 8300000, guid: c37b570b41aadc447858193a9e9102c5, type: 3}
+  useClip: {fileID: 0}
   timerBeepClip: {fileID: 0}
   timerActivatedClip: {fileID: 0}
   isConsumable: 1
@@ -9929,6 +9929,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1175733414}
     - target: {fileID: 4202254189518786704, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
+      propertyPath: useClip
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4202254189518786704, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: SpaceBar
       value: 32
       objectReference: {fileID: 0}
@@ -9940,6 +9944,10 @@ PrefabInstance:
       propertyPath: StimModel
       value: 
       objectReference: {fileID: 1319838425}
+    - target: {fileID: 4202254189518786704, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4641844733280389271, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.2070785
@@ -9984,6 +9992,10 @@ PrefabInstance:
       propertyPath: m_Resource
       value: 
       objectReference: {fileID: 8300000, guid: c37b570b41aadc447858193a9e9102c5, type: 3}
+    - target: {fileID: 6757116683690069917, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7458349703405120349, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: m_DynamicOccludee
       value: 0
@@ -9995,7 +10007,7 @@ PrefabInstance:
     - target: {fileID: 7726745093567529986, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: useClip
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8300000, guid: c37b570b41aadc447858193a9e9102c5, type: 3}
     - target: {fileID: 7726745093567529986, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: stimView
       value: 
@@ -10004,6 +10016,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7726745093567529986, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1471560363}
     - target: {fileID: 7726745093567529986, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: stimController
       value: 
