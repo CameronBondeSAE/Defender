@@ -61,15 +61,26 @@ namespace DanniLi
 		private Coroutine startFlowCoroutine;
 		
 		[Header("Crates")]
+		[SerializeField] private List<Transform> crateSpawnPointsInScene = new List<Transform>();
 		private List<NetworkObject> spawnedCrates = new(); 
 		private int cratesSpawnedCount = 0;                         
-		private int nextCrateSpawnIndex = 0;  
+		private int nextCrateSpawnIndex = 0; 
+		
+		[Header("Game State")]
+		private bool gameHasEnded = false;
 
 		// Events
 		public event Action GetReady_Event;
 		public event Action StartGame_Event;
 		public event Action WinGameOver_Event;
 		public event Action LoseGameOver_Event;
+		
+		private void Update()
+		{
+			if (!IsServer || gameHasEnded) return;
+			CheckIfNoAliensLeft();
+		}
+
 		
 		#region Netcode Lifecycle
 		public override void OnNetworkSpawn()
@@ -280,13 +291,13 @@ namespace DanniLi
 
 			if (uiManager != null)
 				uiManager.OnAlienKilled();
-
-			GameObject[] aliens = GameObject.FindGameObjectsWithTag("Alien");
-			if (aliens.Length <= 0)
-			{
-				Debug.Log("Game Over: Win");
-				WinGameOver_Event?.Invoke();
-			}
+			CheckIfNoAliensLeft();
+		}
+		
+		public void OnAlienLeftLevel()
+		{
+			if (!IsServer) return;
+			CheckIfNoAliensLeft();
 		}
 
 		private bool AreWavesOver()
@@ -317,33 +328,69 @@ namespace DanniLi
 		#endregion
 		
 		#region Gameplay Flow
+		
+		private bool CheckMothershipsFinishedWaves()
+		{
+			if (mothershipBases == null || mothershipBases.Length == 0)
+				return true; 
+			for (int i = 0; i < mothershipBases.Length; i++)
+			{
+				var ms = mothershipBases[i];
+				if (ms != null && !ms.AllWavesFinished)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		private void CheckIfNoAliensLeft()
+		{
+			if (!IsServer || gameHasEnded) return;
+			// only check if all waves are finished
+			if (!CheckMothershipsFinishedWaves()) return;
+			GameObject[] aliens = GameObject.FindGameObjectsWithTag("Alien");
+			if (aliens.Length > 0)
+			{
+				return;
+			}
+			TryEndWavesAndScore();
+		}
 
 		// to decide end-of-waves and evaluate win condition
 		private void TryEndWavesAndScore()
 		{
 			if(!IsServer) return;
-			if(!AreWavesOver()) return;
+			// if(!AreWavesOver()) return;
 			if (totalCivilians <= 0)
 			{
 				DoLose();
 				return;
 			}
-
 			int required = (currentlevelInfo != null) ? currentlevelInfo.percentCiviliansAliveToWin : 50;
-			float alivePercentage = (civiliansAlive / (float)totalCivilians) * 100f;
-			if (alivePercentage >= required)
+			int requiredAliveCount = Mathf.CeilToInt((required / 100f) * totalCivilians); // rounded up
+			if (civiliansAlive >= requiredAliveCount)
+			{
 				DoWin();
-			else DoLose();
+			}
+			else
+			{
+				DoLose();
+			}
 		}
 
 		private void DoWin()
 		{
+			if (gameHasEnded) return;
+			gameHasEnded = true;
 			Debug.Log("Game Win");
 			WinGameOver_Event?.Invoke();
 		}
 
 		private void DoLose()
 		{
+			if (gameHasEnded) return;
+			gameHasEnded = true;
 			Debug.Log("Game Lost");
 			LoseGameOver_Event?.Invoke();
 		}
@@ -480,21 +527,30 @@ namespace DanniLi
     }
     // Spawns one crate at the next spawn point from LevelInfo,
     // added functionality to spawn at random position if no spawnPos configured (also as an alternative :3)
-    private void TrySpawnCrateForNewClient() // NEW
+    private void TrySpawnCrateForNewClient() 
     {
         if (!IsServer || currentlevelInfo == null) return;
         int maxCrates = Mathf.Max(0, currentlevelInfo.crateSpawnCount);
         if (cratesSpawnedCount >= maxCrates) return;
         if (currentlevelInfo.cratePrefab == null) return;
-        // Choose spawn transform in listed order
+        // choose spawn transform in listed order
         Transform spawnPos = null;
-        if (currentlevelInfo.crateSpawnPoints != null &&
-            nextCrateSpawnIndex < currentlevelInfo.crateSpawnPoints.Count)
+		// now prefer scene-assigned spawn points on this manager 
+        if (crateSpawnPointsInScene != null &&
+            nextCrateSpawnIndex < crateSpawnPointsInScene.Count)
         {
-            spawnPos = currentlevelInfo.crateSpawnPoints[nextCrateSpawnIndex];
+	        spawnPos = crateSpawnPointsInScene[nextCrateSpawnIndex];
         }
-        Vector3 pos = spawnPos ? spawnPos.position : GetRandomSpawnPosition();
-        Quaternion rotation = spawnPos ? spawnPos.rotation : Quaternion.identity;
+		// if null, fallback to LevelInfo prefab spawn points
+        else if (currentlevelInfo != null &&
+                 currentlevelInfo.crateSpawnPoints != null &&
+                 nextCrateSpawnIndex < currentlevelInfo.crateSpawnPoints.Count)
+        {
+	        spawnPos = currentlevelInfo.crateSpawnPoints[nextCrateSpawnIndex];
+        }
+
+        Vector3 pos = (spawnPos != null) ? spawnPos.position : GetRandomSpawnPosition();
+        Quaternion rotation = (spawnPos != null) ? spawnPos.rotation : Quaternion.identity;
         var crateGO = Instantiate(currentlevelInfo.cratePrefab, pos, rotation, levelContainer);
         var netObj = crateGO.GetComponent<NetworkObject>();
         if (netObj == null)

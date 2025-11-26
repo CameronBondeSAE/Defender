@@ -353,13 +353,16 @@ namespace DanniLi
         private void UpdateWinScreenStats()
         {
             if (winAliensKilledText != null)
-                winAliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}";
-
+            {
+                winAliensKilledText.text =
+                    $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value}";
+            }
             if (winCivsPercentageText != null)
             {
                 float percentage = networkTotalCivilians.Value > 0
                     ? (networkCiviliansAlive.Value / (float)networkTotalCivilians.Value) * 100f
                     : 0f;
+
                 winCivsPercentageText.text =
                     $"Civilians Saved: {networkCiviliansAlive.Value}/{networkTotalCivilians.Value} ({percentage:F1}%)";
             }
@@ -368,13 +371,16 @@ namespace DanniLi
         private void UpdateLoseScreenStats()
         {
             if (loseAliensKilledText != null)
-                loseAliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}";
-
+            {
+                loseAliensKilledText.text =
+                    $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value}";
+            }
             if (loseCivsPercentageText != null)
             {
                 float percentage = networkTotalCivilians.Value > 0
                     ? (networkCiviliansAlive.Value / (float)networkTotalCivilians.Value) * 100f
                     : 0f;
+
                 loseCivsPercentageText.text =
                     $"Civilians Saved: {networkCiviliansAlive.Value}/{networkTotalCivilians.Value} ({percentage:F1}%)";
             }
