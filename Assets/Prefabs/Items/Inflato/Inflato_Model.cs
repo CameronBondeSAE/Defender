@@ -1,5 +1,7 @@
+using System;
 using Defender;
 using DG.Tweening;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class Inflato_Model : UsableItem_Base
@@ -7,7 +9,7 @@ public class Inflato_Model : UsableItem_Base
 	public Renderer       renderer;
 	public Rigidbody      rb;
 	public ParticleSystem ps;
-	
+
 	public override void Pickup(CharacterBase whoIsPickupMeUp)
 	{
 		base.Pickup(whoIsPickupMeUp);
@@ -30,8 +32,13 @@ public class Inflato_Model : UsableItem_Base
 	void CompletedEffects()
 	{
 		ChangeColour(Color.green);
-		ps.Emit(20);
+		ScaleEffects();
 		transform.DOScale(new Vector3(1f,1f,1f), 1f).OnComplete(CompletedEffects);
+	}
+
+	private void ScaleEffects()
+	{
+		ps.Emit(20);
 	}
 
 	public override void StopUsing()

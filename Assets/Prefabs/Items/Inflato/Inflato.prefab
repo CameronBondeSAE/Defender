@@ -456,7 +456,7 @@ MonoBehaviour:
   audioSource: {fileID: 6162472226170504260}
   pickupClip: {fileID: 8300000, guid: 294160321db3b4c49834df990e4c92a0, type: 3}
   dropClip: {fileID: 8300000, guid: 3be06525a790d0049893b11603c64306, type: 3}
-  useClip: {fileID: 8300000, guid: 2fc1f9da1415ba349b9f4c66ce57b6e3, type: 3}
+  useClip: {fileID: 8300000, guid: be15c97ca9a728548a45b84f32c376ed, type: 3}
   timerBeepClip: {fileID: 0}
   timerActivatedClip: {fileID: 0}
   isConsumable: 1
@@ -472,6 +472,7 @@ MonoBehaviour:
   renderer: {fileID: 1091751792718493530}
   rb: {fileID: 4159771251007481282}
   ps: {fileID: 8848604816081381795}
+  cinemachineCamera: {fileID: 0}
 --- !u!1 &9212886512294030340
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,9 +521,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
