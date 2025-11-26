@@ -309,7 +309,7 @@ namespace DanniLi
 		
 		#region Civilian Events
 
-		private void OnCivDeath()
+		public void OnCivDeath()
 		{
 			civiliansAlive = Mathf.Max(0, civiliansAlive - 1);
 			Debug.Log($"[GM][SERVER] OnCivDeath -> Alive {civiliansAlive}/{totalCivilians}");
@@ -325,6 +325,15 @@ namespace DanniLi
 				// loseScreen.SetActive(true);
 			}
 		}
+		public void OnCivAbducted()
+		{
+			if (!IsServer) return;
+			civiliansAlive = Mathf.Max(0, civiliansAlive - 1);
+			Debug.Log($"Civs alive {civiliansAlive}/{totalCivilians}");
+			if (uiManager != null)
+				uiManager.OnCivilianDeath(civiliansAlive);
+		}
+
 		#endregion
 		
 		#region Gameplay Flow

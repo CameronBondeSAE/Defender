@@ -162,6 +162,12 @@ namespace mothershipScripts
         {
             PlayRandomBeamSound(); // sound effects?
             //Destroy(civilian.gameObject); 
+            var gm = FindFirstObjectByType<DanniLi.GameManager>();
+            if (gm != null && gm.IsServer)
+            {
+                // gm.OnCivAbducted();
+                gm.OnCivDeath();
+            }
         }
 
     }
