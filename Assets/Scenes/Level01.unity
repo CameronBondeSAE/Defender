@@ -3016,7 +3016,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &657434564
 Transform:
   m_ObjectHideFlags: 0
@@ -3112,6 +3112,7 @@ MonoBehaviour:
   needsScan: 0
   scanDuration: 1
   isMoving: 0
+  crateDestroyDistance: 5
 --- !u!114 &657434569
 MonoBehaviour:
   m_ObjectHideFlags: 0

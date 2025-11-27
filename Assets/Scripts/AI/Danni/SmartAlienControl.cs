@@ -35,6 +35,8 @@ public class SmartAlienControl : CharacterBase
     public bool needsScan = true;
     public float scanDuration;
     public bool isMoving;
+    
+    public float crateDestroyDistance = 5f;
 
     private void Awake()
     {
@@ -176,6 +178,22 @@ public class SmartAlienControl : CharacterBase
         float dist = Vector3.Distance(transform.position, targetPos);
         return dist <= range;
     }
-
+    
+    public Vector3 GetCrateDisposePosition()
+    {
+        if (currentCrateTarget == null)
+        {
+            return transform.position;
+        }
+        Vector3 cratePos = currentCrateTarget.transform.position;
+        Vector3 dir      = transform.position - cratePos;
+        dir.y = 0f;
+        if (dir.sqrMagnitude < 0.01f)
+        {
+            dir = transform.forward;
+        }
+        dir.Normalize();
+        return cratePos + dir * crateDestroyDistance;
+    }
     #endregion
 }

@@ -853,4 +853,11 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
         // Don't call Disarm(); in Drop(Vector3) because item may still be armed after throw/drop!
     }
     #endregion
+    
+    #region AI Methods
+    public virtual void ForceDeactivate()
+    {
+        Disarm();
+    }
+    #endregion
 }

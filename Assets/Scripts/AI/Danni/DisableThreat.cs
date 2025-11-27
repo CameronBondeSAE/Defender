@@ -47,22 +47,26 @@ public class DisableThreat : AntAIState
 
         float rangeToUse = (control != null) ? control.interactRange : interactRange;
         float dist = Vector3.Distance(agent.transform.position, target.transform.position);
-        if (dist <= rangeToUse)                  
+        if (dist > rangeToUse)
         {
-            IUsable usable = target as IUsable;
+            return;
+        }
+        UsableItem_Base usableItemBase = target;
+        if (usableItemBase != null)
+        {
+            usableItemBase.ForceDeactivate();
+        }
+        else
+        {
+            // in case some items only have IUsable/didn't use my base class
+            // stop it any way
+            IUsable usable = target;
             if (usable != null)
             {
                 usable.StopUsing();
             }
-            // disable countdown and disarm
-            UsableItem_Base usableItemBase = target as UsableItem_Base;
-            if (usableItemBase != null)
-            {
-                usableItemBase.Disarm();
-            }
-
-            Finish();
         }
+            Finish();
     }
 
     public override void Exit()

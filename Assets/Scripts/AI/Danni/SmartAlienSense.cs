@@ -31,7 +31,8 @@ public class SmartAlienSense : MonoBehaviour, ISense
         HasUsefulItem = 8,
         EscortInProgress = 9,
         NeedsScan = 10,
-        IsMoving = 11
+        IsMoving = 11,
+        HasSnackTarget = 12   
     }
 
     private void Awake()
@@ -48,6 +49,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
         {
             return;
         }
+        // movement
         bool currentlyMoving = false;
         if (navAgent != null && navAgent.enabled)
         {
@@ -57,9 +59,14 @@ public class SmartAlienSense : MonoBehaviour, ISense
                 navAgent.remainingDistance > navAgent.stoppingDistance + 0.05f;
         }
         control.isMoving = currentlyMoving;
+        
+        // what is he holding
         bool hasSnackItem =
             (control.heldItem != null &&
              control.heldItem.RoleForAI == UsableItem_Base.ItemRoleForAI.Snack);
+        bool hasUsefulItem = (control.heldItem != null);
+        
+        // scan world for things
         UsableItem_Base nearestSnack  = control.FindNearestItem(
             UsableItem_Base.ItemRoleForAI.Snack,
             control.snackSearchRadius);
@@ -73,7 +80,9 @@ public class SmartAlienSense : MonoBehaviour, ISense
         control.currentSnackTarget  = nearestSnack;
         control.currentThreatTarget = nearestThreat;
         control.currentCrateTarget  = nearestCrate;
+        bool hasSnackTarget = (nearestSnack != null);
 
+        // looking for civ crowd
         Vector3 crowdCenter;
         System.Collections.Generic.List<AIBase> crowdMembers;
         control.FindNearestCrowd(out crowdCenter, out crowdMembers);
@@ -104,7 +113,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
             (control.currentCivGroup != null &&
              control.currentCivGroup.Count > 0);
 
-        bool hasUsefulItem = hasSnackItem || threatNearby || hasCrate;
+        // if escorting civs, ignore new threat/crates/items and stick to job
         if (control.escortInProgress)
         {
             threatNearby          = false;
@@ -116,6 +125,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
 
         bool civsDelivered = control.civsAtMothership;
         
+        // debug visuals
         if (showDebugRays && nearestThreat != null)
         {
             Debug.DrawLine(

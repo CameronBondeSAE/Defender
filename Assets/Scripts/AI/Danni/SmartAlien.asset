@@ -38,6 +38,8 @@ MonoBehaviour:
       name: NeedsScan
     - id: 11
       name: IsMoving
+    - id: 12
+      name: HasSnackTarget
   actions:
   - name: DisableThreat
     isDefault: 0
@@ -62,7 +64,7 @@ MonoBehaviour:
     isDefault: 0
     state: {fileID: 196283137238693336, guid: f080cd42b3c520a47b35e4de1a5e2683, type: 3}
     cost: 0
-    position: {x: 400, y: 60}
+    position: {x: 401, y: 19}
     pre:
     - id: 0
       value: 0
@@ -70,6 +72,8 @@ MonoBehaviour:
       value: 0
     - id: 9
       value: 0
+    - id: 12
+      value: 1
     post:
     - id: 0
       value: 1
@@ -158,6 +162,8 @@ MonoBehaviour:
       value: 0
     - id: 9
       value: 0
+    - id: 12
+      value: 0
     post:
     - id: 8
       value: 1
@@ -173,6 +179,40 @@ MonoBehaviour:
       value: 1
     post:
     - id: 10
+      value: 0
+  - name: PickUpCrateItem
+    isDefault: 0
+    state: {fileID: 3768229973472652879, guid: 131b7ba0586961247a76e893b5cd0348, type: 3}
+    cost: 0
+    position: {x: 786, y: 92}
+    pre:
+    - id: 7
+      value: 1
+    - id: 8
+      value: 0
+    post:
+    - id: 8
+      value: 1
+  - name: DestroyCrateItem
+    isDefault: 0
+    state: {fileID: 4730243677657043675, guid: 5e55b0adc45efa7408b38ee99458596c, type: 3}
+    cost: 0
+    position: {x: 791, y: 313}
+    pre:
+    - id: 8
+      value: 1
+    - id: 0
+      value: 0
+    - id: 7
+      value: 0
+    - id: 10
+      value: 0
+    - id: 9
+      value: 0
+    post:
+    - id: 8
+      value: 0
+    - id: 7
       value: 0
   goals:
   - name: WorkUntilDeath
