@@ -17,7 +17,7 @@ public class PickupCrateItem : AntAIState
 
     public override void Enter()
     {
-        if (control == null)
+        if (control == null || agent == null || !agent.enabled)
         {
             Finish();
             return;
@@ -30,25 +30,16 @@ public class PickupCrateItem : AntAIState
             return;
         }
 
-        if (agent != null && agent.enabled)
+        agent.isStopped = false;
+        if (!control.IsAgentNear(crateTarget.transform.position, control.interactRange))
         {
-            agent.isStopped = false;
-            if (!control.IsAgentNear(crateTarget.transform.position, control.interactRange))
-            {
-                agent.SetDestination(crateTarget.transform.position);
-            }
+            agent.SetDestination(crateTarget.transform.position);
         }
     }
 
     public override void Execute(float aDeltaTime, float aTimeScale)
     {
-        if (control == null || crateTarget == null)
-        {
-            Finish();
-            return;
-        }
-
-        if (agent == null || !agent.enabled)
+        if (control == null || crateTarget == null || agent == null || !agent.enabled)
         {
             Finish();
             return;

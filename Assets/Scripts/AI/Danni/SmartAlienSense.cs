@@ -60,7 +60,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
         }
         control.isMoving = currentlyMoving;
         
-        // what is he holding
+        // snack sensing
         bool hasSnackItem =
             (control.heldItem != null &&
              control.heldItem.RoleForAI == UsableItem_Base.ItemRoleForAI.Snack);
@@ -71,9 +71,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
             UsableItem_Base.ItemRoleForAI.Snack,
             control.snackSearchRadius);
 
-        UsableItem_Base nearestThreat = control.FindNearestItem(
-            UsableItem_Base.ItemRoleForAI.Threat,
-            control.threatSearchRadius);
+        UsableItem_Base nearestThreat = FindNearestActiveThreat();
 
         NetworkedCrate nearestCrate   = control.FindNearestCrate();
 
@@ -157,5 +155,55 @@ public class SmartAlienSense : MonoBehaviour, ISense
             aWorldState.Set((int)SmartAlien.IsMoving,           control.isMoving);
         }
         aWorldState.EndUpdate();
+    }
+    
+    // helper to sense whether a thread is activated
+    private UsableItem_Base FindNearestActiveThreat()
+    {
+        if (control == null)
+        {
+            return null;
+        }
+
+        UsableItem_Base[] allItems = FindObjectsOfType<UsableItem_Base>();
+
+        UsableItem_Base best = null;
+        float bestDistSqr = control.threatSearchRadius * control.threatSearchRadius;
+        Vector3 origin = selfTransform.position;
+
+        for (int i = 0; i < allItems.Length; i++)
+        {
+            UsableItem_Base item = allItems[i];
+            if (item == null)
+            {
+                continue;
+            }
+
+            if (item.RoleForAI != UsableItem_Base.ItemRoleForAI.Threat)
+            {
+                continue;
+            }
+
+            // now only count it as a threat if it is actually ACTIVE
+            // (as in, if its armed, counting down, or has activated())
+            bool isActiveThreat =
+                item.IsActivated ||
+                item.IsCountdownActive ||
+                item.IsExpiryActive;
+
+            if (!isActiveThreat)
+            {
+                continue; // skip threat that exists but is not turned on yet
+            }
+
+            float distSqr = (item.transform.position - origin).sqrMagnitude;
+            if (distSqr < bestDistSqr)
+            {
+                best        = item;
+                bestDistSqr = distSqr;
+            }
+        }
+
+        return best;
     }
 }

@@ -66,6 +66,17 @@ namespace DanniLi
 		private int cratesSpawnedCount = 0;                         
 		private int nextCrateSpawnIndex = 0; 
 		
+		[Header("Alien Eggs")]
+		[SerializeField] private List<Transform> eggSpawnPos = new List<Transform>();
+
+		[Tooltip("seconds after start of the game at which the eggs will begin to hatch")]
+		[SerializeField] private float eggHatchStartDelay = 60f;
+		[Tooltip("seconds between each egg hatching.")]
+		[SerializeField] private float eggHatchInterval = 10f;
+
+		private readonly List<Egg> spawnedEggs = new List<Egg>();
+		private Coroutine eggHatchCoroutine;
+		
 		[Header("Game State")]
 		private bool gameHasEnded = false;
 
@@ -232,6 +243,22 @@ namespace DanniLi
 					health.OnDeath += OnCivDeath;
 				}
 			}
+			
+			//--------------------------------------------------EGGS-------------------------------------------------------------
+			SpawnEggsForLevel();
+
+			// kill any previous egg coroutines (like if reloaded level)
+			if (eggHatchCoroutine != null)
+			{
+				StopCoroutine(eggHatchCoroutine);
+				eggHatchCoroutine = null;
+			}
+
+			if (spawnedEggs.Count > 0)
+			{
+				eggHatchCoroutine = StartCoroutine(EggHatchRoutine());
+			}
+			
 			//--------------------------------------------------GAME FLOW-------------------------------------------------------------
 			if (uiManager != null)
 			{
@@ -572,6 +599,75 @@ namespace DanniLi
         cratesSpawnedCount++;
         if (spawnPos != null) nextCrateSpawnIndex++; // spawn at next spawnPos in list
     }
+		#endregion
+		
+		#region Eggs
+		private void SpawnEggsForLevel()
+		{
+			if (!IsServer) return;
+			if (currentlevelInfo == null)
+				return;
+			
+			spawnedEggs.Clear();
+
+			if (eggSpawnPos == null || eggSpawnPos.Count == 0)
+				return;
+
+			if (currentlevelInfo.eggPrefabs == null || currentlevelInfo.eggPrefabs.Count == 0)
+			{
+				Debug.Log("no egg prefabs configured in LevelInfo; skipping egg spawn.");
+				return;
+			}
+
+			for (int i = 0; i < eggSpawnPos.Count; i++)
+			{
+				Transform spawnPoint = eggSpawnPos[i];
+				if (spawnPoint == null) continue;
+
+				// choose an egg prefab at random
+				GameObject eggPrefab = currentlevelInfo.eggPrefabs[0];
+				if (currentlevelInfo.eggPrefabs.Count > 1)
+				{
+					int randomIndex = UnityEngine.Random.Range(0, currentlevelInfo.eggPrefabs.Count);
+					eggPrefab = currentlevelInfo.eggPrefabs[randomIndex];
+				}
+
+				GameObject eggInstance = Instantiate(eggPrefab, spawnPoint.position, spawnPoint.rotation, levelContainer);
+				NetworkObject eggNetObj = eggInstance.GetComponent<NetworkObject>();
+				if (eggNetObj != null)
+				{
+					eggNetObj.Spawn();
+				}
+				Egg eggComponent = eggInstance.GetComponent<Egg>();
+				if (eggComponent != null)
+				{
+					spawnedEggs.Add(eggComponent);
+				}
+			}
+		}
+		private IEnumerator EggHatchRoutine()
+		{
+			if (spawnedEggs.Count == 0)
+				yield break;
+			if (eggHatchStartDelay > 0f)
+				yield return new WaitForSeconds(eggHatchStartDelay);
+
+			for (int i = 0; i < spawnedEggs.Count; i++)
+			{
+				Egg egg = spawnedEggs[i];
+
+				if (egg != null && egg.IsSpawned)
+				{
+					egg.Hatch();
+				}
+
+				if (eggHatchInterval > 0f && i < spawnedEggs.Count - 1)
+				{
+					yield return new WaitForSeconds(eggHatchInterval);
+				}
+			}
+		}
+
 		#endregion
 	}
 }
