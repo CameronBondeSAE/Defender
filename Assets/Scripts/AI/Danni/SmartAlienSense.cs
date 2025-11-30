@@ -32,7 +32,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
         EscortInProgress = 9,
         NeedsScan = 10,
         IsMoving = 11,
-        HasSnackTarget = 12   
+        HasSnackTarget = 12
     }
 
     private void Awake()

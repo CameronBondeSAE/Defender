@@ -64,9 +64,9 @@ public class MoveToCrateAndWait : AntAIState
         {
             agent.isStopped = false;
         }
-        if (control != null)
-        {
-            control.needsScan = true;   
-        }
+        // if (control != null)
+        // {
+        //     control.needsScan = true;   
+        // }
     }
 }

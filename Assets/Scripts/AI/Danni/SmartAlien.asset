@@ -162,16 +162,12 @@ MonoBehaviour:
       value: 0
     - id: 9
       value: 0
-    - id: 12
-      value: 0
     - id: 4
       value: 0
     - id: 10
       value: 0
     post:
     - id: 7
-      value: 1
-    - id: 11
       value: 1
   - name: ScanLevel
     isDefault: 1
@@ -190,26 +186,22 @@ MonoBehaviour:
     cost: 0
     position: {x: 786, y: 122}
     pre:
+    - id: 6
+      value: 1
     - id: 7
       value: 1
     - id: 8
       value: 0
-    - id: 6
-      value: 1
     - id: 9
-      value: 0
-    - id: 10
       value: 0
     post:
     - id: 8
-      value: 1
-    - id: 11
       value: 1
   - name: DestroyCrateItem
     isDefault: 0
     state: {fileID: 4730243677657043675, guid: 5e55b0adc45efa7408b38ee99458596c, type: 3}
     cost: 0
-    position: {x: 797, y: 463}
+    position: {x: 804.1538, y: 394.45142}
     pre:
     - id: 8
       value: 1
@@ -217,16 +209,10 @@ MonoBehaviour:
       value: 0
     - id: 7
       value: 0
-    - id: 10
-      value: 0
-    - id: 9
-      value: 0
     post:
     - id: 8
       value: 0
     - id: 10
-      value: 1
-    - id: 11
       value: 1
   goals:
   - name: WorkUntilDeath

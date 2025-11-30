@@ -1705,10 +1705,10 @@ MonoBehaviour:
   extraCostsNames: []
   unwalkableGrid: []
   airGrid: []
-  showVisualisations: 1
-  showVisualisationUnwalkable: 1
-  showVisualisationStairs: 1
-  showVisualisationWalkable: 1
+  showVisualisations: 0
+  showVisualisationUnwalkable: 0
+  showVisualisationStairs: 0
+  showVisualisationWalkable: 0
   showVisualisationAir: 0
   showVisualisationCalculatedPath: 0
   showVisualisationJump: 0
@@ -12675,6 +12675,10 @@ PrefabInstance:
     - target: {fileID: 162159509731898125, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
       propertyPath: totalCivilians
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 162159509731898125, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+      propertyPath: eggHatchStartDelay
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 162159509731898125, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
       propertyPath: levelSOs.Array.size
