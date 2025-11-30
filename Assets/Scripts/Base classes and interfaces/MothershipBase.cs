@@ -48,6 +48,7 @@ namespace mothershipScripts
         
         [Header("Debugging - Don't adjust")]
         public int totalAlienSpawnCount;
+        [HideInInspector] public bool AllWavesFinished = false;
 
         public event Action<GameObject> AlienSpawned_Event;
 
@@ -96,6 +97,7 @@ namespace mothershipScripts
                     yield return new WaitForSeconds(spawnDelayBetweenWaves);
                 }
             }
+            AllWavesFinished = true;
             Debug.Log("Waves finished");
             blueBeam.SetActive(true);
             blueBeam.transform.GetComponent<Collider>().enabled = true;
@@ -160,6 +162,12 @@ namespace mothershipScripts
         {
             PlayRandomBeamSound(); // sound effects?
             //Destroy(civilian.gameObject); 
+            var gm = FindFirstObjectByType<DanniLi.GameManager>();
+            if (gm != null && gm.IsServer)
+            {
+                // gm.OnCivAbducted();
+                gm.OnCivDeath();
+            }
         }
 
     }
