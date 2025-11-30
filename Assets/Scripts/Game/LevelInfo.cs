@@ -24,5 +24,9 @@ namespace DanniLi
 
 		[Header("Win Conditions")] [Range(0, 100)]
 		public int percentCiviliansAliveToWin = 50;
+		
+		[Header("Eggs")]
+		[Tooltip("Different types of egg prefabs this level will have, they spawn smart planer AIs")]
+		[SerializeField] public List<GameObject> eggPrefabs = new List<GameObject>();
 	}
 }
