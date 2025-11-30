@@ -27,7 +27,7 @@ namespace CameronBonde
 
 		private void Start()
 		{
-			UnityServices.InitializeAsync(); // BUG: This MAY happen AFTER create lobby is called, because it's not async
+			UnityServices.InitializeAsync();
 		}
 
 		// private void OnEnable()

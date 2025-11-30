@@ -353,42 +353,30 @@ namespace DanniLi
         private void UpdateWinScreenStats()
         {
             if (winAliensKilledText != null)
-            {
-                winAliensKilledText.text =
-                    $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value}";
-            }
+                winAliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}";
+
             if (winCivsPercentageText != null)
             {
-                int total = networkTotalCivilians.Value;
-                int alive = networkCiviliansAlive.Value;
-
-                float percentage = total > 0
-                    ? (alive / (float)total) * 100f
+                float percentage = networkTotalCivilians.Value > 0
+                    ? (networkCiviliansAlive.Value / (float)networkTotalCivilians.Value) * 100f
                     : 0f;
-
                 winCivsPercentageText.text =
-                    $"Civilians Saved: {alive}/{total} ({percentage:F1}%)";
+                    $"Civilians Saved: {networkCiviliansAlive.Value}/{networkTotalCivilians.Value} ({percentage:F1}%)";
             }
         }
 
         private void UpdateLoseScreenStats()
         {
             if (loseAliensKilledText != null)
-            {
-                loseAliensKilledText.text =
-                    $"Aliens Killed: {networkAliensKilled.Value}/{networkTotalAliens.Value}";
-            }
+                loseAliensKilledText.text = $"Aliens Killed: {networkAliensKilled.Value}";
+
             if (loseCivsPercentageText != null)
             {
-                int total = networkTotalCivilians.Value;
-                int alive = networkCiviliansAlive.Value;
-
-                float percentage = total > 0
-                    ? (alive / (float)total) * 100f
+                float percentage = networkTotalCivilians.Value > 0
+                    ? (networkCiviliansAlive.Value / (float)networkTotalCivilians.Value) * 100f
                     : 0f;
-
                 loseCivsPercentageText.text =
-                    $"Civilians Saved: {alive}/{total} ({percentage:F1}%)";
+                    $"Civilians Saved: {networkCiviliansAlive.Value}/{networkTotalCivilians.Value} ({percentage:F1}%)";
             }
         }
 
