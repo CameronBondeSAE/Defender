@@ -845,7 +845,8 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
         }
 
         transform.position = dropPosition;
-
+        transform.rotation = Quaternion.identity;
+        
         if (audioSource && dropClip) audioSource.PlayOneShot(dropClip);
 
         IsCarried = false;
