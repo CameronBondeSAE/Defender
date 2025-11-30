@@ -78,7 +78,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
         control.currentSnackTarget  = nearestSnack;
         control.currentThreatTarget = nearestThreat;
         control.currentCrateTarget  = nearestCrate;
-        bool hasSnackTarget = (nearestSnack != null);
+        bool hasSnackTarget = (nearestSnack != null); 
 
         // looking for civ crowd
         Vector3 crowdCenter;
@@ -153,6 +153,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
             aWorldState.Set((int)SmartAlien.EscortInProgress,   control.escortInProgress);
             aWorldState.Set((int)SmartAlien.NeedsScan,          control.needsScan);
             aWorldState.Set((int)SmartAlien.IsMoving,           control.isMoving);
+            aWorldState.Set((int)SmartAlien.HasSnackTarget,        hasSnackTarget);
         }
         aWorldState.EndUpdate();
     }
