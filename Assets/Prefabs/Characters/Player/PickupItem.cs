@@ -45,7 +45,7 @@ public class PickupItem : MonoBehaviour
     // /// </summary>
     // public bool IsPlayerInRange(Transform player)
     // {
-    //     if (!playerInRange || playerPos == null) 
+    //     if (!playerInRange || playerTransform == null) 
     //         return false;
     //         
     //     float distance = Vector3.Distance(transform.position, player.position);

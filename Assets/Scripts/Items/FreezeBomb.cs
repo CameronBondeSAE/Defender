@@ -22,12 +22,12 @@ public class FreezeBomb : UsableItem_Base
     {
         itemActive = true;
         base.Use(characterTryingToUse);
-        // Freeze(characterTryingToUse);
+        Freeze(characterTryingToUse);
     }
 
     public override void Drop()
     {
-        // Freeze();
+        Freeze();
     }
 
 
