@@ -98,13 +98,12 @@ public class SmartAlienSense : MonoBehaviour, ISense
         bool threatNearby          = (nearestThreat != null);
         bool threatCloserThanSnack = threatNearby && (threatDist <= snackDist);
 
-        bool hasCrate = (nearestCrate != null);
+        bool hasCrate  = (nearestCrate != null);
         bool nearCrate = false;
+
         if (hasCrate)
         {
-            nearCrate = control.IsAgentNear(
-                nearestCrate.transform.position,
-                control.interactRange);
+            nearCrate = control.IsAgentNearCrate(nearestCrate);
         }
 
         bool hasCivTargets =

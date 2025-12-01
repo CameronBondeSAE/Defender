@@ -37,6 +37,8 @@ public class SmartAlienControl : CharacterBase
     public float scanDuration;
     public bool isMoving;
     
+    [Header("Crate Pickup Settings")]
+    public float crateNearRadius    = 2f;
     public float crateDestroyDistance = 5f;
 
     private void Awake()
@@ -217,5 +219,37 @@ public class SmartAlienControl : CharacterBase
         dir.Normalize();
         return cratePos + dir * crateDestroyDistance;
     }
+
+    public bool IsAgentNearCrate(NetworkedCrate crate)
+    {
+        if (crate == null) return false;
+
+        float range = (crateNearRadius > 0f)
+            ? crateNearRadius
+            : interactRange;
+
+        return IsAgentNear(crate.transform.position, range);
+    }
+    public Vector3 GetCrateApproachPosition()
+    {
+        if (currentCrateTarget == null)
+        {
+            return transform.position;
+        }
+
+        Vector3 cratePos = currentCrateTarget.transform.position;
+        
+        Vector3 dir = transform.position - cratePos;
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude < 0.01f)
+        {
+            dir = transform.forward;
+        }
+        dir.Normalize();
+        float distFromCrate = 1.0f;
+        return cratePos + dir * distFromCrate;
+    }
+    
     #endregion
 }
