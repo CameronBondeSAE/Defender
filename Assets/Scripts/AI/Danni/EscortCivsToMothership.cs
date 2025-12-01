@@ -8,7 +8,7 @@ public class EscortCivsToMothership : AntAIState
     private NavMeshAgent agent;
     private bool hasCompletedDrop = false; 
     private float originalSpeed;
-
+    private Vector3 dropDestination;
     public override void Create(GameObject aGameObject)
     {
         control = aGameObject.GetComponent<SmartAlienControl>();
@@ -19,7 +19,24 @@ public class EscortCivsToMothership : AntAIState
     {
         hasCompletedDrop = false;
 
-        if (control == null || control.mothershipDropPoint == null)
+        if (control == null)
+        {
+            Finish();
+            return;
+        }
+
+        dropDestination = control.GetMothershipDestination();
+        // // in case the above doesn't work...
+        // if (control.mothershipDropPoint == null)
+        // {
+        //     MothershipDropZone ms = Object.FindObjectOfType<MothershipDropZone>();
+        //     if (ms != null)
+        //     {
+        //         control.mothershipDropPoint = ms.transform;
+        //     }
+        // }
+
+        if (control.mothershipDropPoint == null)
         {
             Finish();
             return;
@@ -34,15 +51,11 @@ public class EscortCivsToMothership : AntAIState
 
         if (agent != null && agent.enabled)
         {
-            originalSpeed = agent.speed;
-            
-            if (control.escortMoveSpeed > 0f)
-            {
-                agent.speed = control.escortMoveSpeed;
-            }
-
             agent.isStopped = false;
-            agent.SetDestination(control.mothershipDropPoint.position);
+            originalSpeed       = agent.speed;
+            agent.speed         = control.escortMoveSpeed;
+
+            agent.SetDestination(dropDestination);
         }
         
         if (control.sfx != null)
@@ -70,14 +83,14 @@ public class EscortCivsToMothership : AntAIState
             return;
         }
         bool atDropPoint = control.IsAgentNear(
-            control.mothershipDropPoint.position,
-            control.interactRange
-        );
+            dropDestination,
+            control.interactRange + 0.75f); // lil offset
 
         if (!atDropPoint)
         {
-            return;
+            return; 
         }
+
         agent.isStopped = true;
 
         hasCompletedDrop         = true;    

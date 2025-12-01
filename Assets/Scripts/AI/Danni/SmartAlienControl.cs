@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
 using Defender;
+using mothershipScripts;
 using Unity.Netcode;
 
 public class SmartAlienControl : CharacterBase
@@ -13,6 +14,7 @@ public class SmartAlienControl : CharacterBase
 
     [Header("Mothership & Civ Settings")]
     public Transform mothershipDropPoint;
+    public float mothershipNavmeshSampleRadius = 5f;
     public float threatSearchRadius = 20f;
     public float snackSearchRadius = 30f;
     public float crateSearchRadius = 30f;
@@ -56,6 +58,7 @@ public class SmartAlienControl : CharacterBase
         civsAtMothership = false;
         escortInProgress = false;
         snackDeployed    = false;
+        FindMothership(); 
         
         if (sfx == null)
         {
@@ -98,7 +101,27 @@ public class SmartAlienControl : CharacterBase
         }
     }
 
-    #region Helpers (to find crate, item, civ)
+    #region Helpers (to find crate, item, civ, mothership)
+    
+    private void FindMothership()
+    {
+        if (mothershipDropPoint != null)
+        {
+            return;
+        }
+
+        // find the first MothershipBase in the scene
+        MothershipDropZone mothership = FindObjectOfType<MothershipDropZone>();
+        if (mothership != null)
+        {
+            mothershipDropPoint = mothership.transform;
+            Debug.Log($"auto-assigned mothershipDropPoint to {mothership.name}");
+        }
+        else
+        {
+            Debug.LogWarning("no MothershipBase found in scene");
+        }
+    }
 
     public UsableItem_Base FindNearestItem(UsableItem_Base.ItemRoleForAI role, float maxRadius)
     {
@@ -228,6 +251,28 @@ public class SmartAlienControl : CharacterBase
         }
         dir.Normalize();
         return cratePos + dir * crateDestroyDistance;
+    }
+    
+    // need to find an actually reachable position to use as motherhship drop pos, since it's ignored by navmesh
+    public Vector3 GetMothershipDestination()
+    {
+        if (mothershipDropPoint == null || agent == null)
+        {
+            return transform.position;
+        }
+
+        Vector3 target = mothershipDropPoint.position;
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(
+                target,
+                out hit,
+                mothershipNavmeshSampleRadius,
+                agent.areaMask))
+        {
+            return hit.position;   
+        }
+        return target;
     }
 
     public bool IsAgentNearCrate(NetworkedCrate crate)

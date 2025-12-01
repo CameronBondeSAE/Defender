@@ -83,5 +83,9 @@ public class DestroyCrateItem : AntAIState
         {
             agent.isStopped = false;
         }
+        if (control != null)
+        {
+            control.needsScan = true;
+        }
     }
 }

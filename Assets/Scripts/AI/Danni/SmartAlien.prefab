@@ -213,11 +213,12 @@ MonoBehaviour:
   moveSpeed: 5
   defaultSpeed: 5
   agent: {fileID: 6087881932493632465}
-  sfx: {fileID: 0}
+  sfx: {fileID: -6274315758717229032}
   mothershipDropPoint: {fileID: 0}
-  threatSearchRadius: 20
-  snackSearchRadius: 30
-  crateSearchRadius: 30
+  mothershipNavmeshSampleRadius: 5
+  threatSearchRadius: 60
+  snackSearchRadius: 60
+  crateSearchRadius: 60
   interactRange: 2
   minCivCrowdSize: 3
   civCrowdRadius: 5
@@ -236,7 +237,7 @@ MonoBehaviour:
   isMoving: 0
   crateNearRadius: 2
   crateDestroyDistance: 5
-  escortMoveSpeed: 6
+  escortMoveSpeed: 3
 --- !u!114 &5481793712259278633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +285,7 @@ MonoBehaviour:
   audioSource: {fileID: 2430017054364226679}
   destroyItemClip: {fileID: 8300000, guid: 2cbc50178173b9e45806f2debc5951d9, type: 3}
   escortStartClip: {fileID: 8300000, guid: 754b632e9daa7e34ead9d59179b53c37, type: 3}
-  threatDisabledClip: {fileID: 8300000, guid: 0894160bef194e045a0f4c6a08ca12eb, type: 3}
+  threatDisabledClip: {fileID: 8300000, guid: 611fd2526a18a244fa294fa8ef29bca0, type: 3}
   civsDroppedOffClip: {fileID: 8300000, guid: 5ad9d8b9f2b777b42ac2af76dcd6ffb0, type: 3}
 --- !u!82 &2430017054364226679
 AudioSource:
