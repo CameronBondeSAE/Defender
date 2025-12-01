@@ -128,6 +128,18 @@ public class EscortCivsToMothership : AntAIState
                 agent.speed = originalSpeed;
             }
         }
+        
+        // destroy snack after escort is done
+        if (control != null && control.heldItem != null)
+        {
+            if (control.heldItem.RoleForAI == UsableItem_Base.ItemRoleForAI.Snack)
+            {
+                control.heldItem.DestroyItem();
+            }
+
+            control.heldItem = null;
+        }
+
 
         if (control != null && !hasCompletedDrop)
         {

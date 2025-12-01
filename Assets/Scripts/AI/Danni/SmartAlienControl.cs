@@ -14,12 +14,13 @@ public class SmartAlienControl : CharacterBase
     [SerializeField] AIAnimationController animController;
     private AIAnimationController.AnimationState currentAnimState;
     
-    [Header("Mothership & Civ Settings")]
+    [Header("Decision Settings")]
     public Transform mothershipDropPoint;
     public float mothershipNavmeshSampleRadius = 5f;
-    public float threatSearchRadius = 20f;
-    public float snackSearchRadius = 30f;
-    public float crateSearchRadius = 30f;
+    public float threatSearchRadius;
+    public float escortThreatInterruptRadius = 10f; 
+    public float snackSearchRadius;
+    public float crateSearchRadius;
     public float interactRange = 2.0f;
     public int minCivCrowdSize = 3;
     public float civCrowdRadius = 5f;

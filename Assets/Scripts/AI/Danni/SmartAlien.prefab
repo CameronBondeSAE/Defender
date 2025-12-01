@@ -217,8 +217,9 @@ MonoBehaviour:
   animController: {fileID: 0}
   mothershipDropPoint: {fileID: 0}
   mothershipNavmeshSampleRadius: 5
-  threatSearchRadius: 600
-  snackSearchRadius: 600
+  threatSearchRadius: 30
+  escortThreatInterruptRadius: 10
+  snackSearchRadius: 30
   crateSearchRadius: 600
   interactRange: 2
   minCivCrowdSize: 3
