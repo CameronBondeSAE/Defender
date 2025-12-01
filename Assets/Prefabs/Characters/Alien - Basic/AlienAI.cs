@@ -21,8 +21,8 @@ public class AlienAI : AIBase
         // Start in Search State when spawned
         ChangeState(new SearchState(this));
     }
-    
-    void Update()
+
+    protected override void Update()
     {
         base.Update();
 

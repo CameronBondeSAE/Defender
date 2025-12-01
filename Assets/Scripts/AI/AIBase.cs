@@ -130,7 +130,7 @@ public class AIBase : CharacterBase
 		CurrentState?.Stay();
 	}
 
-	private void FixedUpdate()
+	protected virtual void FixedUpdate()
 	{
 		if(!IsServer)
 			return;
