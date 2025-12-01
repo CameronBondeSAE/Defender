@@ -5,13 +5,15 @@ using Anthill.AI;
 using Defender;
 using mothershipScripts;
 using Unity.Netcode;
+using AIAnimation;
 
 public class SmartAlienControl : CharacterBase
 {
     public NavMeshAgent agent;
     public SmartAlienSfx sfx;
-
-
+    [SerializeField] AIAnimationController animController;
+    private AIAnimationController.AnimationState currentAnimState;
+    
     [Header("Mothership & Civ Settings")]
     public Transform mothershipDropPoint;
     public float mothershipNavmeshSampleRadius = 5f;
@@ -59,11 +61,27 @@ public class SmartAlienControl : CharacterBase
         escortInProgress = false;
         snackDeployed    = false;
         FindMothership(); 
-        
+        animController = GetComponentInChildren<AIAnimationController>();
         if (sfx == null)
         {
             sfx = GetComponent<SmartAlienSfx>();
         }
+    }
+    
+    private void Update()
+    {
+        if (agent == null || !agent.enabled || animController == null)
+        {
+            return;
+        }
+        bool actuallyMoving =
+            !agent.isStopped &&
+            agent.hasPath &&
+            agent.remainingDistance > (agent.stoppingDistance + 0.05f);
+        var desiredState = actuallyMoving
+            ? AIAnimationController.AnimationState.Walk
+            : AIAnimationController.AnimationState.Idle;
+       animController.SetAnimation(desiredState);
     }
     
     // init item holding but does NOT call IPickup.Pickup; that's done by the crate or state
