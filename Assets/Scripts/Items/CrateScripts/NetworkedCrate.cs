@@ -44,7 +44,7 @@ public class NetworkedCrate : NetworkBehaviour, IUsable
 
     // Local refs
     private NetworkObject currentSpawnedItem;
-    private Coroutine countdownCoroutine; 
+    private Coroutine countdownCoroutine; // NEW
 
     public override void OnNetworkSpawn()
     {
@@ -210,110 +210,11 @@ public class NetworkedCrate : NetworkBehaviour, IUsable
             OnItemPickedUp(); 
     }
     #endregion
-    
-    #region AI Pickup
-    // public bool TryGiveItemToAI(AIBase ai, out UsableItem_Base usableItem)
-    // {
-    //     usableItem = null;
-    //
-    //     if (!IsServer) return false;
-    //     if (ai == null) return false;
-    //     if (!hasSpawnedItem.Value || currentSpawnedItem == null) return false;
-    //
-    //     // get the pick up
-    //     IPickup pickup = currentSpawnedItem.GetComponent<IPickup>();
-    //     if (pickup == null)
-    //     {
-    //         pickup = currentSpawnedItem.GetComponentInChildren<IPickup>(true);
-    //     }
-    //
-    //     usableItem = currentSpawnedItem.GetComponent<UsableItem_Base>();
-    //     if (usableItem == null)
-    //     {
-    //         usableItem = currentSpawnedItem.GetComponentInChildren<UsableItem_Base>(true);
-    //     }
-    //
-    //     if (pickup == null || usableItem == null)
-    //     {
-    //         return false;
-    //     }
-    //
-    //     // Stop floating
-    //     NetworkedFloatingItem floating = currentSpawnedItem.GetComponent<NetworkedFloatingItem>();
-    //     if (floating == null)
-    //     {
-    //         floating = currentSpawnedItem.GetComponentInChildren<NetworkedFloatingItem>(true);
-    //     }
-    //     if (floating != null)
-    //     {
-    //         floating.OnPickedUp();
-    //         floating.enabled = false;
-    //     }
-    //
-    //     // give to AI (cuz AIBase inherits CharacterBase)
-    //     pickup.Pickup(ai);
-    //     OnItemPickedUp();
-    //
-    //     return true;
-    // }
-    
-    public bool TryGiveItemToSmartAlien(SmartAlienControl smart, out UsableItem_Base usableItem)
-    {
-        usableItem = null;
-
-        if (!IsServer) return false;
-        if (smart == null) return false;
-        if (!hasSpawnedItem.Value || currentSpawnedItem == null) return false;
-
-        IPickup pickup = currentSpawnedItem.GetComponent<IPickup>();
-        if (pickup == null)
-        {
-            pickup = currentSpawnedItem.GetComponentInChildren<IPickup>(true);
-        }
-
-        usableItem = currentSpawnedItem.GetComponent<UsableItem_Base>();
-        if (usableItem == null)
-        {
-            usableItem = currentSpawnedItem.GetComponentInChildren<UsableItem_Base>(true);
-        }
-
-        if (pickup == null || usableItem == null)
-        {
-            return false;
-        }
-
-        // Stop floating
-        NetworkedFloatingItem floating = currentSpawnedItem.GetComponent<NetworkedFloatingItem>();
-        if (floating == null)
-        {
-            floating = currentSpawnedItem.GetComponentInChildren<NetworkedFloatingItem>(true);
-        }
-        if (floating != null)
-        {
-            floating.OnPickedUp();
-            floating.enabled = false;
-        }
-
-        CharacterBase character = smart.GetComponent<CharacterBase>();
-        if (character == null)
-        {
-            return false;
-        }
-
-        // give to SmartAlien (CharacterBase)
-        pickup.Pickup(character);
-        
-        smart.OnItemPickedUp(usableItem);
-        OnItemPickedUp();
-        return true;
-    }
-
-    #endregion
 
     public void Use(CharacterBase characterTryingToUse) { }
     public void StopUsing() { }
 
-    #region Countdown & Spawn
+    #region Countdown → Spawn (int seconds; no doubles)
     private void StartSpawnCountdown()
     {
         if (!IsServer) return;
