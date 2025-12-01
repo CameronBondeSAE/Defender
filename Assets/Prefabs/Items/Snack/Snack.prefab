@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  maxHealth: 50
+  maxHealth: 200
   revivedHealth: 0
   currentHealth:
     m_InternalValue: 0
@@ -258,7 +258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7f5dc22541fdc49b98f399da6678b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  biteDamage: 10
+  biteDamage: 1
   maxLifetime: 0
   snackHealth: {fileID: 6112395036771676272}
 --- !u!4 &3428182057256415497 stripped

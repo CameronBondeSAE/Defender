@@ -8,6 +8,8 @@ using Unity.Netcode;
 public class SmartAlienControl : CharacterBase
 {
     public NavMeshAgent agent;
+    public SmartAlienSfx sfx;
+
 
     [Header("Mothership & Civ Settings")]
     public Transform mothershipDropPoint;
@@ -40,6 +42,9 @@ public class SmartAlienControl : CharacterBase
     [Header("Crate Pickup Settings")]
     public float crateNearRadius    = 2f;
     public float crateDestroyDistance = 5f;
+    
+    [Header("Movement Settings")]
+    public float escortMoveSpeed = 5f;
 
     private void Awake()
     {
@@ -51,6 +56,11 @@ public class SmartAlienControl : CharacterBase
         civsAtMothership = false;
         escortInProgress = false;
         snackDeployed    = false;
+        
+        if (sfx == null)
+        {
+            sfx = GetComponent<SmartAlienSfx>();
+        }
     }
     
     // init item holding but does NOT call IPickup.Pickup; that's done by the crate or state

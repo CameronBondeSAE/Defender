@@ -7,6 +7,7 @@ public class EscortCivsToMothership : AntAIState
     private SmartAlienControl control;
     private NavMeshAgent agent;
     private bool hasCompletedDrop = false; 
+    private float originalSpeed;
 
     public override void Create(GameObject aGameObject)
     {
@@ -16,14 +17,15 @@ public class EscortCivsToMothership : AntAIState
 
     public override void Enter()
     {
-        hasCompletedDrop = false;    
+        hasCompletedDrop = false;
 
         if (control == null || control.mothershipDropPoint == null)
         {
             Finish();
             return;
         }
-        control.civsAtMothership = false;   
+
+        control.civsAtMothership = false;
 
         if (!control.escortInProgress)
         {
@@ -32,8 +34,20 @@ public class EscortCivsToMothership : AntAIState
 
         if (agent != null && agent.enabled)
         {
+            originalSpeed = agent.speed;
+            
+            if (control.escortMoveSpeed > 0f)
+            {
+                agent.speed = control.escortMoveSpeed;
+            }
+
             agent.isStopped = false;
             agent.SetDestination(control.mothershipDropPoint.position);
+        }
+        
+        if (control.sfx != null)
+        {
+            control.sfx.PlayEscortStart();
         }
     }
 
@@ -80,6 +94,11 @@ public class EscortCivsToMothership : AntAIState
             control.currentCivGroup.Clear();
         }
         control.needsScan = true;           
+        
+        if (control.sfx != null)
+        {
+            control.sfx.PlayCivsDroppedOff();
+        }
 
         Finish();
     }
@@ -89,8 +108,15 @@ public class EscortCivsToMothership : AntAIState
         if (agent != null && agent.enabled)
         {
             agent.isStopped = false;
+
+            // restore speed
+            if (originalSpeed > 0f)
+            {
+                agent.speed = originalSpeed;
+            }
         }
-        if (control != null && !hasCompletedDrop) 
+
+        if (control != null && !hasCompletedDrop)
         {
             control.needsScan = true;
         }

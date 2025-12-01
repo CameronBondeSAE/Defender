@@ -69,6 +69,10 @@ public class DisableThreat : AntAIState
             {
                 // stop countdown/expiry /UI stuff
                 usableItemBase.ForceDeactivate();
+                if (control != null && control.sfx != null)
+                {
+                    control.sfx.PlayThreatDisabled();
+                }
 
                 // if this item is a turret, disable the turret view logic to accomodate to nick's code
                 Model_Turret turretModel = usableItemBase as Model_Turret;
@@ -91,6 +95,10 @@ public class DisableThreat : AntAIState
             if (usable != null)
             {
                 usable.StopUsing();
+                if (control != null && control.sfx != null)
+                {
+                    control.sfx.PlayThreatDisabled();
+                }
             }
         }
 

@@ -65,6 +65,10 @@ public class DestroyCrateItem : AntAIState
         if (item != null)
         {
             item.DestroyItem(); 
+            if (control.sfx != null)
+            {
+                control.sfx.PlayDestroyItem();
+            }
         }
 
         control.heldItem = null;

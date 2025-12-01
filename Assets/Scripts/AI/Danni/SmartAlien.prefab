@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 2607657602551761651}
   - component: {fileID: 5481793712259278633}
   - component: {fileID: 4733141887978869740}
+  - component: {fileID: -6274315758717229032}
+  - component: {fileID: 2430017054364226679}
   m_Layer: 0
   m_Name: SmartAlien
   m_TagString: Alien
@@ -211,6 +213,7 @@ MonoBehaviour:
   moveSpeed: 5
   defaultSpeed: 5
   agent: {fileID: 6087881932493632465}
+  sfx: {fileID: 0}
   mothershipDropPoint: {fileID: 0}
   threatSearchRadius: 20
   snackSearchRadius: 30
@@ -233,6 +236,7 @@ MonoBehaviour:
   isMoving: 0
   crateNearRadius: 2
   crateDestroyDistance: 5
+  escortMoveSpeed: 6
 --- !u!114 &5481793712259278633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,6 +269,120 @@ MonoBehaviour:
   manualUpdate: 0
   thinkInterval: 1
   scenario: {fileID: 11400000, guid: abf5f9051bb1d75458721a1710b0aba6, type: 2}
+--- !u!114 &-6274315758717229032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73245657184487470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e1b84b348d96f448792507f2ea8750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 2430017054364226679}
+  destroyItemClip: {fileID: 8300000, guid: 2cbc50178173b9e45806f2debc5951d9, type: 3}
+  escortStartClip: {fileID: 8300000, guid: 754b632e9daa7e34ead9d59179b53c37, type: 3}
+  threatDisabledClip: {fileID: 8300000, guid: 0894160bef194e045a0f4c6a08ca12eb, type: 3}
+  civsDroppedOffClip: {fileID: 8300000, guid: 5ad9d8b9f2b777b42ac2af76dcd6ffb0, type: 3}
+--- !u!82 &2430017054364226679
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73245657184487470}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2104576460910792644
 GameObject:
   m_ObjectHideFlags: 0
