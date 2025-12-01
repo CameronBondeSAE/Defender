@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
 using Defender;
+using Unity.Netcode;
 
 public class SmartAlienControl : CharacterBase
 {
@@ -56,9 +57,30 @@ public class SmartAlienControl : CharacterBase
         heldItem = item;
         if (item == null) return;
 
-        if (itemHoldPoint != null)
+        // find the actual netobj
+        NetworkObject itemNO = item.GetComponent<NetworkObject>();
+        NetworkObject myNO   = GetComponent<NetworkObject>();
+
+        // the transform where we want the item to visually sit
+        Transform visualTarget = (itemHoldPoint != null) ? itemHoldPoint : transform;
+
+        if (itemNO != null && myNO != null && myNO.IsSpawned && itemNO.IsSpawned)
         {
-            item.transform.SetParent(itemHoldPoint, false);
+            // parent under his netobj rather than holdpos
+            bool parentOk = itemNO.TrySetParent(myNO);
+
+            if (!parentOk)
+            {
+                Debug.LogWarning($"alien setParent failed for {itemNO.name}");
+            }
+            item.transform.position = visualTarget.position;
+            item.transform.rotation = visualTarget.rotation;
+            item.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            // Fallback for non-networked items (or if something is not spawned yet)
+            item.transform.SetParent(visualTarget, false);
             item.transform.localPosition = Vector3.zero;
             item.transform.localRotation = Quaternion.identity;
         }
