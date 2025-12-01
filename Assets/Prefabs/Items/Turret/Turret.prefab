@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3283514362360504679}
   - component: {fileID: 421277522992946937}
   - component: {fileID: 8320805596447643787}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Particle_Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4901,7 +4901,7 @@ GameObject:
   m_Component:
   - component: {fileID: 752377859799204609}
   - component: {fileID: 7079797918471125355}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sound_Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5029,7 +5029,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7924497641442988118}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5064,7 +5064,7 @@ GameObject:
   - component: {fileID: 2451515028449929031}
   - component: {fileID: 7832009463842075473}
   - component: {fileID: 7712850116731780378}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mesh_TurretGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5150,10 +5150,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2047596721712311622}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -5181,7 +5181,7 @@ GameObject:
   - component: {fileID: 3656708520441582834}
   - component: {fileID: 3400421405776048576}
   - component: {fileID: 5978028185378197854}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5270,7 +5270,7 @@ GameObject:
   - component: {fileID: 5029818213646845460}
   - component: {fileID: 5888239111646036738}
   - component: {fileID: 2929095005578154488}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5347,6 +5347,7 @@ MonoBehaviour:
   description: It will auto aim at aliens!
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 2
   baseFireRate: 1
   poweredFireRate: 3
   isPowered: 0
@@ -5365,6 +5366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e9edbe2918cb644cbb96a06b45167bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   model: {fileID: 5029818213646845460}
   view: {fileID: 8352034384461009443}
   turretRotator: {fileID: 2762093627101497318}
@@ -5404,7 +5406,7 @@ GameObject:
   - component: {fileID: 657129144167949323}
   - component: {fileID: 8352034384461009443}
   - component: {fileID: 2094531167869033384}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5441,6 +5443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 971b7e37916aa7b42b88e098ff8fd1db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   firePoint: {fileID: 7924497641442988118}
   bulletPrefab: {fileID: 4144061143352902021, guid: dbe64b6e85d71584bba243e0e8caeb42, type: 3}
   fireAudio: {fileID: 7079797918471125355}
@@ -5474,7 +5477,7 @@ GameObject:
   - component: {fileID: 1062291272139392890}
   - component: {fileID: 732310916087777358}
   - component: {fileID: 7220648425373945420}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mesh_TurretBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5558,10 +5561,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5161482533467078027}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -5587,7 +5590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2762093627101497318}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TurretRotator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
