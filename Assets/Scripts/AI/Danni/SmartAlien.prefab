@@ -215,7 +215,7 @@ MonoBehaviour:
   threatSearchRadius: 20
   snackSearchRadius: 30
   crateSearchRadius: 30
-  interactRange: 0
+  interactRange: 2
   minCivCrowdSize: 3
   civCrowdRadius: 5
   heldItem: {fileID: 0}
@@ -231,6 +231,7 @@ MonoBehaviour:
   needsScan: 0
   scanDuration: 1
   isMoving: 0
+  crateNearRadius: 2
   crateDestroyDistance: 5
 --- !u!114 &5481793712259278633
 MonoBehaviour:

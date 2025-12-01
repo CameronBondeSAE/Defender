@@ -187,7 +187,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
             // now only count it as a threat if it is actually ACTIVE
             // (as in, if its armed, counting down, or has activated())
             bool isActiveThreat =
-                item.IsActivated ||
+                item.IsArmed ||
                 item.IsCountdownActive ||
                 item.IsExpiryActive;
 

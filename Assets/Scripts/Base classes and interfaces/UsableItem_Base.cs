@@ -105,12 +105,13 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
     // fixed: track if the item has already been activated
     private NetworkVariable<bool> hasActivated = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-    protected bool isArmed = false;
+    protected bool isArmed;
     protected Coroutine activationCoroutine;
     private Coroutine activationUICoroutine;
     
-    [FormerlySerializedAs("smartItemRole")]
-    [Header("Smart Alien Interactables")]
+    [Header("Smart Alien Settings")]
+    private Coroutine expiryServerCoroutine;
+    public bool IsArmed           => isArmedNetworked.Value;
     [SerializeField]
     [Tooltip("what role is this item plays for the Smart Alien AI")]
     private ItemRoleForAI itemRoleForAI = ItemRoleForAI.None;
@@ -624,18 +625,29 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
     public void StartExpiryCountdown_Server()
     {
         if (!IsServer) return;
+
         // set the time first so clients can read a non-zero value
         expiryTimeRemaining.Value = expiryDuration;
-        // THEN mark active cuz ordering across different netvars isn't freaking guaranteed
+
+        // THEN mark active
         isExpiryActive.Value = expiryDuration > 0f;
+
         if (activationCoroutine != null)
         {
             StopCoroutine(activationCoroutine);
             activationCoroutine = null;
         }
+
+        // FIX FOR TURRENT & AI: stop ANY old expiry coroutines
+        if (expiryServerCoroutine != null)
+        {
+            StopCoroutine(expiryServerCoroutine);
+            expiryServerCoroutine = null;
+        }
+
         if (isExpiryActive.Value)
         {
-            StartCoroutine(ExpiryCountdownRoutine_Server());
+            expiryServerCoroutine = StartCoroutine(ExpiryCountdownRoutine_Server());
         }
     }
 
@@ -648,8 +660,12 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
             yield return new WaitForSeconds(1f);
             time -= 1f;
         }
+
         expiryTimeRemaining.Value = 0f;
-        isExpiryActive.Value = false;
+        isExpiryActive.Value      = false;
+
+        expiryServerCoroutine = null;
+
         // destroy on server; despawn across network
         DestroyItem_Server();
     }
@@ -775,7 +791,9 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
     {
         if (IsServer)
         {
-            DisarmServerRpc();
+            // DisarmServerRpc();
+            // running directly on server for AI testing
+            DoDisarm();
         }
         else
         {
@@ -804,6 +822,28 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
         
         // also cancel expiry if running!
         isExpiryActive.Value = false;
+        expiryTimeRemaining.Value = 0f;
+        hasActivated.Value         = false;
+    }
+    
+    // internal non-RPCed disarm method
+    private void DoDisarm()
+    {
+        if (activationCoroutine != null)
+        {
+            StopCoroutine(activationCoroutine);
+            activationCoroutine = null;
+        }
+        if (expiryServerCoroutine != null)
+        {
+            StopCoroutine(expiryServerCoroutine);
+            expiryServerCoroutine = null;
+        }
+        isArmedNetworked.Value   = false;
+        isCountdownActive.Value  = false;
+        countdownTimeRemaining.Value = 0f;
+
+        isExpiryActive.Value     = false;
         expiryTimeRemaining.Value = 0f;
     }
     #endregion
