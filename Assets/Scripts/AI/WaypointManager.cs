@@ -31,7 +31,7 @@ public class WaypointManager : MonoBehaviour
             allWaypoints.Add(obj.transform);
         }
         
-        Debug.Log($"Found {allWaypoints.Count} waypoints in the scene.");
+        // Debug.Log($"Found {allWaypoints.Count} waypoints in the scene.");
     }
 
     // void OnDrawGizmos() // circle out the waypoints to see

@@ -186,10 +186,10 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
             StartExpiryCountdown_LocalUI(Mathf.CeilToInt(expiryTimeRemaining.Value));
         }
         
-        Debug.Log($"OnNetworkSpawn on {(IsServer ? "Server" : "Client")}: " +
-                  $"isCountdownActive={isCountdownActive.Value}, " +
-                  $"isExpiryActive={isExpiryActive.Value}, " +
-                  $"expiryTimeRemaining={expiryTimeRemaining.Value}");
+        // Debug.Log($"OnNetworkSpawn on {(IsServer ? "Server" : "Client")}: " +
+        //           $"isCountdownActive={isCountdownActive.Value}, " +
+        //           $"isExpiryActive={isExpiryActive.Value}, " +
+        //           $"expiryTimeRemaining={expiryTimeRemaining.Value}");
     }
 
     public override void OnNetworkDespawn()
@@ -203,7 +203,7 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
         expiryTimeRemaining.OnValueChanged -= OnExpiryTimeChanged;
         isExpiryActive.OnValueChanged -= OnExpiryActiveChanged;
         DestroyCountdownUI();
-        Debug.Log($"OnNetworkDespawn on {(IsServer ? "Server" : "Client")} NO={NetworkObject?.NetworkObjectId}");
+        // Debug.Log($"OnNetworkDespawn on {(IsServer ? "Server" : "Client")} NO={NetworkObject?.NetworkObjectId}");
         base.OnNetworkDespawn();
     }
 

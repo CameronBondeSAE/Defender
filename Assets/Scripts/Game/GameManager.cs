@@ -198,7 +198,7 @@ namespace DanniLi
 
 				if (currentlevelInfo != null)
 				{
-					Debug.Log("Level Info: Civilians to save " + currentlevelInfo.civiliansToSave);
+					// Debug.Log("Level Info: Civilians to save " + currentlevelInfo.civiliansToSave);
 				}
 				else
 				{
@@ -226,13 +226,13 @@ namespace DanniLi
 				mothershipBase.AlienSpawned_Event += MothershipBaseOnAlienSpawned_Event;
 			}
 			totalAliensPlanned = aliensIncomingFromAllShips; 
-			Debug.Log("Aliens Incoming: " + aliensIncomingFromAllShips);
+			// Debug.Log("Aliens Incoming: " + aliensIncomingFromAllShips);
 			
 			//--------------------------------------------------CIVILIANS-------------------------------------------------------------
 			civilians      = GameObject.FindGameObjectsWithTag("Civilian");
 			totalCivilians = civilians.Length;
 			civiliansAlive = civilians.Length;
-			Debug.Log("Civilians Alive: " + civiliansAlive);
+			// Debug.Log("Civilians Alive: " + civiliansAlive);
 			foreach (GameObject civilian in civilians)
 			{
 				Health health = civilian.GetComponent<Health>() 
@@ -436,10 +436,10 @@ namespace DanniLi
 		// Add player to target group when they join
 		public void OnPlayerJoin(ulong playerID)
 		{
-			Debug.Log("Player joined called " + playerID);
+			// Debug.Log("Player joined called " + playerID);
 			if (NetworkManager.Singleton.ConnectedClients.TryGetValue(playerID, out NetworkClient client))
 			{
-				Debug.Log("Player joined: " + client.PlayerObject.name);
+				// Debug.Log("Player joined: " + client.PlayerObject.name);
 				if (client.PlayerObject.IsLocalPlayer)
 				{
 					AddItemToCameraTargetGroup(client.PlayerObject.transform);
@@ -511,7 +511,7 @@ namespace DanniLi
 			if (uiManager == null) uiManager = FindObjectOfType<DanniLi.UIManager>();
 			var uiNO = uiManager ? uiManager.GetComponent<NetworkObject>() : null;
 
-			Debug.Log($"[GM][SERVER] StartWave {currentWaveNumber} | UI isNull? {uiManager==null} | UI NO spawned? {uiNO && uiNO.IsSpawned} | id={(uiNO ? uiNO.NetworkObjectId : 0)}");
+			// Debug.Log($"[GM][SERVER] StartWave {currentWaveNumber} | UI isNull? {uiManager==null} | UI NO spawned? {uiNO && uiNO.IsSpawned} | id={(uiNO ? uiNO.NetworkObjectId : 0)}");
 
 			if (uiManager != null)
 				uiManager.OnWaveStart(currentWaveNumber);

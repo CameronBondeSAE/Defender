@@ -11,6 +11,8 @@ public class PlayerInputHandler2 : NetworkBehaviour
 	public event Action<Vector2> onMove;
 	public event Action<bool> onUse;
 	public event Action onInventory;
+	
+	public bool InputEnabled { get; private set; } = true;
 
 	private void Awake()
 	{
@@ -23,13 +25,13 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		}
 		else
 		{
-			Debug.Log($"[{gameObject.name}] PlayerInput found!");
+			// Debug.Log($"[{gameObject.name}] PlayerInput found!");
 		}
 	}
 
 	override public void OnNetworkSpawn()
 	{
-		Debug.Log($"[{gameObject.name}] OnNetworkSpawn called - IsLocalPlayer: {IsLocalPlayer}");
+		// Debug.Log($"[{gameObject.name}] OnNetworkSpawn called - IsLocalPlayer: {IsLocalPlayer}");
 
 		base.OnNetworkSpawn();
 
@@ -44,14 +46,14 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		}
 		else
 		{
-			Debug.Log(gameObject.name + " : Local player");
+			// Debug.Log(gameObject.name + " : Local player");
 			input.enabled = true;
 		}
 		
 		// Force input to use this specific device (helps with multiple instances)
 		input.SwitchCurrentActionMap("Player");
 		
-		Debug.Log("PlayerInputHandler2 : OnNetworkSpawn");
+		// Debug.Log("PlayerInputHandler2 : OnNetworkSpawn");
 		
 		InputAction moveAction      = input.actions.FindAction("Player/Move");
 		InputAction useAction       = input.actions.FindAction("Player/Use");
@@ -91,6 +93,8 @@ public class PlayerInputHandler2 : NetworkBehaviour
 
 	private void OnMoveUpdated(InputAction.CallbackContext context)
 	{
+		if (!InputEnabled)
+			return;
 		// Debug.Log("PlayerInputHandler2 : Move Updated : "+" "+context.ReadValue<Vector2>());
 		RequestMovePerformed_Rpc(context.ReadValue<Vector2>());
 	}
@@ -104,10 +108,15 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		// moveInput = _moveInput;
 	}
 
-	
+	public void SetInputEnabled(bool enabled)
+	{
+		InputEnabled = enabled;
+	}
 	
 	private void OnUsePerformed(InputAction.CallbackContext obj)
 	{
+		if (!InputEnabled)
+			return;
 		Debug.Log("OnUsePerformed : "+obj.performed);
 		if (obj.performed)
 			RequestTryUseItem_Rpc(true);
@@ -131,6 +140,8 @@ public class PlayerInputHandler2 : NetworkBehaviour
 
 	private void OnInventoryPerformed(InputAction.CallbackContext context)
 	{
+		if (!InputEnabled)
+			return;
 		Debug.Log("OnInventoryPerformed");
 		RequestTryPickupItem_Rpc();
 	}
