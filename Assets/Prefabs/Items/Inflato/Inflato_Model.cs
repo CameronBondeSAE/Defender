@@ -1,12 +1,15 @@
+using System;
 using Defender;
 using DG.Tweening;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class Inflato_Model : UsableItem_Base
 {
-	public Renderer  renderer;
-	public Rigidbody rb;
-	
+	public Renderer       renderer;
+	public Rigidbody      rb;
+	public ParticleSystem ps;
+
 	public override void Pickup(CharacterBase whoIsPickupMeUp)
 	{
 		base.Pickup(whoIsPickupMeUp);
@@ -20,10 +23,22 @@ public class Inflato_Model : UsableItem_Base
 		
 		Debug.Log("Use GetTiny_Model : By "+characterTryingToUse.name);
 		
-		transform.DOScale(3f, 1f).SetEase(Ease.InOutElastic);
+		transform.DOScale(new Vector3(3f,3f,3f), 1f).OnComplete(CompletedEffects).SetEase(Ease.InCubic);
 		
 		rb.mass = 100f;
 		ChangeColour(Color.red);
+	}
+
+	void CompletedEffects()
+	{
+		ChangeColour(Color.green);
+		ScaleEffects();
+		transform.DOScale(new Vector3(1f,1f,1f), 1f).OnComplete(CompletedEffects);
+	}
+
+	private void ScaleEffects()
+	{
+		ps.Emit(20);
 	}
 
 	public override void StopUsing()

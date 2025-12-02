@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 746635345998147736}
   - component: {fileID: 4337139785013187705}
   - component: {fileID: 3204737145196010195}
-  - component: {fileID: 8758704044973123256}
+  - component: {fileID: 2210184730404118470}
   m_Layer: 7
   m_Name: Inflato
   m_TagString: Untagged
@@ -348,8 +348,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3160261298
-  InScenePlacedSourceGlobalObjectIdHash: 1899164553
+  GlobalObjectIdHash: 3579973857
+  InScenePlacedSourceGlobalObjectIdHash: 831311630
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -440,7 +440,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &8758704044973123256
+--- !u!114 &2210184730404118470
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -449,28 +449,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 7917422719169276902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7c8b3b4b5c9530478b59d3d5d97a92b, type: 3}
+  m_Script: {fileID: 11500000, guid: 689601732e327514ab379bde8c866a30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   audioSource: {fileID: 6162472226170504260}
-  pickupClip: {fileID: 8300000, guid: e9f96aaf9c47cd44c8c6094e258febb8, type: 3}
-  dropClip: {fileID: 0}
+  pickupClip: {fileID: 8300000, guid: 294160321db3b4c49834df990e4c92a0, type: 3}
+  dropClip: {fileID: 8300000, guid: 3be06525a790d0049893b11603c64306, type: 3}
   useClip: {fileID: 8300000, guid: be15c97ca9a728548a45b84f32c376ed, type: 3}
-  timerBeepClip: {fileID: 8300000, guid: cfc3ca73a3f8a3145967f4fd7c7d1860, type: 3}
-  timerActivatedClip: {fileID: 8300000, guid: dfd25a76a1afcf6459fc533ec9ab4164, type: 3}
-  isConsumable: 0
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
   expiryDuration: 0
-  activationCountdown: 2
+  activationCountdown: 0
   activationTrigger: 0
   allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
-  itemName: Get Tiny
-  description: Shrinks things in a radius
+  itemName: 
+  description: 
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
   renderer: {fileID: 1091751792718493530}
   rb: {fileID: 4159771251007481282}
+  ps: {fileID: 8848604816081381795}
+  cinemachineCamera: {fileID: 0}
 --- !u!1 &9212886512294030340
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,9 +521,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
