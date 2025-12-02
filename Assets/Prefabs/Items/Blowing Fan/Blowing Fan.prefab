@@ -205,8 +205,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0000002, y: 14.08838, z: 0.29443827}
-  m_Center: {x: 0.00000007719732, y: 0.22744714, z: -0.35278112}
+  m_Size: {x: 1.0000002, y: 14.08838, z: 0.05689317}
+  m_Center: {x: 0.00000007719732, y: 0.22744714, z: -0.42749354}
 --- !u!1 &1588935079522569844
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +455,7 @@ MonoBehaviour:
   description: Blows enemies away!
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
   pushForce: 100
   pushMask:
     serializedVersion: 2
