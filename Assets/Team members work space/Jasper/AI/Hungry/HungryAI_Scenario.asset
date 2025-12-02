@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f22e7053ea04ed0922308786facc8c, type: 3}
+  m_Name: HungryAI_Scenario
+  m_EditorClassIdentifier: 
+  conditions:
+    list:
+    - id: 0
+      name: SeesFood
+    - id: 1
+      name: AtFood
+    - id: 2
+      name: EatenFood
+  actions:
+  - name: GoToFood
+    isDefault: 0
+    state: {fileID: 1674417238749895464, guid: b0a940d6c0a74e5469a10d880f2491b2, type: 3}
+    cost: 0
+    position: {x: 441, y: 183}
+    pre:
+    - id: 0
+      value: 1
+    - id: 1
+      value: 0
+    post:
+    - id: 1
+      value: 1
+  - name: EatFood
+    isDefault: 0
+    state: {fileID: 6652989674068131733, guid: 95a73e26918483b44baa677edafe1442, type: 3}
+    cost: 0
+    position: {x: 635, y: 184}
+    pre:
+    - id: 1
+      value: 1
+    - id: 2
+      value: 0
+    post:
+    - id: 2
+      value: 1
+  - name: LookForFood
+    isDefault: 1
+    state: {fileID: 2775027862409512264, guid: bbe878cdbc99d8b47a62d8ad2fb2a466, type: 3}
+    cost: 0
+    position: {x: 245, y: 192}
+    pre:
+    - id: 0
+      value: 0
+    post:
+    - id: 0
+      value: 1
+  goals:
+  - name: EatenFood
+    isDefault: 1
+    position: {x: 830, y: 236}
+    conditions:
+    - id: 2
+      value: 1
+  worldStates:
+  - position: {x: 251, y: 44}
+    isAutoUpdate: 0
+    list:
+    - id: 0
+      value: 0
+    - id: 1
+      value: 0
+    - id: 2
+      value: 0

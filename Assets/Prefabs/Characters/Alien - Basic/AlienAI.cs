@@ -10,7 +10,7 @@ public class AlienAI : AIBase
     [HideInInspector] public AIBase currentTargetCiv; // Stores current civilian target (public but can't be messed with in inspector)
     
     [Header("Return Settings")]
-    [Tooltip("how many extra times this alien will go out again after reaching the motheship, 0 = only one run")]
+    [Tooltip("how many extra times this alien will go out again after reaching the mothership, 0 = only one run")]
     public int returnCount = 0;
     private int remainingReturns;
 
