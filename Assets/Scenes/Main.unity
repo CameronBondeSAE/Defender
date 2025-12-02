@@ -2335,10 +2335,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563976979}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 0.0000001
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -8002,11 +8002,11 @@ MonoBehaviour:
   - _gameObject: {fileID: 393680631}
     _prefab: Assets/Prefabs/Spawn.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Characters/Player.prefab
+    _prefab: Assets/Prefabs/Characters/Player/Player.prefab
   - _gameObject: {fileID: 302250214}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_04.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Characters/Player.prefab
+    _prefab: Assets/Prefabs/Characters/Player/Player.prefab
   - _gameObject: {fileID: 8708370507975262657}
     _prefab: Assets/Prefabs/Items/Demo item/Demo Item.prefab
   - _gameObject: {fileID: 70990412}
@@ -8038,20 +8038,20 @@ MonoBehaviour:
   - _gameObject: {fileID: 914033679}
     _prefab: Assets/Prefabs/Items/Turret/Turret.prefab
   - _gameObject: {fileID: 2013514529}
-    _prefab: Assets/SolStuff/DecoyItem/DecoyItem.prefab
+    _prefab: Assets/Prefabs/Items/DecoyItem/DecoyItem.prefab
   - _gameObject: {fileID: 1746595130}
     _prefab: Assets/Prefabs/Items/HealBomb/HealBomb.prefab
   - _gameObject: {fileID: 1621829435}
     _prefab: Assets/Prefabs/Items/Snack/Snack.prefab
   - _gameObject: {fileID: 1621829436}
     _prefab: Assets/Art/Kenney - Food/burger.fbx
-  - _gameObject: {fileID: 1888258544}
+  - _gameObject: {fileID: 1621829437}
     _prefab: Assets/Art/Kenney - Food/bag.fbx
   - _gameObject: {fileID: 1620427066}
     _prefab: Assets/Prefabs/Items/Snack/Snack.prefab
   - _gameObject: {fileID: 1620427067}
     _prefab: Assets/Art/Kenney - Food/burger.fbx
-  - _gameObject: {fileID: 1930698740}
+  - _gameObject: {fileID: 1620427068}
     _prefab: Assets/Art/Kenney - Food/bag.fbx
   - _gameObject: {fileID: 1977532219}
     _prefab: Assets/Prefabs/Items/Snack/Snack.prefab
@@ -8457,11 +8457,6 @@ Transform:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1148814856502129443, guid: 8e75a91b70fd52d4aaef3475f20cb13e, type: 3}
   m_PrefabInstance: {fileID: 1715496361}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1888258544 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3808081602761358926, guid: 9defdaf93d256da46ac6e8b9a4dda61a, type: 3}
-  m_PrefabInstance: {fileID: 1621829434}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1892291082 stripped
 GameObject:
@@ -13368,11 +13363,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bceb7f503edda394a9e6f869747f1219, type: 3}
---- !u!1 &1930698740 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3808081602761358926, guid: 9defdaf93d256da46ac6e8b9a4dda61a, type: 3}
-  m_PrefabInstance: {fileID: 1620427065}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1944344461
 GameObject:
   m_ObjectHideFlags: 0
@@ -13623,11 +13613,6 @@ GameObject:
 --- !u!1 &1977532220 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2655023465686543283, guid: 9defdaf93d256da46ac6e8b9a4dda61a, type: 3}
-  m_PrefabInstance: {fileID: 1977532218}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1977532221 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3808081602761358926, guid: 9defdaf93d256da46ac6e8b9a4dda61a, type: 3}
   m_PrefabInstance: {fileID: 1977532218}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1985100325
@@ -14042,10 +14027,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2078070645}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -14179,9 +14164,18 @@ MonoBehaviour:
   description: 
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
-  fanOn: 0
+  itemRoleForAI: 0
   pushForce: 0
+  pushMask:
+    serializedVersion: 2
+    m_Bits: 0
   particleSystem: {fileID: 0}
+  groundRaycastDistance: 2
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  snapOnSpawn: 1
+  snapOnActivate: 1
 --- !u!1 &2079288564
 GameObject:
   m_ObjectHideFlags: 0
@@ -14717,6 +14711,22 @@ PrefabInstance:
     - target: {fileID: 2837882455274296492, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: JoinFirstAvailableLobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5294466942754682317, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchorMax.y
