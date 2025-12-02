@@ -9,20 +9,33 @@ using UnityEngine.TextCore.Text;
 public class TornadoVortex : UsableItem_Base
 {
     [Header("Tornado Vortex")]
-    [SerializeField] private List<GameObject> nameOfObjectsNearItem;
-    private Rigidbody _rigidbody;
+    [SerializeField] private List<Rigidbody> nameOfObjectsNearItem;
 
-    public void Start()
+    [SerializeField]private float strength = 10f;
+
+
+    public void FixedUpdate()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        //Todo add a bool
+        foreach (Rigidbody item in nameOfObjectsNearItem)
+        {
+            if (item != null)
+            {
+                //todo bool for repel or attract
+                item.AddForce((transform.position - item.position).normalized * strength);
+                
+                //rbObjectsNearItem.AddForce(Vector3.up * strength, ForceMode.Acceleration);
+                //rbObjectsNearItem.AddTorque(Vector3.up);
+            }
+        }
     }
-
     public override void Use(CharacterBase characterTryingToUse)
     {
         base.Use(characterTryingToUse);
-		
-        Debug.Log("Use GetTiny_Model : By "+characterTryingToUse.name);
+
+        // toggle for on or off
         
+        Debug.Log("Use TornadoItem : By "+characterTryingToUse.name);
     }
     public override void Pickup(CharacterBase whoIsPickupMeUp)
     {
@@ -33,23 +46,22 @@ public class TornadoVortex : UsableItem_Base
 
     public void OnTriggerEnter(Collider other)
     {
-        if (_rigidbody != null)
+        Rigidbody rb = other.GetComponent<Rigidbody>();
+        if (rb)
         {
-            if (!nameOfObjectsNearItem.Contains(other.gameObject))
+            if (!nameOfObjectsNearItem.Contains(rb))
             {
-                nameOfObjectsNearItem.Add(other.gameObject);
+                nameOfObjectsNearItem.Add(rb);
                 Debug.Log("Item is now at " + nameOfObjectsNearItem.Count);
             }
-            
         }
     }
 
     public void OnTriggerExit(Collider other)
     {
-        if (_rigidbody != null)
+        if (other.GetComponent<Rigidbody>())
         {
-            other.gameObject.GetComponent<Rigidbody>();
-            nameOfObjectsNearItem.Remove(other.gameObject);
+            nameOfObjectsNearItem.Remove(other.GetComponent<Rigidbody>());
         }
     }
 }
