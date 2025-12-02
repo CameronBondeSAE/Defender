@@ -11,6 +11,7 @@ public class FollowState : IAIState
     private AIBase ai;
     private Transform target;
     private AIAnimationController animController;
+    [SerializeField] private CivilianSoundController civilianSoundController;
 
     public FollowState(AIBase ai, Transform target)
     {
@@ -21,6 +22,13 @@ public class FollowState : IAIState
     public void Enter()
     {
         ai.SetAbducted(true);
+        
+        if (civilianSoundController == null)
+        {
+            civilianSoundController = ai.gameObject.GetComponent<CivilianSoundController>();
+        }
+        civilianSoundController.PlayAbductedScream();
+        
         if (ai.escortingAlien == null && target != null && target.TryGetComponent<AlienAI>(out var escortingAlien))
             ai.escortingAlien = escortingAlien;
 
