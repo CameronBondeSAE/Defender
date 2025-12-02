@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8200315051611545117}
   - component: {fileID: 8260658162909796548}
   - component: {fileID: 614046809631639530}
-  - component: {fileID: 524554074547491442}
   - component: {fileID: 7674359164715951954}
+  - component: {fileID: 5666199197902263284}
   m_Layer: 0
   m_Name: NetworkedCrate
   m_TagString: Untagged
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4176540399
+  GlobalObjectIdHash: 1797300138
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -80,32 +80,11 @@ MonoBehaviour:
   itemSpawnPoint: {fileID: 6816814081410826658}
   itemFloatHeight: 1.5
   pickupRange: 4
-  pickupTrigger: {fileID: 524554074547491442}
+  pickupTrigger: {fileID: 0}
   countdownUIPrefab: {fileID: 7822931937235686600, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
   audioSource: {fileID: 0}
   generateItemClip: {fileID: 0}
   itemReadyClip: {fileID: 0}
---- !u!65 &524554074547491442
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3944214951611117370}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3, y: 1, z: 3}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &7674359164715951954
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -125,8 +104,29 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.5245214, z: 1}
+  m_Center: {x: 0, y: 0.2377393, z: 0}
+--- !u!65 &5666199197902263284
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3944214951611117370}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 1, z: 3}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &4602501842891366464
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2cbac68655ec8a74cbc4f7a2fe99c340, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.568
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2cbac68655ec8a74cbc4f7a2fe99c340, type: 3}
       propertyPath: m_LocalPosition.z

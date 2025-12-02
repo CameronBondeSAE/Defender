@@ -6,7 +6,6 @@ public class MoveToCrateAndWait : AntAIState
 {
     private SmartAlienControl control;
     private NavMeshAgent agent;
-    private Vector3 standPos;
 
     public override void Create(GameObject aGameObject)
     {
@@ -16,25 +15,18 @@ public class MoveToCrateAndWait : AntAIState
 
     public override void Enter()
     {
-        if (control == null || control.currentCrateTarget == null || agent == null || !agent.enabled)
+        if (control == null || control.currentCrateTarget == null)
         {
             Finish();
             return;
         }
-        Vector3 cratePos = control.currentCrateTarget.transform.position;
-        Vector3 dir      = control.transform.position - cratePos;
-        dir.y = 0f;
 
-        if (dir.sqrMagnitude < 0.01f)
+        if (agent != null && agent.enabled)
         {
-            dir = control.transform.forward;
+            agent.isStopped = false;
+            Vector3 approachPos = control.GetCrateApproachPosition();
+            agent.SetDestination(approachPos);
         }
-
-        dir.Normalize();
-        standPos = cratePos + dir * 1.0f;
-
-        agent.isStopped = false;
-        agent.SetDestination(standPos);
     }
 
     public override void Execute(float aDeltaTime, float aTimeScale)
@@ -51,10 +43,10 @@ public class MoveToCrateAndWait : AntAIState
             return;
         }
 
-        if (control.IsAgentNear(standPos, control.interactRange))
+        if (control.IsAgentNearCrate(control.currentCrateTarget))
         {
             agent.isStopped = true;
-            Finish();
+            Finish(); 
         }
     }
 
@@ -64,9 +56,9 @@ public class MoveToCrateAndWait : AntAIState
         {
             agent.isStopped = false;
         }
-        if (control != null)
-        {
-            control.needsScan = true;   
-        }
+        // if (control != null)
+        // {
+        //     control.needsScan = true;   
+        // }
     }
 }

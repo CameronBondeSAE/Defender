@@ -32,8 +32,8 @@ public class PlayerAnimation : NetworkBehaviour
         // set start state on server so late-joiners get it
         if (IsServer)
             stateNetVar.Value = PlayerState.Idle;
-        Debug.Log($"[PA][{(IsServer ? "SERVER" : $"CLIENT {NetworkManager.LocalClientId}")}] " +
-                  $"Spawn NetId={NetworkObjectId}, Owner={OwnerClientId}, IsOwner={IsOwner}, IsSpawned={NetworkObject.IsSpawned}");
+        // Debug.Log($"[PA][{(IsServer ? "SERVER" : $"CLIENT {NetworkManager.LocalClientId}")}] " +
+        //           $"Spawn NetId={NetworkObjectId}, Owner={OwnerClientId}, IsOwner={IsOwner}, IsSpawned={NetworkObject.IsSpawned}");
         PlayState(stateNetVar.Value);
     }
     
