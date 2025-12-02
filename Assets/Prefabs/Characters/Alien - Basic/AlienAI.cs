@@ -1,5 +1,6 @@
 using UnityEngine;
 using AIAnimation;
+using System.Collections.Generic;
 
 public class AlienAI : AIBase
 {
@@ -8,6 +9,7 @@ public class AlienAI : AIBase
     public Transform mothership; // Reference to mothership (could be used for returning, escaping, etc.)
     public bool isReached = false; // Flag to check if destination is reached
     [HideInInspector] public AIBase currentTargetCiv; // Stores current civilian target (public but can't be messed with in inspector)
+    [HideInInspector] public List<AIBase> escortingCivs = new List<AIBase>(); // Stores current civilian target (public but can't be messed with in inspector)
     
     [Header("Return Settings")]
     [Tooltip("how many extra times this alien will go out again after reaching the motheship, 0 = only one run")]
