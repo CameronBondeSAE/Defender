@@ -17,8 +17,12 @@ namespace DanniLi
 	public class GameManager : NetworkBehaviour
 	{
 		[Header("Level Information")]
+		// [SerializeField]
+		// public LevelInfo[] levelSOs;
+
 		[SerializeField]
-		public LevelInfo[] levelSOs;
+		private LevelLoader levelLoader;
+		
 		[Header("Debugging: Don't edit")]
 		private LevelInfo currentlevelInfo;
 		public int currentLevelIndex = 0;
@@ -61,7 +65,7 @@ namespace DanniLi
 		private Coroutine startFlowCoroutine;
 		
 		[Header("Crates")]
-		[SerializeField] private List<Transform> crateSpawnPointsInScene = new List<Transform>();
+		[SerializeField] private List<CrateSpawn> crateSpawnpointsInScene = new List<CrateSpawn>();
 		private List<NetworkObject> spawnedCrates = new(); 
 		private int cratesSpawnedCount = 0;                         
 		private int nextCrateSpawnIndex = 0; 
@@ -85,11 +89,17 @@ namespace DanniLi
 		public event Action StartGame_Event;
 		public event Action WinGameOver_Event;
 		public event Action LoseGameOver_Event;
-		
-		private void Update()
+
+		private IEnumerator Start()
 		{
-			if (!IsServer || gameHasEnded) return;
-			CheckIfNoAliensLeft();
+			if (IsServer)
+			{
+				while (!gameHasEnded)
+				{
+					CheckIfNoAliensLeft();
+					yield return new WaitForSeconds(1f);
+				}
+			}
 		}
 
 		
@@ -190,32 +200,36 @@ namespace DanniLi
 
 		private void InitializeLevel()
 		{
-				//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
-				// ticked off the todos
-				currentlevelInfo = (levelSOs != null && levelSOs.Length > 0)
-					? levelSOs[Mathf.Clamp(currentLevelIndex, 0, levelSOs.Length - 1)] 
-					: null;
+			//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
+			// ticked off the todos
+			currentlevelInfo = (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
+				? levelLoader.levelOrder[Mathf.Clamp(currentLevelIndex, 0, levelLoader.levelOrder.Length - 1)] 
+				: null;
 
-				if (currentlevelInfo != null)
-				{
-					// Debug.Log("Level Info: Civilians to save " + currentlevelInfo.civiliansToSave);
-				}
-				else
-				{
-					Debug.Log("Level Info: No level info found");
-				}
+			if (currentlevelInfo != null)
+			{
+				// Debug.Log("Level Info: Civilians to save " + currentlevelInfo.civiliansToSave);
+			}
+			else
+			{
+				Debug.Log("Level Info: No level info found");
+			}
+		
 			//--------------------------------------------------CRATES & ITEMS-------------------------------------------------------------
+			crateSpawnpointsInScene = FindObjectsByType<CrateSpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+			
 			Crate[] crates = FindObjectsByType<Crate>(FindObjectsSortMode.None);
-			if (levelSOs != null && levelSOs.Length > 0)
+			if (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
 				foreach (Crate crate in crates)
 				{
-					LevelInfo levelSO                         = levelSOs[currentLevelIndex];
+					LevelInfo levelSO                         = levelLoader.levelOrder[currentLevelIndex];
 					if (levelSO != null) crate.availableItems = levelSO.availableItems;
 				}
 			else
 			{
 				Debug.LogWarning("GameManager: no level info!");
 			}
+
 			//--------------------------------------------------MOTHERSHIP & ALIENS-------------------------------------------------------------
 			mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 			// aliensIncomingFromAllShips = 0;
@@ -415,7 +429,7 @@ namespace DanniLi
 			}
 		}
 
-		private void DoWin()
+		public void DoWin()
 		{
 			if (gameHasEnded) return;
 			gameHasEnded = true;
@@ -423,7 +437,7 @@ namespace DanniLi
 			WinGameOver_Event?.Invoke();
 		}
 
-		private void DoLose()
+		public void DoLose()
 		{
 			if (gameHasEnded) return;
 			gameHasEnded = true;
@@ -572,10 +586,10 @@ namespace DanniLi
         // choose spawn transform in listed order
         Transform spawnPos = null;
 		// now prefer scene-assigned spawn points on this manager 
-        if (crateSpawnPointsInScene != null &&
-            nextCrateSpawnIndex < crateSpawnPointsInScene.Count)
+        if (crateSpawnpointsInScene != null &&
+            nextCrateSpawnIndex < crateSpawnpointsInScene.Count)
         {
-	        spawnPos = crateSpawnPointsInScene[nextCrateSpawnIndex];
+	        spawnPos = crateSpawnpointsInScene[nextCrateSpawnIndex].transform;
         }
 		// if null, fallback to LevelInfo prefab spawn points
         else if (currentlevelInfo != null &&
