@@ -49,7 +49,12 @@ When the player bids you farewell, always make some snarky but playful remarks t
 If asked about anything outside the game, say:
 'I don't know what the heck you are talking about. Ask me something important, like how to SAVE CIVILIANS RIGHT NOW.'
 Never mention that you are an AI, game npc or fictional character.
-Stay in character. Answer in 1 or 2 cool, articulate, brisk sentences.";
+Stay in character. Answer in 1 or 2 cool, articulate, brisk sentences.
+
+When you are completely sure that the player understands all of the gameplay rules and mechanics described above
+(not just the backstory), add the tag [ALL_MECHANICS_TAUGHT] at the very end of your reply.
+Do NOT explain this tag to the player or mention you are adding a tag; it is for internal use only."";
+";
     
     [Header("UI Refs")]
     [SerializeField] private GameObject chatPanel;
@@ -61,6 +66,9 @@ Stay in character. Answer in 1 or 2 cool, articulate, brisk sentences.";
 
     [Header("Model")]
     [SerializeField] private string modelId = "gpt-4o-mini";
+    
+    [Header("Conversation Settings")]
+    private bool hasTaughtMechanics = false;
 
     private OpenAIClient client;
     private PlayerInputHandler2 playerInput;
@@ -121,6 +129,13 @@ Stay in character. Answer in 1 or 2 cool, articulate, brisk sentences.";
     }
     public void EndConversation()
     {
+        if (!hasTaughtMechanics)
+        {
+            AppendToChatLog(npcName + 
+                            ": Hey, hold on, rookie. I don't think you actually know how to do your job yet. " +
+                            "Ask me more about how this whole mess works before you run off and get people killed.");
+            return;
+        }
         if (chatPanel != null)
         {
             chatPanel.SetActive(false);
@@ -172,6 +187,14 @@ Stay in character. Answer in 1 or 2 cool, articulate, brisk sentences.";
             ChatResponse response = await client.ChatEndpoint.GetCompletionAsync(request);
 
             string answer = response.FirstChoice.Message.Content?.ToString();
+            
+            const string tag = "[ALL_MECHANICS_TAUGHT]";
+            if (answer.Contains(tag))
+            {
+                hasTaughtMechanics = true;
+                answer = answer.Replace(tag, string.Empty).TrimEnd();
+            }
+            
             AppendToChatLog(npcName + ": " + answer);
         }
         catch (System.Exception ex)
@@ -194,11 +217,10 @@ Stay in character. Answer in 1 or 2 cool, articulate, brisk sentences.";
             chatContentText.text = line;
         else
             chatContentText.text += "\n" + line;
-        // scroll
-        if (chatScrollRect != null)
-        {
-            Canvas.ForceUpdateCanvases();
-            chatScrollRect.verticalNormalizedPosition = 0f;
-        }
+        // if (chatScrollRect != null)
+        // {
+        //     Canvas.ForceUpdateCanvases();
+        //     chatScrollRect.verticalNormalizedPosition = 0f;
+        // }
     }
 }
