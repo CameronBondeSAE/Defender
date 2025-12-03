@@ -31,6 +31,7 @@ public class SlimeGrenade : UsableItem_Base
         slimeParticle.gameObject.SetActive(true);
         slimeParticle.Play();
         
+                
         if (slimeField != null)
         {
             slimeField.SetActive(true);
