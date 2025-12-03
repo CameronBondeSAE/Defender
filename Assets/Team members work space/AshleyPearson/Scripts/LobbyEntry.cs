@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 namespace AshleyPearson
 {
+    //Script on the lobby entry prefab that populates data and changes UI from the list of lobby info - called externally
+    
     public class LobbyEntry : MonoBehaviour
     {
         [SerializeField] private Text lobbyNameText;

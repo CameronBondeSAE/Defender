@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AshleyPearson;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -226,7 +227,85 @@ namespace CameronBonde
 				Debug.Log(e);
 			}
 		}
+		
+		//Adding separate function for Query Lobbies, may be integrated or possibly replace Query Lobbies original
+		//I didn't understand some of the Key-Value pairings in the suggested lobby function so have used a list and data class instead
+		public async Task QueryLobbiesForLobbyBrowser(List<LobbyData> lobbyInfoList )
+		{
+			//Clear old list entries
+			lobbyInfoList.Clear();
+			
+			QueryLobbiesOptions options = new QueryLobbiesOptions();
+			{
+				options.Count = 25; //max lobbies to return
+				
+				// Filter for open lobbies only
+				options.Filters = new List<QueryFilter>()
+				{
+					new QueryFilter(
+						field: QueryFilter.FieldOptions.AvailableSlots,
+						op: QueryFilter.OpOptions.GT,
+						value: "0")
+				};
 
+				// Order by newest lobbies first
+				options.Order = new List<QueryOrder>()
+				{
+					new QueryOrder(
+						asc: false,
+						field: QueryOrder.FieldOptions.Created)
+				};
+				QueryResponse lobbies = await LobbyService.Instance.QueryLobbiesAsync(options);
+				Debug.Log("LobbyManager: Lobby Query found " + lobbies.Results.Count + " lobbies");
+
+				foreach (Lobby foundLobby in lobbies.Results)
+				{
+					//Create a new data container object for the lobby
+					LobbyData lobbyData = new LobbyData();
+					
+					//Set details of each field in LobbyData
+					lobbyData.LobbyName = foundLobby.Name; //Name
+					
+					if (foundLobby.Players.Count > 0) //Player Count
+					{
+						lobbyData.PlayerCount = foundLobby.Players.Count;
+					}
+					else
+					{
+						lobbyData.PlayerCount = 0; //Shouldn't happen as sorting for open lobbies only
+						Debug.LogWarning("LobbyManager: Lobby query returned 0 players in an active lobby.");
+					}
+
+					//Relay Join Code
+					lobbyData.RelayJoinCode = ""; //Set to string so it doesn't null for key / dictionary
+					if (foundLobby.Data != null && foundLobby.Data.TryGetValue("RelayJoinCode", out DataObject relayJoinCodeDataObject))
+					{
+						lobbyData.RelayJoinCode = relayJoinCodeDataObject.Value;
+						Debug.Log("LobbyManager: Lobby Join Code for found lobby is: " + lobbyData.RelayJoinCode);
+					}
+					
+					//Player Info
+					lobbyData.PlayerNames = new List<string>();
+					foreach (Player player in foundLobby.Players)
+					{
+						if (player.Data != null &&
+						    player.Data.TryGetValue("PlayerName", out PlayerDataObject playerDataObject))
+						{
+							lobbyData.PlayerNames.Add(playerDataObject.Value);
+							Debug.Log("LobbyManager: Player in " + lobbyData.LobbyName + "is named: " +  playerDataObject.Value);
+						}
+						else
+						{
+							lobbyData.PlayerNames.Add("Unnamed Player");
+						}
+					}
+					
+					//Add the lobbyData container to the list
+					lobbyInfoList.Add(lobbyData);
+				}
+			}
+		}
+		
 		private async Task SetupLobbyEvents()
 		{
 			Debug.Log("Setting up Lobby events");
