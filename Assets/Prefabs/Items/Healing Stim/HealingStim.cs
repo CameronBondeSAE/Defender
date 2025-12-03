@@ -24,7 +24,7 @@ public class HealingStim : UsableItem_Base
     }
 
     [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable, RequireOwnership = true)]
-    private void Use_Rpc()
+    public void Use_Rpc()
     {
         Debug.Log("Healing Stim, Use");
 

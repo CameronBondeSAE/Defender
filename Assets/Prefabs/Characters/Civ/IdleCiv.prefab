@@ -83,8 +83,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  moveSpeed: 20
-  defaultSpeed: 20
+  moveSpeed: 1
+  defaultSpeed: 1
   agent: {fileID: 0}
   patrolPoints: []
   patrolPointsCount: 0
@@ -256,7 +256,7 @@ NavMeshObstacle:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468782042391114676}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
   m_Extents: {x: 0.26, y: 1, z: 0.26}
