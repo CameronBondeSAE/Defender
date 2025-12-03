@@ -9,5 +9,6 @@ namespace AshleyPearson
     {
         public static Action<string> OnButtonClicked_JoinLobby;
         public static Action OnButtonClicked_RefreshLobbyList;
+        public static Action<int> WaitingForOtherPlayersToJoinLobby;
     }
 }
