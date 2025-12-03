@@ -1129,6 +1129,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &221102887 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2306121906834594835, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+  m_PrefabInstance: {fileID: 2127255271}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &223617396 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5398525467649993438, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
@@ -8528,6 +8533,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: edd26c889f25c844891f58f2d4e63661, type: 3}
+--- !u!1 &1443498784 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2306121906834594835, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+  m_PrefabInstance: {fileID: 1963740080}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1446091498 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 438404136864597573, guid: edd26c889f25c844891f58f2d4e63661, type: 3}
@@ -9622,6 +9632,9 @@ MonoBehaviour:
     _prefab: Assets/Art/Alien Model/models/insect.fbx
   - _gameObject: {fileID: 1963740081}
     _prefab: Assets/Prefabs/Items/TornadoVortex/VortexItem.prefab
+  - _gameObject: {fileID: 1443498784}
+    _prefab: Assets/Art/Houidisoft technology/Plasma Shader/Prefabs/Plasma Sphere
+      (1).prefab
   - _gameObject: {fileID: 387892871}
     _prefab: Assets/Prefabs/Items/CrateSpawn.prefab
   - _gameObject: {fileID: 2106011754}
@@ -9640,6 +9653,9 @@ MonoBehaviour:
     _prefab: Assets/Art/Kenney - Food/bag.fbx
   - _gameObject: {fileID: 2127255272}
     _prefab: Assets/Prefabs/Items/TornadoVortex/VortexItem.prefab
+  - _gameObject: {fileID: 221102887}
+    _prefab: Assets/Art/Houidisoft technology/Plasma Shader/Prefabs/Plasma Sphere
+      (1).prefab
 --- !u!4 &1664449590
 Transform:
   m_ObjectHideFlags: 11
