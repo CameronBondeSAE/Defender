@@ -26,10 +26,10 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
@@ -143,8 +143,8 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BoarderColor: {r: 0.7211726, g: 0, b: 2.9960787, a: 1}
-    - _Boarder_Color: {r: 0, g: 2.9039745, b: 4, a: 0.12156863}
-    - _Color: {r: 0, g: 0.628142, b: 0.69886005, a: 0.14901961}
+    - _Boarder_Color: {r: 0, g: 0.8000001, b: 0.65882355, a: 0}
+    - _Color: {r: 0, g: 0.8000001, b: 0.65882355, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
