@@ -19,7 +19,9 @@ public class MainMenu : MonoBehaviour
     [Header("Fake Loading")]
     public GameObject loadingUI;           
     public Slider loadingSlider;          
-    public float fakeLoadingDuration = 3f;
+    public float fakeLoadingDuration = 1.5f;
+
+    public GameObject menuUI;
 
     private void Start()
     {
@@ -55,7 +57,9 @@ public class MainMenu : MonoBehaviour
     }
     public void StartGame()
     {
-        SceneManager.LoadScene(sceneToLoad);
+	    menuUI.SetActive(false);
+        SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneToLoad));
     }
     
     public void OnStartButtonPressed()

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a689d91966dfb46499fb63f130d9b905, type: 3}
-  m_Name: 2 players
+  m_Name: 2 players from menu
   m_EditorClassIdentifier: 
-  m_Description: 2 players
+  m_Description: 2 players from menu
   m_EnableEditors: 1
   m_MainEditorInstance:
     Name: Main Editor
@@ -21,7 +21,7 @@ MonoBehaviour:
     - Main Editor|0_run
     - Main Editor|0_deploy
     m_PlayerTag: 
-    m_InitialScene: {fileID: 0}
+    m_InitialScene: {fileID: 102900000, guid: 1f7bfeeb9d814474489a3e52afa91885, type: 3}
   m_EditorInstances:
   - Name: Player 2
     <CorrespondingNodeId>k__BackingField: Player 2|1_run

@@ -10,6 +10,16 @@ public class GameManager_Editor : Editor
 
 		DanniLi.GameManager gameManager = target as DanniLi.GameManager;
 
+		if (GUILayout.Button("Win"))
+		{
+			gameManager.DoWin();
+		}
+
+		if (GUILayout.Button("Lose"))
+		{
+			gameManager.DoLose();
+		}
+		
 		if (GUILayout.Button("Test Load Scene"))
 		{
 			gameManager.TestLoadScene();
