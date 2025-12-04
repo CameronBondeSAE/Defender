@@ -1717,6 +1717,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Booster Stim
       objectReference: {fileID: 0}
+    - target: {fileID: 747852157601389569, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4641844733280389271, guid: 18f0e4c502fbe0246823cdba61d74a07, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.2270517
@@ -11669,11 +11673,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835767906}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 194514caec58a004a8513c51dd032a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  audioSource: {fileID: 0}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
+  expiryDuration: 0
+  activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
+  countdownUIPrefab: {fileID: 0}
+  itemName: 
+  description: 
+  launchForce: 10
+  launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
+  SG: {fileID: 873541881}
+  slimeImpact: {fileID: 1815628567}
 --- !u!43 &841806302
 Mesh:
   m_ObjectHideFlags: 0
@@ -17035,6 +17059,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7435227358173391759, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
   m_PrefabInstance: {fileID: 898931648}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &873541881 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2325821605489312529, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+  m_PrefabInstance: {fileID: 898931648}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873541880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0235807faf699534193cbcd7bac60cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &877402395
 GameObject:
   m_ObjectHideFlags: 0
@@ -17143,6 +17178,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2325821605489312529, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+      propertyPath: useClip
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2325821605489312529, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+      propertyPath: SlimeViwer
+      value: 
+      objectReference: {fileID: 835767908}
     - target: {fileID: 2986412653475495803, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.5636063
@@ -17185,6 +17228,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3148075346239589259, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811106134575458277, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 5ec384495a2e02b4a860649083fe59ec, type: 3}
+    - target: {fileID: 4811106134575458277, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+      propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5524400366410149849, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
@@ -21899,6 +21950,11 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5085391778498778146, guid: e738b699983ba2c4590499f0c294bb9f, type: 3}
   m_PrefabInstance: {fileID: 87345659}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1815628567 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4811106134575458277, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+  m_PrefabInstance: {fileID: 898931648}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1817513093 stripped
 GameObject:

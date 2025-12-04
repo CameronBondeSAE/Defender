@@ -7,6 +7,7 @@ public class SlimeGrenade : UsableItem_Base
     [Header("Slime Grenade Settings")]
     [SerializeField]public ParticleSystem slimeParticle;
     [SerializeField] public GameObject slimeField;
+    public slimeGernadeViewer SlimeViwer;
 
     void Start()
     {
@@ -35,6 +36,8 @@ public class SlimeGrenade : UsableItem_Base
         if (slimeField != null)
         {
             slimeField.SetActive(true);
+            SlimeViwer.Active_RPC();
+            SlimeViwer.SlimeSound_RPC();
         }
         
         Debug.Log("SlimeGrenade use by " + characterTryingToUse.name);
