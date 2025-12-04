@@ -2339,6 +2339,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6274315758717229032, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+      propertyPath: alienView
+      value: 
+      objectReference: {fileID: 538425172}
     - target: {fileID: 73245657184487470, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
       propertyPath: m_Name
       value: SmartAlien
@@ -2402,7 +2406,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 73245657184487470, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 538425172}
   m_SourcePrefab: {fileID: 100100000, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
 --- !u!1 &538425170 stripped
 GameObject:
@@ -2414,6 +2421,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7563262259816036971, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
   m_PrefabInstance: {fileID: 538425169}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &538425172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538425170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759de59c3f786834995a8a175ade71a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  alienSfx: {fileID: 538425174}
+  Source: {fileID: 538425173}
+--- !u!82 &538425173 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2430017054364226679, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+  m_PrefabInstance: {fileID: 538425169}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &538425174 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6274315758717229032, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+  m_PrefabInstance: {fileID: 538425169}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538425170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e1b84b348d96f448792507f2ea8750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &541257372 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 468782042391114676, guid: e738b699983ba2c4590499f0c294bb9f, type: 3}
