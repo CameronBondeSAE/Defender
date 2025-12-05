@@ -5,8 +5,8 @@ namespace Defender
 {
 	public class CharacterBase : NetworkBehaviour
 	{
-		[SerializeField] private float moveSpeed = 5f;
-		[SerializeField] private float defaultSpeed = 5f;
+		[SerializeField] private float moveSpeed = 1f;
+		[SerializeField] private float defaultSpeed = 1f;
 		public float MoveSpeed
 		{
 			get => moveSpeed;

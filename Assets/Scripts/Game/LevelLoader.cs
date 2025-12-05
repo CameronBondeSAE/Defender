@@ -89,8 +89,6 @@ public class LevelLoader : NetworkBehaviour
 
    private DanniLi.LevelInfo[] GetLevels()
    {
-      if (gameManager != null && gameManager.levelSOs != null && gameManager.levelSOs.Length > 0)
-         return gameManager.levelSOs;
       return levelOrder;
    }
    
@@ -113,7 +111,7 @@ public class LevelLoader : NetworkBehaviour
 
    private void DoLoadNext()
    {
-      var levels = GetLevels();
+      LevelInfo[] levels = GetLevels();
       if (levels == null || levels.Length == 0)
       {
          Debug.LogWarning("No levels configured.");
