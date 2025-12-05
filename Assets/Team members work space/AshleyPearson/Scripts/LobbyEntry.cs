@@ -29,7 +29,7 @@ namespace AshleyPearson
         public void OnButtonClicked_JoinLobby()
         {
             //Use static event to join relevant session
-            LobbyEvents.OnButtonClicked_JoinLobby?.Invoke(this.joinCode);
+            LobbyEvents.OnButtonClicked_JoinGame?.Invoke(this.joinCode);
         }
 
     }

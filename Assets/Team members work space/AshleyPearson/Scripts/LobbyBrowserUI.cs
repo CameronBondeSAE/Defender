@@ -19,12 +19,12 @@ namespace AshleyPearson
        //Subscribe to any UI events that may be fired by buttons or other scripts
        private void OnEnable()
        {
-           LobbyEvents.OnButtonClicked_RefreshLobbyList += RefreshLobbyList_ButtonWrapper;
+           LobbyEvents.OnMenuButtonClicked_RefreshLobbyList += RefreshLobbyList_ButtonWrapper;
        }
 
        private void OnDisable()
        {
-           LobbyEvents.OnButtonClicked_RefreshLobbyList -= RefreshLobbyList_ButtonWrapper;
+           LobbyEvents.OnMenuButtonClicked_RefreshLobbyList -= RefreshLobbyList_ButtonWrapper;
        }
        
        //Button wrapper is required due to the async Task nature of the main function

@@ -7,8 +7,18 @@ namespace AshleyPearson
     
     public class LobbyEvents : MonoBehaviour
     {
-        public static Action<string> OnButtonClicked_JoinLobby;
-        public static Action OnButtonClicked_RefreshLobbyList;
+        //Networked - Create / Join Buttons
+        public static Action<string> OnButtonClicked_JoinGame;
+        public static Action<string> OnButtonClicked_HostGame;
+        
+        //Host Menu Buttons
         public static Action<int> WaitingForOtherPlayersToJoinLobby;
+        
+        //Join Menu Buttons
+        public static Action OnMenuButtonClicked_RefreshLobbyList;
+        
+        //Username Menu Buttons
+        public static Action OnUsernameEntered;
+        public static Action<string> OnLobbyNameEntered;
     }
 }

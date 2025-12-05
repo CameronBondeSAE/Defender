@@ -9,6 +9,7 @@ using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using WebSocketSharp;
 using Random = UnityEngine.Random;
 
 namespace CameronBonde
@@ -16,32 +17,40 @@ namespace CameronBonde
 	public class LobbyManager : MonoBehaviour
 	{
 		public string lobbyName      = "Defender Lobby #1";
+		public string playerName = "CAM";
 		public int    maxPlayers     = 4;
 		public float  heartBeatDelay = 15f;
-
-		public string playerName = "CAM";
 		
 		public RelayManager relayManager;
 		public AuthenticationManager authenticationManager;
 		
 		Lobby lobby;
-
+		
+		//Added name variables
+		public string inputLobbyName;
+		public string inputUsername;
+		
+		public PlayerName playerNameScript;
+		
+		
 		private void Start()
 		{
 			UnityServices.InitializeAsync(); // BUG: This MAY happen AFTER create lobby is called, because it's not async
 		}
 
-		// private void OnEnable()
-		// {
-		// 	authenticationManager.OnSignedIn += CreateLobby;
-		// }
-		//
-		// private void OnDisable()
-		// {
-		// 	authenticationManager.OnSignedIn -= CreateLobby;
-		// }
+		 private void OnEnable()
+		{
+			//authenticationManager.OnSignedIn += CreateLobby;
+			LobbyEvents.OnButtonClicked_HostGame += CreateLobby;
+		}
 		
-		public async void CreateLobby()
+		private void OnDisable()
+		{
+		// 	authenticationManager.OnSignedIn -= CreateLobby;
+			LobbyEvents.OnButtonClicked_HostGame -= CreateLobby;
+		}
+		
+		public async void CreateLobby(string inputLobbyName)
 		{
 			Debug.Log("Creating lobby...");
 			
@@ -57,9 +66,11 @@ namespace CameronBonde
 			                                                 visibility: DataObject.VisibilityOptions.Member,
 			                                                 value: relayManager.joinCode));
 			
-			lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, options);
+			lobby = await LobbyService.Instance.CreateLobbyAsync(inputLobbyName, maxPlayers, options);
+			Debug.Log("Lobby name is " + lobby.Name);
 
 			// await SetupLobbyEvents();
+			await SetPlayerUsername(lobby, inputUsername);
 			
 			// await SetAllLobbyData();
 
@@ -69,27 +80,30 @@ namespace CameronBonde
 
 		public async void JoinLobbyByCode(string lobbyCode)
 		{
+			string clientUsername = playerNameScript.Username;
+			
 			Debug.Log("Joining lobby...");
 			await authenticationManager.SignInAsync();
-
+			
+			lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyCode);
+			
+			//Set joining player's username
+			await SetPlayerUsername(lobby, clientUsername);
+			
 			try
 			{
-				if (lobby != null)
+				//Get relay join code and start client
+				if (lobby.Data.TryGetValue("RelayJoinCode", out DataObject relayJoinCode))
 				{
-					Debug.Log("Already have a local lobby!");
-					return;
+					if (relayJoinCode != null)
+					{
+						relayManager.NewJoinCodeSet(relayJoinCode.Value);
+						relayManager.StartClientWithJoinCode();
+					}
 				}
-
-				Debug.Log("Lobby code = " + lobbyCode);
-				lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyCode); // TODO create custom name. This is just one lobby ever
 				
-				lobby.Data.TryGetValue("RelayJoinCode", out DataObject relayJoinCode);
-				if (relayJoinCode != null)
-				{
-					relayManager.NewJoinCodeSet(relayJoinCode.Value);
-					relayManager.StartClientWithJoinCode();
-				}
 			}
+			
 			catch (LobbyServiceException e)
 			{
 				Debug.LogError($"Failed to join lobby: {e}");
@@ -158,6 +172,36 @@ namespace CameronBonde
 			{
 				Debug.Log(e);
 			}
+		}
+
+		public async Task SetPlayerUsername(Lobby lobby, string username)
+		{
+			try
+			{
+				UpdatePlayerOptions playerOptions = new UpdatePlayerOptions();
+
+				playerOptions.Data = new Dictionary<string, PlayerDataObject>
+				{
+					{
+						"Username",
+						new PlayerDataObject(
+							visibility: PlayerDataObject.VisibilityOptions.Public,
+							value: username)
+					}
+				};
+				
+				//Ensure you sign-in before calling Authentication Instance
+				//See IAuthenticationService interface
+				string playerId = AuthenticationService.Instance.PlayerId;
+
+				await LobbyService.Instance.UpdatePlayerAsync(lobby.Id, playerId, playerOptions);
+				
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.Log("Failed to set player username: " + e);
+			}
+			
 		}
 
 		public async void QueryLobbies()
