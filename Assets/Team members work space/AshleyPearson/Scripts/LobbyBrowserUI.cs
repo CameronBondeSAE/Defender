@@ -30,7 +30,7 @@ namespace AshleyPearson
        //Button wrapper is required due to the async Task nature of the main function
        private async void RefreshLobbyList_ButtonWrapper()
        {
-           RefreshLobbyList();
+           await RefreshLobbyList();
        }
 
        //Actual refresh function

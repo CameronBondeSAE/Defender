@@ -102,6 +102,9 @@ namespace AshleyPearson
            
            //Open join menu
            joinGameMenuGroup.SetActive(true);
+           
+           //Set lobby info
+           LobbyEvents.OnMenuButtonClicked_RefreshLobbyList?.Invoke();
        }
        
   

@@ -67,7 +67,7 @@ namespace CameronBonde
 			                                                 value: relayManager.joinCode));
 			
 			lobby = await LobbyService.Instance.CreateLobbyAsync(inputLobbyName, maxPlayers, options);
-			Debug.Log("Lobby name is " + lobby.Name);
+			Debug.Log("LobbyManager: Lobby name is " + lobby.Name);
 
 			// await SetupLobbyEvents();
 			await SetPlayerUsername(lobby, inputUsername);
