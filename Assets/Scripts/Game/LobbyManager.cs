@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AshleyPearson;
+using NUnit.Framework.Internal;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -33,9 +34,18 @@ namespace CameronBonde
 		public PlayerName playerNameScript;
 		
 		
-		private void Start()
+		private async void Start()
 		{
-			UnityServices.InitializeAsync(); // BUG: This MAY happen AFTER create lobby is called, because it's not async
+			//Edits: Switched function to async as this was causing issues with lobby joining.
+			
+			while (!authenticationManager.AreServicesInitialized())
+			{
+				await Task.Yield();
+				Debug.Log("LobbyManager: Services initialized. Lobby Manager can act now.");
+			}
+			
+			//This is being called in authentication manager already.
+			//UnityServices.InitializeAsync(); // BUG: This MAY happen AFTER create lobby is called, because it's not async
 		}
 
 		 private void OnEnable()
@@ -63,7 +73,7 @@ namespace CameronBonde
 			options.IsLocked  = false;
 			options.Data      = new Dictionary<string, DataObject>();
 			options.Data.Add("RelayJoinCode", new DataObject(
-			                                                 visibility: DataObject.VisibilityOptions.Member,
+			                                                 visibility: DataObject.VisibilityOptions.Public,
 			                                                 value: relayManager.joinCode));
 			
 			lobby = await LobbyService.Instance.CreateLobbyAsync(inputLobbyName, maxPlayers, options);
@@ -276,6 +286,19 @@ namespace CameronBonde
 		//I didn't understand some of the Key-Value pairings in the suggested lobby function so have used a list and data class instead
 		public async Task QueryLobbiesForLobbyBrowser(List<LobbyData> lobbyInfoList )
 		{
+			//Check initialization
+			if (UnityServices.State != ServicesInitializationState.Initialized)
+			{
+				Debug.Log("LobbyManager: Unity Services not initialized. Initializing now.");
+				await UnityServices.InitializeAsync();
+			}
+
+			if (!AuthenticationService.Instance.IsSignedIn)
+			{
+				Debug.Log("LobbyManager: Signed In Failed");
+				await authenticationManager.SignInAsync();
+			}
+			
 			//Clear old list entries
 			lobbyInfoList.Clear();
 			

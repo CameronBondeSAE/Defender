@@ -28,7 +28,7 @@ namespace AshleyPearson
        }
        
        //Button wrapper is required due to the async Task nature of the main function
-       private async void RefreshLobbyList_ButtonWrapper()
+       public async void RefreshLobbyList_ButtonWrapper()
        {
            await RefreshLobbyList();
        }
@@ -58,6 +58,8 @@ namespace AshleyPearson
                Debug.Log("LobbyBrowserUI: Lobby prefab created");
                
                lobbyInstance.SetLobbyEntryInfo(lobby.LobbyName, lobby.PlayerCount, lobby.RelayJoinCode);
+               Debug.Log("LobbyBrowserUI: Lobby name is " + lobby.LobbyName);
+               Debug.Log("LobbyBrowserUI: Lobby relay code is " + lobby.RelayJoinCode);
                Debug.Log("LobbyBrowserUI: Lobby prefab should be populated with information");
                
            }

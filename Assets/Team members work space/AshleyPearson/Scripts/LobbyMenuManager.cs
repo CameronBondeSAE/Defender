@@ -33,6 +33,20 @@ namespace AshleyPearson
            LobbyEvents.OnUsernameEntered -= PerformAction;
        }
 
+       private void Start()
+       {
+           HideAllScreens();
+       }
+
+       private void HideAllScreens()
+       {
+           usernameMenuGroup.SetActive(false);
+           hostMenuGroup.SetActive(false);
+           waitingForPlayersGroup.SetActive(false);
+           waitingForPlayersBackButton.SetActive(false);
+           joinGameMenuGroup.SetActive(false);
+       }
+
        public void OnButtonClick_CreateLobby()
        {
            actionAfterUsernameEntered = HostMenuScreen;
@@ -103,8 +117,9 @@ namespace AshleyPearson
            //Open join menu
            joinGameMenuGroup.SetActive(true);
            
-           //Set lobby info
+           //Setup lobby info
            LobbyEvents.OnMenuButtonClicked_RefreshLobbyList?.Invoke();
+           Debug.Log("LobbyMenuManager: Refreshing lobby");
        }
        
   
