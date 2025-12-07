@@ -134,10 +134,6 @@ namespace AshleyPearson
            //Turn off button so host can't leave until others join OR fix later so that going back cancels the lobby
            waitingForPlayersBackButton.SetActive(false); 
            
-           //Set the text for the player number
-           playersJoinedText.text = playerCount + " /4 Players Joined";
-           
-           
        }
     }
 }

@@ -1,16 +1,13 @@
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AshleyPearson;
-using NUnit.Framework.Internal;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
-using WebSocketSharp;
 using Random = UnityEngine.Random;
 
 namespace CameronBonde
@@ -25,7 +22,7 @@ namespace CameronBonde
 		public RelayManager relayManager;
 		public AuthenticationManager authenticationManager;
 		
-		Lobby lobby;
+		public Lobby lobby;
 		
 		//Added name variables
 		public string inputLobbyName;
@@ -51,15 +48,15 @@ namespace CameronBonde
 		 private void OnEnable()
 		{
 			//authenticationManager.OnSignedIn += CreateLobby;
-			LobbyEvents.OnButtonClicked_HostGame += CreateLobby;
-			LobbyEvents.OnButtonClicked_JoinGame += JoinLobbyByCode;
+			LobbyEvents.OnButtonClicked_HostGame += CreateLobbyForBrowser;
+			LobbyEvents.OnButtonClicked_JoinGame += JoinLobbyForBrowser;
 		}
 		
 		private void OnDisable()
 		{
 		// 	authenticationManager.OnSignedIn -= CreateLobby;
-			LobbyEvents.OnButtonClicked_HostGame -= CreateLobby;
-			LobbyEvents.OnButtonClicked_JoinGame -= JoinLobbyByCode;
+			LobbyEvents.OnButtonClicked_HostGame -= CreateLobbyForBrowser;
+			LobbyEvents.OnButtonClicked_JoinGame -= JoinLobbyForBrowser;
 		}
 		
 		public async void CreateLobby(string inputLobbyName)
@@ -95,6 +92,49 @@ namespace CameronBonde
 			// Heartbeat the lobby every 15 seconds.
 			StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, heartBeatDelay));
 		}
+		
+		//This version doesn't connect the relay straight away so that players can join the lobby
+		public async void CreateLobbyForBrowser(string inputLobbyName)
+		{
+			Debug.Log("Creating lobby... but not starting network yet");
+			
+			await authenticationManager.SignInAsync();
+			await relayManager.GetRelayCode();
+			
+			CreateLobbyOptions options = new CreateLobbyOptions();
+			options.IsPrivate = false;
+			options.IsLocked  = false;
+			options.Data      = new Dictionary<string, DataObject>();
+			
+			lobby = await LobbyService.Instance.CreateLobbyAsync(inputLobbyName, maxPlayers, options);
+			
+			//Save Player Name
+			await SetPlayerUsername(lobby);
+			
+			//Save allocated relay join code
+			await SetLobbyRelayCode(lobby);
+			
+			//Save lobby join code
+			await SetLobbyJoinCode(lobby);
+			
+			//Set up callbacks
+			await SetupLobbyEvents();
+			
+			//Update the lobby data class with relevant info
+			LobbyData lobbyData = UpdateLobbyData(lobby);
+			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
+
+			// Heartbeat the lobby every 15 seconds.
+			StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, heartBeatDelay));
+			
+			//Call to wait for players
+			LobbyEvents.WaitingForOtherPlayersToJoinLobby?.Invoke(lobby.Players.Count);
+		}
+
+		public async void StartGame()
+		{
+			await relayManager.StartHostWithRelay(maxPlayers, "udp");
+		}
 
 		public async void JoinLobbyByCode(string lobbyCode)
 		{
@@ -119,7 +159,46 @@ namespace CameronBonde
 						relayManager.StartClientWithJoinCode();
 					}
 				}
-				
+			}
+			
+			catch (LobbyServiceException e)
+			{
+				Debug.LogError($"Failed to join lobby: {e}");
+			}
+		}
+
+		public async void JoinLobbyForBrowser(string lobbyCode)
+		{
+			Debug.Log("LobbyManager: Join code is: " +  lobbyCode);
+			
+			Debug.Log("Joining lobby...but not starting network yet");
+			await authenticationManager.SignInAsync();
+			
+			lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+			
+			//Set joining player's username
+			await SetPlayerUsername(lobby);
+			
+			//Reset lobby data with new player info
+			LobbyData lobbyData = UpdateLobbyData(lobby);
+			
+			//Call event to update UI
+			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
+			Debug.Log("LobbyManager: OnLobbyChanged has requested the player list to be refreshed.");
+			
+			//Set up callbacks
+			await SetupLobbyEvents();
+			
+			try
+			{
+				//Get relay join code  but don't start networked client yet
+				if (lobby.Data.TryGetValue("RelayJoinCode", out DataObject relayJoinCode))
+				{
+					if (relayJoinCode != null)
+					{
+						relayManager.NewJoinCodeSet(relayJoinCode.Value);
+					}
+				}
 			}
 			
 			catch (LobbyServiceException e)
@@ -157,14 +236,23 @@ namespace CameronBonde
 			}
 		}
 		
-		private void OnLobbyChanged(ILobbyChanges obj)
+		private async void OnLobbyChanged(ILobbyChanges obj)
 		{
 			Debug.Log("Lobby changed event");
+			
 			if (obj.Data.Value != null)
 				foreach (var changedOrRemovedLobbyValue in obj.Data.Value)
 				{
 					Debug.Log(changedOrRemovedLobbyValue);
 				}
+			
+			//update the lobby data class for UI to use
+			Lobby updatedLobby = await LobbyService.Instance.GetLobbyAsync(lobby.Id);
+			LobbyData lobbyData = UpdateLobbyData(updatedLobby);
+			
+			//Call event to update UI
+			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
+			Debug.Log("LobbyManager: OnLobbyChanged has requested the player list to be refreshed.");
 		}
 
 		public async void SetRandomPlayerName()
@@ -262,6 +350,57 @@ namespace CameronBonde
 			}
 			
 		}
+
+		public async Task SetLobbyRelayCode(Lobby lobby)
+		{
+			string relayJoinCode = relayManager.reservedRelayJoinCode;
+			
+			try
+			{
+				UpdateLobbyOptions updateOptions = new UpdateLobbyOptions();
+				updateOptions.Data = new Dictionary<string, DataObject>
+				{
+					{
+						"RelayJoinCode",
+						new DataObject(visibility: DataObject.VisibilityOptions.Public, value: relayJoinCode)
+					}
+				};
+				
+				await LobbyService.Instance.UpdateLobbyAsync(lobby.Id, updateOptions);
+				Debug.Log("LobbyManager: Relay join code is should be set as "  + relayJoinCode);
+			}
+			catch (Exception e)
+			{
+				Debug.LogError("Failed to set Lobby Join Code" + e);
+				throw;
+			}
+		}
+
+		public LobbyData UpdateLobbyData(Lobby lobby)
+		{
+			LobbyData lobbyData = new LobbyData();
+			lobbyData.LobbyName =  lobby.Name;
+			lobbyData.PlayerCount = lobby.Players.Count;
+			lobbyData.RelayJoinCode = lobby.Data?["RelayJoinCode"]?.Value;
+			lobbyData.LobbyJoinCode = lobby.LobbyCode;
+			
+			//Collect player usernames
+			lobbyData.PlayerNames = new List<string>();
+
+			foreach (var player in lobby.Players)
+			{
+				if (player.Data != null && player.Data.TryGetValue("Username", out PlayerDataObject username))
+				{
+					lobbyData.PlayerNames.Add(username.Value);
+				}
+			}
+			
+			//Call event to update UI
+			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
+			
+			return lobbyData; 
+		}
+	
 
 		public async void QueryLobbies()
 		{
@@ -436,8 +575,8 @@ namespace CameronBonde
 			Debug.Log("Setting up Lobby events");
 			var callbacks = new LobbyEventCallbacks();
 			callbacks.LobbyChanged += OnLobbyChanged;
-			callbacks.DataChanged += CallbacksOnDataChanged;
-
+			
+			//callbacks.DataChanged += CallbacksOnDataChanged;
 			// callbacks.KickedFromLobby                  += OnKickedFromLobby;
 			// callbacks.LobbyEventConnectionStateChanged += OnLobbyEventConnectionStateChanged;
 
@@ -466,9 +605,18 @@ namespace CameronBonde
 
 		private void CallbacksOnDataChanged(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> obj)
 		{
-			// Debug.Log("Data changed event : " + obj);
+			Debug.Log("Data changed event : " + obj);
 			
 			// TODO more than just relaycode, presumably lobby name changes etc
+			LobbyData lobbyData = UpdateLobbyData(lobby);
+			
+			//Lobby name
+			if (obj.TryGetValue("LobbyName", out ChangedOrRemovedLobbyValue<DataObject> lobbyNameDataObject))
+			{
+				
+			}
+			
+			//Relay Code
 			if (obj.TryGetValue("RelayJoinCode", out ChangedOrRemovedLobbyValue<DataObject> relayJoinCode))
 			{
 				relayManager.NewJoinCodeSet(relayJoinCode.Value.Value);

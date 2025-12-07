@@ -20,5 +20,8 @@ namespace AshleyPearson
         //Username Menu Buttons
         public static Action OnUsernameEntered;
         public static Action<string> OnLobbyNameEntered;
+        
+        //Lobby Update
+        public static Action<LobbyData> OnLobbyUpdated;
     }
 }

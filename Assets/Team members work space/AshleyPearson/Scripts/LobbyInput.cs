@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AshleyPearson
 {
@@ -7,7 +8,8 @@ namespace AshleyPearson
     public class LobbyInput: MonoBehaviour
     {
         public TMP_InputField lobbyNameInputField;
-        [SerializeField] string lobbyName;
+        [SerializeField] private string lobbyName;
+        [SerializeField] private Button createLobbyButton;
 
         public void OnSubmitLobbyName()
         {
@@ -24,6 +26,9 @@ namespace AshleyPearson
 
             LobbyEvents.OnButtonClicked_HostGame?.Invoke(lobbyName);
             Debug.Log("LobbyInput: Host has requested to create lobby");
+            
+            //Turn off button so they can't keep clicking it
+            createLobbyButton.interactable = false;
 
         }
 

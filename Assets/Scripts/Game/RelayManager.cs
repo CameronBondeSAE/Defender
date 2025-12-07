@@ -17,6 +17,8 @@ public class RelayManager : MonoBehaviour
 	public TMP_InputField joinCodeDisplay;
 	public Button         startHostButton;
 	public Button         startClientButton;
+
+	public string reservedRelayJoinCode;
 	
 	public void ActivateButtons()
 	{
@@ -126,4 +128,12 @@ public class RelayManager : MonoBehaviour
 		              .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
 		return !string.IsNullOrEmpty(joinCode) && NetworkManager.Singleton.StartClient();
 	}
+	
+	//Separating out lobby and relay allocation for lobby
+	public async Task GetRelayCode()
+	{
+		Allocation allocation = await RelayService.Instance.CreateAllocationAsync(4); //max players is 4
+		reservedRelayJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+	}
+	
 }
