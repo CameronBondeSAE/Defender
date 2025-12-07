@@ -36,7 +36,7 @@ public class VisionSystem : MonoBehaviour
             }
             
             visibleObjects[obj] = Time.time;
-            Debug.DrawRay(transform.position, (obj.transform.position - transform.position).normalized * visionRange, Color.yellow, 0.02f);
+            // Debug.DrawRay(transform.position, (obj.transform.position - transform.position).normalized * visionRange, Color.yellow, 0.02f);
         }
     }
 
@@ -48,7 +48,7 @@ public class VisionSystem : MonoBehaviour
         {
             GameObject obj = pair.Key;
 
-            if (obj.CompareTag("Obstacle") || obj.isStatic)
+            if (obj.isStatic)
             {
                 continue;
             }
@@ -87,30 +87,32 @@ public class VisionSystem : MonoBehaviour
         }
         return visibleObjects.ContainsKey(obj);
     }
-    public bool TryGetClosestObstacle(out float distance)
+    
+    public bool GetClosestVisibleObjectWithTag(string tag, out GameObject closest)
     {
-        distance = Mathf.Infinity;
+        closest = null;
+        float bestDistance = Mathf.Infinity;
 
-        foreach (var kvp in visibleObjects)
+        foreach (var keyValuePair in visibleObjects)
         {
-            GameObject obj = kvp.Key;
+            GameObject obj = keyValuePair.Key;
 
-            if (obj.CompareTag("Suspect"))
+            if (obj == null || !obj.CompareTag(tag))
             {
                 continue;
             }
 
-            Vector3 dir = obj.transform.position - transform.position;
-            float d = dir.magnitude;
-            
-            if (Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, visionRange, visionMask))
+            float distance = (obj.transform.position - transform.position).sqrMagnitude;
+            if (distance < bestDistance)
             {
-                if (hit.collider.gameObject == obj && d < distance)
-                    distance = d;
+                bestDistance = distance;
+                closest = obj;
             }
         }
-        return distance < Mathf.Infinity;
+
+        return closest != null;
     }
+
     
     private void OnDrawGizmos()
     {
