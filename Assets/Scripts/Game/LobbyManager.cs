@@ -52,12 +52,14 @@ namespace CameronBonde
 		{
 			//authenticationManager.OnSignedIn += CreateLobby;
 			LobbyEvents.OnButtonClicked_HostGame += CreateLobby;
+			LobbyEvents.OnButtonClicked_JoinGame += JoinLobbyByCode;
 		}
 		
 		private void OnDisable()
 		{
 		// 	authenticationManager.OnSignedIn -= CreateLobby;
 			LobbyEvents.OnButtonClicked_HostGame -= CreateLobby;
+			LobbyEvents.OnButtonClicked_JoinGame -= JoinLobbyByCode;
 		}
 		
 		public async void CreateLobby(string inputLobbyName)
@@ -78,10 +80,16 @@ namespace CameronBonde
 			
 			lobby = await LobbyService.Instance.CreateLobbyAsync(inputLobbyName, maxPlayers, options);
 			Debug.Log("LobbyManager: Lobby name is " + lobby.Name);
+			Debug.Log("LobbyManager: Lobby join code is " + lobby.LobbyCode);
+			Debug.Log("LobbyManager: Relay join code is " + relayManager.joinCode);
 
-			// await SetupLobbyEvents();
-			await SetPlayerUsername(lobby, inputUsername);
+			//Save Player Name
+			await SetPlayerUsername(lobby);
 			
+			//Save lobby join code
+			await SetLobbyJoinCode(lobby);
+			
+			// await SetupLobbyEvents();
 			// await SetAllLobbyData();
 
 			// Heartbeat the lobby every 15 seconds.
@@ -90,15 +98,15 @@ namespace CameronBonde
 
 		public async void JoinLobbyByCode(string lobbyCode)
 		{
-			string clientUsername = playerNameScript.Username;
+			Debug.Log("LobbyManager: Join code is: " +  lobbyCode);
 			
 			Debug.Log("Joining lobby...");
 			await authenticationManager.SignInAsync();
 			
-			lobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyCode);
+			lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
 			
 			//Set joining player's username
-			await SetPlayerUsername(lobby, clientUsername);
+			await SetPlayerUsername(lobby);
 			
 			try
 			{
@@ -184,8 +192,10 @@ namespace CameronBonde
 			}
 		}
 
-		public async Task SetPlayerUsername(Lobby lobby, string username)
+		public async Task SetPlayerUsername(Lobby lobby)
 		{
+			inputUsername = playerNameScript.Username;
+			
 			try
 			{
 				UpdatePlayerOptions playerOptions = new UpdatePlayerOptions();
@@ -196,7 +206,7 @@ namespace CameronBonde
 						"Username",
 						new PlayerDataObject(
 							visibility: PlayerDataObject.VisibilityOptions.Public,
-							value: username)
+							value: inputUsername)
 					}
 				};
 				
@@ -210,6 +220,45 @@ namespace CameronBonde
 			catch (LobbyServiceException e)
 			{
 				Debug.Log("Failed to set player username: " + e);
+			}
+			
+		}
+
+		public async Task SetLobbyJoinCode(Lobby lobby)
+		{
+			try
+			{
+				//Lobby code is null immediately after creation - need to try a few times to get it to work
+				int attempts = 0;
+				while (string.IsNullOrEmpty(lobby.LobbyCode) && attempts < 10)
+				{
+					Debug.Log("LobbyManager: Waiting for lobby code");
+					await Task.Delay(200);
+					attempts++;
+				}
+
+				if (string.IsNullOrEmpty(lobby.LobbyCode))
+				{
+					Debug.LogError("LobbyManager: Lobby code is still null after waiting");
+					return;
+				}
+				
+				UpdateLobbyOptions updateOptions =  new UpdateLobbyOptions();
+				updateOptions.Data = new Dictionary<string, DataObject>
+				{
+					{
+						"LobbyJoinCode",
+						new DataObject(visibility: DataObject.VisibilityOptions.Public, value: lobby.LobbyCode)
+					}
+				};
+
+				await LobbyService.Instance.UpdateLobbyAsync(lobby.Id, updateOptions);
+				Debug.Log("LobbyManager: Lobby join code is " + lobby.LobbyCode);
+			}
+			catch (Exception e)
+			{
+				Debug.LogError("Failed to set Lobby Join Code" + e);
+				throw;
 			}
 			
 		}
@@ -348,7 +397,16 @@ namespace CameronBonde
 					if (foundLobby.Data != null && foundLobby.Data.TryGetValue("RelayJoinCode", out DataObject relayJoinCodeDataObject))
 					{
 						lobbyData.RelayJoinCode = relayJoinCodeDataObject.Value;
-						Debug.Log("LobbyManager: Lobby Join Code for found lobby is: " + lobbyData.RelayJoinCode);
+						Debug.Log("LobbyManager: Lobby Relay Code for found lobby is: " + lobbyData.RelayJoinCode);
+					}
+					
+					//Lobby Join Code
+					lobbyData.LobbyJoinCode = "";//Set to string so it doesn't null for key / dictionary
+					if (foundLobby.Data != null &&
+					    foundLobby.Data.TryGetValue("LobbyJoinCode", out DataObject joinCodeDataObject))
+					{
+						lobbyData.LobbyJoinCode = joinCodeDataObject.Value;
+						Debug.Log("LobbyManager: Lobby Join Code for found lobby is " +  lobbyData.LobbyJoinCode);
 					}
 					
 					//Player Info

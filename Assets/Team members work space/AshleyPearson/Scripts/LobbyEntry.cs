@@ -14,22 +14,23 @@ namespace AshleyPearson
         [SerializeField] private Text playerCountText;
         [SerializeField] private Button joinLobbyButton;
 
-        private string joinCode;
+        [SerializeField] private string lobbyJoinCode;
 
         public void SetLobbyEntryInfo(string lobbyName, int playerCount, string joinCode)
         {
             //Set lobby entry information for UI from network manager / relay manager
             lobbyNameText.text = lobbyName;
             playerCountText.text = playerCount.ToString();
-            this.joinCode = joinCode;
+            lobbyJoinCode = joinCode;
             
             Debug.Log("LobbyEntry: Lobby Name " +  lobbyName +  " - JoinCode is " + joinCode);
         }
 
         public void OnButtonClicked_JoinLobby()
         {
+            Debug.Log("Lobby Entry: Client clicked join. Join code is  " + lobbyJoinCode);
             //Use static event to join relevant session
-            LobbyEvents.OnButtonClicked_JoinGame?.Invoke(this.joinCode);
+            LobbyEvents.OnButtonClicked_JoinGame?.Invoke(lobbyJoinCode);
         }
 
     }

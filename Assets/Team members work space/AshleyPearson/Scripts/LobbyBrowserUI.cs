@@ -57,11 +57,11 @@ namespace AshleyPearson
                LobbyEntry lobbyInstance = Instantiate(lobbyEntry, lobbyContentParent);
                Debug.Log("LobbyBrowserUI: Lobby prefab created");
                
-               lobbyInstance.SetLobbyEntryInfo(lobby.LobbyName, lobby.PlayerCount, lobby.RelayJoinCode);
+               lobbyInstance.SetLobbyEntryInfo(lobby.LobbyName, lobby.PlayerCount, lobby.LobbyJoinCode);
                Debug.Log("LobbyBrowserUI: Lobby name is " + lobby.LobbyName);
+               Debug.Log("LobbyBrowserUI: Lobby join code is " +  lobby.LobbyJoinCode);
                Debug.Log("LobbyBrowserUI: Lobby relay code is " + lobby.RelayJoinCode);
                Debug.Log("LobbyBrowserUI: Lobby prefab should be populated with information");
-               
            }
        }
     }
