@@ -2040,8 +2040,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  moveSpeed: 5
-  defaultSpeed: 5
+  moveSpeed: 1
+  defaultSpeed: 1
   agent: {fileID: 0}
   patrolPoints: []
   patrolPointsCount: 3
@@ -2063,6 +2063,7 @@ MonoBehaviour:
   mothership: {fileID: 0}
   isReached: 0
   currentTargetCiv: {fileID: 0}
+  returnCount: 0
 --- !u!195 &750841075112867850
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2073,7 +2074,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 20
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 600

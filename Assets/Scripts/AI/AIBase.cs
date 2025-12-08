@@ -149,7 +149,7 @@ public class AIBase : CharacterBase
 				float slowDownScalar = (1f - Mathf.Abs(angle/180f)); // Normalise to 0-1
 				if (rb.linearVelocity.magnitude < maxSpeed)
 				{
-					rb.AddRelativeForce(0,0,forwardForce * slowDownScalar);
+					rb.AddRelativeForce(0,0,forwardForce * slowDownScalar * MoveSpeed);
 				}
 				
 				Debug.DrawLine(path.corners[cornerIndex], path.corners[cornerIndex] + Vector3.up*10f, Color.red);

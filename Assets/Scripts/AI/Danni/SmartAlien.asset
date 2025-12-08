@@ -1,0 +1,243 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f22e7053ea04ed0922308786facc8c, type: 3}
+  m_Name: SmartAlien
+  m_EditorClassIdentifier: 
+  conditions:
+    list:
+    - id: 0
+      name: HasSnack
+    - id: 1
+      name: SnackDeployed
+    - id: 2
+      name: HasCivTargets
+    - id: 3
+      name: CivsDelivered
+    - id: 4
+      name: ThreatNearby
+    - id: 5
+      name: ThreatCloserThanSnack
+    - id: 6
+      name: HasCrate
+    - id: 7
+      name: NearCrate
+    - id: 8
+      name: HasUsefulItem
+    - id: 9
+      name: EscortInProgress
+    - id: 10
+      name: NeedsScan
+    - id: 11
+      name: IsMoving
+    - id: 12
+      name: HasSnackTarget
+  actions:
+  - name: DisableThreat
+    isDefault: 0
+    state: {fileID: 9134370768665784534, guid: 9198177299078074ebbe5f3b022c2015, type: 3}
+    cost: 0
+    position: {x: 208, y: 88}
+    pre:
+    - id: 4
+      value: 1
+    - id: 5
+      value: 1
+    post:
+    - id: 4
+      value: 0
+    - id: 5
+      value: 0
+    - id: 10
+      value: 1
+  - name: GetSnack
+    isDefault: 0
+    state: {fileID: 196283137238693336, guid: f080cd42b3c520a47b35e4de1a5e2683, type: 3}
+    cost: 0
+    position: {x: 401, y: 49}
+    pre:
+    - id: 0
+      value: 0
+    - id: 5
+      value: 0
+    - id: 9
+      value: 0
+    - id: 12
+      value: 1
+    - id: 10
+      value: 0
+    post:
+    - id: 0
+      value: 1
+    - id: 8
+      value: 1
+    - id: 10
+      value: 1
+  - name: UseSnackAtCrowd
+    isDefault: 0
+    state: {fileID: 6996236113363865023, guid: 1754cbde35dcbfa47b403b004929c6f7, type: 3}
+    cost: 0
+    position: {x: 601.58826, y: 76.41177}
+    pre:
+    - id: 0
+      value: 1
+    - id: 2
+      value: 1
+    - id: 9
+      value: 0
+    post:
+    - id: 1
+      value: 1
+    - id: 9
+      value: 1
+    - id: 8
+      value: 0
+  - name: WaitForCivsToFollow
+    isDefault: 0
+    state: {fileID: 4740798839040438994, guid: 5001353475f325d4d918747eaf0168a7, type: 3}
+    cost: 0
+    position: {x: 212, y: 364}
+    pre:
+    - id: 1
+      value: 1
+    - id: 2
+      value: 1
+    - id: 9
+      value: 1
+    post:
+    - id: 2
+      value: 1
+    - id: 9
+      value: 1
+    - id: 10
+      value: 0
+  - name: EscortCivsToMothership
+    isDefault: 0
+    state: {fileID: 4112792445690495274, guid: 8a651be8a0ac5884783f626d761b0d67, type: 3}
+    cost: 0
+    position: {x: 408, y: 363}
+    pre:
+    - id: 2
+      value: 1
+    - id: 1
+      value: 1
+    - id: 9
+      value: 1
+    post:
+    - id: 3
+      value: 1
+    - id: 2
+      value: 0
+    - id: 1
+      value: 0
+    - id: 0
+      value: 0
+    - id: 8
+      value: 0
+    - id: 9
+      value: 0
+    - id: 10
+      value: 1
+  - name: MoveToCrateAndWait
+    isDefault: 0
+    state: {fileID: 1697708797679423648, guid: 63200e4a366a0f8418ccf52c469857ad, type: 3}
+    cost: 0
+    position: {x: 601, y: 402}
+    pre:
+    - id: 6
+      value: 1
+    - id: 8
+      value: 0
+    - id: 9
+      value: 0
+    - id: 4
+      value: 0
+    - id: 7
+      value: 0
+    post:
+    - id: 7
+      value: 1
+  - name: ScanLevel
+    isDefault: 1
+    state: {fileID: 1934381460703441072, guid: 58c68f305f6d09a439bf6d7f3f36b99f, type: 3}
+    cost: 0
+    position: {x: 400.94568, y: 716.93933}
+    pre:
+    - id: 10
+      value: 1
+    post:
+    - id: 10
+      value: 0
+  - name: PickUpCrateItem
+    isDefault: 0
+    state: {fileID: 3768229973472652879, guid: 131b7ba0586961247a76e893b5cd0348, type: 3}
+    cost: 0
+    position: {x: 814.2352, y: 86.705894}
+    pre:
+    - id: 6
+      value: 1
+    - id: 7
+      value: 1
+    - id: 8
+      value: 0
+    - id: 9
+      value: 0
+    post:
+    - id: 8
+      value: 1
+  - name: DestroyCrateItem
+    isDefault: 0
+    state: {fileID: 4730243677657043675, guid: 5e55b0adc45efa7408b38ee99458596c, type: 3}
+    cost: 0
+    position: {x: 804.1538, y: 394.45142}
+    pre:
+    - id: 8
+      value: 1
+    - id: 0
+      value: 0
+    - id: 9
+      value: 0
+    post:
+    - id: 8
+      value: 0
+    - id: 10
+      value: 1
+  goals:
+  - name: WorkUntilDeath
+    isDefault: 1
+    position: {x: 588, y: 745}
+    conditions:
+    - id: 11
+      value: 1
+    - id: 3
+      value: 1
+  worldStates:
+  - position: {x: 203, y: 640}
+    isAutoUpdate: 0
+    list:
+    - id: 0
+      value: 0
+    - id: 1
+      value: 0
+    - id: 2
+      value: 0
+    - id: 3
+      value: 0
+    - id: 4
+      value: 0
+    - id: 5
+      value: 0
+    - id: 6
+      value: 0
+    - id: 7
+      value: 0
+    - id: 8
+      value: 0

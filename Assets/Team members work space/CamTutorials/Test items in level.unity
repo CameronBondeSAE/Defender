@@ -9105,11 +9105,11 @@ MonoBehaviour:
   - _gameObject: {fileID: 393680631}
     _prefab: Assets/Prefabs/Spawn.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Characters/Player.prefab
+    _prefab: Assets/Prefabs/Characters/Player/Player.prefab
   - _gameObject: {fileID: 302250214}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_04.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Characters/Player.prefab
+    _prefab: Assets/Prefabs/Characters/Player/Player.prefab
   - _gameObject: {fileID: 8708370507975262657}
     _prefab: Assets/Prefabs/Items/Demo item/Demo Item.prefab
   - _gameObject: {fileID: 70990412}
@@ -9143,11 +9143,11 @@ MonoBehaviour:
   - _gameObject: {fileID: 1451257866}
     _prefab: Assets/Prefabs/Items/Booster Stim/Booster Stim.prefab
   - _gameObject: {fileID: 8296550269027215235}
-    _prefab: Assets/Prefabs/Items/GetTiny/Get Tiny.prefab
+    _prefab: Assets/Prefabs/Items/Inflato/Inflato.prefab
   - _gameObject: {fileID: 1666789319}
-    _prefab: Assets/Prefabs/Items/GetTiny/Get Tiny.prefab
+    _prefab: Assets/Prefabs/Items/Inflato/Inflato.prefab
   - _gameObject: {fileID: 217065096}
-    _prefab: Assets/Prefabs/Items/GetTiny/Get Tiny.prefab
+    _prefab: Assets/Prefabs/Items/Inflato/Inflato.prefab
 --- !u!4 &1664449590
 Transform:
   m_ObjectHideFlags: 11
@@ -11240,6 +11240,22 @@ PrefabInstance:
     - target: {fileID: 3216881366786687388, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: NetworkConfig.EnableSceneManagement
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4175656752346437710, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchorMax.y

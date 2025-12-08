@@ -11,6 +11,8 @@ using UnityEngine;
 
 public class BoosterStim : UsableItem_Base
 {
+    public BoosterStimController stimController;
+    public StimView stimView;
     [Header("Booster Stim Stats")]
     [SerializeField] private float stimDuration = 10f;
     [SerializeField] private float speedIncrease = 4f;
@@ -90,7 +92,7 @@ public class BoosterStim : UsableItem_Base
     {
         stimUsed = true;
         //Debug.Log("Stim Boost Active");
-
+    
         playerMovement.playerModel.MoveSpeed += speedIncrease;  // gives speed to player
         StartCoroutine(BoosterStimDuration());
     }
