@@ -284,7 +284,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3018481947753882962}
   serializedVersion: 4
-  m_Mass: 20
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -420,25 +420,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 1695998492100750487}
   pickupClip: {fileID: 0}
   dropClip: {fileID: 0}
-  useClip: {fileID: 0}
+  useClip: {fileID: 8300000, guid: 07a46fac886ebb64a9f19c3075dc75fd, type: 3}
   timerBeepClip: {fileID: 0}
-  timerActivatedClip: {fileID: 0}
+  timerActivatedClip: {fileID: 8300000, guid: 07a46fac886ebb64a9f19c3075dc75fd, type: 3}
   isConsumable: 0
   expiryDuration: 20
   activationCountdown: 5
   activationTrigger: 0
   allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 2045138352781500685, guid: 84901db9eacfd04489d9b79c0efbe6b8, type: 3}
-  itemName: Vortex
-  description: Throw a tornado at the aliens!
-  launchForce: 20
+  itemName: Plasma Ball
+  description: Atracts or Pulls in everything, press space to activate, and again
+    to swap between atract and pull
+  launchForce: 0
   launchDirection: {x: 0, y: 0, z: 1}
   itemRoleForAI: 0
   nameOfObjectsNearItem: []
-  strength: 200
+  strength: 300
   plasmaSphere: {fileID: 2306121906834594835}
 --- !u!1 &5222261008046839601
 GameObject:
