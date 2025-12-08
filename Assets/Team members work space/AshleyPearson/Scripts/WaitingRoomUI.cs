@@ -10,10 +10,11 @@ namespace AshleyPearson
         [SerializeField] GameObject playerEntryPrefab;
         [SerializeField] Transform playerListContentParent;
         [SerializeField] Text playerCountText;
+        [SerializeField] private Button hostStartGameButton;
         
         [SerializeField] List<GameObject> spawnedPlayerEntries = new List<GameObject>();
 
-        private void OnEnable()
+        private void Awake()
         {
             LobbyEvents.OnLobbyUpdated += RefreshFromLobbyData;
         }
@@ -70,6 +71,17 @@ namespace AshleyPearson
                 }
                 
                 spawnedPlayerEntries.Add(playerEntry);
+                
+                //Show host the start game button, but not the client
+                if (lobbyData.isHost)
+                {
+                    hostStartGameButton.gameObject.SetActive(true);
+                }
+
+                else
+                {
+                    hostStartGameButton.gameObject.SetActive(false);
+                }
             }
         }
         

@@ -16,7 +16,7 @@ namespace AshleyPearson
        [SerializeField] private GameObject waitingForPlayersBackButton;
        [SerializeField] private Text playersJoinedText;
        [SerializeField] private GameObject joinGameMenuGroup;
-        
+       
        //Used to determine which UI to show after username entered
        private System.Action actionAfterUsernameEntered;
        public PlayerName playerNameScript;
@@ -129,6 +129,7 @@ namespace AshleyPearson
            
            //Turn on/off other menus
            hostMenuGroup.SetActive(false);
+           joinGameMenuGroup.SetActive(false);
            waitingForPlayersGroup.SetActive(true);
            
            //Turn off button so host can't leave until others join OR fix later so that going back cancels the lobby

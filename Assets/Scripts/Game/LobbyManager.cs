@@ -48,14 +48,14 @@ namespace CameronBonde
 		 private void OnEnable()
 		{
 			//authenticationManager.OnSignedIn += CreateLobby;
-			LobbyEvents.OnButtonClicked_HostGame += CreateLobbyForBrowser;
+			LobbyEvents.OnButtonClicked_HostGame += CreateLobbyForBrowser_ButtonWrapper;
 			LobbyEvents.OnButtonClicked_JoinGame += JoinLobbyForBrowser;
 		}
 		
 		private void OnDisable()
 		{
 		// 	authenticationManager.OnSignedIn -= CreateLobby;
-			LobbyEvents.OnButtonClicked_HostGame -= CreateLobbyForBrowser;
+			LobbyEvents.OnButtonClicked_HostGame -= CreateLobbyForBrowser_ButtonWrapper;
 			LobbyEvents.OnButtonClicked_JoinGame -= JoinLobbyForBrowser;
 		}
 		
@@ -92,9 +92,14 @@ namespace CameronBonde
 			// Heartbeat the lobby every 15 seconds.
 			StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, heartBeatDelay));
 		}
+
+		public async void CreateLobbyForBrowser_ButtonWrapper(string inputLobbyName)
+		{
+			CreateLobbyForBrowser(inputLobbyName);
+		}
 		
 		//This version doesn't connect the relay straight away so that players can join the lobby
-		public async void CreateLobbyForBrowser(string inputLobbyName)
+		public async Task CreateLobbyForBrowser(string inputLobbyName)
 		{
 			Debug.Log("Creating lobby... but not starting network yet");
 			
@@ -108,21 +113,11 @@ namespace CameronBonde
 			
 			lobby = await LobbyService.Instance.CreateLobbyAsync(inputLobbyName, maxPlayers, options);
 			
-			//Save Player Name
-			await SetPlayerUsername(lobby);
-			
-			//Save allocated relay join code
-			await SetLobbyRelayCode(lobby);
-			
-			//Save lobby join code
-			await SetLobbyJoinCode(lobby);
-			
 			//Set up callbacks
 			await SetupLobbyEvents();
 			
 			//Update the lobby data class with relevant info
-			LobbyData lobbyData = UpdateLobbyData(lobby);
-			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
+			await InitialLobbyUpdate(lobby);
 
 			// Heartbeat the lobby every 15 seconds.
 			StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, heartBeatDelay));
@@ -182,12 +177,12 @@ namespace CameronBonde
 			//Reset lobby data with new player info
 			LobbyData lobbyData = UpdateLobbyData(lobby);
 			
-			//Call event to update UI
-			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
-			Debug.Log("LobbyManager: OnLobbyChanged has requested the player list to be refreshed.");
-			
 			//Set up callbacks
 			await SetupLobbyEvents();
+			
+			//Call events to update UI
+			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
+			Debug.Log("LobbyManager: OnLobbyChanged has requested the player list to be refreshed.");
 			
 			try
 			{
@@ -205,6 +200,9 @@ namespace CameronBonde
 			{
 				Debug.LogError($"Failed to join lobby: {e}");
 			}
+			
+			//Call event to update screen
+			LobbyEvents.WaitingForOtherPlayersToJoinLobby?.Invoke(lobby.Players.Count);
 		}
 		
 		public async void JoinFirstAvailableLobby()
@@ -236,7 +234,7 @@ namespace CameronBonde
 			}
 		}
 		
-		private async void OnLobbyChanged(ILobbyChanges obj)
+		private void OnLobbyChanged(ILobbyChanges obj)
 		{
 			Debug.Log("Lobby changed event");
 			
@@ -247,8 +245,8 @@ namespace CameronBonde
 				}
 			
 			//update the lobby data class for UI to use
-			Lobby updatedLobby = await LobbyService.Instance.GetLobbyAsync(lobby.Id);
-			LobbyData lobbyData = UpdateLobbyData(updatedLobby);
+			obj.ApplyToLobby(lobby);
+			LobbyData lobbyData = UpdateLobbyData(lobby);
 			
 			//Call event to update UI
 			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
@@ -376,6 +374,21 @@ namespace CameronBonde
 			}
 		}
 
+		public async Task InitialLobbyUpdate(Lobby lobby)
+		{
+			//Save Player Name
+			await SetPlayerUsername(lobby);
+			
+			//Save allocated relay join code
+			await SetLobbyRelayCode(lobby);
+			
+			//Save lobby join code
+			await SetLobbyJoinCode(lobby);
+			
+			UpdateLobbyData(lobby);
+
+		}
+
 		public LobbyData UpdateLobbyData(Lobby lobby)
 		{
 			LobbyData lobbyData = new LobbyData();
@@ -394,6 +407,10 @@ namespace CameronBonde
 					lobbyData.PlayerNames.Add(username.Value);
 				}
 			}
+			
+			//Check if player is host
+			string localPlayerID = AuthenticationService.Instance.PlayerId;
+			lobbyData.isHost = lobby.HostId == localPlayerID;
 			
 			//Call event to update UI
 			LobbyEvents.OnLobbyUpdated?.Invoke(lobbyData);
@@ -553,7 +570,7 @@ namespace CameronBonde
 					foreach (Player player in foundLobby.Players)
 					{
 						if (player.Data != null &&
-						    player.Data.TryGetValue("PlayerName", out PlayerDataObject playerDataObject))
+						    player.Data.TryGetValue("Username", out PlayerDataObject playerDataObject))
 						{
 							lobbyData.PlayerNames.Add(playerDataObject.Value);
 							Debug.Log("LobbyManager: Player in " + lobbyData.LobbyName + "is named: " +  playerDataObject.Value);

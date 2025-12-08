@@ -12,6 +12,8 @@ namespace AshleyPearson
         public int PlayerCount;
         public string RelayJoinCode;
         public string LobbyJoinCode;
-        public List<string> PlayerNames; //Not currently used, may be used on Host Lobby UI to show who has joined
+        public List<string> PlayerNames;
+        public bool isHost; //To determine who is host for UI before relay networked
+
     }
 }
