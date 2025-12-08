@@ -36,25 +36,73 @@ MonoBehaviour:
       name: LowHealth
   actions:
   - name: ScanWorld
-    isDefault: 0
-    state: {fileID: 0}
+    isDefault: 1
+    state: {fileID: 4643698390399945593, guid: de3d0e992047d10408eda7b52917fafe, type: 3}
     cost: 0
-    position: {x: 210, y: 25}
-    pre: []
-    post: []
+    position: {x: 210, y: 55}
+    pre:
+    - id: 7
+      value: 1
+    post:
+    - id: 7
+      value: 0
   - name: ChasePlayer
     isDefault: 0
-    state: {fileID: 0}
+    state: {fileID: 4599758369531681272, guid: 5f6386e780989524aaf6775176895299, type: 3}
     cost: 0
-    position: {x: 409, y: 25}
-    pre: []
-    post: []
+    position: {x: 409, y: 55}
+    pre:
+    - id: 0
+      value: 1
+    - id: 1
+      value: 0
+    post:
+    - id: 1
+      value: 1
   - name: MeleeAttack
     isDefault: 0
-    state: {fileID: 0}
+    state: {fileID: 3278103364713172888, guid: 0450f12592e024e42bad2de27e100615, type: 3}
     cost: 0
-    position: {x: 605, y: 27}
-    pre: []
+    position: {x: 605, y: 57}
+    pre:
+    - id: 0
+      value: 1
+    - id: 1
+      value: 1
     post: []
-  goals: []
+  - name: DefendCrate
+    isDefault: 0
+    state: {fileID: 5209020340281828029, guid: 7c5000067e8f1bd45a015164b6933170, type: 3}
+    cost: 0
+    position: {x: 213, y: 247}
+    pre:
+    - id: 4
+      value: 1
+    post:
+    - id: 5
+      value: 1
+  - name: DodgeExplosive
+    isDefault: 0
+    state: {fileID: 3110897748150682927, guid: 9f3fd1db3a0da2349a2386b53294e727, type: 3}
+    cost: 0
+    position: {x: 412, y: 277}
+    pre:
+    - id: 2
+      value: 1
+    - id: 3
+      value: 1
+    post:
+    - id: 2
+      value: 0
+    - id: 3
+      value: 0
+    - id: 7
+      value: 1
+  goals:
+  - name: KillPlayer
+    isDefault: 1
+    position: {x: 610, y: 297}
+    conditions:
+    - id: 9
+      value: 1
   worldStates: []

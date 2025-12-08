@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2254542138883219888}
   - component: {fileID: 4556799196065643396}
+  - component: {fileID: 2375321320227929125}
   m_Layer: 8
   m_Name: HitBox
   m_TagString: Untagged
@@ -55,6 +56,19 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2375321320227929125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3795275365418021857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d16c54a34fc44a4eb58674d28d4053e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 8164744785097091759}
 --- !u!1 &4502814781879650498
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,11 +243,15 @@ GameObject:
   - component: {fileID: 4083369946603743624}
   - component: {fileID: 985263292132319000}
   - component: {fileID: 7257336100249585850}
+  - component: {fileID: 6043559860322793065}
   - component: {fileID: 1037977098375146941}
   - component: {fileID: 4638420518047162639}
   - component: {fileID: 1769863027275978531}
   - component: {fileID: 3536397080695100442}
   - component: {fileID: 5714765879082662013}
+  - component: {fileID: 273430583522670073}
+  - component: {fileID: 8164744785097091759}
+  - component: {fileID: 7303209295072810436}
   m_Layer: 8
   m_Name: DangerousAlien
   m_TagString: Alien
@@ -306,6 +324,26 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &6043559860322793065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648060442026450375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bea77bfa753c74f4d954cfd271293f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerVisionRange: 20
+  playerAttackRange: 3
+  fieldOfViewAngle: 120
+  fieldOfViewRayCount: 7
+  detectionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  lowHealthFraction: 0.3
 --- !u!114 &1037977098375146941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,6 +433,80 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   TransitionStateInfoList: []
   m_Animator: {fileID: 4638420518047162639}
+--- !u!114 &273430583522670073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648060442026450375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d16c54a34fc44a4eb58674d28d4053e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 8164744785097091759}
+--- !u!114 &8164744785097091759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648060442026450375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 377d9f628b2d13b46a0c0d6d3ffac99d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  moveSpeed: 1
+  defaultSpeed: 1
+  navMeshAgent: {fileID: 7257336100249585850}
+  health: {fileID: 1037977098375146941}
+  animationController: {fileID: 1769863027275978531}
+  damageMin: 5
+  damageMax: 10
+  attackRange: 2
+  chaseRange: 15
+  attackCooldownSeconds: 3
+  attackDurationSeconds: 0.8
+  attackHitboxPrefab: {fileID: 3795275365418021857}
+  attackHitboxRoot: {fileID: 2254542138883219888}
+  attackHitboxInstance: {fileID: 0}
+  explosiveSenseRadius: 10
+  dodgeSampleRadius: 6
+  dodgeSampleCount: 16
+  dodgeMoveSpeed: 8
+  normalMoveSpeed: 4
+  dodgeArrivalTolerance: 0.3
+  crateDefendRadius: 8
+  allyAssistRadius: 12
+  turretAssistRadius: 18
+  playerTransform: {fileID: 0}
+  currentExplosiveThreat: {fileID: 0}
+  currentDodgeTarget: {x: 0, y: 0, z: 0}
+  hasDodgeTarget: 0
+  isDodging: 0
+  isDefendingCrate: 0
+  smartAlly: {fileID: 0}
+  allyCrateTarget: {fileID: 0}
+  needsScan: 1
+  isMoving: 0
+--- !u!114 &7303209295072810436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648060442026450375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e724e36405834fa192b36cd6a4e6059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manualUpdate: 0
+  thinkInterval: 0.1
+  scenario: {fileID: 11400000, guid: ec7506eedcbfadd4b89402584ec9d980, type: 2}
 --- !u!1001 &239570271543353088
 PrefabInstance:
   m_ObjectHideFlags: 0
