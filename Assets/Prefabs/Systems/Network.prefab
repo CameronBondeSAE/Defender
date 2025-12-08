@@ -1212,6 +1212,7 @@ MonoBehaviour:
   heartBeatDelay: 15
   relayManager: {fileID: 3404143380561683964}
   authenticationManager: {fileID: 5771697108272250762}
+  clientStarter: {fileID: 0}
   inputLobbyName: 
   inputUsername: 
   playerNameScript: {fileID: 7734816773444498559}
@@ -1424,6 +1425,7 @@ MonoBehaviour:
   playerEntryPrefab: {fileID: 1521704285819526422, guid: 0d8c1e9b6f39afc4398dea4d6aac0cae, type: 3}
   playerListContentParent: {fileID: 274446151479113734}
   playerCountText: {fileID: 1162805161299092608}
+  hostStartGameButton: {fileID: 2451409374330707486}
   spawnedPlayerEntries: []
 --- !u!1 &2094564519251612039
 GameObject:
@@ -7192,9 +7194,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2090700677774053683}
-        m_TargetAssemblyTypeName: AshleyPearson.LobbyInput, Assembly-CSharp
-        m_MethodName: OnSubmitLobbyName
+      - m_Target: {fileID: 7645251101809303678}
+        m_TargetAssemblyTypeName: AshleyPearson.LobbyMenuManager, Assembly-CSharp
+        m_MethodName: OnButtonClick_HostStartedGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

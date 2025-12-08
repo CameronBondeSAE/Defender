@@ -1,4 +1,5 @@
 using System.Reflection;
+using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,12 +26,14 @@ namespace AshleyPearson
        {
            LobbyEvents.WaitingForOtherPlayersToJoinLobby += WaitingForOtherPlayers_UI;
            LobbyEvents.OnUsernameEntered += PerformAction;
+           LobbyEvents.OnButtonClicked_HostStartedGame += HideAllScreens;
        }
 
        private void OnDisable()
        {
            LobbyEvents.WaitingForOtherPlayersToJoinLobby -= WaitingForOtherPlayers_UI;
            LobbyEvents.OnUsernameEntered -= PerformAction;
+           LobbyEvents.OnButtonClicked_HostStartedGame -= HideAllScreens;
        }
 
        private void Start()
@@ -81,6 +84,12 @@ namespace AshleyPearson
                Debug.Log("LobbyMenuManager: Action to be performed is " + actionAfterUsernameEntered.GetMethodInfo().Name);
            }
           
+       }
+
+       public void OnButtonClick_HostStartedGame()
+       {
+           //This method doesn't check for host as only the host should have access to the button in the first place
+           LobbyEvents.OnButtonClicked_HostStartedGame?.Invoke();
        }
        
        private void ShowUsernameScreen()

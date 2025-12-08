@@ -49,14 +49,14 @@ namespace CameronBonde
 		{
 			//authenticationManager.OnSignedIn += CreateLobby;
 			LobbyEvents.OnButtonClicked_HostGame += CreateLobbyForBrowser_ButtonWrapper;
-			LobbyEvents.OnButtonClicked_JoinGame += JoinLobbyForBrowser;
+			LobbyEvents.OnButtonClicked_JoinGame += JoinLobbyForBrowser_ButtonWrapper;
 		}
 		
 		private void OnDisable()
 		{
 		// 	authenticationManager.OnSignedIn -= CreateLobby;
 			LobbyEvents.OnButtonClicked_HostGame -= CreateLobbyForBrowser_ButtonWrapper;
-			LobbyEvents.OnButtonClicked_JoinGame -= JoinLobbyForBrowser;
+			LobbyEvents.OnButtonClicked_JoinGame -= JoinLobbyForBrowser_ButtonWrapper;
 		}
 		
 		public async void CreateLobby(string inputLobbyName)
@@ -126,11 +126,6 @@ namespace CameronBonde
 			LobbyEvents.WaitingForOtherPlayersToJoinLobby?.Invoke(lobby.Players.Count);
 		}
 
-		public async void StartGame()
-		{
-			await relayManager.StartHostWithRelay(maxPlayers, "udp");
-		}
-
 		public async void JoinLobbyByCode(string lobbyCode)
 		{
 			Debug.Log("LobbyManager: Join code is: " +  lobbyCode);
@@ -162,7 +157,12 @@ namespace CameronBonde
 			}
 		}
 
-		public async void JoinLobbyForBrowser(string lobbyCode)
+		public async void JoinLobbyForBrowser_ButtonWrapper(string lobbyCode)
+		{
+			JoinLobbyForBrowser(lobbyCode);
+		}
+		
+		public async Task JoinLobbyForBrowser(string lobbyCode)
 		{
 			Debug.Log("LobbyManager: Join code is: " +  lobbyCode);
 			
@@ -173,6 +173,9 @@ namespace CameronBonde
 			
 			//Set joining player's username
 			await SetPlayerUsername(lobby);
+			
+			//Refresh lobby from server to stop client-side issues with names
+			lobby = await LobbyService.Instance.GetLobbyAsync(lobby.Id);
 			
 			//Reset lobby data with new player info
 			LobbyData lobbyData = UpdateLobbyData(lobby);

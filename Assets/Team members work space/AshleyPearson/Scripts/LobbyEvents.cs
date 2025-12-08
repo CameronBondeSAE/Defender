@@ -13,13 +13,13 @@ namespace AshleyPearson
         
         //Host Menu Buttons
         public static Action<int> WaitingForOtherPlayersToJoinLobby;
+        public static Action OnButtonClicked_HostStartedGame;
         
         //Join Menu Buttons
         public static Action OnMenuButtonClicked_RefreshLobbyList;
         
         //Username Menu Buttons
         public static Action OnUsernameEntered;
-        public static Action<string> OnLobbyNameEntered;
         
         //Lobby Update
         public static Action<LobbyData> OnLobbyUpdated;

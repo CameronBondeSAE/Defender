@@ -19,6 +19,7 @@ public class RelayManager : MonoBehaviour
 	public Button         startClientButton;
 
 	public string reservedRelayJoinCode;
+	public Allocation reservedRelayAllocation;
 	
 	public void ActivateButtons()
 	{
@@ -98,6 +99,30 @@ public class RelayManager : MonoBehaviour
 		}
 	}
 
+	public async Task<string> StartHostWithReservedRelay(string connectionType)
+	{
+		if (reservedRelayAllocation == null)
+		{
+			Debug.LogError("RelayManager: No reserved allocation to start host with");
+			return null;
+		}
+		
+		NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(AllocationUtils.ToRelayServerData(reservedRelayAllocation, connectionType));
+
+		if (NetworkManager.Singleton.StartHost())
+		{
+			joinCode = reservedRelayJoinCode;
+			Debug.Log("Host Relay Join Code (reserved) : " + joinCode);
+			return joinCode;
+		}
+
+		else
+		{
+			Debug.LogError("RelayManager: Failed to start host with reserved relay code");
+			return null;
+		}
+	}
+
 	public void NewJoinCodeSet(string _relayJoinCode)
 	{
 		joinCode = _relayJoinCode;
@@ -132,8 +157,9 @@ public class RelayManager : MonoBehaviour
 	//Separating out lobby and relay allocation for lobby
 	public async Task GetRelayCode()
 	{
-		Allocation allocation = await RelayService.Instance.CreateAllocationAsync(4); //max players is 4
-		reservedRelayJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+		reservedRelayAllocation = await RelayService.Instance.CreateAllocationAsync(4); //max players is 4
+		reservedRelayJoinCode = await RelayService.Instance.GetJoinCodeAsync(reservedRelayAllocation.AllocationId);
 	}
+	
 	
 }
