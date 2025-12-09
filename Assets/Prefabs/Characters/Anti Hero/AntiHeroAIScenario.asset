@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f22e7053ea04ed0922308786facc8c, type: 3}
+  m_Name: AntiHeroAIScenario
+  m_EditorClassIdentifier: 
+  conditions:
+    list:
+    - id: 0
+      name: SeeAlien
+    - id: 1
+      name: IsAlienKilled
+  actions:
+  - name: Idle
+    isDefault: 1
+    state: {fileID: 6728257972289826996, guid: c8b56599b9ff60a44b050a8960b350c6, type: 3}
+    cost: 0
+    position: {x: 320.79993, y: 56.799995}
+    pre:
+    - id: 0
+      value: 0
+    post:
+    - id: 0
+      value: 1
+  - name: Attack
+    isDefault: 0
+    state: {fileID: 5041557594875361641, guid: 8ab027db5479cef49aba1d8556f59172, type: 3}
+    cost: 0
+    position: {x: 514, y: 57.600006}
+    pre:
+    - id: 0
+      value: 1
+    post:
+    - id: 1
+      value: 1
+  goals:
+  - name: Kill Alien
+    isDefault: 1
+    position: {x: 209.19995, y: 437.59998}
+    conditions:
+    - id: 1
+      value: 1
+  worldStates:
+  - position: {x: 209.20001, y: 545.5999}
+    isAutoUpdate: 1
+    list:
+    - id: 0
+      value: 0
+    - id: 1
+      value: 0

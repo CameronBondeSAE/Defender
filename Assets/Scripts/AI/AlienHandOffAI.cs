@@ -156,6 +156,7 @@ public class AlienHandOffAI : AlienAI
                 }
                 //Debug.Log("Active");
             }
+            yield return null;  
 
 
         }

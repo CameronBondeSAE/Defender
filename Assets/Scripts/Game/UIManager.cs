@@ -42,6 +42,7 @@ namespace DanniLi
         [Header("References")] [SerializeField]
         private GameManager gameManager;
 
+        [Header("Level Loader")]
         [SerializeField] private LevelLoader levelLoader;
 
         // Netvar for UI states
@@ -69,7 +70,6 @@ namespace DanniLi
         // new netvar to track aliens spawned so far as they dynamically spawn
         private NetworkVariable<int> networkAliensSpawned =
             new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
-
 
         public override void OnNetworkSpawn()
         {
