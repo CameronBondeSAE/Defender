@@ -64,6 +64,13 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.editorcoroutines": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ext.nunit": {
       "version": "2.0.5",
       "depth": 1,
@@ -454,6 +461,26 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.utilities.async": {
+      "version": "https://github.com/RageAgainstThePixel/com.utilities.async.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.editorcoroutines": "1.0.0",
+        "com.unity.test-framework": "1.4.2",
+        "com.unity.nuget.mono-cecil": "1.11.5"
+      },
+      "hash": "498c3f53c0d9649b76560a582286005271992c41"
+    },
+    "com.utilities.extensions": {
+      "version": "https://github.com/RageAgainstThePixel/com.utilities.extensions.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0"
+      },
+      "hash": "3e413f79170546cce7c68a14205f76fa401758cf"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
