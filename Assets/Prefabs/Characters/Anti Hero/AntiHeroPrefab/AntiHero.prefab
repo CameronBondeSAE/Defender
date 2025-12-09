@@ -440,6 +440,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2874689387533321985}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1763910268116446154}
   m_SourcePrefab: {fileID: 100100000, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}
 --- !u!1 &236784053692626768 stripped
 GameObject:
@@ -526,14 +529,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7434740fd5c354e836eb38cb7435d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserRendererSettings: {fileID: 11400000, guid: c0e3b0149dc779a4699bca5765107feb, type: 2}
   leftEye: {fileID: 3858924453949440534}
   rightEye: {fileID: 7476346716921845350}
+  alienTag: Alien
   maxLaserDistance: 30
-  hitMask:
-    serializedVersion: 2
-    m_Bits: 256
-  activated: 0
+--- !u!114 &-1763910268116446154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236784053692626768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e724e36405834fa192b36cd6a4e6059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manualUpdate: 0
+  thinkInterval: 0.1
+  scenario: {fileID: 11400000, guid: 0f9b0d3b52263f7448e5f9bfe0eb8251, type: 2}
 --- !u!4 &577280417726672362 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}

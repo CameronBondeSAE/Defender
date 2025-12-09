@@ -6,6 +6,7 @@ public class LaserEyes : MonoBehaviour
     [SerializeField] private Transform leftEye;
     [SerializeField] private Transform rightEye;
     [SerializeField] private string alienTag = "Alien";
+    [SerializeField] private GameObject targetAlien;
 
     [Header("Laser Settings")]
     [SerializeField] private float maxLaserDistance = 30f;
@@ -17,8 +18,6 @@ public class LaserEyes : MonoBehaviour
     private void Awake()
     {
         visionSystem = GetComponent<VisionSystem>();
-
-        // Create the two line renderers
         leftLR = CreateLaserRenderer(leftEye.gameObject);
         rightLR = CreateLaserRenderer(rightEye.gameObject);
     }
@@ -31,13 +30,9 @@ public class LaserEyes : MonoBehaviour
         lr.positionCount = 0;
         lr.startWidth = 0.05f;
         lr.endWidth = 0.05f;
-
-        // Red laser color (with emission)
         Color red = new Color(1f, 0f, 0f, 1f);
         lr.startColor = red;
         lr.endColor = red;
-
-        // Use Unity's default unlit shader
         lr.material = new Material(Shader.Find("Unlit/Color"));
         lr.material.color = red;
 
