@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7311523656943680870}
   - component: {fileID: 2946143090949127163}
   - component: {fileID: 8273940632973932314}
+  - component: {fileID: 5402148738284361603}
   - component: {fileID: 2280211459459772817}
   m_Layer: 0
   m_Name: Radar
@@ -111,6 +112,31 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &5402148738284361603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3127420636573581296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 19155832
+  InScenePlacedSourceGlobalObjectIdHash: 2001353532
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &2280211459459772817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,4 +149,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e0c441a386166a4b8fddeecd55c97fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  ShowTopMostFoldoutHeaderGroup: 1
+  audioSource: {fileID: 0}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
+  expiryDuration: 0
+  activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
+  countdownUIPrefab: {fileID: 0}
+  itemName: Radar
+  description: Beeps when it scans an Alien
+  launchForce: 10
+  launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
+  speed: 0.5
+  activated: 0
