@@ -16,7 +16,7 @@ public class AttackState : MonoBehaviour, IAIState
     public float attackDuration = 1f;
 
     private GameObject attackHitbox;
-    private Transform player;
+    private Transform target;
     private bool isAttacking;
     private float nextAttackTime;
 
@@ -27,8 +27,11 @@ public class AttackState : MonoBehaviour, IAIState
         if (animController == null)
             animController = ai.GetComponentInChildren<AIAnimationController>();
 
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (target == null)
+        {
+	        Debug.LogWarning("No target set for AgroAlienAI!");
+	        return;
+        }
 
         if (attackHitbox == null)
         {
@@ -42,10 +45,10 @@ public class AttackState : MonoBehaviour, IAIState
 
     public void Stay()
     {
-        if (player == null || attackHitbox == null)
+        if (target == null || attackHitbox == null)
             return;
 
-        float distanceToPlayer = Vector3.Distance(ai.transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(ai.transform.position, target.position);
 
         if (distanceToPlayer > alertDistance)
         {
@@ -60,7 +63,7 @@ public class AttackState : MonoBehaviour, IAIState
         }
         else if (!isAttacking)
         {
-            ai.MoveTo(player.position);
+            ai.MoveTo(target.position);
         }
     }
 
