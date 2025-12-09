@@ -156,6 +156,7 @@ namespace Jayden
                 yield return null;
                 //Debug.Log("Active");
             }
+            yield return null;
 
         }
     }
