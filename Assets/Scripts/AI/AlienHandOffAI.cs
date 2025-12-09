@@ -106,7 +106,7 @@ public class AlienHandOffAI : AlienAI
                     }
                     catch (Exception ex)
                     {
-                        //Debug.LogError(ex);
+                        Debug.LogError(ex);
                     }
 
 
@@ -147,7 +147,7 @@ public class AlienHandOffAI : AlienAI
                 }
                 catch (Exception e)
                 {
-                    //Debug.Log(e);
+                    Debug.LogError(e);
                 }
 
                 for (int i = 0; i < 10; i++)
