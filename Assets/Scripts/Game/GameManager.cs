@@ -24,8 +24,10 @@ namespace DanniLi
 		private LevelLoader levelLoader;
 		
 		[Header("Debugging: Don't edit")]
-		private LevelInfo currentlevelInfo;
+		private LevelInfo_SO currentlevelInfoSo;
 		public int currentLevelIndex = 0;
+
+		public LevelInfo levelInfo;
 		[SerializeField]
 		private Transform levelContainer; // for organization
 
@@ -202,11 +204,11 @@ namespace DanniLi
 		{
 			//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
 			// ticked off the todos
-			currentlevelInfo = (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
+			currentlevelInfoSo = (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
 				? levelLoader.levelOrder[Mathf.Clamp(currentLevelIndex, 0, levelLoader.levelOrder.Length - 1)] 
 				: null;
 
-			if (currentlevelInfo != null)
+			if (currentlevelInfoSo != null)
 			{
 				// Debug.Log("Level Info: Civilians to save " + currentlevelInfo.civiliansToSave);
 			}
@@ -222,7 +224,7 @@ namespace DanniLi
 			if (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
 				foreach (Crate crate in crates)
 				{
-					LevelInfo levelSO                         = levelLoader.levelOrder[currentLevelIndex];
+					LevelInfo_SO levelSO                         = levelLoader.levelOrder[currentLevelIndex];
 					if (levelSO != null) crate.availableItems = levelSO.availableItems;
 				}
 			else
@@ -417,7 +419,7 @@ namespace DanniLi
 				DoLose();
 				return;
 			}
-			int required = (currentlevelInfo != null) ? currentlevelInfo.percentCiviliansAliveToWin : 50;
+			int required = (currentlevelInfoSo != null) ? currentlevelInfoSo.percentCiviliansAliveToWin : 50;
 			int requiredAliveCount = Mathf.CeilToInt((required / 100f) * totalCivilians); // rounded up
 			if (civiliansAlive >= requiredAliveCount)
 			{
@@ -566,8 +568,8 @@ namespace DanniLi
 		#region Crates
 		 private void SpawnInitialCrateForHost() 
     {
-        if (!IsServer || currentlevelInfo == null) return;
-        int maxCrates = Mathf.Max(0, currentlevelInfo.crateSpawnCount);
+        if (!IsServer || currentlevelInfoSo == null) return;
+        int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
         int connectedClients = NetworkManager.Singleton.ConnectedClientsIds.Count;
         int desired = Mathf.Min(maxCrates, connectedClients);
         while (cratesSpawnedCount < desired)
@@ -579,10 +581,14 @@ namespace DanniLi
     // added functionality to spawn at random position if no spawnPos configured (also as an alternative :3)
     private void TrySpawnCrateForNewClient() 
     {
-        if (!IsServer || currentlevelInfo == null) return;
-        int maxCrates = Mathf.Max(0, currentlevelInfo.crateSpawnCount);
+        if (!IsServer || currentlevelInfoSo == null) return;
+        
+	    // CAM HACK: TODO
+	    levelInfo = FindAnyObjectByType<LevelInfo>();
+        
+        int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
         if (cratesSpawnedCount >= maxCrates) return;
-        if (currentlevelInfo.cratePrefab == null) return;
+        if (currentlevelInfoSo.cratePrefab == null) return;
         // choose spawn transform in listed order
         Transform spawnPos = null;
 		// now prefer scene-assigned spawn points on this manager 
@@ -592,16 +598,16 @@ namespace DanniLi
 	        spawnPos = crateSpawnpointsInScene[nextCrateSpawnIndex].transform;
         }
 		// if null, fallback to LevelInfo prefab spawn points
-        else if (currentlevelInfo != null &&
-                 currentlevelInfo.crateSpawnPoints != null &&
-                 nextCrateSpawnIndex < currentlevelInfo.crateSpawnPoints.Count)
+        else if (levelInfo != null &&
+                 levelInfo.crateSpawns != null &&
+                 nextCrateSpawnIndex < levelInfo.crateSpawns.Count)
         {
-	        spawnPos = currentlevelInfo.crateSpawnPoints[nextCrateSpawnIndex];
+	        spawnPos = levelInfo.crateSpawns[nextCrateSpawnIndex].transform;
         }
 
         Vector3 pos = (spawnPos != null) ? spawnPos.position : GetRandomSpawnPosition();
         Quaternion rotation = (spawnPos != null) ? spawnPos.rotation : Quaternion.identity;
-        var crateGO = Instantiate(currentlevelInfo.cratePrefab, pos, rotation, levelContainer);
+        var crateGO = Instantiate(currentlevelInfoSo.cratePrefab, pos, rotation, levelContainer);
         var netObj = crateGO.GetComponent<NetworkObject>();
         if (netObj == null)
         {
@@ -619,7 +625,7 @@ namespace DanniLi
 		private void SpawnEggsForLevel()
 		{
 			if (!IsServer) return;
-			if (currentlevelInfo == null)
+			if (currentlevelInfoSo == null)
 				return;
 			
 			spawnedEggs.Clear();
@@ -627,7 +633,7 @@ namespace DanniLi
 			if (eggSpawnPos == null || eggSpawnPos.Count == 0)
 				return;
 
-			if (currentlevelInfo.eggPrefabs == null || currentlevelInfo.eggPrefabs.Count == 0)
+			if (currentlevelInfoSo.eggPrefabs == null || currentlevelInfoSo.eggPrefabs.Count == 0)
 			{
 				Debug.Log("no egg prefabs configured in LevelInfo; skipping egg spawn.");
 				return;
@@ -639,11 +645,11 @@ namespace DanniLi
 				if (spawnPoint == null) continue;
 
 				// choose an egg prefab at random
-				GameObject eggPrefab = currentlevelInfo.eggPrefabs[0];
-				if (currentlevelInfo.eggPrefabs.Count > 1)
+				GameObject eggPrefab = currentlevelInfoSo.eggPrefabs[0];
+				if (currentlevelInfoSo.eggPrefabs.Count > 1)
 				{
-					int randomIndex = UnityEngine.Random.Range(0, currentlevelInfo.eggPrefabs.Count);
-					eggPrefab = currentlevelInfo.eggPrefabs[randomIndex];
+					int randomIndex = UnityEngine.Random.Range(0, currentlevelInfoSo.eggPrefabs.Count);
+					eggPrefab = currentlevelInfoSo.eggPrefabs[randomIndex];
 				}
 
 				GameObject eggInstance = Instantiate(eggPrefab, spawnPoint.position, spawnPoint.rotation, levelContainer);

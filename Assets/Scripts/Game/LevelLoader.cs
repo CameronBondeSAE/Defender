@@ -11,7 +11,7 @@ using UnityEditor;
 
 public class LevelLoader : NetworkBehaviour
 {
-   public DanniLi.LevelInfo[] levelOrder;
+   public DanniLi.LevelInfo_SO[] levelOrder;
    [Header("Refs")]
    [SerializeField] private GameManager gameManager;
    [SerializeField] private UIManager uiManager;
@@ -87,7 +87,7 @@ public class LevelLoader : NetworkBehaviour
      // DoReloadCurrent();
    }
 
-   private DanniLi.LevelInfo[] GetLevels()
+   private DanniLi.LevelInfo_SO[] GetLevels()
    {
       return levelOrder;
    }
@@ -111,7 +111,7 @@ public class LevelLoader : NetworkBehaviour
 
    private void DoLoadNext()
    {
-      LevelInfo[] levels = GetLevels();
+      LevelInfo_SO[] levels = GetLevels();
       if (levels == null || levels.Length == 0)
       {
          Debug.LogWarning("No levels configured.");
