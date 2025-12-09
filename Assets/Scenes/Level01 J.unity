@@ -226,10 +226,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3977854}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2387,10 +2387,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563976979}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 0.0000001
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -7430,7 +7430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 557473206
+  GlobalObjectIdHash: 3834693326
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -7489,7 +7489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3724894675
+  GlobalObjectIdHash: 3909262374
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -8921,7 +8921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3803678482
+  GlobalObjectIdHash: 1498314464
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -10364,11 +10364,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scenePrefabInstances:
   - _gameObject: {fileID: 109294344}
-    _prefab: Assets/Prefabs/Items/crateSpawn1.prefab
+    _prefab: Assets/Prefabs/Items/CrateSpawn.prefab
   - _gameObject: {fileID: 148582855}
-    _prefab: Assets/Prefabs/Items/crateSpawn2.prefab
+    _prefab: 
   - _gameObject: {fileID: 20038839}
-    _prefab: Assets/Prefabs/Items/crateSpawn3.prefab
+    _prefab: 
   - _gameObject: {fileID: 1320570303}
     _prefab: Assets/Prefabs/Waypoint.prefab
   - _gameObject: {fileID: 1507302142}
@@ -10384,71 +10384,71 @@ MonoBehaviour:
   - _gameObject: {fileID: 1246753937}
     _prefab: Assets/Prefabs/Waypoint.prefab
   - _gameObject: {fileID: 2097515461}
-    _prefab: Assets/Prefabs/Characters/WalkingCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/WalkingCiv.prefab
   - _gameObject: {fileID: 405812699}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_01.prefab
   - _gameObject: {fileID: 1529533182}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 792659726}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 2140621116}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 2140621115}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1939163689}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1939163688}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 629278771}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 629278770}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 842498635}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 842498634}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1831447826}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1830097655}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 153761088}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 153761087}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 599815991}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 599815990}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 880969465}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 2093754313}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1810230950}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1174313286}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1827071649}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1772027656}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 708473846}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1320231170}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 900368824}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 567693055}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 541257372}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1297854275}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1304804443}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 498629006}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 897443026}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1255525343}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1011198850}
@@ -10467,6 +10467,14 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Systems/Player Input Manager.prefab
   - _gameObject: {fileID: 223617396}
     _prefab: Assets/Prefabs/Systems/Waypoint Manager.prefab
+  - _gameObject: {fileID: 1696617166908582402}
+    _prefab: Assets/Prefabs/Systems/AIGrid.prefab
+  - _gameObject: {fileID: 1696617166908582401}
+    _prefab: Assets/Prefabs/Systems/Dijkstra Pathfinder.prefab
+  - _gameObject: {fileID: 1696617166908582400}
+    _prefab: Assets/Prefabs/Systems/Shroud.prefab
+  - _gameObject: {fileID: 1696617166908582399}
+    _prefab: Assets/Prefabs/Systems/InGameCanvas.prefab
   - _gameObject: {fileID: 949156150}
     _prefab: Assets/Prefabs/Systems/Network.prefab
   - _gameObject: {fileID: 1742397255}
@@ -10570,7 +10578,7 @@ MonoBehaviour:
   - _gameObject: {fileID: 914033679}
     _prefab: Assets/Prefabs/Items/Turret/Turret.prefab
   - _gameObject: {fileID: 2013514529}
-    _prefab: Assets/SolStuff/DecoyItem/DecoyItem.prefab
+    _prefab: Assets/Prefabs/Items/DecoyItem/DecoyItem.prefab
   - _gameObject: {fileID: 993750791}
     _prefab: Assets/Prefabs/Items/Snack/Snack.prefab
   - _gameObject: {fileID: 1412828219}
@@ -10579,6 +10587,8 @@ MonoBehaviour:
     _prefab: Assets/Art/Kenney - Food/bag.fbx
   - _gameObject: {fileID: 1451257866}
     _prefab: Assets/Prefabs/Items/Booster Stim/Booster Stim.prefab
+  - _gameObject: {fileID: 1880462344}
+    _prefab: Assets/Prefabs/Level Items/FireWall/FireWall.prefab
 --- !u!4 &1664449590
 Transform:
   m_ObjectHideFlags: 11
@@ -10670,7 +10680,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4282479196436245083, guid: e738b699983ba2c4590499f0c294bb9f, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4134688454
+      value: 651089013
       objectReference: {fileID: 0}
     - target: {fileID: 5085391778498778146, guid: e738b699983ba2c4590499f0c294bb9f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10940,6 +10950,88 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3808081602761358926, guid: 9defdaf93d256da46ac6e8b9a4dda61a, type: 3}
   m_PrefabInstance: {fileID: 2926245050294704821}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1880462343
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 137924156730357946, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2769254738
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143670579389990896, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c66be79c0cea4f949b99457446b07e88, type: 2}
+    - target: {fileID: 8088660420444167815, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_Name
+      value: FireWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4567754
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4507
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2700701
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417401822769905259, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+--- !u!1 &1880462344 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8088660420444167815, guid: e702750b9bc2f2e4086aa0a8b16db348, type: 3}
+  m_PrefabInstance: {fileID: 1880462343}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1892291082 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7214323903650827927, guid: b9840c28071b5d744915cbf401b1635f, type: 3}
@@ -11125,7 +11217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1462247919
+  GlobalObjectIdHash: 3914017618
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -11953,7 +12045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1606234780
+  GlobalObjectIdHash: 1236558382
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -12687,6 +12779,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c10de919ad029b4a84166b15b805138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1696617166908582399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8380391568434222374, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+  m_PrefabInstance: {fileID: 1696617166908582397}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1696617166908582400 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4903402964932248663, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+  m_PrefabInstance: {fileID: 1696617166908582397}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1696617166908582401 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4665305229101726130, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+  m_PrefabInstance: {fileID: 1696617166908582397}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1696617166908582402 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5296798757532116996, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+  m_PrefabInstance: {fileID: 1696617166908582397}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1826514275632470207
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12750,6 +12862,10 @@ PrefabInstance:
     - target: {fileID: 1099345605145367064, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1102946992458925737, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1108882826693265688, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -13549,3 +13665,4 @@ SceneRoots:
   - {fileID: 1022437700}
   - {fileID: 1944278937}
   - {fileID: 386799512}
+  - {fileID: 1880462343}
