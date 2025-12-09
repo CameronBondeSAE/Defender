@@ -147,9 +147,6 @@ public class AIBase : CharacterBase
 			}
 		}
 	}
-
-<<<<<<< HEAD
-=======
 	public virtual void AgentMovement()
 	{
 		// Turn towards
@@ -197,9 +194,6 @@ public class AIBase : CharacterBase
 			}
 		}
     }
-
-
->>>>>>> main
 	// Change state logic
 	public void ChangeState(IAIState newState)
 	{
