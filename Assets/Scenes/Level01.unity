@@ -7207,6 +7207,83 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4787910184496557232, guid: ed35efcb116ad224a8379ebdaa95565f, type: 3}
   m_PrefabInstance: {fileID: 561121636}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1190362695
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084507992911832263, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_Name
+      value: Per Level managers
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+--- !u!1 &1190362696 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5084507992911832263, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+  m_PrefabInstance: {fileID: 1190362695}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1190362697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5918879239536527533, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+  m_PrefabInstance: {fileID: 1190362695}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1190362698 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 669734493146235214, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+  m_PrefabInstance: {fileID: 1190362695}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1190362699 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2297896688699043524, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+  m_PrefabInstance: {fileID: 1190362695}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1240929705
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8935,6 +9012,14 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Level Items/Rotate90/Rotate90.prefab
   - _gameObject: {fileID: 1267555660}
     _prefab: Assets/Prefabs/Level Items/Rotate90/Rotate90.prefab
+  - _gameObject: {fileID: 1190362696}
+    _prefab: Assets/Prefabs/Systems/Per Level managers.prefab
+  - _gameObject: {fileID: 1190362699}
+    _prefab: Assets/Prefabs/Systems/AIGrid.prefab
+  - _gameObject: {fileID: 1190362698}
+    _prefab: Assets/Prefabs/Systems/Dijkstra Pathfinder.prefab
+  - _gameObject: {fileID: 1190362697}
+    _prefab: Assets/Prefabs/Systems/Shroud.prefab
 --- !u!4 &1664449590
 Transform:
   m_ObjectHideFlags: 11
@@ -10650,3 +10735,4 @@ SceneRoots:
   - {fileID: 926711421}
   - {fileID: 592818490}
   - {fileID: 1155253698}
+  - {fileID: 1190362695}

@@ -35,7 +35,7 @@ namespace CameronBonde
 		{
 			//Edits: Switched function to async as this was causing issues with lobby joining.
 			
-			while (!authenticationManager.AreServicesInitialized())
+			while (!authenticationManager.AreServicesInitialized() && Application.isPlaying)
 			{
 				await Task.Yield();
 				Debug.Log("LobbyManager: Services initialized. Lobby Manager can act now.");

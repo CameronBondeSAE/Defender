@@ -496,11 +496,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5398525467649993438, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
   m_PrefabInstance: {fileID: 1696617166908582397}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &386799510 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5296798757532116996, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
-  m_PrefabInstance: {fileID: 1696617166908582397}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &471221307
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,12 +789,6 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Systems/Player Input Manager.prefab
   - _gameObject: {fileID: 223617396}
     _prefab: Assets/Prefabs/Systems/Waypoint Manager.prefab
-  - _gameObject: {fileID: 386799510}
-    _prefab: Assets/Prefabs/Systems/AIGrid.prefab
-  - _gameObject: {fileID: 1621810575}
-    _prefab: Assets/Prefabs/Systems/Dijkstra Pathfinder.prefab
-  - _gameObject: {fileID: 926631923}
-    _prefab: Assets/Prefabs/Systems/Shroud.prefab
   - _gameObject: {fileID: 1696617166908582398}
     _prefab: Assets/Prefabs/Systems/InGameCanvas.prefab
   - _gameObject: {fileID: 949156150}
@@ -881,11 +870,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 123310684}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &926631923 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4903402964932248663, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
-  m_PrefabInstance: {fileID: 1696617166908582397}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &949156150 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1812795066463558564, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
@@ -1277,11 +1261,6 @@ Transform:
 --- !u!1 &1591022367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8252729606240833830, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
-  m_PrefabInstance: {fileID: 1696617166908582397}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1621810575 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4665305229101726130, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
   m_PrefabInstance: {fileID: 1696617166908582397}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1673397775
