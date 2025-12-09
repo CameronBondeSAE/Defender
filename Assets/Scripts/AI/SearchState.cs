@@ -243,6 +243,7 @@ public class SearchState : IAIState
         {
             ai.currentTargetCiv.SetAbducted(true); // mark instantly
             ai.currentTargetCiv.escortingAlien = ai; // record leader alien
+            ai.escortingCivs.Add(ai.currentTargetCiv);
             ai.currentTargetCiv.ChangeState(new FollowState(ai.currentTargetCiv, ai.transform));
             //Debug.Log($"[AlienAI] {ai.name} has grabbed {ai.currentTargetCiv.name}");
             ai.ChangeState(new ReturnState(ai));

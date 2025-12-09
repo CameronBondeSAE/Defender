@@ -93,7 +93,7 @@ public class AIBase : CharacterBase
 
 	public  float   stuckTime;
 	public  float   maxStuckTime = 2f;
-	private Vector3 lastDestination;
+	[HideInInspector] public Vector3 lastDestination;
 		
 	// Initialize AI - getting references
 	protected virtual void Start()
@@ -124,66 +124,78 @@ public class AIBase : CharacterBase
 	// State machine update loop
 	protected virtual void Update()
 	{
-		if(!IsServer)
+		if (!IsServer)
 			return;
 
 		CurrentState?.Stay();
 	}
 
-	private void FixedUpdate()
+	protected virtual void FixedUpdate()
 	{
-		if(!IsServer)
+		if (!IsServer)
 			return;
 		
 		if (useRigidbody)
 		{
-			if(path != null && path.corners.Length > 0 && cornerIndex < path.corners.Length)
+			if (path != null && path.corners.Length > 0 && cornerIndex < path.corners.Length)
 			{
 			
-				// Turn towards
-				Vector3 direction   = path.corners[cornerIndex] - rb.position;
-				float   angle = Vector3.SignedAngle(rb.transform.forward, direction, Vector3.up);
-				rb.AddTorque(0, Mathf.Sign(angle) * rotationSpeed, 0);
-				
-				// Simple move forward with slowdown
-				float slowDownScalar = (1f - Mathf.Abs(angle/180f)); // Normalise to 0-1
-				if (rb.linearVelocity.magnitude < maxSpeed)
-				{
-					rb.AddRelativeForce(0,0,forwardForce * slowDownScalar * MoveSpeed);
-				}
-				
-				Debug.DrawLine(path.corners[cornerIndex], path.corners[cornerIndex] + Vector3.up*10f, Color.red);
-				// rb.MovePosition(Vector3.MoveTowards(rb.position, path.corners[cornerIndex], acceleration * Time.deltaTime));
-				float distance = Vector3.Distance(rb.position, path.corners[cornerIndex]);
-				// Debug.Log(gameObject.name + " : cornerThreshold = " + cornerThreshold+ " : distance = " + distance + " : cornerIndex = " + cornerIndex + " : path.corners.Length = " + path.corners.Length, gameObject);
-				if (distance < cornerThreshold)
-				{
-					cornerIndex++;
-					// Debug.Log("		" + gameObject.name + " : AIBase reached corner");
-					if (cornerIndex >= path.corners.Length)
-					{
-						rb.linearVelocity = Vector3.zero;
-						rb.angularVelocity = Vector3.zero;
-						path = null;
-						cornerIndex = 0;
-						// Debug.Log(gameObject.name + " : AIBase Reached destination");
-					}
-				}
+				AgentMovement();
 				
 				// Stuck detector. Recalculates path, eg if player shoves something in its way.
-				if (rb.linearVelocity.magnitude < 0.5f)
-				{
-					stuckTime += Time.fixedDeltaTime;
-					if (stuckTime > maxStuckTime)
-					{
-						// Debug.Log("AI STUCK! : Recalculating path");
-						MoveTo(lastDestination);
-						stuckTime = 0;
-					}
-				}
+				UnStuck();
 			}
 		}
 	}
+
+	public virtual void AgentMovement()
+	{
+		// Turn towards
+		Vector3 direction   = path.corners[cornerIndex] - rb.position;
+		float   angle = Vector3.SignedAngle(rb.transform.forward, direction, Vector3.up);
+		rb.AddTorque(0, Mathf.Sign(angle) * rotationSpeed, 0);
+		
+		// Simple move forward with slowdown
+		float slowDownScalar = (1f - Mathf.Abs(angle/180f)); // Normalise to 0-1
+		if (rb.linearVelocity.magnitude < maxSpeed)
+		{
+			rb.AddRelativeForce(0,0,forwardForce * slowDownScalar * MoveSpeed);
+		}
+		
+		Debug.DrawLine(path.corners[cornerIndex], path.corners[cornerIndex] + Vector3.up*10f, Color.red);
+		// rb.MovePosition(Vector3.MoveTowards(rb.position, path.corners[cornerIndex], acceleration * Time.deltaTime));
+		float distance = Vector3.Distance(rb.position, path.corners[cornerIndex]);
+		// Debug.Log(gameObject.name + " : cornerThreshold = " + cornerThreshold+ " : distance = " + distance + " : cornerIndex = " + cornerIndex + " : path.corners.Length = " + path.corners.Length, gameObject);
+		if (distance < cornerThreshold)
+		{
+			cornerIndex++;
+			// Debug.Log("		" + gameObject.name + " : AIBase reached corner");
+			if (cornerIndex >= path.corners.Length)
+			{
+				rb.linearVelocity = Vector3.zero;
+				rb.angularVelocity = Vector3.zero;
+				path = null;
+				cornerIndex = 0;
+				// Debug.Log(gameObject.name + " : AIBase Reached destination");
+			}
+		}
+	}
+
+
+	public virtual void UnStuck()
+	{ 
+		if (rb.linearVelocity.magnitude < 0.5f)
+		{
+			stuckTime += Time.fixedDeltaTime;
+			if (stuckTime > maxStuckTime)
+			{
+				// Debug.Log("AI STUCK! : Recalculating path");
+				MoveTo(lastDestination);
+				stuckTime = 0;
+			}
+		}
+    }
+
 
 	// Change state logic
 	public void ChangeState(IAIState newState)
