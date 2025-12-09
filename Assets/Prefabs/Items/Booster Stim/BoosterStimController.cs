@@ -17,12 +17,12 @@ public class BoosterStimController : UsableItem_Base
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(SpaceBar))
-        {
-         StimModel.ActivateBoosterStim_Rpc();
-         StimView.StimSound_RPC();
-         StimView.StimParticle_RPC();
-        }     
+        // if (Input.GetKeyDown(SpaceBar))
+        // {
+        //  StimModel.ActivateBoosterStim_Rpc();
+        //  StimView.StimSound_RPC();
+        //  StimView.StimParticle_RPC();
+        // }     
        
     }
 }
