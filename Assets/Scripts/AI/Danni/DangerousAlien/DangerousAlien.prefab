@@ -1,74 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3795275365418021857
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2254542138883219888}
-  - component: {fileID: 4556799196065643396}
-  - component: {fileID: 2375321320227929125}
-  m_Layer: 8
-  m_Name: HitBox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2254542138883219888
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3795275365418021857}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 1.81, z: 2.05}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4083369946603743624}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &4556799196065643396
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3795275365418021857}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2375321320227929125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3795275365418021857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d16c54a34fc44a4eb58674d28d4053e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  owner: {fileID: 8164744785097091759}
 --- !u!1 &4502814781879650498
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,7 +203,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2254542138883219888}
   - {fileID: 239570271543215488}
   - {fileID: 6766953969691817196}
   m_Father: {fileID: 0}
@@ -336,13 +266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea77bfa753c74f4d954cfd271293f6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerVisionRange: 20
-  playerAttackRange: 3
-  fieldOfViewAngle: 120
-  fieldOfViewRayCount: 7
-  detectionMask:
-    serializedVersion: 2
-    m_Bits: 0
   lowHealthFraction: 0.3
 --- !u!114 &1037977098375146941
 MonoBehaviour:
@@ -372,7 +295,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6648060442026450375}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
   m_Controller: {fileID: 9100000, guid: e447f4a07ae4c7e4da78dda5af84429f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -398,7 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  animator: {fileID: 0}
+  animator: {fileID: 4638420518047162639}
   networkAnimator: {fileID: 5714765879082662013}
 --- !u!114 &3536397080695100442
 MonoBehaviour:
@@ -462,16 +385,17 @@ MonoBehaviour:
   moveSpeed: 1
   defaultSpeed: 1
   navMeshAgent: {fileID: 7257336100249585850}
-  health: {fileID: 1037977098375146941}
+  playerHealth: {fileID: 0}
+  scanDuration: 1
   animationController: {fileID: 1769863027275978531}
-  damageMin: 5
-  damageMax: 10
+  damageMin: 2
+  damageMax: 5
   attackRange: 2
-  chaseRange: 15
+  chaseRange: 20
   attackCooldownSeconds: 3
   attackDurationSeconds: 0.8
-  attackHitboxPrefab: {fileID: 3795275365418021857}
-  attackHitboxRoot: {fileID: 2254542138883219888}
+  attackHitboxPrefab: {fileID: 6405392962821535446, guid: 35589b73c8a599049a761a8913d56c34, type: 3}
+  attackHitboxRoot: {fileID: 4083369946603743624}
   attackHitboxInstance: {fileID: 0}
   explosiveSenseRadius: 10
   dodgeSampleRadius: 6
@@ -479,9 +403,12 @@ MonoBehaviour:
   dodgeMoveSpeed: 8
   normalMoveSpeed: 4
   dodgeArrivalTolerance: 0.3
+  currentDodgePoint: {x: 0, y: 0, z: 0}
   crateDefendRadius: 8
   allyAssistRadius: 12
   turretAssistRadius: 18
+  accompanyDistance: 15
+  protectionRange: 30
   playerTransform: {fileID: 0}
   currentExplosiveThreat: {fileID: 0}
   currentDodgeTarget: {x: 0, y: 0, z: 0}
@@ -505,7 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manualUpdate: 0
-  thinkInterval: 0.1
+  thinkInterval: 1
   scenario: {fileID: 11400000, guid: ec7506eedcbfadd4b89402584ec9d980, type: 2}
 --- !u!1001 &239570271543353088
 PrefabInstance:
@@ -798,7 +725,7 @@ PrefabInstance:
     - target: {fileID: 9500000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9000000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
     - target: {fileID: 9500000, guid: 5be2c6dc7d0cd11418701026bf971b37, type: 3}
       propertyPath: m_Controller
       value: 

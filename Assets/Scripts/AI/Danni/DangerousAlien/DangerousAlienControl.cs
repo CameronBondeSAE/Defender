@@ -6,7 +6,9 @@ using UnityEngine.AI;
 public class DangerousAlienControl : CharacterBase
 {
     public NavMeshAgent navMeshAgent;
-    public AIHealth health;
+    public PlayerHealth playerHealth;
+
+    public float scanDuration = 1f;
 
     [Header("Anim")]
     public AIAnimationController animationController;
@@ -24,17 +26,20 @@ public class DangerousAlienControl : CharacterBase
     [HideInInspector] public GameObject attackHitboxInstance;
 
     [Header("Dodge Settings")]
-    public float explosiveSenseRadius = 10f;   // when to care
+    public float explosiveSenseRadius = 10f;  
     public float dodgeSampleRadius = 6f;
     public int dodgeSampleCount = 16;
     public float dodgeMoveSpeed = 8f;
     public float normalMoveSpeed = 4f;
     public float dodgeArrivalTolerance = 0.3f;
+    public Vector3 currentDodgePoint;
 
     [Header("Teamwork Settings")]
     public float crateDefendRadius = 8f;
     public float allyAssistRadius = 12f;
     public float turretAssistRadius = 18f;
+    public float accompanyDistance = 15;
+    public float protectionRange = 30f;
     
     public Transform playerTransform;
     public UsableItem_Base currentExplosiveThreat;
@@ -50,23 +55,22 @@ public class DangerousAlienControl : CharacterBase
     public bool isMoving;
 
     private float nextAttackTime;
+    
+    public bool HasAlly => smartAlly != null;
 
-    private void Awake()
+    private void Start()
     {
 
         if (navMeshAgent == null)
-        {
             navMeshAgent = GetComponent<NavMeshAgent>();
-        }
 
         if (animationController == null)
-        {
             animationController = GetComponentInChildren<AIAnimationController>();
-        }
 
         if (playerTransform == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            playerHealth = playerObj.GetComponent<PlayerHealth>();
             if (playerObj != null)
             {
                 playerTransform = playerObj.transform;
@@ -74,15 +78,10 @@ public class DangerousAlienControl : CharacterBase
         }
 
         if (smartAlly == null)
-        {
             smartAlly = FindObjectOfType<SmartAlienControl>();
-        }
 
         if (navMeshAgent != null)
-        {
             normalMoveSpeed = navMeshAgent.speed;
-        }
-
         SetupAttackHitboxInstance();
     }
 
@@ -278,7 +277,6 @@ public class DangerousAlienControl : CharacterBase
         {
             return true;
         }
-
         smartAlly = FindObjectOfType<SmartAlienControl>();
         return smartAlly != null;
     }
@@ -305,6 +303,26 @@ public class DangerousAlienControl : CharacterBase
 
         return distanceToCrate <= crateDefendRadius;
     }
+    
+
+    public float DistanceToAlly()
+    {
+        if (!HasAlly) return float.MaxValue;
+        return Vector3.Distance(transform.position, smartAlly.transform.position);
+    }
+
+    public bool IsWithinAccompanyDistance()
+    {
+        if (!HasAlly) return false;
+        return DistanceToAlly() <= accompanyDistance;
+    }
+
+    public bool IsInsideProtectionRange()
+    {
+        if (!HasAlly) return false;
+        return DistanceToAlly() <= protectionRange;
+    }
+
 
     #endregion
 }

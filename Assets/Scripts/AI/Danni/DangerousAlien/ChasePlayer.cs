@@ -39,18 +39,11 @@ public class ChasePlayer : AntAIState
 
     public override void Execute(float aDeltaTime, float aTimeScale)
     {
-        if (control == null || navMeshAgent == null || !navMeshAgent.enabled)
+        if (control == null || navMeshAgent == null || !navMeshAgent.enabled || player == null)
         {
             Finish();
             return;
         }
-
-        if (player == null)
-        {
-            Finish();
-            return;
-        }
-
         repathTimer += aDeltaTime;
         if (repathTimer >= repathInterval)
         {
@@ -66,6 +59,17 @@ public class ChasePlayer : AntAIState
         if (distanceToPlayer <= control.attackRange)
         {
             Finish();
+        }
+        
+        if (distanceToPlayer > control.chaseRange)
+        {
+            Finish(); 
+            return;
+        }
+        if (control.HasAlly && !control.IsInsideProtectionRange())
+        {
+            Finish();
+            return;
         }
     }
 
