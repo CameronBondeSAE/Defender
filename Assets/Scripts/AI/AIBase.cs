@@ -93,7 +93,7 @@ public class AIBase : CharacterBase
 
 	public  float   stuckTime;
 	public  float   maxStuckTime = 2f;
-	[HideInInspector] public Vector3 lastDestination;
+	private Vector3 lastDestination;
 		
 	// Initialize AI - getting references
 	protected virtual void Start()
@@ -124,20 +124,20 @@ public class AIBase : CharacterBase
 	// State machine update loop
 	protected virtual void Update()
 	{
-		if (!IsServer)
+		if(!IsServer)
 			return;
 
 		CurrentState?.Stay();
 	}
 
-	protected virtual void FixedUpdate()
+	private void FixedUpdate()
 	{
-		if (!IsServer)
+		if(!IsServer)
 			return;
 		
 		if (useRigidbody)
 		{
-			if (path != null && path.corners.Length > 0 && cornerIndex < path.corners.Length)
+			if(path != null && path.corners.Length > 0 && cornerIndex < path.corners.Length)
 			{
 			
 				AgentMovement();
@@ -148,6 +148,8 @@ public class AIBase : CharacterBase
 		}
 	}
 
+<<<<<<< HEAD
+=======
 	public virtual void AgentMovement()
 	{
 		// Turn towards
@@ -197,6 +199,7 @@ public class AIBase : CharacterBase
     }
 
 
+>>>>>>> main
 	// Change state logic
 	public void ChangeState(IAIState newState)
 	{
