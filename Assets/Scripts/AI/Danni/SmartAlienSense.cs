@@ -32,7 +32,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
         EscortInProgress = 9,
         NeedsScan = 10,
         IsMoving = 11,
-        HasSnackTarget = 12   
+        HasSnackTarget = 12
     }
 
     private void Awake()
@@ -70,15 +70,20 @@ public class SmartAlienSense : MonoBehaviour, ISense
         UsableItem_Base nearestSnack  = control.FindNearestItem(
             UsableItem_Base.ItemRoleForAI.Snack,
             control.snackSearchRadius);
+        
+        // pick radius for making decision regarding threat (normal vs when escorting)
+        float threatRadius = control.threatSearchRadius;
+        if (control.escortInProgress && control.escortThreatInterruptRadius > 0f)
+        {
+            threatRadius = control.escortThreatInterruptRadius;
+        }
 
-        UsableItem_Base nearestThreat = FindNearestActiveThreat();
-
+        UsableItem_Base nearestThreat = FindNearestActiveThreat(threatRadius);
         NetworkedCrate nearestCrate   = control.FindNearestCrate();
-
         control.currentSnackTarget  = nearestSnack;
         control.currentThreatTarget = nearestThreat;
         control.currentCrateTarget  = nearestCrate;
-        bool hasSnackTarget = (nearestSnack != null);
+        bool hasSnackTarget = (nearestSnack != null); 
 
         // looking for civ crowd
         Vector3 crowdCenter;
@@ -97,14 +102,12 @@ public class SmartAlienSense : MonoBehaviour, ISense
 
         bool threatNearby          = (nearestThreat != null);
         bool threatCloserThanSnack = threatNearby && (threatDist <= snackDist);
-
-        bool hasCrate = (nearestCrate != null);
+        bool hasCrate  = (nearestCrate != null);
         bool nearCrate = false;
+
         if (hasCrate)
         {
-            nearCrate = control.IsAgentNear(
-                nearestCrate.transform.position,
-                control.interactRange);
+            nearCrate = control.IsAgentNearCrate(nearestCrate);
         }
 
         bool hasCivTargets =
@@ -114,8 +117,8 @@ public class SmartAlienSense : MonoBehaviour, ISense
         // if escorting civs, ignore new threat/crates/items and stick to job
         if (control.escortInProgress)
         {
-            threatNearby          = false;
-            threatCloserThanSnack = false;
+            // threatNearby          = false;
+            // threatCloserThanSnack = false;
             hasCrate              = false;
             nearCrate             = false;
             hasUsefulItem         = hasSnackItem;
@@ -153,12 +156,13 @@ public class SmartAlienSense : MonoBehaviour, ISense
             aWorldState.Set((int)SmartAlien.EscortInProgress,   control.escortInProgress);
             aWorldState.Set((int)SmartAlien.NeedsScan,          control.needsScan);
             aWorldState.Set((int)SmartAlien.IsMoving,           control.isMoving);
+            aWorldState.Set((int)SmartAlien.HasSnackTarget,        hasSnackTarget);
         }
         aWorldState.EndUpdate();
     }
     
-    // helper to sense whether a thread is activated
-    private UsableItem_Base FindNearestActiveThreat()
+    // helper to find the nearest threat in radius
+    private UsableItem_Base FindNearestActiveThreat(float maxRadius)
     {
         if (control == null)
         {
@@ -167,9 +171,9 @@ public class SmartAlienSense : MonoBehaviour, ISense
 
         UsableItem_Base[] allItems = FindObjectsOfType<UsableItem_Base>();
 
-        UsableItem_Base best = null;
-        float bestDistSqr = control.threatSearchRadius * control.threatSearchRadius;
-        Vector3 origin = selfTransform.position;
+        UsableItem_Base best    = null;
+        float           maxSqr  = maxRadius * maxRadius;
+        Vector3         origin  = selfTransform.position;
 
         for (int i = 0; i < allItems.Length; i++)
         {
@@ -184,26 +188,24 @@ public class SmartAlienSense : MonoBehaviour, ISense
                 continue;
             }
 
-            // now only count it as a threat if it is actually ACTIVE
-            // (as in, if its armed, counting down, or has activated())
+            // only count it as a threat if it is actually ACTIVE
             bool isActiveThreat =
-                item.IsActivated ||
-                item.IsCountdownActive ||
+                item.IsActivated ||      // has gone off at least once
+                item.IsCountdownActive || 
                 item.IsExpiryActive;
 
             if (!isActiveThreat)
             {
-                continue; // skip threat that exists but is not turned on yet
+                continue;
             }
 
             float distSqr = (item.transform.position - origin).sqrMagnitude;
-            if (distSqr < bestDistSqr)
+            if (distSqr < maxSqr)
             {
-                best        = item;
-                bestDistSqr = distSqr;
+                best   = item;
+                maxSqr = distSqr;
             }
         }
-
         return best;
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
+using NicholasScripts;  
 
 public class DisableThreat : AntAIState
 {
@@ -46,27 +47,69 @@ public class DisableThreat : AntAIState
         }
 
         float rangeToUse = (control != null) ? control.interactRange : interactRange;
-        float dist = Vector3.Distance(agent.transform.position, target.transform.position);
+        float dist       = Vector3.Distance(agent.transform.position, target.transform.position);
+
         if (dist > rangeToUse)
         {
             return;
         }
+
+        // the disarming chunk
         UsableItem_Base usableItemBase = target;
+
         if (usableItemBase != null)
         {
-            usableItemBase.ForceDeactivate();
+            // only treat as a threat if it is actually active
+            bool isActiveThreat =
+                usableItemBase.IsActivated ||
+                usableItemBase.IsCountdownActive ||
+                usableItemBase.IsExpiryActive;
+
+            if (isActiveThreat)
+            {
+                // stop countdown/expiry /UI stuff
+                usableItemBase.ForceDeactivate();
+                if (control != null && control.sfx != null)
+                {
+                    control.sfx.PlayThreatDisabled();
+                }
+
+                // if this item is a turret, disable the turret view logic to accomodate to nick's code
+                Model_Turret turretModel = usableItemBase as Model_Turret;
+                if (turretModel != null)
+                {
+                    // turn off the activation bool so BaseTurret.Update stops firing bullets
+                    turretModel.isActivated = false;
+                    BaseTurret turret = turretModel.GetComponentInParent<BaseTurret>();
+                    if (turret != null)
+                    {
+                        turret.SetPowered(false);
+                    }
+                }
+            }
         }
         else
         {
-            // in case some items only have IUsable/didn't use my base class
-            // stop it any way
+            // for other things that only implement IUsable
             IUsable usable = target;
             if (usable != null)
             {
                 usable.StopUsing();
+                if (control != null && control.sfx != null)
+                {
+                    control.sfx.PlayThreatDisabled();
+                }
             }
         }
-            Finish();
+
+        // clear and rescan
+        if (control != null)
+        {
+            control.currentThreatTarget = null;
+            control.needsScan           = true;
+        }
+
+        Finish();
     }
 
     public override void Exit()

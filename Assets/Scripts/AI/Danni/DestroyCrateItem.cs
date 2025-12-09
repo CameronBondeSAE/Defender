@@ -46,22 +46,35 @@ public class DestroyCrateItem : AntAIState
             Finish();
             return;
         }
-        if (Vector3.Distance(agent.transform.position, disposePosition) <= control.interactRange)
+        float remaining = agent.hasPath ? agent.remainingDistance : Mathf.Infinity;
+        float dist      = Vector3.Distance(agent.transform.position, disposePosition);
+
+        float destroyRange = control.interactRange + 0.5f; // small offset as navmesh agent may not move to exactly the destroy pos
+
+        bool atDisposePoint =
+            (remaining <= destroyRange) ||
+            (dist      <= destroyRange);
+
+        if (!atDisposePoint)
         {
-            UsableItem_Base item = control.heldItem;
-            if (item != null)
-            {
-                item.DestroyItem();
-            }
-
-            control.heldItem = null;
-
-            // after destroying, scan again so he can decide
-            // whether to go back to the crate or deal with a threat/snack etc
-            control.needsScan = true;
-
-            Finish();
+            return; 
         }
+
+        // actually destroy the held item
+        UsableItem_Base item = control.heldItem;
+        if (item != null)
+        {
+            item.DestroyItem(); 
+            if (control.sfx != null)
+            {
+                control.sfx.PlayDestroyItem();
+            }
+        }
+
+        control.heldItem = null;
+        control.needsScan = true; // start the next planning cycle
+
+        Finish();
     }
 
     public override void Exit()
@@ -69,6 +82,10 @@ public class DestroyCrateItem : AntAIState
         if (agent != null && agent.enabled)
         {
             agent.isStopped = false;
+        }
+        if (control != null)
+        {
+            control.needsScan = true;
         }
     }
 }

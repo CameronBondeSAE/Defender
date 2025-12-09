@@ -2,33 +2,37 @@ using System;
 using Defender;
 using UnityEngine;
 
-public class RadarRays : MonoBehaviour
+public class RadarRays : UsableItem_Base
 {
-	public float speed = 10f;
+	public float speed     = 10f;
+	public bool  activated = false;
 
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+	public override void Use(CharacterBase characterTryingToUse)
+	{
+		base.Use(characterTryingToUse);
 
-    // Update is called once per frame
-    void Update()
-    {
-	    transform.Rotate(0,speed,0);
+		activated = !activated;
+	}
 
-	    RaycastHit hit;
-	    Physics.Raycast(transform.position, transform.forward, out hit, 99999f);
-		Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red);
-	    
-	    if (hit.transform != null)
-	    {
-		    // Physics.Raycast(hit.point, hit.normal, out hit, 99999f);
-		    var direction = Vector3.Reflect(transform.forward, hit.normal);
-		    Physics.Raycast(hit.point, direction, out RaycastHit hit2, 99999f);
-		    Debug.DrawRay(hit.point, direction * hit2.distance, Color.green);
-		    
-	    }
-	    
-    }
+	// Update is called once per frame
+	void Update()
+	{
+		if (activated)
+		{
+			transform.Rotate(0, speed, 0);
+
+
+			RaycastHit hit;
+			Physics.Raycast(transform.position, transform.forward, out hit, 99999f);
+			Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red);
+
+			if (hit.transform != null)
+			{
+				// Physics.Raycast(hit.point, hit.normal, out hit, 99999f);
+				var direction = Vector3.Reflect(transform.forward, hit.normal);
+				Physics.Raycast(hit.point, direction, out RaycastHit hit2, 99999f);
+				Debug.DrawRay(hit.point, direction * hit2.distance, Color.green);
+			}
+		}
+	}
 }

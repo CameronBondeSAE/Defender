@@ -14,7 +14,7 @@ public class Snack : UsableItem_Base
     [Header("Snack Object")]
     [SerializeField] private SnackObject snackObject;
 
-    [Header("Visuals (Wrapper ↔ Snack)")]
+    [Header("Visuals (Wrapper/Burger)")]
     [SerializeField] private GameObject wrapperVisual;
     [SerializeField] private GameObject snackVisual;
     protected override void Awake()

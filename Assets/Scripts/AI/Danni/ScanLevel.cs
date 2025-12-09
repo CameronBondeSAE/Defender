@@ -52,6 +52,12 @@ public class ScanLevel : AntAIState
         if (timer >= duration)
         {
             control.needsScan = false; 
+            // cleaning up civ delivered flag so goal is no longer satisfied
+            if (control.civsAtMothership)
+            {
+                control.civsAtMothership = false;
+            }
+
             Finish();
         }
     }

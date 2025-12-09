@@ -3,16 +3,24 @@ using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
 using Defender;
+using mothershipScripts;
+using Unity.Netcode;
+using AIAnimation;
 
 public class SmartAlienControl : CharacterBase
 {
     public NavMeshAgent agent;
-
-    [Header("Mothership & Civ Settings")]
+    public SmartAlienSfx sfx;
+    [SerializeField] AIAnimationController animController;
+    private AIAnimationController.AnimationState currentAnimState;
+    
+    [Header("Decision Settings")]
     public Transform mothershipDropPoint;
-    public float threatSearchRadius = 20f;
-    public float snackSearchRadius = 30f;
-    public float crateSearchRadius = 30f;
+    public float mothershipNavmeshSampleRadius = 5f;
+    public float threatSearchRadius;
+    public float escortThreatInterruptRadius = 10f; 
+    public float snackSearchRadius;
+    public float crateSearchRadius;
     public float interactRange = 2.0f;
     public int minCivCrowdSize = 3;
     public float civCrowdRadius = 5f;
@@ -36,7 +44,12 @@ public class SmartAlienControl : CharacterBase
     public float scanDuration;
     public bool isMoving;
     
+    [Header("Crate Pickup Settings")]
+    public float crateNearRadius    = 2f;
     public float crateDestroyDistance = 5f;
+    
+    [Header("Movement Settings")]
+    public float escortMoveSpeed = 5f;
 
     private void Awake()
     {
@@ -48,6 +61,28 @@ public class SmartAlienControl : CharacterBase
         civsAtMothership = false;
         escortInProgress = false;
         snackDeployed    = false;
+        FindMothership(); 
+        animController = GetComponentInChildren<AIAnimationController>();
+        if (sfx == null)
+        {
+            sfx = GetComponent<SmartAlienSfx>();
+        }
+    }
+    
+    private void Update()
+    {
+        if (agent == null || !agent.enabled || animController == null)
+        {
+            return;
+        }
+        bool actuallyMoving =
+            !agent.isStopped &&
+            agent.hasPath &&
+            agent.remainingDistance > (agent.stoppingDistance + 0.05f);
+        var desiredState = actuallyMoving
+            ? AIAnimationController.AnimationState.Walk
+            : AIAnimationController.AnimationState.Idle;
+       animController.SetAnimation(desiredState);
     }
     
     // init item holding but does NOT call IPickup.Pickup; that's done by the crate or state
@@ -56,15 +91,56 @@ public class SmartAlienControl : CharacterBase
         heldItem = item;
         if (item == null) return;
 
-        if (itemHoldPoint != null)
+        // find the actual netobj
+        NetworkObject itemNO = item.GetComponent<NetworkObject>();
+        NetworkObject myNO   = GetComponent<NetworkObject>();
+
+        // the transform where we want the item to visually sit
+        Transform visualTarget = (itemHoldPoint != null) ? itemHoldPoint : transform;
+
+        if (itemNO != null && myNO != null && myNO.IsSpawned && itemNO.IsSpawned)
         {
-            item.transform.SetParent(itemHoldPoint, false);
+            // parent under his netobj rather than holdpos
+            bool parentOk = itemNO.TrySetParent(myNO);
+
+            if (!parentOk)
+            {
+                Debug.LogWarning($"alien setParent failed for {itemNO.name}");
+            }
+            item.transform.position = visualTarget.position;
+            item.transform.rotation = visualTarget.rotation;
+            item.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            // Fallback for non-networked items (or if something is not spawned yet)
+            item.transform.SetParent(visualTarget, false);
             item.transform.localPosition = Vector3.zero;
             item.transform.localRotation = Quaternion.identity;
         }
     }
 
-    #region Helpers (to find crate, item, civ)
+    #region Helpers (to find crate, item, civ, mothership)
+    
+    private void FindMothership()
+    {
+        if (mothershipDropPoint != null)
+        {
+            return;
+        }
+
+        // find the first MothershipBase in the scene
+        MothershipDropZone mothership = FindObjectOfType<MothershipDropZone>();
+        if (mothership != null)
+        {
+            mothershipDropPoint = mothership.transform;
+            Debug.Log($"auto-assigned mothershipDropPoint to {mothership.name}");
+        }
+        else
+        {
+            Debug.LogWarning("no MothershipBase found in scene");
+        }
+    }
 
     public UsableItem_Base FindNearestItem(UsableItem_Base.ItemRoleForAI role, float maxRadius)
     {
@@ -195,5 +271,59 @@ public class SmartAlienControl : CharacterBase
         dir.Normalize();
         return cratePos + dir * crateDestroyDistance;
     }
+    
+    // need to find an actually reachable position to use as motherhship drop pos, since it's ignored by navmesh
+    public Vector3 GetMothershipDestination()
+    {
+        if (mothershipDropPoint == null || agent == null)
+        {
+            return transform.position;
+        }
+
+        Vector3 target = mothershipDropPoint.position;
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(
+                target,
+                out hit,
+                mothershipNavmeshSampleRadius,
+                agent.areaMask))
+        {
+            return hit.position;   
+        }
+        return target;
+    }
+
+    public bool IsAgentNearCrate(NetworkedCrate crate)
+    {
+        if (crate == null) return false;
+
+        float range = (crateNearRadius > 0f)
+            ? crateNearRadius
+            : interactRange;
+
+        return IsAgentNear(crate.transform.position, range);
+    }
+    public Vector3 GetCrateApproachPosition()
+    {
+        if (currentCrateTarget == null)
+        {
+            return transform.position;
+        }
+
+        Vector3 cratePos = currentCrateTarget.transform.position;
+        
+        Vector3 dir = transform.position - cratePos;
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude < 0.01f)
+        {
+            dir = transform.forward;
+        }
+        dir.Normalize();
+        float distFromCrate = 1.0f;
+        return cratePos + dir * distFromCrate;
+    }
+    
     #endregion
 }

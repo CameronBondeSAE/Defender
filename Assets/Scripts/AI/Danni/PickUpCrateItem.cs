@@ -17,7 +17,7 @@ public class PickupCrateItem : AntAIState
 
     public override void Enter()
     {
-        if (control == null || agent == null || !agent.enabled)
+        if (control == null)
         {
             Finish();
             return;
@@ -30,10 +30,14 @@ public class PickupCrateItem : AntAIState
             return;
         }
 
-        agent.isStopped = false;
-        if (!control.IsAgentNear(crateTarget.transform.position, control.interactRange))
+        if (agent != null && agent.enabled)
         {
-            agent.SetDestination(crateTarget.transform.position);
+            agent.isStopped = false;
+            if (!control.IsAgentNearCrate(crateTarget))
+            {
+                Vector3 approachPos = control.GetCrateApproachPosition();
+                agent.SetDestination(approachPos);
+            }
         }
     }
 
@@ -44,21 +48,20 @@ public class PickupCrateItem : AntAIState
             Finish();
             return;
         }
-        if (!control.IsAgentNear(crateTarget.transform.position, control.interactRange))
+        if (!control.IsAgentNearCrate(crateTarget))
         {
             return;
         }
 
-        // only one item per spawn!
         UsableItem_Base item;
         bool gotItem = crateTarget.TryGiveItemToSmartAlien(control, out item);
 
         if (gotItem && item != null)
         {
-            control.OnItemPickedUp(item); 
+            control.OnItemPickedUp(item);
         }
-        // whether he got something or not, finish this state anyway
-        Finish();
+
+        Finish(); 
     }
 
     public override void Exit()

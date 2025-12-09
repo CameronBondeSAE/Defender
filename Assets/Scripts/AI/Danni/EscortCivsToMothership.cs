@@ -7,7 +7,8 @@ public class EscortCivsToMothership : AntAIState
     private SmartAlienControl control;
     private NavMeshAgent agent;
     private bool hasCompletedDrop = false; 
-
+    private float originalSpeed;
+    private Vector3 dropDestination;
     public override void Create(GameObject aGameObject)
     {
         control = aGameObject.GetComponent<SmartAlienControl>();
@@ -16,14 +17,32 @@ public class EscortCivsToMothership : AntAIState
 
     public override void Enter()
     {
-        hasCompletedDrop = false;    
+        hasCompletedDrop = false;
 
-        if (control == null || control.mothershipDropPoint == null)
+        if (control == null)
         {
             Finish();
             return;
         }
-        control.civsAtMothership = false;   
+
+        dropDestination = control.GetMothershipDestination();
+        // // in case the above doesn't work...
+        // if (control.mothershipDropPoint == null)
+        // {
+        //     MothershipDropZone ms = Object.FindObjectOfType<MothershipDropZone>();
+        //     if (ms != null)
+        //     {
+        //         control.mothershipDropPoint = ms.transform;
+        //     }
+        // }
+
+        if (control.mothershipDropPoint == null)
+        {
+            Finish();
+            return;
+        }
+
+        control.civsAtMothership = false;
 
         if (!control.escortInProgress)
         {
@@ -33,7 +52,15 @@ public class EscortCivsToMothership : AntAIState
         if (agent != null && agent.enabled)
         {
             agent.isStopped = false;
-            agent.SetDestination(control.mothershipDropPoint.position);
+            originalSpeed       = agent.speed;
+            agent.speed         = control.escortMoveSpeed;
+
+            agent.SetDestination(dropDestination);
+        }
+        
+        if (control.sfx != null)
+        {
+            control.sfx.PlayEscortStart();
         }
     }
 
@@ -56,14 +83,14 @@ public class EscortCivsToMothership : AntAIState
             return;
         }
         bool atDropPoint = control.IsAgentNear(
-            control.mothershipDropPoint.position,
-            control.interactRange
-        );
+            dropDestination,
+            control.interactRange + 0.75f); // lil offset
 
         if (!atDropPoint)
         {
-            return;
+            return; 
         }
+
         agent.isStopped = true;
 
         hasCompletedDrop         = true;    
@@ -80,6 +107,11 @@ public class EscortCivsToMothership : AntAIState
             control.currentCivGroup.Clear();
         }
         control.needsScan = true;           
+        
+        if (control.sfx != null)
+        {
+            control.sfx.PlayCivsDroppedOff();
+        }
 
         Finish();
     }
@@ -89,8 +121,27 @@ public class EscortCivsToMothership : AntAIState
         if (agent != null && agent.enabled)
         {
             agent.isStopped = false;
+
+            // restore speed
+            if (originalSpeed > 0f)
+            {
+                agent.speed = originalSpeed;
+            }
         }
-        if (control != null && !hasCompletedDrop) 
+        
+        // destroy snack after escort is done
+        if (control != null && control.heldItem != null)
+        {
+            if (control.heldItem.RoleForAI == UsableItem_Base.ItemRoleForAI.Snack)
+            {
+                control.heldItem.DestroyItem();
+            }
+
+            control.heldItem = null;
+        }
+
+
+        if (control != null && !hasCompletedDrop)
         {
             control.needsScan = true;
         }
