@@ -58,6 +58,8 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
 	    menuUI.SetActive(false);
+	    
+	    // HACK: Cam put this in
         SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneToLoad));
     }
