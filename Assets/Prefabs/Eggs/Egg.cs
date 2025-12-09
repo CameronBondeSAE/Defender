@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -40,12 +41,25 @@ namespace DanniLi
                 }
             }
 
-            // Play sound on all clients
+            StartCoroutine(HatchAndDespawn());
+        }
+        
+        private IEnumerator HatchAndDespawn() // fix: play sfx before it despawns
+        {
             PlayHatchSfxRpc();
 
-            // despawn
+            float waitTime = 0f;
+            if (hatchSfx != null)
+            {
+                waitTime = hatchSfx.length;
+            }
+
+            if (waitTime > 0f)
+            {
+                yield return new WaitForSeconds(waitTime);
+            }
             NetworkObject eggNetObj = GetComponent<NetworkObject>();
-            if (eggNetObj != null)
+            if (eggNetObj != null && eggNetObj.IsSpawned)
             {
                 eggNetObj.Despawn(true);
             }

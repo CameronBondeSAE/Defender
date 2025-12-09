@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac7894c992281d42bcfc401fd456ad6, type: 3}
+  m_Name: Level01 J
+  m_EditorClassIdentifier: 
+  sceneName: Level01
+  availableItems:
+  - {fileID: 11400000, guid: 4cefbe809831b3c4b9f15d3c2c6b0f92, type: 2}
+  - {fileID: 11400000, guid: 58e2c427dd8e61b41ab36f771291c3cc, type: 2}
+  scene: {fileID: 102900000, guid: d8ef60f73088b5e4aa1776acb77e88b1, type: 3}
+  civiliansToSave: 0
+  cratePrefab: {fileID: 3944214951611117370, guid: e40b93891a37bfe41a06e361abe02df5, type: 3}
+  crateSpawnCount: 3
+  crateSpawnPoints:
+  - {fileID: 2046829170939313266, guid: aa7645b898400c5479d2edfbcd7cb816, type: 3}
+  percentCiviliansAliveToWin: 50
+  eggPrefabs: []

@@ -261,7 +261,7 @@ public class NetworkedCrate : NetworkBehaviour, IUsable
     {
         usableItem = null;
 
-        if (!IsServer) return false;
+        //if (!IsServer) return false;
         if (smart == null) return false;
         if (!hasSpawnedItem.Value || currentSpawnedItem == null) return false;
 

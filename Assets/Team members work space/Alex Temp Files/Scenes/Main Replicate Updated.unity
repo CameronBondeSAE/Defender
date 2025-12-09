@@ -2332,10 +2332,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563976979}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 0.0000001
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -7823,11 +7823,11 @@ MonoBehaviour:
   - _gameObject: {fileID: 393680631}
     _prefab: Assets/Prefabs/Spawn.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Characters/Player.prefab
+    _prefab: Assets/Prefabs/Characters/Player/Player.prefab
   - _gameObject: {fileID: 302250214}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_04.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Characters/Player.prefab
+    _prefab: Assets/Prefabs/Characters/Player/Player.prefab
   - _gameObject: {fileID: 8708370507975262657}
     _prefab: Assets/Prefabs/Items/Demo item/Demo Item.prefab
   - _gameObject: {fileID: 70990412}
@@ -9574,6 +9574,22 @@ PrefabInstance:
     - target: {fileID: 2837882455274296492, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: JoinFirstAvailableLobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3781720381112125968, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5294466942754682317, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchorMax.y

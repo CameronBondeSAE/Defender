@@ -437,7 +437,7 @@ NavMeshObstacle:
   m_Extents: {x: 1, y: 1, z: 1}
   m_MoveThreshold: 0.1
   m_Carve: 1
-  m_CarveOnlyStationary: 1
+  m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
 --- !u!114 &2210184730404118470
@@ -469,10 +469,10 @@ MonoBehaviour:
   description: 
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
   renderer: {fileID: 1091751792718493530}
   rb: {fileID: 4159771251007481282}
   ps: {fileID: 8848604816081381795}
-  cinemachineCamera: {fileID: 0}
 --- !u!1 &9212886512294030340
 GameObject:
   m_ObjectHideFlags: 0

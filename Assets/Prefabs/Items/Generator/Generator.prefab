@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2949056931097332604}
   - component: {fileID: 932534901196652652}
   - component: {fileID: 570487225236243121}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Particles_Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4844,7 +4844,7 @@ GameObject:
   - component: {fileID: 2303313609913337534}
   - component: {fileID: 5215284791305863850}
   - component: {fileID: 7374752958696838158}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4881,6 +4881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa84ab7ee7f82e945933cdab0624da34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   audioSource: {fileID: 6813401065027002585}
   generatorStarting: {fileID: 8300000, guid: 01b9bc724f9d7664cb818b9af06fb211, type: 3}
   generatorRunning: {fileID: 8300000, guid: 833a4d741612634478d7eda98e65d711, type: 3}
@@ -4912,7 +4913,7 @@ GameObject:
   - component: {fileID: 2512703658178750131}
   - component: {fileID: 6813401065027002585}
   - component: {fileID: 2625000375992668655}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Sound_Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5141,7 +5142,7 @@ GameObject:
   - component: {fileID: 3154571159769168152}
   - component: {fileID: 431169046469856840}
   - component: {fileID: 5032110501715468860}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5218,6 +5219,7 @@ MonoBehaviour:
   description: Speeds up surrounding weapons
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 2
   model: {fileID: 431169046469856840}
   view: {fileID: 5215284791305863850}
 --- !u!114 &431169046469856840
@@ -5232,6 +5234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b9a660299ce2a44080d21a9113e3dae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   powerRange: 5
   isUsed: 1
 --- !u!65 &5032110501715468860
@@ -5266,7 +5269,7 @@ GameObject:
   - component: {fileID: 6709797174110615585}
   - component: {fileID: 2060830027573816984}
   - component: {fileID: 8482002896591345494}
-  m_Layer: 7
+  m_Layer: 10
   m_Name: Mesh_Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
