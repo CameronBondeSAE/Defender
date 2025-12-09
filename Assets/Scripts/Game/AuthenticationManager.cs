@@ -7,6 +7,7 @@ using UnityEngine;
 public class AuthenticationManager : MonoBehaviour
 {
 	public event Action OnSignedIn;
+	private bool areServicesInitialized = false;
 
 	public async Task SignInAsync()
 	{
@@ -18,6 +19,7 @@ public class AuthenticationManager : MonoBehaviour
 			{
 				await AuthenticationService.Instance.SignInAnonymouslyAsync();
 				OnSignedIn?.Invoke();
+				areServicesInitialized = true;
 			}
 		}
 		catch (Exception e)
@@ -50,5 +52,10 @@ public class AuthenticationManager : MonoBehaviour
 			                                          Debug
 				                                          .Log("Player session could not be refreshed and expired.");
 		                                          };
+	}
+
+	public bool AreServicesInitialized()
+	{
+		return areServicesInitialized;
 	}
 }

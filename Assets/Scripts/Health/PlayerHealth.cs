@@ -18,7 +18,7 @@ public class PlayerHealth : Health
     private IEnumerator RespawnPlayer()
     {
         animation = GetComponent<AIAnimationController>();
-        animation.SetAnimation(AIAnimationController.AnimationState.Dead);
+        // animation.SetAnimation(AIAnimationController.AnimationState.Dead);
         yield return new WaitForSeconds(deathAnimDuration);
         yield return new WaitForSeconds(reviveAnimDuration);
         currentHealth.Value = maxHealth;

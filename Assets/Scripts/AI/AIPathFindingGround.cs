@@ -1,183 +1,186 @@
 using UnityEngine;
 
-public class AIPathFindingGround : AIPathFindingBase
+namespace Jayden
 {
-
-    Rigidbody rb;
-    [SerializeField] protected bool bobHead = true;
-
-    protected virtual void Start()
+    public class AIPathFindingGround : AIPathFindingBase
     {
-        rb = GetComponent<Rigidbody>();
-    }
 
+        Rigidbody rb;
+        [SerializeField] protected bool bobHead = true;
 
-    protected virtual void Update()
-    {
-        FollowPath(); // Done in update rather than FixedUpdate to make movement more smooth
-    }
-
-    protected virtual void FollowPath()
-    {
-        if (!awaitCalculation && !AIGrid.instance.disableMove) // Checks if the logic is allowing the character to move
+        protected virtual void Start()
         {
-            if (pathCellPositions.Count > 0) // Ensures a path exists to follow
-            {
-                // Gets the closest path position to the character and removes one ones before that to prevent the following trying to go backwards
-                int closestIndex = 0;
-                float closestDistance = float.MaxValue;
-                for (int i = 0; i < pathCellPositions.Count; i++)
-                {
-                    Vector3 tmpPos = pathCellPositions[i];
-                    tmpPos.y = characterY;
-                    pathCellPositions[i] = tmpPos;
-                    float distance = Vector3.Distance(transform.position, pathCellPositions[i]);
-                    if (distance < closestDistance)
-                    {
-                        closestIndex = i;
-                        closestDistance = distance;
-                    }
-                }
-                if (closestIndex > 0) pathCellPositions.RemoveRange(0, closestIndex);
-
-
-
-                //Debug.Log("Move");
-
-
-                // Looks towards the desired path position and moves towards it
-
-                Vector3 lookPos;
-
-                if (pathCellPositions[0].y < characterY)
-                {
-                    lookPos = new Vector3(pathCellPositions[0].x, transform.forward.y, pathCellPositions[0].z);
-                }
-                else lookPos = pathCellPositions[0];
-
-                if (!bobHead) lookPos.y = transform.position.y; // This fixes a few bugs reguarding to looking direction, but I like the bobbing heads too much to use the fix :>
-
-                transform.LookAt(lookPos, Vector3.up);
-
-                // I love this but it breaks when going down // I don't remember what this comment meant but I'll leave it because why not
-                rb.linearVelocity = transform.forward * 10f;
-                if (pathCellPositions.Count > 1) pathCellPositions[0] = CheckPathClarity(pathCellPositions[0], pathCellPositions[1]);
-
-                // If the character is close enough to the position that position is removed from the path finding list
-                if (Vector3.Distance(transform.position, pathCellPositions[0]) < 0.8f)
-                {
-                    pathCellPositions.RemoveAt(0);
-                }
-
-            }
-            else StartCoroutine(CalculatePath()); // Calculates the path if the path is empty
-
+            rb = GetComponent<Rigidbody>();
         }
 
-    }
 
-    protected Vector3 CheckPathClarity(Vector3 inputPos, Vector3 nextInputPos)
-    {
-        // Checks if anything is in the way of the character
-        Vector3 outputPos = inputPos;
-        if (inputPos.y < characterY || AIGrid.instance.grid[(int)inputPos.x, (int)inputPos.y, (int)inputPos.z].state == AIGrid.GridStates.stairs) return inputPos; // Returns without doing anything if the target position is below the character or the target cell is stairs
-        else
+        protected virtual void Update()
         {
-            RaycastHit hit;
-            bool hitDetction = Physics.BoxCast(new Vector3(inputPos.x, inputPos.y, inputPos.z), AIGrid.instance.scaledCellSize/2, new Vector3(inputPos.x, inputPos.y, inputPos.z), out hit); // Checks if anything exists in the target cell
-            if (hitDetction)
-            {
-                // Checks next to the cell on either the X or Z value depending on the next cell position
-                for (int i = -1; i <= 1; i += 2)
-                {
-                    Vector3 checkPos;
-                    if (nextInputPos.x != inputPos.x)
-                    {
-                        checkPos = new Vector3(inputPos.x + (AIGrid.instance.scaledCellSize.x * i), inputPos.y, inputPos.z);
-                    }
-                    else
-                    {
-                        checkPos = new Vector3(inputPos.x, inputPos.y, inputPos.z + (AIGrid.instance.scaledCellSize.z * i));
-                    }
+            FollowPath(); // Done in update rather than FixedUpdate to make movement more smooth
+        }
 
-                    // Checks if something exists in the cell next to it
-                    RaycastHit hit2;
-                    bool hitDetction2 = Physics.BoxCast(checkPos, AIGrid.instance.scaledCellSize/2, checkPos, out hit2);
-                    if (!hitDetction2) // If nothing hit, checks if the cell is able to be traversed, sets new target if able to be
+        protected virtual void FollowPath()
+        {
+            if (!awaitCalculation && !AIGrid.instance.disableMove) // Checks if the logic is allowing the character to move
+            {
+                if (pathCellPositions.Count > 0) // Ensures a path exists to follow
+                {
+                    // Gets the closest path position to the character and removes one ones before that to prevent the following trying to go backwards
+                    int closestIndex = 0;
+                    float closestDistance = float.MaxValue;
+                    for (int i = 0; i < pathCellPositions.Count; i++)
                     {
-                        AIGrid.GridStates state = AIGrid.instance.grid[(int)checkPos.x, (int)checkPos.y, (int)checkPos.z].state;
-                        if (state == AIGrid.GridStates.stairs || state == AIGrid.GridStates.walkable)
+                        Vector3 tmpPos = pathCellPositions[i];
+                        tmpPos.y = characterY;
+                        pathCellPositions[i] = tmpPos;
+                        float distance = Vector3.Distance(transform.position, pathCellPositions[i]);
+                        if (distance < closestDistance)
                         {
-                            outputPos = checkPos;
-                            break;
+                            closestIndex = i;
+                            closestDistance = distance;
                         }
                     }
+                    if (closestIndex > 0) pathCellPositions.RemoveRange(0, closestIndex);
+
+
+
+                    //Debug.Log("Move");
+
+
+                    // Looks towards the desired path position and moves towards it
+
+                    Vector3 lookPos;
+
+                    if (pathCellPositions[0].y < characterY)
+                    {
+                        lookPos = new Vector3(pathCellPositions[0].x, transform.forward.y, pathCellPositions[0].z);
+                    }
+                    else lookPos = pathCellPositions[0];
+
+                    if (!bobHead) lookPos.y = transform.position.y; // This fixes a few bugs reguarding to looking direction, but I like the bobbing heads too much to use the fix :>
+
+                    transform.LookAt(lookPos, Vector3.up);
+
+                    // I love this but it breaks when going down // I don't remember what this comment meant but I'll leave it because why not
+                    rb.linearVelocity = transform.forward * 10f;
+                    if (pathCellPositions.Count > 1) pathCellPositions[0] = CheckPathClarity(pathCellPositions[0], pathCellPositions[1]);
+
+                    // If the character is close enough to the position that position is removed from the path finding list
+                    if (Vector3.Distance(transform.position, pathCellPositions[0]) < 0.8f)
+                    {
+                        pathCellPositions.RemoveAt(0);
+                    }
+
+                }
+                else StartCoroutine(CalculatePath()); // Calculates the path if the path is empty
+
+            }
+
+        }
+
+        protected Vector3 CheckPathClarity(Vector3 inputPos, Vector3 nextInputPos)
+        {
+            // Checks if anything is in the way of the character
+            Vector3 outputPos = inputPos;
+            if (inputPos.y < characterY || AIGrid.instance.grid[(int)inputPos.x, (int)inputPos.y, (int)inputPos.z].state == AIGrid.GridStates.stairs) return inputPos; // Returns without doing anything if the target position is below the character or the target cell is stairs
+            else
+            {
+                RaycastHit hit;
+                bool hitDetction = Physics.BoxCast(new Vector3(inputPos.x, inputPos.y, inputPos.z), AIGrid.instance.scaledCellSize / 2, new Vector3(inputPos.x, inputPos.y, inputPos.z), out hit); // Checks if anything exists in the target cell
+                if (hitDetction)
+                {
+                    // Checks next to the cell on either the X or Z value depending on the next cell position
+                    for (int i = -1; i <= 1; i += 2)
+                    {
+                        Vector3 checkPos;
+                        if (nextInputPos.x != inputPos.x)
+                        {
+                            checkPos = new Vector3(inputPos.x + (AIGrid.instance.scaledCellSize.x * i), inputPos.y, inputPos.z);
+                        }
+                        else
+                        {
+                            checkPos = new Vector3(inputPos.x, inputPos.y, inputPos.z + (AIGrid.instance.scaledCellSize.z * i));
+                        }
+
+                        // Checks if something exists in the cell next to it
+                        RaycastHit hit2;
+                        bool hitDetction2 = Physics.BoxCast(checkPos, AIGrid.instance.scaledCellSize / 2, checkPos, out hit2);
+                        if (!hitDetction2) // If nothing hit, checks if the cell is able to be traversed, sets new target if able to be
+                        {
+                            AIGrid.GridStates state = AIGrid.instance.grid[(int)checkPos.x, (int)checkPos.y, (int)checkPos.z].state;
+                            if (state == AIGrid.GridStates.stairs || state == AIGrid.GridStates.walkable)
+                            {
+                                outputPos = checkPos;
+                                break;
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            return outputPos;
+
+        }
+
+
+        protected virtual void OnCollisionEnter(Collision collision)
+        {
+            ColliderJump(collision);
+        }
+        protected virtual void OnCollisionStay(Collision collision)
+        {
+            ColliderJump(collision);
+        }
+
+        protected virtual void ColliderJump(Collision collision)
+        {
+            // Makes character jump up stairs
+            if (collision.transform.position.y >= characterY)
+            {
+                Vector3 collidedWith = transform.position;
+                Vector3 adjustBy = AIGrid.instance.scaledCellSize;
+                if (collision.contacts[0].point.x < transform.position.x) adjustBy.x *= -1;
+                adjustBy.y = 0f;
+                if (collision.contacts[0].point.z < transform.position.z) adjustBy.z *= -1;
+                collidedWith += adjustBy;
+
+                clearJumpVisualisation.Invoke();
+
+                jumpPos = new Vector3(Mathf.FloorToInt(collidedWith.x), Mathf.FloorToInt(collidedWith.y), Mathf.FloorToInt(collidedWith.z));
+
+                //VisualisationSetter.instance.SpawnVisualisation(jumpPos, AIGrid.instance.scaledCellSize, VisualisationSetter.VisualisationStates.jump, gameObject);
+
+                int[] tmpPositions = new int[3] { Mathf.FloorToInt(collidedWith.x - AIGrid.instance.gameObject.transform.position.x), Mathf.FloorToInt(collidedWith.y - AIGrid.instance.gameObject.transform.position.y), Mathf.FloorToInt(collidedWith.z - AIGrid.instance.gameObject.transform.position.z) };
+                AIGrid.GridStates state = AIGrid.instance.grid[tmpPositions[0], tmpPositions[1], tmpPositions[2]].state;
+                //Debug.Log(state);
+
+                AIGrid.GridStates state2 = AIGrid.GridStates.invalid;
+
+                try
+                {
+                    state2 = AIGrid.instance.grid[tmpPositions[0], tmpPositions[1] - 1, tmpPositions[2]].state;
+                }
+                catch { }
+
+                if (state == AIGrid.GridStates.stairs || state2 == AIGrid.GridStates.stairs)
+                {
+                    rb.AddForce(Vector3.up * 10f, ForceMode.VelocityChange);
+                    rb.linearVelocity = transform.forward * 10f;
+                }
+                else if ((state == AIGrid.GridStates.unwalkable || state == AIGrid.GridStates.air)) // Stops being stuck in the air
+                {
+                    //Debug.Log("Push Down");
+                    rb.AddForce(Vector3.down * 4f, ForceMode.VelocityChange);
 
                 }
             }
 
         }
-        return outputPos;
+
+        Vector3 jumpPos = Vector3.zero;
+
+
 
     }
-
-
-    protected virtual void OnCollisionEnter(Collision collision)
-    {
-        ColliderJump(collision);
-    }
-    protected virtual void OnCollisionStay(Collision collision)
-    {
-        ColliderJump(collision);
-    }
-
-    protected virtual void ColliderJump(Collision collision)
-    {
-        // Makes character jump up stairs
-        if (collision.transform.position.y >= characterY)
-        {
-            Vector3 collidedWith = transform.position;
-            Vector3 adjustBy = AIGrid.instance.scaledCellSize;
-            if (collision.contacts[0].point.x < transform.position.x) adjustBy.x *= -1;
-            adjustBy.y = 0f;
-            if (collision.contacts[0].point.z < transform.position.z) adjustBy.z *= -1;
-            collidedWith += adjustBy;
-
-            clearJumpVisualisation.Invoke();
-
-            jumpPos = new Vector3(Mathf.FloorToInt(collidedWith.x), Mathf.FloorToInt(collidedWith.y), Mathf.FloorToInt(collidedWith.z));
-
-            //VisualisationSetter.instance.SpawnVisualisation(jumpPos, AIGrid.instance.scaledCellSize, VisualisationSetter.VisualisationStates.jump, gameObject);
-
-            int[] tmpPositions = new int[3] { Mathf.FloorToInt(collidedWith.x- AIGrid.instance.gameObject.transform.position.x), Mathf.FloorToInt(collidedWith.y- AIGrid.instance.gameObject.transform.position.y), Mathf.FloorToInt(collidedWith.z- AIGrid.instance.gameObject.transform.position.z) };
-            AIGrid.GridStates state = AIGrid.instance.grid[tmpPositions[0], tmpPositions[1], tmpPositions[2]].state;
-            //Debug.Log(state);
-
-            AIGrid.GridStates state2 = AIGrid.GridStates.invalid;
-            
-            try
-            {
-                state2 = AIGrid.instance.grid[tmpPositions[0], tmpPositions[1] - 1, tmpPositions[2]].state;
-            }
-            catch { }
-
-            if (state == AIGrid.GridStates.stairs || state2 == AIGrid.GridStates.stairs)
-            {
-                rb.AddForce(Vector3.up * 10f, ForceMode.VelocityChange);
-                rb.linearVelocity = transform.forward * 10f;
-            }
-            else if ((state == AIGrid.GridStates.unwalkable || state == AIGrid.GridStates.air)) // Stops being stuck in the air
-            {
-                //Debug.Log("Push Down");
-                rb.AddForce(Vector3.down * 4f, ForceMode.VelocityChange);
-
-            }
-        }
-
-    }
-
-    Vector3 jumpPos = Vector3.zero;
-
-
-
 }
