@@ -1,67 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1043075797947996095
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3858924453949440534}
-  m_Layer: 3
-  m_Name: LeftEyeforLaser
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3858924453949440534
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1043075797947996095}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.1534, y: 3.2307, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 577280417726672362}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3421889778955490912
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7476346716921845350}
-  m_Layer: 3
-  m_Name: RightEyeforLaser
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7476346716921845350
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3421889778955490912}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.053, y: 3.3312, z: 0.212}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 577280417726672362}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1119232495257012737
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -420,13 +358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3858924453949440534}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7476346716921845350}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}
       insertIndex: -1
@@ -529,9 +461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7434740fd5c354e836eb38cb7435d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftEye: {fileID: 3858924453949440534}
-  rightEye: {fileID: 7476346716921845350}
-  alienTag: Alien
+  leftEye: {fileID: 7772896296910669686}
+  rightEye: {fileID: 7772896296910669686}
+  targetAlien: {fileID: 0}
   maxLaserDistance: 30
 --- !u!114 &-1763910268116446154
 MonoBehaviour:
@@ -548,8 +480,8 @@ MonoBehaviour:
   manualUpdate: 0
   thinkInterval: 0.1
   scenario: {fileID: 11400000, guid: 0f9b0d3b52263f7448e5f9bfe0eb8251, type: 2}
---- !u!4 &577280417726672362 stripped
+--- !u!4 &7772896296910669686 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}
+  m_CorrespondingSourceObject: {fileID: -1993247482878816905, guid: a692ce6833514a34e86be0edaf4758b3, type: 3}
   m_PrefabInstance: {fileID: 1119232495257012737}
   m_PrefabAsset: {fileID: 0}
