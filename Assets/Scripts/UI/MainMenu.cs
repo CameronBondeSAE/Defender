@@ -32,7 +32,10 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator AnimateWordsSequentially()
     {
-        for (int i = 0; i < wordObjects.Length; i++)
+	    // CAM: I moved this to before the sequence starts, instead of waiting, for quicker testing basically
+	    ActivateStartButton();
+
+	    for (int i = 0; i < wordObjects.Length; i++)
         {
             RectTransform word = wordObjects[i];
             Transform target = wordTargets[i];
@@ -43,7 +46,6 @@ public class MainMenu : MonoBehaviour
             yield return tween.WaitForCompletion();
         }
 
-        ActivateStartButton();
     }
 
     private void ActivateStartButton()
