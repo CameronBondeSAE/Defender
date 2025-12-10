@@ -203,6 +203,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6705771452250497905, guid: 6f30714c3410b3d4095076a353ebb485, type: 3}
   m_PrefabInstance: {fileID: 3977852}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3977855 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8191844808735681502, guid: 6f30714c3410b3d4095076a353ebb485, type: 3}
+  m_PrefabInstance: {fileID: 3977852}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &26134809
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -618,7 +623,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  civiliansText: {fileID: 153698839}
+  gameHudRoot: {fileID: 0}
+  levelIntroPanel: {fileID: 0}
+  levelIntroText: {fileID: 0}
+  levelIntroStartButton: {fileID: 0}
   waveText: {fileID: 1681041714}
   aliensKilledText: {fileID: 359460598}
   winScreen: {fileID: 1759056665}
@@ -626,11 +634,16 @@ MonoBehaviour:
   winCivsPercentageText: {fileID: 1305640283}
   winNextLevelButton: {fileID: 1514321133}
   winMainMenuButton: {fileID: 924882843}
+  quitButton: {fileID: 0}
+  onScreenMenuButton: {fileID: 0}
   loseScreen: {fileID: 1123890543}
   loseAliensKilledText: {fileID: 684270057}
   loseCivsPercentageText: {fileID: 1498310668}
   loseTryAgainButton: {fileID: 1234805099}
   loseMainMenuButton: {fileID: 293964363}
+  itemInfoPanel: {fileID: 0}
+  itemNameText: {fileID: 0}
+  itemDescriptionText: {fileID: 0}
   gameManager: {fileID: 0}
   levelLoader: {fileID: 377446717}
 --- !u!224 &159304183
@@ -2674,10 +2687,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563976979}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Mass: 0.0000001
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -6189,11 +6202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  levelSOs:
-  - {fileID: 11400000, guid: 5d1b16645c958854bbca0107b7c47a5c, type: 2}
-  - {fileID: 11400000, guid: 7d8f4669d61572742bd83d2a12ef8a60, type: 2}
+  levelLoader: {fileID: 0}
   currentLevelIndex: 0
-  levelContainer: {fileID: 0}
+  levelInfo: {fileID: 0}
   targetGroup: {fileID: 1817513095}
   uiManager: {fileID: 159304182}
   aliensIncomingFromAllShips: 0
@@ -6201,6 +6212,10 @@ MonoBehaviour:
   civiliansAlive: 0
   civilians: []
   mothershipBases: []
+  crateSpawnpointsInScene: []
+  eggSpawnPos: []
+  eggHatchStartDelay: 60
+  eggHatchInterval: 10
 --- !u!114 &986910091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8663,47 +8678,47 @@ MonoBehaviour:
   - _gameObject: {fileID: 1318728395}
     _prefab: Assets/Prefabs/Waypoint.prefab
   - _gameObject: {fileID: 2097515461}
-    _prefab: Assets/Prefabs/Characters/WalkingCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/WalkingCiv.prefab
   - _gameObject: {fileID: 405812699}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_01.prefab
   - _gameObject: {fileID: 1529533182}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 792659726}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1831447826}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1830097655}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 880969465}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 2093754313}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1810230950}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1174313286}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1827071649}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1772027656}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 708473846}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1320231170}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 900368824}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 567693055}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 541257372}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1297854275}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1304804443}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 498629006}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 897443026}
-    _prefab: Assets/Prefabs/Characters/IdleCiv.prefab
+    _prefab: Assets/Prefabs/Characters/Civ/IdleCiv.prefab
   - _gameObject: {fileID: 1255525343}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_03.prefab
   - _gameObject: {fileID: 1011198850}
@@ -8797,13 +8812,17 @@ MonoBehaviour:
   - _gameObject: {fileID: 393680631}
     _prefab: Assets/Prefabs/Spawn.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Characters/Player.prefab
+    _prefab: Assets/Prefabs/Characters/Player/Player.prefab
   - _gameObject: {fileID: 302250214}
     _prefab: Assets/Art/Mini Simple Characters Demo/Prefabs/mini simple demo_04.prefab
   - _gameObject: {fileID: 302250213}
-    _prefab: Assets/Prefabs/Characters/Player.prefab
+    _prefab: Assets/Prefabs/Characters/Player/Player.prefab
   - _gameObject: {fileID: 8708370507975262657}
     _prefab: Assets/Prefabs/Items/Demo item/Demo Item.prefab
+  - _gameObject: {fileID: 3977854}
+    _prefab: Assets/Prefabs/Items/Suicide vest/Suicide Vest.prefab
+  - _gameObject: {fileID: 3977855}
+    _prefab: Assets/Art/Bag/model_0.obj
   - _gameObject: {fileID: 3977854}
     _prefab: Assets/Prefabs/Items/Suicide vest/Suicide Vest.prefab
   - _gameObject: {fileID: 1008216137}
@@ -9331,7 +9350,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 720d8529c7db4671877ac3ff18f39c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  percentageToSave: 70
+  percentCiviliansAliveToWin: 50
+  spawnerComponents: []
+  mothershipBases: []
+  totalWaves: 3
+  enemyMult: 1
+  waveMult: 1
+  crateSpawns: []
+  eggSpawnPositions: []
+  eggHatchStartDelay: 60
+  eggHatchInterval: 10
 --- !u!4 &1853593272
 Transform:
   m_ObjectHideFlags: 0
@@ -10351,6 +10379,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1384212231368121144, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1384212231368121144, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1384212231368121144, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1384212231368121144, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1542463312515489833, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -10387,6 +10431,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Network
       objectReference: {fileID: 0}
+    - target: {fileID: 1812795066463558564, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1854092849191800419, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -10407,6 +10455,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2412016111229625176, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2412016111229625176, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2412016111229625176, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2412016111229625176, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354887885436075080, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354887885436075080, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354887885436075080, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354887885436075080, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4175656752346437710, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -10436,6 +10516,38 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4920186631041801238, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294466942754682317, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294466942754682317, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294466942754682317, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5294466942754682317, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314451075744952833, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314451075744952833, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314451075744952833, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314451075744952833, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -10556,6 +10668,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8379433893443590953, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826033012868173359, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826033012868173359, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826033012868173359, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8826033012868173359, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -10833,9 +10961,14 @@ MonoBehaviour:
   isConsumable: 1
   expiryDuration: 0
   activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
   countdownUIPrefab: {fileID: 0}
+  itemName: 
+  description: 
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
 --- !u!4 &8708370507975262659 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4893910233323562065, guid: 2d3bf95301dc0624fb9e299ad43b3b6a, type: 3}

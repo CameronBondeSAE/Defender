@@ -22,6 +22,9 @@ public class MainMenu : MonoBehaviour
     public float fakeLoadingDuration = 1.5f;
 
     public GameObject menuUI;
+    
+    [Header("Lobby UI")]
+    public GameObject lobbyUI;
 
     private void Start()
     {
@@ -59,11 +62,10 @@ public class MainMenu : MonoBehaviour
     }
     public void StartGame()
     {
-	    menuUI.SetActive(false);
-	    
-	    // HACK: Cam put this in
-        SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneToLoad));
+        if (menuUI != null)
+            menuUI.SetActive(false);
+        if (lobbyUI != null)
+            lobbyUI.SetActive(true);
     }
     
     public void OnStartButtonPressed()

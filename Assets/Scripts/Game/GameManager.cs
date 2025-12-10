@@ -105,7 +105,7 @@ namespace DanniLi
 		}
 
 		
-		#region Netcode Lifecycle
+		#region Netcode Lifecycle (Start Game Logic)
 		public override void OnNetworkSpawn()
 		{
 			base.OnNetworkSpawn();
@@ -118,16 +118,18 @@ namespace DanniLi
 			}
 			if (uiManager == null)
 				uiManager = FindObjectOfType<UIManager>();
+			if (levelInfo == null)
+				levelInfo = FindObjectOfType<LevelInfo>();
 
 			// Server only from now
 			if (!IsServer) return;
 			
-			InitializeLevel();
-			
-			// order of fucking operation.
-			// now start flow only after UI's NetObject is spawned (or timeout)
-			if (startFlowCoroutine != null) StopCoroutine(startFlowCoroutine);
-			startFlowCoroutine = StartCoroutine(StartFlowWhenUIReady());
+			// InitializeLevel();
+			//
+			// // order of fucking operation.
+			// // now start flow only after UI's NetObject is spawned (or timeout)
+			// if (startFlowCoroutine != null) StopCoroutine(startFlowCoroutine);
+			// startFlowCoroutine = StartCoroutine(StartFlowWhenUIReady());
 		}
 		
 		public override void OnNetworkDespawn()
@@ -177,6 +179,19 @@ namespace DanniLi
 		{
 			if (!IsServer) return;
 			InitializeLevel();
+			int requiredPercent = 50;
+			if (levelInfo != null)
+			{
+				requiredPercent = levelInfo.percentCiviliansAliveToWin;
+			}
+
+			requiredPercent = Mathf.Clamp(requiredPercent, 0, 100);
+
+			// show the added level intro screen (also on clients)
+			if (uiManager != null && uiManager.IsSpawned)
+			{
+				uiManager.ShowLevelIntroRpc(requiredPercent);
+			}
 		}
 		
 		private IEnumerator StartFlowWhenUIReady()
@@ -203,18 +218,49 @@ namespace DanniLi
 		private void InitializeLevel()
 		{
 			//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
-			// ticked off the todos
-			currentlevelInfoSo = (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
-				? levelLoader.levelOrder[Mathf.Clamp(currentLevelIndex, 0, levelLoader.levelOrder.Length - 1)] 
-				: null;
+			levelInfo = FindAnyObjectByType<LevelInfo>();
+			gameHasEnded = false;
+			if (levelInfo != null)
+			{
+				// Spawners
+				spawners.Clear();
+				if (levelInfo.spawnerComponents != null)
+				{
+					foreach (var comp in levelInfo.spawnerComponents)
+					{
+						if (comp == null) continue;
+						if (comp is ISpawner spawner)
+						{
+							spawners.Add(spawner);
+						}
+					}
+				}
 
-			if (currentlevelInfoSo != null)
-			{
-				// Debug.Log("Level Info: Civilians to save " + currentlevelInfo.civiliansToSave);
-			}
-			else
-			{
-				Debug.Log("Level Info: No level info found");
+				// Wave & difficulty settings
+				totalWaves = levelInfo.totalWaves;
+				enemyMult  = levelInfo.enemyMult;
+				waveMult   = levelInfo.waveMult;
+
+				// Crates
+				if (levelInfo.crateSpawns != null && levelInfo.crateSpawns.Count > 0)
+				{
+					crateSpawnpointsInScene = new List<CrateSpawn>(levelInfo.crateSpawns);
+				}
+
+				// Motherships
+				if (levelInfo.mothershipBases != null && levelInfo.mothershipBases.Length > 0)
+				{
+					mothershipBases = levelInfo.mothershipBases;
+				}
+
+				// Eggs
+				if (levelInfo.eggSpawnPositions != null && levelInfo.eggSpawnPositions.Count > 0)
+				{
+					eggSpawnPos = new List<Transform>(levelInfo.eggSpawnPositions);
+				}
+
+				eggHatchStartDelay = levelInfo.eggHatchStartDelay;
+				eggHatchInterval   = levelInfo.eggHatchInterval;
 			}
 		
 			//--------------------------------------------------CRATES & ITEMS-------------------------------------------------------------
@@ -229,7 +275,7 @@ namespace DanniLi
 				}
 			else
 			{
-				Debug.LogWarning("GameManager: no level info!");
+				Debug.LogWarning("gameManager: no level info!");
 			}
 
 			//--------------------------------------------------MOTHERSHIP & ALIENS-------------------------------------------------------------
@@ -262,28 +308,11 @@ namespace DanniLi
 			
 			//--------------------------------------------------EGGS-------------------------------------------------------------
 			SpawnEggsForLevel();
-
-			// kill any previous egg coroutines (like if reloaded level)
 			if (eggHatchCoroutine != null)
 			{
 				StopCoroutine(eggHatchCoroutine);
 				eggHatchCoroutine = null;
 			}
-
-			if (spawnedEggs.Count > 0)
-			{
-				eggHatchCoroutine = StartCoroutine(EggHatchRoutine());
-			}
-			
-			//--------------------------------------------------GAME FLOW-------------------------------------------------------------
-			if (uiManager != null)
-			{
-				uiManager.InitializeUI(totalCivilians, civiliansAlive, totalWaves, totalAliensPlanned);
-			}
-			// TODO coroutine to space it out
-			GetReady_Event?.Invoke();
-			// StartWave();
-			StartGame_Event?.Invoke();
 		}
 		
 		public void ForceInitializeUI(UIManager ui)
@@ -300,6 +329,24 @@ namespace DanniLi
 					ui.OnWaveEnd(currentWaveNumber);
 			}
 		}
+		
+		[Rpc(SendTo.Server, RequireOwnership = false)]
+		public void BeginLevelServerRpc()
+		{
+			if (!IsServer) return;
+
+			// start game for this level now that players have pressed 'Start' in-level
+			if (startFlowCoroutine != null)
+			{
+				StopCoroutine(startFlowCoroutine);
+			}
+			startFlowCoroutine = StartCoroutine(StartFlowWhenUIReady());
+			StartEggHatchRoutine();
+			// start game events to be used in the future
+			GetReady_Event?.Invoke();
+			StartGame_Event?.Invoke();
+		}
+
 
 		#endregion
 		
@@ -419,8 +466,13 @@ namespace DanniLi
 				DoLose();
 				return;
 			}
-			int required = (currentlevelInfoSo != null) ? currentlevelInfoSo.percentCiviliansAliveToWin : 50;
-			int requiredAliveCount = Mathf.CeilToInt((required / 100f) * totalCivilians); // rounded up
+			int required = 50;
+			if (levelInfo != null)
+			{
+				required = levelInfo.percentCiviliansAliveToWin;
+			}
+			int requiredAliveCount = Mathf.CeilToInt((required / 100f) * totalCivilians); 
+
 			if (civiliansAlive >= requiredAliveCount)
 			{
 				DoWin();
@@ -581,43 +633,23 @@ namespace DanniLi
     // added functionality to spawn at random position if no spawnPos configured (also as an alternative :3)
     private void TrySpawnCrateForNewClient() 
     {
-        if (!IsServer || currentlevelInfoSo == null) return;
-        
-	    // CAM HACK: TODO
-	    levelInfo = FindAnyObjectByType<LevelInfo>();
-        
-        int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
-        if (cratesSpawnedCount >= maxCrates) return;
-        if (currentlevelInfoSo.cratePrefab == null) return;
-        // choose spawn transform in listed order
-        Transform spawnPos = null;
-		// now prefer scene-assigned spawn points on this manager 
-        if (crateSpawnpointsInScene != null &&
-            nextCrateSpawnIndex < crateSpawnpointsInScene.Count)
-        {
-	        spawnPos = crateSpawnpointsInScene[nextCrateSpawnIndex].transform;
-        }
-		// if null, fallback to LevelInfo prefab spawn points
-        else if (levelInfo != null &&
-                 levelInfo.crateSpawns != null &&
-                 nextCrateSpawnIndex < levelInfo.crateSpawns.Count)
-        {
-	        spawnPos = levelInfo.crateSpawns[nextCrateSpawnIndex].transform;
-        }
+	    if (!IsServer || currentlevelInfoSo == null) return;
 
-        Vector3 pos = (spawnPos != null) ? spawnPos.position : GetRandomSpawnPosition();
-        Quaternion rotation = (spawnPos != null) ? spawnPos.rotation : Quaternion.identity;
-        var crateGO = Instantiate(currentlevelInfoSo.cratePrefab, pos, rotation, levelContainer);
-        var netObj = crateGO.GetComponent<NetworkObject>();
-        if (netObj == null)
-        {
-            Destroy(crateGO);
-            return;
-        }
-        netObj.Spawn(); 
-        spawnedCrates.Add(netObj);
-        cratesSpawnedCount++;
-        if (spawnPos != null) nextCrateSpawnIndex++; // spawn at next spawnPos in list
+	    int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
+	    if (cratesSpawnedCount >= maxCrates) return;
+	    if (currentlevelInfoSo.cratePrefab == null) return;
+	    Transform spawnPos = null;
+	    if (crateSpawnpointsInScene != null &&
+	        nextCrateSpawnIndex < crateSpawnpointsInScene.Count)
+	    {
+		    spawnPos = crateSpawnpointsInScene[nextCrateSpawnIndex].transform;
+	    }
+	    else if (levelInfo != null &&
+	             levelInfo.crateSpawns != null &&
+	             nextCrateSpawnIndex < levelInfo.crateSpawns.Count)
+	    {
+		    spawnPos = levelInfo.crateSpawns[nextCrateSpawnIndex].transform;
+	    }
     }
 		#endregion
 		
@@ -665,6 +697,22 @@ namespace DanniLi
 				}
 			}
 		}
+		
+		private void StartEggHatchRoutine()
+		{
+			if (!IsServer) return;
+			if (eggHatchCoroutine != null)
+			{
+				StopCoroutine(eggHatchCoroutine);
+				eggHatchCoroutine = null;
+			}
+
+			if (spawnedEggs.Count > 0)
+			{
+				eggHatchCoroutine = StartCoroutine(EggHatchRoutine());
+			}
+		}
+
 		private IEnumerator EggHatchRoutine()
 		{
 			if (spawnedEggs.Count == 0)
