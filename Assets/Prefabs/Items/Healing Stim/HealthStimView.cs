@@ -1,7 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class HealthStimView : UsableItem_Base
+public class HealthStimView : NetworkBehaviour
 {
     public healthStimController healthStimController;
     public AudioSource StimSource;
