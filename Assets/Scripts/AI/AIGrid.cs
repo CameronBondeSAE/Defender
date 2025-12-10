@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ public class AIGrid : MonoBehaviour
     public List<AIGridCell> stairsGrid = new List<AIGridCell>();
     public List<Vector3> unwalkableGrid = new List<Vector3>();
     public List<Vector3> airGrid = new List<Vector3>();
+
+    public int generateCellsInFrame = 1000;
 
     public enum GridStates
     {
@@ -162,14 +165,19 @@ public class AIGrid : MonoBehaviour
 
     //}
 
-
-    void GenerateGrid()
+    public void GenerateGrid()
+    {
+        StartCoroutine(GenerateGridCoroutine());
+    }
+    IEnumerator GenerateGridCoroutine()
     {
         if (grid == null) grid = new AIGridCell[Mathf.CeilToInt(checkDistance.x), Mathf.CeilToInt(checkDistance.y), Mathf.CeilToInt(checkDistance.z)];
         walkableGrid.Clear();
         stairsGrid.Clear();
 
         // Order of operations for loops matter. y needs to be the highest so it does the logic for all whole floor before moving onto the next one
+
+        int completedCells = 1;
 
         for (int y = 0; y < scaledCheckDistance.y; y += Mathf.CeilToInt(cellSize.y))
         {
@@ -293,7 +301,8 @@ public class AIGrid : MonoBehaviour
 
 
 
-
+                    completedCells++;
+                    if (completedCells % generateCellsInFrame == 0) yield return null;
                 }
             }
         }
