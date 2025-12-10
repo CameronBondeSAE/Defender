@@ -51,7 +51,7 @@ public class SmartAlienSense : MonoBehaviour, ISense
         }
         // movement
         bool currentlyMoving = false;
-        if (navAgent != null && navAgent.enabled)
+        if (navAgent != null && navAgent.enabled && navAgent.isActiveAndEnabled)
         {
             currentlyMoving =
                 !navAgent.isStopped &&

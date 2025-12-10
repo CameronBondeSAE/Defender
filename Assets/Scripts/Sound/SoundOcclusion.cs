@@ -15,7 +15,7 @@ public class SoundOcclusion : MonoBehaviour
     [SerializeField] private float occludedVolume = 0.3f;
     [SerializeField] private float occludedCutoff = 800f;
     [SerializeField] private float normalCutoff = 22000f;
-    [SerializeField] private float fadeSpeed = 5f;
+    [SerializeField] private float fadeSpeed = 10f;
 
     private void Start()
     {
@@ -26,8 +26,10 @@ public class SoundOcclusion : MonoBehaviour
         if (listener == null) Debug.Log("No Audio Listener in the Scene" + Time.time);
 
         // get the required components
-        source = GetComponent<AudioSource>();
-        filter = GetComponent<AudioLowPassFilter>();
+        if(source)
+	        source = GetComponent<AudioSource>();
+		if(filter)
+	        filter = GetComponent<AudioLowPassFilter>();
 
         // set the sources original volume
         originalVolume = source.volume;
@@ -55,9 +57,10 @@ public class SoundOcclusion : MonoBehaviour
         float targetCutoff = blocked ? occludedCutoff : normalCutoff;
 
         // lerp the volume of the sound source
-        source.volume = Mathf.Lerp(source.volume, targetVolume, Time.deltaTime * fadeSpeed);
+        if (source != null) source.volume = Mathf.Lerp(source.volume, targetVolume, Time.deltaTime * fadeSpeed);
 
         // set the filter frequency
-        filter.cutoffFrequency = Mathf.Lerp(filter.cutoffFrequency, targetCutoff, Time.deltaTime * fadeSpeed);
+        if (filter != null)
+	        filter.cutoffFrequency = Mathf.Lerp(filter.cutoffFrequency, targetCutoff, Time.deltaTime * fadeSpeed);
     }
 }
