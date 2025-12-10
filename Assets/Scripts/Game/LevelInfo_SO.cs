@@ -9,21 +9,14 @@ namespace DanniLi
 	{
 		[Header("Scene")] 
 		public string sceneName;
-		
 		[Header("Level Items")]
 		[SerializeField]
 		public List<ItemSO> availableItems = new List<ItemSO>();
 		public Object scene;
-		public int    civiliansToSave; // this is optional now
-
-		[Header("Crates")]
+		[Header("Crate Objects")]
 		[SerializeField] public GameObject cratePrefab;
 		[SerializeField] public int crateSpawnCount = 5;
-
-		[Header("Win Conditions")] [Range(0, 100)]
-		public int percentCiviliansAliveToWin = 50;
-		
-		[Header("Eggs")]
+		[Header("Egg Objects")]
 		[Tooltip("Different types of egg prefabs this level will have, they spawn smart planer AIs")]
 		[SerializeField] public List<GameObject> eggPrefabs = new List<GameObject>();
 	}

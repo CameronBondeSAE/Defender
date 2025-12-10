@@ -4,6 +4,8 @@ using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
+using Unity.Netcode;
+using DanniLi;
 
 namespace AshleyPearson
 {
@@ -17,6 +19,9 @@ namespace AshleyPearson
        [SerializeField] private GameObject waitingForPlayersBackButton;
        [SerializeField] private Text playersJoinedText;
        [SerializeField] private GameObject joinGameMenuGroup;
+       
+       [Header("Level Loading")]
+       [SerializeField] private LevelLoader levelLoader;
        
        //Used to determine which UI to show after username entered
        private System.Action actionAfterUsernameEntered;
@@ -88,8 +93,16 @@ namespace AshleyPearson
 
        public void OnButtonClick_HostStartedGame()
        {
-           //This method doesn't check for host as only the host should have access to the button in the first place
+           // //This method doesn't check for host as only the host should have access to the button in the first place
            LobbyEvents.OnButtonClicked_HostStartedGame?.Invoke();
+
+           // only host can start level loading
+           if (levelLoader != null &&
+               NetworkManager.Singleton != null &&
+               NetworkManager.Singleton.IsHost)
+           {
+               levelLoader.LoadFirstLevelServerRpc();
+           }
        }
        
        private void ShowUsernameScreen()

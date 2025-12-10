@@ -9,7 +9,12 @@ namespace DanniLi
 {
     public class UIManager : NetworkBehaviour
     {
-        [Header("Game UI Elements")] [SerializeField]
+        [Header("Game UI Elements")]
+        [SerializeField] private GameObject gameHudRoot;
+        [Header("Level Intro")]
+        [SerializeField] private GameObject levelIntroPanel;
+        [SerializeField] private Text levelIntroText;
+        [SerializeField] private Button levelIntroStartButton;
         private Text civiliansText;
 
         [SerializeField] private Text waveText;
@@ -98,19 +103,33 @@ namespace DanniLi
 
             //button listeners (all clients)
             SetupButtonListeners();
-            // initialize
-            UpdateAllUI();
-            // hide screens initially
+            // // initialize
+            // UpdateAllUI();
+            // // hide screens initially
+            // HideAllScreens();
+            // HideItemPanel();
+            // // if (IsServer && gameManager != null && networkTotalWaves.Value <= 0)
+            // // {
+            // //     gameManager.ForceInitializeUI(this);
+            // // }
+            // if (IsServer)
+            // {
+            //     var gameManager = FindObjectOfType<DanniLi.GameManager>();
+            //     gameManager?.ForceInitializeUI(this); // resync if we spawned after GM started the wave
+            // }
+            // hide overlay screens initially
             HideAllScreens();
             HideItemPanel();
-            // if (IsServer && gameManager != null && networkTotalWaves.Value <= 0)
-            // {
-            //     gameManager.ForceInitializeUI(this);
-            // }
+            if (gameHudRoot != null)
+                gameHudRoot.SetActive(false);
+            if (levelIntroPanel != null)
+                levelIntroPanel.SetActive(false);
+            if (levelIntroStartButton != null)
+                levelIntroStartButton.onClick.AddListener(OnLevelIntroStartClicked);
             if (IsServer)
             {
-                var gameManager = FindObjectOfType<DanniLi.GameManager>();
-                gameManager?.ForceInitializeUI(this); // resync if we spawned after GM started the wave
+                var gm = FindObjectOfType<DanniLi.GameManager>();
+                gm?.ForceInitializeUI(this); // resync if we spawned after GM started the wave
             }
         }
 
@@ -129,7 +148,8 @@ namespace DanniLi
                 gameManager.WinGameOver_Event -= OnWinGameOver;
                 gameManager.LoseGameOver_Event -= OnLoseGameOver;
             }
-
+            if (levelIntroStartButton != null)
+                levelIntroStartButton.onClick.RemoveListener(OnLevelIntroStartClicked);
             base.OnNetworkDespawn();
         }
 
@@ -297,7 +317,7 @@ namespace DanniLi
 
         #endregion
 
-        #region Game Over Screens
+        #region Game Win/Lose Screens
 
         private void OnWinGameOver()
         {
@@ -322,6 +342,26 @@ namespace DanniLi
         {
             ShowLoseScreen();
         }
+        
+        [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+        public void ShowLevelIntroRpc(int percentCiviliansToSave)
+        {
+            ShowLevelIntro(percentCiviliansToSave);
+        }
+
+        private void ShowLevelIntro(int percentCiviliansToSave)
+        {
+            if (levelIntroText != null)
+            {
+                levelIntroText.text =
+                    $"Your mission: save at least {percentCiviliansToSave}% of civilians in this level!";
+            }
+            if (levelIntroPanel != null)
+                levelIntroPanel.SetActive(true);
+
+            if (gameHudRoot != null)
+                gameHudRoot.SetActive(false);
+        }
 
         [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
         public void HideAllScreensRpc()
@@ -333,6 +373,7 @@ namespace DanniLi
         {
             if (winScreen != null) winScreen.SetActive(false);
             if (loseScreen != null) loseScreen.SetActive(false);
+            if (levelIntroPanel != null) levelIntroPanel.SetActive(false);
         }
 
         private void ShowWinScreen()
@@ -451,16 +492,37 @@ namespace DanniLi
                 levelLoader.LoadMainMenuServerRpc();
             }
         }
+        
+        /// called locally when the player clicks the "Start Game" button on the intro panel
+        private void OnLevelIntroStartClicked()
+        {
+            if (gameManager != null)
+            {
+                gameManager.BeginLevelServerRpc();
+            }
+            
+            if (levelIntroPanel != null)
+                levelIntroPanel.SetActive(false);
+
+            if (gameHudRoot != null)
+                gameHudRoot.SetActive(true);
+        }
+        public void SetGameHudVisible(bool visible)
+        {
+            if (gameHudRoot != null)
+                gameHudRoot.SetActive(visible);
+        }
+
 
         private void QuitGame()
+            #endregion
         {
 #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
 #else
     Application.Quit();
 #endif
-
-            #endregion
+            
         }
     }
 }

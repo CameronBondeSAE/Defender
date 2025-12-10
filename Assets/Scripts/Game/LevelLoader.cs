@@ -103,10 +103,21 @@ public class LevelLoader : NetworkBehaviour
       if (!IsServer) return;
       DoReloadCurrent();
    }
+   [Rpc(SendTo.Server, RequireOwnership = false)]
+   public void LoadFirstLevelServerRpc()
+   {
+      LoadFirstLevel();
+   }
    public void LoadMainMenu()
    {
       if (!IsServer) return;
       LoadMainMenuRpc();
+   }
+   
+   public void LoadFirstLevel()
+   {
+      if (!IsServer) return;
+      DoLoadFirst();
    }
 
    private void DoLoadNext()
@@ -162,7 +173,37 @@ public class LevelLoader : NetworkBehaviour
       // NetworkManager.SceneManager.LoadScene(next.sceneName, LoadSceneMode.Additive);
       // // don't set active here, wait fot event (below)
    }
-   
+   private void DoLoadFirst()
+   {
+      LevelInfo_SO[] levels = GetLevels();
+      if (levels == null || levels.Length == 0)
+      {
+         Debug.LogWarning("no levels configured");
+         return;
+      }
+      int firstIndex = 0;
+      var first = levels[Mathf.Clamp(firstIndex, 0, levels.Length - 1)];
+      if (first == null || string.IsNullOrEmpty(first.sceneName))
+      {
+         Debug.LogError("LevelInfo missing or sceneName empty");
+         return;
+      }
+
+      if (gameManager != null)
+         gameManager.currentLevelIndex = firstIndex;
+
+      // hide any win/lose screens before loading
+      if (uiManager != null)
+         uiManager.HideAllScreensRpc();
+
+      // unload all existing level scenes (keep manager)
+      UnloadAllLevelScenes();
+
+      // load the first level additively & mark to set active scene when done
+      pendingSetActiveSceneName = first.sceneName;
+      NetworkManager.SceneManager.LoadScene(first.sceneName, LoadSceneMode.Additive);
+   }
+
    private void UnloadAllLevelScenes()
    {
       // check if we have enough scenes to safely unload
