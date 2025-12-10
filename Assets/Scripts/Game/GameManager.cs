@@ -33,6 +33,9 @@ namespace DanniLi
 
 		[Header("Camera Set-Up")]
 		public CinemachineTargetGroup targetGroup;
+		
+		[Header("Player")]
+		public GameObject playerPrefab;
 
 		[Header("References")]
 		private PlayerInventory playerInventory;
@@ -258,9 +261,14 @@ namespace DanniLi
 				{
 					eggSpawnPos = new List<Transform>(levelInfo.eggSpawnPositions);
 				}
-
 				eggHatchStartDelay = levelInfo.eggHatchStartDelay;
 				eggHatchInterval   = levelInfo.eggHatchInterval;
+				
+				// Player
+				if (playerPrefab != null)
+				{
+					Instantiate(playerPrefab, playerPrefab.transform.position, Quaternion.identity);
+				}
 			}
 		
 			//--------------------------------------------------CRATES & ITEMS-------------------------------------------------------------

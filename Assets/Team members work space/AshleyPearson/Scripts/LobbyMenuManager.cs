@@ -102,6 +102,10 @@ namespace AshleyPearson
                NetworkManager.Singleton.IsHost)
            {
                levelLoader.LoadFirstLevelServerRpc();
+           } else
+           {
+               Debug.LogWarning("HostStartGame clicked, but NetworkManager is not running as host yet. " +
+                                "Make sure Relay/Netcode host is started before loading the level.");
            }
        }
        
