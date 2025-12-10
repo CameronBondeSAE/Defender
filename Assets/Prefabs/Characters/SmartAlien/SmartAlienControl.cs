@@ -71,7 +71,7 @@ public class SmartAlienControl : CharacterBase
     
     private void Update()
     {
-        if (agent == null || !agent.enabled || animController == null)
+        if (agent == null || agent.isActiveAndEnabled || !agent.enabled || animController == null)
         {
             return;
         }

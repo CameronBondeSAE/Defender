@@ -28,7 +28,7 @@ public class ScanLevel : AntAIState
 
         timer = 0f;                   
 
-        if (agent != null && agent.enabled)
+        if (agent != null && agent.enabled && agent.isActiveAndEnabled)
         {
             agent.isStopped = true;
             agent.ResetPath();
@@ -64,7 +64,7 @@ public class ScanLevel : AntAIState
 
     public override void Exit()
     {
-        if (agent != null && agent.enabled)
+        if (agent != null && agent.enabled && agent.isActiveAndEnabled)
         {
             agent.isStopped = false;
         }

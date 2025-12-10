@@ -10,12 +10,12 @@ public class Rotate90_Model : NetworkBehaviour, IUsable
 	
 	private void OnEnable()
 	{
-		health.OnHealthChanged += HealthOnOnHealthChanged;
+		if (health != null) health.OnHealthChanged += HealthOnOnHealthChanged;
 	}
 
 	private void OnDisable()
 	{
-		health.OnHealthChanged -= HealthOnOnHealthChanged;
+		if (health != null) health.OnHealthChanged -= HealthOnOnHealthChanged;
 	}
 
 	private void HealthOnOnHealthChanged(float obj)

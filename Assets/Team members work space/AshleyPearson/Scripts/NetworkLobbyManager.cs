@@ -19,11 +19,11 @@ namespace AshleyPearson
         //Called on button click
         public void HostStartGame()
         {
-            if (!NetworkManager.Singleton.IsHost)
-            {
-                Debug.LogWarning("NetworkLobbyManager: Start game called but this client is not the host");
-                return;
-            }
+            // if (!NetworkManager.Singleton.IsHost)
+            // {
+            //     Debug.LogWarning("NetworkLobbyManager: Start game called but this client is not the host");
+            //     return;
+            // }
 
             Debug.Log("NetworkLobbyManager: Host starting game, starting relay server...");
             StartRelayHost();

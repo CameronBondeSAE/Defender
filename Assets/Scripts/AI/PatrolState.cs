@@ -22,7 +22,8 @@ public class PatrolState : IAIState
             animController.SetAnimation(AIAnimationController.AnimationState.Walk);
         }
         ai.ResumeMoving();
-        ai.MoveTo(ai.patrolPoints[currentPoint].position);
+        if(ai.patrolPoints.Length > 0)
+	        ai.MoveTo(ai.patrolPoints[currentPoint].position);
     } 
 
     public void Stay()

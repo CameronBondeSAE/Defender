@@ -3,17 +3,14 @@ using UnityEngine;
 public class LaserEyes : MonoBehaviour
 {
     [Header("Setup")]
-    [SerializeField] private Transform leftEye;
-    [SerializeField] private Transform rightEye;
-    [SerializeField] private string alienTag = "Alien";
-    [SerializeField] private GameObject targetAlien;
-
-    [Header("Laser Settings")]
-    [SerializeField] private float maxLaserDistance = 30f;
-
+    public Transform leftEye;
+    public Transform rightEye;
+    public GameObject targetAlien; 
     private LineRenderer leftLR;
     private LineRenderer rightLR;
     private VisionSystem visionSystem;
+    
+    [SerializeField] private float targetHeightOffset = 1.5f;
 
     private void Awake()
     {
@@ -41,40 +38,37 @@ public class LaserEyes : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Vector3 target;
+        
         if (visionSystem == null)
         {
             DisableBeams();
             return;
         }
 
-        // Find closest alien through VisionSystem
-        GameObject targetAlien;
-        bool sawAlien = visionSystem.GetClosestVisibleObjectWithTag(alienTag, out targetAlien);
-
-        if (!sawAlien || targetAlien == null)
+        if (targetAlien != null)
         {
-            DisableBeams();
-            return;
+            target = targetAlien.transform.position + Vector3.up * targetHeightOffset;
+            if (visionSystem.CanSeeObject(targetAlien))
+            {
+                CastLaser(leftLR, leftEye.position, target);
+                CastLaser(rightLR, rightEye.position, target);
+            }
+            else
+            {
+                DisableBeams();
+            }
         }
-
-        Vector3 targetPos = targetAlien.transform.position;
-
-        // Draw both lasers toward the target
-        CastLaser(leftLR, leftEye.position, targetPos);
-        CastLaser(rightLR, rightEye.position, targetPos);
     }
 
-    private void CastLaser(LineRenderer lr, Vector3 origin, Vector3 targetPos)
+    public void CastLaser(LineRenderer lr, Vector3 origin, Vector3 targetPos)
     {
-        Vector3 dir = (targetPos - origin).normalized;
-        Vector3 endPoint = origin + dir * maxLaserDistance;
-
         lr.positionCount = 2;
         lr.SetPosition(0, origin);
-        lr.SetPosition(1, endPoint);
+        lr.SetPosition(1, targetPos);
     }
 
-    private void DisableBeams()
+    public void DisableBeams()
     {
         leftLR.positionCount = 0;
         rightLR.positionCount = 0;
