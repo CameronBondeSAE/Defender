@@ -1,7 +1,7 @@
 using UnityEngine;
 
-// attach the required components if neeeded automatically by uncommenting below line
-//[RequireComponent(typeof(AudioSource), typeof(AudioLowPassFilter))]
+// attach the required components if neeeded automatically if not assigned
+[RequireComponent(typeof(AudioSource), typeof(AudioLowPassFilter))]
 public class SoundOcclusion : MonoBehaviour
 {
     [Header("References")]
@@ -19,11 +19,11 @@ public class SoundOcclusion : MonoBehaviour
 
     private void Start()
     {
-        // find the player obj if needed, right now it 
-        listener = GameObject.Find("PlayerObject").transform;
+        // find the listener obj if needed, right now it 
+        listener = FindFirstObjectByType<AudioListener>().transform;
 
-        // set listner transform to main cam if player not found
-        if (listener == null) listener = Camera.main.transform;
+        // uh oh, no listener was found
+        if (listener == null) Debug.Log("No Audio Listener in the Scene" + Time.time);
 
         // get the required components
         source = GetComponent<AudioSource>();
