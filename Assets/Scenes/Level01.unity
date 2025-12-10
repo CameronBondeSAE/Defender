@@ -2328,6 +2328,7 @@ Transform:
   - {fileID: 20038840}
   - {fileID: 1093429007}
   - {fileID: 109294345}
+  - {fileID: 1539323111}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &599815988
@@ -6775,6 +6776,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2088950958369384708, guid: 3c5d8f7eb1764d544b451d35564b4992, type: 3}
   m_PrefabInstance: {fileID: 939119996}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1011198864 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1563980846029736457, guid: 3c5d8f7eb1764d544b451d35564b4992, type: 3}
+  m_PrefabInstance: {fileID: 939119996}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011198850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47669c901e940048a2fdea4f34489dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1029682492
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7803,6 +7815,17 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &1338606726 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1563980846029736457, guid: 3c5d8f7eb1764d544b451d35564b4992, type: 3}
+  m_PrefabInstance: {fileID: 1338606722}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338606724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47669c901e940048a2fdea4f34489dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1348549149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8503,6 +8526,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5085391778498778146, guid: e738b699983ba2c4590499f0c294bb9f, type: 3}
   m_PrefabInstance: {fileID: 1722634367}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1539323110
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1539323111}
+  m_Layer: 0
+  m_Name: playerspawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1539323111
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539323110}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.064940035, y: -2.4293003, z: -8.633}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 592818490}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1541232088 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2061808093753784860, guid: edd26c889f25c844891f58f2d4e63661, type: 3}
@@ -10356,6 +10410,10 @@ PrefabInstance:
       value: LevelInfo
       objectReference: {fileID: 0}
     - target: {fileID: 8453176734854182838, guid: ed2f9f76df9f0084e9b4728e7e2a8e3b, type: 3}
+      propertyPath: playerSpawnPoint
+      value: 
+      objectReference: {fileID: 1539323111}
+    - target: {fileID: 8453176734854182838, guid: ed2f9f76df9f0084e9b4728e7e2a8e3b, type: 3}
       propertyPath: crateSpawns.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -10375,6 +10433,18 @@ PrefabInstance:
       propertyPath: 'crateSpawns.Array.data[3]'
       value: 
       objectReference: {fileID: 8952799698237679441}
+    - target: {fileID: 8453176734854182838, guid: ed2f9f76df9f0084e9b4728e7e2a8e3b, type: 3}
+      propertyPath: mothershipBases.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8453176734854182838, guid: ed2f9f76df9f0084e9b4728e7e2a8e3b, type: 3}
+      propertyPath: 'mothershipBases.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1011198864}
+    - target: {fileID: 8453176734854182838, guid: ed2f9f76df9f0084e9b4728e7e2a8e3b, type: 3}
+      propertyPath: 'mothershipBases.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1338606726}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

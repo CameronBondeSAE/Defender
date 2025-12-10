@@ -121,18 +121,6 @@ namespace DanniLi
 			}
 			if (uiManager == null)
 				uiManager = FindObjectOfType<UIManager>();
-			if (levelInfo == null)
-				levelInfo = FindObjectOfType<LevelInfo>();
-
-			// Server only from now
-			if (!IsServer) return;
-			
-			// InitializeLevel();
-			//
-			// // order of fucking operation.
-			// // now start flow only after UI's NetObject is spawned (or timeout)
-			// if (startFlowCoroutine != null) StopCoroutine(startFlowCoroutine);
-			// startFlowCoroutine = StartCoroutine(StartFlowWhenUIReady());
 		}
 		
 		public override void OnNetworkDespawn()
@@ -181,6 +169,8 @@ namespace DanniLi
 		public void OnLevelLoaded()
 		{
 			if (!IsServer) return;
+			if (levelInfo == null)
+				levelInfo = FindObjectOfType<LevelInfo>();
 			InitializeLevel();
 			SpawnPlayersForNewLevel();
 			int requiredPercent = 50;
@@ -221,22 +211,43 @@ namespace DanniLi
 
 		private void InitializeLevel()
 		{
+			
 			//--------------------------------------------------LEVEL INFO-------------------------------------------------------------
+			if (levelLoader != null && levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
+			{
+				currentLevelIndex = Mathf.Clamp(currentLevelIndex, 0, levelLoader.levelOrder.Length - 1);
+				currentlevelInfoSo = levelLoader.levelOrder[currentLevelIndex];
+			}
+			else
+			{
+				currentlevelInfoSo = null;
+				Debug.LogWarning("GM: No LevelInfo_SO");
+			}
 			levelInfo = FindAnyObjectByType<LevelInfo>();
 			gameHasEnded = false;
 			if (levelInfo != null)
 			{
-				// Spawners
+				// ISpawners
 				spawners.Clear();
-				if (levelInfo.spawnerComponents != null)
+				if (levelInfo != null && levelInfo.mothershipBases != null && levelInfo.mothershipBases.Length > 0)
 				{
-					foreach (var comp in levelInfo.spawnerComponents)
+					mothershipBases = levelInfo.mothershipBases;
+
+					foreach (var ms in mothershipBases)
 					{
-						if (comp == null) continue;
-						if (comp is ISpawner spawner)
-						{
-							spawners.Add(spawner);
-						}
+						if (ms == null) continue;
+						spawners.Add(ms); 
+					}
+				}
+				else
+				{
+					mothershipBases = FindObjectsByType<MothershipBase>(
+						FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+
+					foreach (var ms in mothershipBases)
+					{
+						if (ms == null) continue;
+						spawners.Add(ms);
 					}
 				}
 
@@ -555,35 +566,39 @@ namespace DanniLi
 		// Add player to target group when they join
 		public void OnPlayerJoin(ulong playerID)
 		{
-			// if (IsServer)
-			// {
-			// 	if (playerID != NetworkManager.ServerClientId)
-			// 	{
-			// 		TrySpawnCrateForNewClient();
-			// 	}
-			// }
-			// if (NetworkManager.Singleton != null &&
-			//     NetworkManager.Singleton.ConnectedClients.TryGetValue(playerID, out NetworkClient client))
-			// {
-			// 	if (client.PlayerObject != null && client.PlayerObject.IsLocalPlayer)
-			// 	{
-			// 		AddItemToCameraTargetGroup(client.PlayerObject.transform);
-			// 	}
-			// }
-			if (NetworkManager.Singleton.ConnectedClients.TryGetValue(playerID, out NetworkClient client))
+			if (IsServer && NetworkManager != null)
 			{
-				var playerObj = client.PlayerObject;
-				if (playerObj != null && playerObj.IsLocalPlayer)
+				if (playerID != NetworkManager.ServerClientId) 
 				{
-					AddItemToCameraTargetGroup(playerObj.transform);
+					TrySpawnCrateForNewClient();
 				}
 			}
+			
+			StartCoroutine(WaitForLocalPlayerAndRegisterCamera(playerID));
+		}
+		
+		private IEnumerator WaitForLocalPlayerAndRegisterCamera(ulong playerID)
+		{
+			float timeout = 5f;
+			float elapsed = 0f;
 
-			if (IsServer)
+			while (elapsed < timeout && NetworkManager.Singleton != null)
 			{
-				if (playerID == NetworkManager.ServerClientId) return; // to fix the double spawn issue in build
-				TrySpawnCrateForNewClient();
+				if (NetworkManager.Singleton.ConnectedClients.TryGetValue(playerID, out NetworkClient client))
+				{
+					var playerObj = client.PlayerObject;
+					if (playerObj != null && playerObj.IsLocalPlayer)
+					{
+						AddItemToCameraTargetGroup(playerObj.transform);
+						yield break;
+					}
+				}
+
+				elapsed += Time.deltaTime;
+				yield return null;
 			}
+
+			Debug.LogWarning($"[GM] WaitForLocalPlayerAndRegisterCamera timed out for client {playerID}");
 		}
 		// Remove player from target group when they leave
 		public void OnPlayerLeave(ulong playerID)
@@ -604,9 +619,9 @@ namespace DanniLi
 			{
 				CinemachineTargetGroup.Target newTarget = new CinemachineTargetGroup.Target();
 				newTarget.Object = playerTransform;
-				newTarget.Weight = 1f; // Optional: Customize weight if needed
-				newTarget.Radius = 1f; // Optional: Customize radius if needed
-
+				newTarget.Weight = 1f; 
+				newTarget.Radius = 1f; 
+		
 				List<CinemachineTargetGroup.Target> targets = targetGroup.m_Targets.ToList();
 				targets.Add(newTarget);
 				targetGroup.m_Targets = targets.ToArray();
@@ -683,39 +698,86 @@ namespace DanniLi
 		#endregion
 		
 		#region Crates
-		 private void SpawnInitialCrateForHost() 
-    {
-        if (!IsServer || currentlevelInfoSo == null) return;
-        int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
-        int connectedClients = NetworkManager.Singleton.ConnectedClientsIds.Count;
-        int desired = Mathf.Min(maxCrates, connectedClients);
-        while (cratesSpawnedCount < desired)
-        {
-            TrySpawnCrateForNewClient();
-        }
-    }
-    // Spawns one crate at the next spawn point from LevelInfo,
-    // added functionality to spawn at random position if no spawnPos configured (also as an alternative :3)
-    private void TrySpawnCrateForNewClient() 
-    {
-	    if (!IsServer || currentlevelInfoSo == null) return;
+	private void SpawnInitialCrateForHost()
+	{
+	    if (!IsServer)
+	        return;
+
+	    if (currentlevelInfoSo == null)
+	    {
+	        Debug.LogWarning("currentlevelInfoSo is null");
+	        return;
+	    }
+
+	    if (currentlevelInfoSo.cratePrefab == null)
+	    {
+	        Debug.LogWarning("cratePrefab is null on LevelInfo_SO.");
+	        return;
+	    }
+	    
+	    cratesSpawnedCount   = 0;
+	    spawnedCrates.Clear();
+	    nextCrateSpawnIndex  = 0;
+
+	    int maxCrates        = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
+	    int connectedClients = NetworkManager.Singleton != null
+	        ? NetworkManager.Singleton.ConnectedClientsIds.Count
+	        : 1;
+
+	    // one crate per client (up to maxCrates)
+	    int desired = Mathf.Min(maxCrates, connectedClients);
+
+	    for (int i = 0; i < desired; i++)
+	    {
+	        TrySpawnCrateForNewClient();
+	    }
+	}
+
+	// if no spawn points exist, use random position
+	private void TrySpawnCrateForNewClient()
+	{
+	    if (!IsServer)
+	        return;
+
+	    if (currentlevelInfoSo == null)
+	        return;
+
+	    if (currentlevelInfoSo.cratePrefab == null)
+	        return;
 
 	    int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
-	    if (cratesSpawnedCount >= maxCrates) return;
-	    if (currentlevelInfoSo.cratePrefab == null) return;
+	    if (cratesSpawnedCount >= maxCrates)
+	        return;
+	    
 	    Transform spawnPos = null;
-	    if (crateSpawnpointsInScene != null &&
-	        nextCrateSpawnIndex < crateSpawnpointsInScene.Count)
+	    
+	    if (crateSpawnpointsInScene != null && crateSpawnpointsInScene.Count > 0)
 	    {
-		    spawnPos = crateSpawnpointsInScene[nextCrateSpawnIndex].transform;
+	        int index = nextCrateSpawnIndex % crateSpawnpointsInScene.Count;
+	        spawnPos  = crateSpawnpointsInScene[index].transform;
+	        nextCrateSpawnIndex++;
 	    }
-	    else if (levelInfo != null &&
-	             levelInfo.crateSpawns != null &&
-	             nextCrateSpawnIndex < levelInfo.crateSpawns.Count)
+	    else if (levelInfo != null && levelInfo.crateSpawns != null && levelInfo.crateSpawns.Count > 0)
 	    {
-		    spawnPos = levelInfo.crateSpawns[nextCrateSpawnIndex].transform;
+	        int index = nextCrateSpawnIndex % levelInfo.crateSpawns.Count;
+	        spawnPos  = levelInfo.crateSpawns[index].transform;
+	        nextCrateSpawnIndex++;
 	    }
-    }
+
+	    Vector3 position = spawnPos != null ? spawnPos.position : GetRandomSpawnPosition();
+	    Quaternion rotation = spawnPos != null ? spawnPos.rotation : Quaternion.identity;
+
+	    // actually spawn the crate
+	    GameObject crateInstance = Instantiate(currentlevelInfoSo.cratePrefab, position, rotation, levelContainer);
+	    NetworkObject crateNetObj = crateInstance.GetComponent<NetworkObject>();
+	    if (crateNetObj != null)
+	    {
+	        crateNetObj.Spawn();
+	        spawnedCrates.Add(crateNetObj);
+	    }
+
+	    cratesSpawnedCount++;
+	}
 		#endregion
 		
 		#region Eggs
