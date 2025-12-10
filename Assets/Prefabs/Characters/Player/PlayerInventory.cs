@@ -199,9 +199,10 @@ public class PlayerInventory : NetworkBehaviour
 				usableItem.Drop(dropPosition);
 			}
 			else
-			{
+			{	
 				// for cases if it's not using my UsableItemBase
 				CurrentItemInstance.transform.position = dropPosition;
+				currentItemInstance.transform.rotation = Quaternion.Euler(0f, 0f, itemHolder.transform.rotation.z); // does this fix the item rotation when placed on the ground
 				CurrentItemInstance.transform.SetParent(null, true);
 				Rigidbody rb = CurrentItemInstance.GetComponent<Rigidbody>();
 				if (rb != null)
