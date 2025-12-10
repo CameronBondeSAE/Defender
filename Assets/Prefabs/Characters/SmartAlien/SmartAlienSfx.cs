@@ -4,6 +4,8 @@ using UnityEngine;
 /// </summary>
 public class SmartAlienSfx : MonoBehaviour
 {
+    public smartAlienViewer alienView;
+    
     public AudioSource audioSource;
 
     [Header("Clips")]
@@ -31,21 +33,25 @@ public class SmartAlienSfx : MonoBehaviour
     public void PlayDestroyItem()
     {
         PlayClip(destroyItemClip);
+        alienView.DestoryAlienSfx_RPC();
     }
 
     public void PlayEscortStart()
     {
         PlayClip(escortStartClip);
+        alienView.escortStart_RPC();
     }
 
     public void PlayThreatDisabled()
     {
         PlayClip(threatDisabledClip);
+        alienView.playThreateDisabeld_RPC();
     }
 
     public void PlayCivsDroppedOff()
     {
         PlayClip(civsDroppedOffClip);
+        alienView.DroppedCiv_RPC();
     }
 }
 

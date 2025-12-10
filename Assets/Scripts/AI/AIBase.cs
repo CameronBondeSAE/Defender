@@ -185,6 +185,9 @@ public class AIBase : CharacterBase
 	{ 
 		if (rb.linearVelocity.magnitude < 0.5f)
 		{
+			float unstickUpForce = 50f;
+			rb.AddForce(0, unstickUpForce,0, ForceMode.Impulse);
+			
 			stuckTime += Time.fixedDeltaTime;
 			if (stuckTime > maxStuckTime)
 			{

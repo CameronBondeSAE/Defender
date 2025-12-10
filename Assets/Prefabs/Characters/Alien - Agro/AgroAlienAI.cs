@@ -35,7 +35,7 @@ public class AgroAlienAI : AIBase
         // Only scan for player while patrolling
         if (CurrentState == patrolState)
         {
-            if (ScanForPlayer()) // check for player in FoV
+            if (ScanForPlayerAndDamagables()) // check for player in FoV
             {
                 ChangeState(attackState); // switch to attack state if player found
             }
@@ -44,7 +44,7 @@ public class AgroAlienAI : AIBase
 
 // Scans the field of view using multiple rays
 // Returns true if player is detected
-    public bool ScanForPlayer()
+    public bool ScanForPlayerAndDamagables()
     {
         Vector3 origin = transform.position + Vector3.up * 1.1f; // position rays slightly above ground
         float halfAngle = fieldOfViewAngle / 2f;
