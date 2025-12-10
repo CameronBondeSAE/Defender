@@ -22,7 +22,8 @@ namespace AshleyPearson
        
        [Header("Level Loading")]
        [SerializeField] private LevelLoader levelLoader;
-       
+       [SerializeField] private NetworkLobbyManager networkLobbyManager;
+
        //Used to determine which UI to show after username entered
        private System.Action actionAfterUsernameEntered;
        public PlayerName playerNameScript;
@@ -93,6 +94,10 @@ namespace AshleyPearson
 
        public void OnButtonClick_HostStartedGame()
        {
+	       // CAM HACK: Is there where the host should start?
+	       networkLobbyManager.HostStartGame();
+	       
+	       
            // //This method doesn't check for host as only the host should have access to the button in the first place
            LobbyEvents.OnButtonClicked_HostStartedGame?.Invoke();
 

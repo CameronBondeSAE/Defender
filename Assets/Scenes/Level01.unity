@@ -7226,6 +7226,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 669734493146235214, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7264,6 +7268,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1547500983104446209, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2297896688699043524, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5084507992911832263, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
@@ -8809,6 +8817,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scenePrefabInstances:
+  - _gameObject: {fileID: 1190362696}
+    _prefab: Assets/Prefabs/Systems/Per Level managers.prefab
+  - _gameObject: {fileID: 1190362699}
+    _prefab: Assets/Prefabs/Systems/AIGrid.prefab
+  - _gameObject: {fileID: 1190362698}
+    _prefab: Assets/Prefabs/Systems/Dijkstra Pathfinder.prefab
+  - _gameObject: {fileID: 1190362697}
+    _prefab: Assets/Prefabs/Systems/Shroud.prefab
+  - _gameObject: {fileID: 1876669134204665379}
+    _prefab: Assets/Prefabs/Systems/LevelInfo.prefab
   - _gameObject: {fileID: 1320570303}
     _prefab: Assets/Prefabs/Waypoint.prefab
   - _gameObject: {fileID: 1507302142}
@@ -9023,16 +9041,6 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Level Items/Rotate90/Rotate90.prefab
   - _gameObject: {fileID: 1267555660}
     _prefab: Assets/Prefabs/Level Items/Rotate90/Rotate90.prefab
-  - _gameObject: {fileID: 1190362696}
-    _prefab: Assets/Prefabs/Systems/Per Level managers.prefab
-  - _gameObject: {fileID: 1190362699}
-    _prefab: Assets/Prefabs/Systems/AIGrid.prefab
-  - _gameObject: {fileID: 1190362698}
-    _prefab: Assets/Prefabs/Systems/Dijkstra Pathfinder.prefab
-  - _gameObject: {fileID: 1190362697}
-    _prefab: Assets/Prefabs/Systems/Shroud.prefab
-  - _gameObject: {fileID: 1876669134204665379}
-    _prefab: Assets/Prefabs/Systems/LevelInfo.prefab
 --- !u!4 &1664449590
 Transform:
   m_ObjectHideFlags: 11
@@ -10856,6 +10864,8 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1190362695}
+  - {fileID: 1876669134204665378}
   - {fileID: 1046223434}
   - {fileID: 1388702370}
   - {fileID: 1785136921}
@@ -10863,5 +10873,3 @@ SceneRoots:
   - {fileID: 926711421}
   - {fileID: 592818490}
   - {fileID: 1155253698}
-  - {fileID: 1190362695}
-  - {fileID: 1876669134204665378}
