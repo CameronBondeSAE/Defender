@@ -5013,6 +5013,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8701844137492453310}
+  - component: {fileID: 2217731132639180367}
   m_Layer: 0
   m_Name: View
   m_TagString: Untagged
@@ -5035,6 +5036,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8417401822769905259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2217731132639180367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5741306503994886399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 173d168b8813a7f4e8000ba081405094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7884173183720099326
 GameObject:
   m_ObjectHideFlags: 0
@@ -5194,7 +5207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2769254738
+  GlobalObjectIdHash: 338791148
   InScenePlacedSourceGlobalObjectIdHash: 1725666107
   DeferredDespawnTick: 0
   Ownership: 1
