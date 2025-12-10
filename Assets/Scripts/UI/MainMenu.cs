@@ -14,7 +14,6 @@ public class MainMenu : MonoBehaviour
     public GameObject startButton;
     public float bounceHeight = 10f;
     public float bounceDuration = 1f;
-    public string sceneToLoad = "current";
     
     [Header("Fake Loading")]
     public GameObject loadingUI;           
