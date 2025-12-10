@@ -6567,6 +6567,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5461689639259859851, guid: 2cf3cbe696638804fa9a5811b60aaa44, type: 3}
   m_PrefabInstance: {fileID: 943589387}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &949498027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 949498028}
+  m_Layer: 0
+  m_Name: playerSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &949498028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949498027}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &950635403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10348,6 +10379,10 @@ PrefabInstance:
       value: LevelInfo
       objectReference: {fileID: 0}
     - target: {fileID: 8453176734854182838, guid: ed2f9f76df9f0084e9b4728e7e2a8e3b, type: 3}
+      propertyPath: playerSpawnPoint
+      value: 
+      objectReference: {fileID: 949498028}
+    - target: {fileID: 8453176734854182838, guid: ed2f9f76df9f0084e9b4728e7e2a8e3b, type: 3}
       propertyPath: crateSpawns.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -10865,3 +10900,4 @@ SceneRoots:
   - {fileID: 1155253698}
   - {fileID: 1190362695}
   - {fileID: 1876669134204665378}
+  - {fileID: 949498028}

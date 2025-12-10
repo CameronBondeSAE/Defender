@@ -41,12 +41,13 @@ public class PatrolState : IAIState
         {
             // for rb: check if path is null
             // hasReachedDestination = (ai.path == null || ai.cornerIndex >= ai.path.corners.Length);
-            if (ai.path == null || ai.cornerIndex >= ai.path.corners.Length)
+            if (ai.patrolPoints == null || ai.patrolPoints.Length == 0)
             {
-                // Debug.Log($"[PatrolState] {ai.name} has reached waypoint {currentPoint}");
-                currentPoint = (currentPoint + 1) % ai.patrolPoints.Length;
-                ai.MoveTo(ai.patrolPoints[currentPoint].position);
+                return;
             }
+
+            currentPoint = (currentPoint + 1) % ai.patrolPoints.Length;
+            ai.MoveTo(ai.patrolPoints[currentPoint].position);
         }
         else
         {

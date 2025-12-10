@@ -13,6 +13,7 @@ public class AIBase : CharacterBase
 {
 	[Header("References")]
 	public NavMeshAgent agent; // Movement agent
+	public bool isPatrollingNpc = false;
 
 	private Health    health; //  health system
 	private Transform player; // Player reference (can be assigned later)

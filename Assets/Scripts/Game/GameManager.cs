@@ -34,8 +34,8 @@ namespace DanniLi
 		[Header("Camera Set-Up")]
 		public CinemachineTargetGroup targetGroup;
 		
-		[Header("Player")]
-		public GameObject playerPrefab;
+		[Header("Player Setup")]
+		[SerializeField] private GameObject playerPrefab;
 
 		[Header("References")]
 		private PlayerInventory playerInventory;
@@ -182,6 +182,7 @@ namespace DanniLi
 		{
 			if (!IsServer) return;
 			InitializeLevel();
+			SpawnPlayersForNewLevel();
 			int requiredPercent = 50;
 			if (levelInfo != null)
 			{
@@ -263,12 +264,6 @@ namespace DanniLi
 				}
 				eggHatchStartDelay = levelInfo.eggHatchStartDelay;
 				eggHatchInterval   = levelInfo.eggHatchInterval;
-				
-				// Player
-				if (playerPrefab != null)
-				{
-					Instantiate(playerPrefab, playerPrefab.transform.position, Quaternion.identity);
-				}
 			}
 		
 			//--------------------------------------------------CRATES & ITEMS-------------------------------------------------------------
@@ -434,6 +429,54 @@ namespace DanniLi
 
 		#endregion
 		
+		#region Player
+		private void SpawnPlayersForNewLevel()
+		{
+			if (!IsServer) return;
+			if (NetworkManager.Singleton == null) return;
+
+			if (playerPrefab == null)
+				return;
+			
+			
+			Transform spawnPoint = null;
+			if (levelInfo != null && levelInfo.playerSpawnPoint != null)
+			{
+				spawnPoint = levelInfo.playerSpawnPoint;
+			}
+
+			if (spawnPoint == null)
+				return;
+
+			foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
+			{
+				ulong clientId = kvp.Key;
+				NetworkClient client = kvp.Value;
+				NetworkObject existing = client.PlayerObject;
+				if (existing != null)
+				{
+					existing.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+					continue;
+				}
+				GameObject instance = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+				if (instance == null)
+				{
+					continue;
+				}
+
+				var netObj = instance.GetComponent<NetworkObject>();
+				if (netObj == null)
+				{
+					Destroy(instance);
+					continue;
+				}
+
+				netObj.SpawnAsPlayerObject(clientId, true);
+			}
+		}
+
+		#endregion
+		
 		#region Gameplay Flow
 		
 		private bool CheckMothershipsFinishedWaves()
@@ -512,20 +555,34 @@ namespace DanniLi
 		// Add player to target group when they join
 		public void OnPlayerJoin(ulong playerID)
 		{
-			// Debug.Log("Player joined called " + playerID);
+			// if (IsServer)
+			// {
+			// 	if (playerID != NetworkManager.ServerClientId)
+			// 	{
+			// 		TrySpawnCrateForNewClient();
+			// 	}
+			// }
+			// if (NetworkManager.Singleton != null &&
+			//     NetworkManager.Singleton.ConnectedClients.TryGetValue(playerID, out NetworkClient client))
+			// {
+			// 	if (client.PlayerObject != null && client.PlayerObject.IsLocalPlayer)
+			// 	{
+			// 		AddItemToCameraTargetGroup(client.PlayerObject.transform);
+			// 	}
+			// }
 			if (NetworkManager.Singleton.ConnectedClients.TryGetValue(playerID, out NetworkClient client))
 			{
-				// Debug.Log("Player joined: " + client.PlayerObject.name);
-				if (client.PlayerObject.IsLocalPlayer)
+				var playerObj = client.PlayerObject;
+				if (playerObj != null && playerObj.IsLocalPlayer)
 				{
-					AddItemToCameraTargetGroup(client.PlayerObject.transform);
+					AddItemToCameraTargetGroup(playerObj.transform);
 				}
 			}
-			
+
 			if (IsServer)
 			{
 				if (playerID == NetworkManager.ServerClientId) return; // to fix the double spawn issue in build
-				TrySpawnCrateForNewClient(); // forgive me for putting this in your camera code, just sharing this function
+				TrySpawnCrateForNewClient();
 			}
 		}
 		// Remove player from target group when they leave

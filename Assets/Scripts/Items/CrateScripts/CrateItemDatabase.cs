@@ -16,7 +16,6 @@ public class CrateItemDatabase : ScriptableObject
         {
             return null;
         }
-        
         int randomIndex = Random.Range(0, itemPrefabs.Count);
         return itemPrefabs[randomIndex];
     }

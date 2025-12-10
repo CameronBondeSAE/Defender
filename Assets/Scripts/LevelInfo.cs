@@ -13,6 +13,7 @@ namespace mothershipScripts
 		[Header("Spawners")]
 		[Tooltip("all spawner GOs in this level that implement ISpawner (motherships)")]
 		public List<ISpawner> spawnerComponents = new List<ISpawner>();
+		public Transform playerSpawnPoint;
 
 		[Header("Alien & Wave Settings")]
 		[Tooltip("motherships in this level.")]
