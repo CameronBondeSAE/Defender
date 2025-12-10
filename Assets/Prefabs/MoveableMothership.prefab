@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 4343889822502983965}
   - component: {fileID: 5037318845867164834}
   - component: {fileID: 6070059877535135143}
+  - component: {fileID: 7840105347493117888}
   - component: {fileID: 8620849587009008872}
   - component: {fileID: -2467341121392268905}
   - component: {fileID: -7425878580716934115}
@@ -299,6 +300,31 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &7840105347493117888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320570501020182109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1962655930
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &8620849587009008872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,11 +337,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db669188d550aab4ebff82804163ec32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   alienPrefab: {fileID: 9221107206343358144, guid: b082e6df53701df448358a796255e25b, type: 3}
   blueBeam: {fileID: 5310668164594011570}
   alienSpawnCountForEachWave: 1
-  spawnDelay: 1.5
   maxWaves: 1
+  spawnDelay: 1.5
+  spawnDelayBetweenWaves: 5
   currentWaveNumber: 0
   blueBeamDuration: 0.5
   isSpawningAliens: 0
@@ -323,6 +351,7 @@ MonoBehaviour:
   raycastPhysicsLayerMasks:
     serializedVersion: 2
     m_Bits: 4294967295
+  alienSpawnPosition: {x: 0, y: 0, z: 0}
   alienSpawnOffset: {x: 0, y: 1, z: 0}
   rotationSpeed: 50
   beamSounds:
@@ -335,6 +364,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8904d2c986f794949802efc1220915b9, type: 3}
   - {fileID: 8300000, guid: 364814694e2f2d2459fdd27488ec9e65, type: 3}
   - {fileID: 8300000, guid: f1cf8ee9c23e22d43b8f6a1d2b95bcd5, type: 3}
+  totalAlienSpawnCount: 0
   waypoints: []
   movement: {fileID: -7425878580716934115}
 --- !u!82 &-2467341121392268905

@@ -8,31 +8,43 @@ using AIAnimation;
 /// </summary>
 public class FollowState : IAIState
 {
-    private AIBase ai;    // originally CivilianAI, but this lets all AI use this state                     
-    private Transform target;                  
-    private AIAnimationController animController; 
+    private AIBase ai;
+    private Transform target;
+    private AIAnimationController animController;
+    [SerializeField] private CivilianSoundController civilianSoundController;
 
     public FollowState(AIBase ai, Transform target)
     {
         this.ai = ai;
         this.target = target;
     }
+
     public void Enter()
     {
-        animController = ai.agent.gameObject.GetComponent<AIAnimationController>();
+        ai.SetAbducted(true);
+        
+        if (civilianSoundController == null)
+        {
+            civilianSoundController = ai.gameObject.GetComponent<CivilianSoundController>();
+        }
+        civilianSoundController.PlayAbductedScream();
+        
+        if (ai.escortingAlien == null && target != null && target.TryGetComponent<AlienAI>(out var escortingAlien))
+            ai.escortingAlien = escortingAlien;
+
+        if (ai != null) animController = ai.gameObject.GetComponent<AIAnimationController>();
         ai.ResumeMoving();
     }
+
     public void Stay()
     {
         animController.SetAnimation(AIAnimationController.AnimationState.Walk);
 
-        // If target exists and is further than follow distance, move towards target
         if (target != null && Vector3.Distance(ai.transform.position, target.position) > ai.followDistance)
         {
             ai.MoveTo(target.position);
         }
 
-        // If target is null (died for example), switch back to idle state
         if (target == null)
         {
             ai.ChangeState(new IdleState(ai));
@@ -42,8 +54,10 @@ public class FollowState : IAIState
     public void Exit()
     {
         ai.ResumeMoving();
+        ai.SetAbducted(false); // unmark as abducted
+        ai.escortingAlien = null; // clear leader
     }
-
+    
     // Didn't put into use, but this coroutine stuns the Civ for 5 seconds before resuming movement
     private IEnumerator StunnedDelay()
     { 

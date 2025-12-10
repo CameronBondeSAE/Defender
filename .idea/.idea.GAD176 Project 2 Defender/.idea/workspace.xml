@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ede24b97-680b-4656-9d08-e37e2b5e823f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GAD176 Project 2 Defender/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GAD176 Project 2 Defender/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Current.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Current.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerCombat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerCombat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DefaultNetworkPrefabs.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Team members work space/NicholasTesting/Scripts/Generator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Team members work space/NicholasTesting/Scripts/Generator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,7 +19,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AI/MoveToBeamState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/CameraZoom.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Items/CountdownUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Items/DanniItems/SnackHealth.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Items/DanniItems/ThrowableRock.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../RapidPrototype2/Library/PackageCache/com.unity.render-pipelines.core@1278e45323dd/Runtime/Debugging/Prefabs/Scripts/DebugUIHandlerButton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -28,21 +34,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;danni/mydevelop&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "shellnetworking",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Standalone Player" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$PROJECT_DIR$/../TouchedByAnAlien\Defender.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\User\Desktop\Defender" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.33f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.13f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\Users\User\Desktop\GAD176 Project 2 Defender&quot; -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\User\Desktop\GAD176 Project 2 Defender" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -50,7 +65,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.33f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.13f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\Users\User\Desktop\GAD176 Project 2 Defender&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\User\Desktop\GAD176 Project 2 Defender" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -98,6 +113,31 @@
       <workItem from="1746403330763" duration="115000" />
       <workItem from="1752897361236" duration="5531000" />
       <workItem from="1752970639073" duration="11204000" />
+      <workItem from="1754288304525" duration="16053000" />
+      <workItem from="1754371813239" duration="1615000" />
+      <workItem from="1754383054481" duration="559000" />
+      <workItem from="1754383994863" duration="239000" />
+      <workItem from="1754394042772" duration="3636000" />
+      <workItem from="1754533276119" duration="6113000" />
+      <workItem from="1754540555033" duration="210000" />
+      <workItem from="1754636195087" duration="7301000" />
+      <workItem from="1754701413090" duration="17648000" />
+      <workItem from="1754790951796" duration="2365000" />
+      <workItem from="1754916188830" duration="10405000" />
+      <workItem from="1754954501293" duration="11163000" />
+      <workItem from="1754997909504" duration="164000" />
+      <workItem from="1755569562879" duration="4010000" />
+      <workItem from="1755580103416" duration="21452000" />
+      <workItem from="1755657592509" duration="1282000" />
+      <workItem from="1755658907074" duration="6479000" />
+      <workItem from="1755674978631" duration="9174000" />
+      <workItem from="1755691182731" duration="90000" />
+      <workItem from="1755692625886" duration="12000" />
+      <workItem from="1755697160196" duration="2835000" />
+      <workItem from="1755700200126" duration="3053000" />
+      <workItem from="1755735665342" duration="12227000" />
+      <workItem from="1755749098179" duration="1343000" />
+      <workItem from="1755960729695" duration="133000" />
     </task>
     <servers />
   </component>
@@ -111,6 +151,17 @@
     <option name="unityProjectFolder" value="true" />
   </component>
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="GitHub.CommitStatus" />
+      </list>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

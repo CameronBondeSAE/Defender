@@ -19,7 +19,9 @@ public class MainMenu : MonoBehaviour
     [Header("Fake Loading")]
     public GameObject loadingUI;           
     public Slider loadingSlider;          
-    public float fakeLoadingDuration = 3f;
+    public float fakeLoadingDuration = 1.5f;
+
+    public GameObject menuUI;
 
     private void Start()
     {
@@ -30,7 +32,10 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator AnimateWordsSequentially()
     {
-        for (int i = 0; i < wordObjects.Length; i++)
+	    // CAM: I moved this to before the sequence starts, instead of waiting, for quicker testing basically
+	    ActivateStartButton();
+
+	    for (int i = 0; i < wordObjects.Length; i++)
         {
             RectTransform word = wordObjects[i];
             Transform target = wordTargets[i];
@@ -41,7 +46,6 @@ public class MainMenu : MonoBehaviour
             yield return tween.WaitForCompletion();
         }
 
-        ActivateStartButton();
     }
 
     private void ActivateStartButton()
@@ -55,7 +59,11 @@ public class MainMenu : MonoBehaviour
     }
     public void StartGame()
     {
-        SceneManager.LoadScene(sceneToLoad);
+	    menuUI.SetActive(false);
+	    
+	    // HACK: Cam put this in
+        SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneToLoad));
     }
     
     public void OnStartButtonPressed()
