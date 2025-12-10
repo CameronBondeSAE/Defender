@@ -11,7 +11,7 @@ public class FollowState : IAIState
     private AIBase ai;
     private Transform target;
     private AIAnimationController animController;
-    [SerializeField] private CivilianSoundController civilianSoundController;
+    [SerializeField] private NetworkedSoundController _networkedSoundController;
 
     public FollowState(AIBase ai, Transform target)
     {
@@ -23,11 +23,11 @@ public class FollowState : IAIState
     {
         ai.SetAbducted(true);
         
-        if (civilianSoundController == null)
+        if (_networkedSoundController == null)
         {
-            civilianSoundController = ai.gameObject.GetComponent<CivilianSoundController>();
+            _networkedSoundController = ai.gameObject.GetComponent<NetworkedSoundController>();
         }
-        civilianSoundController.PlayAbductedScream();
+        _networkedSoundController.PlayAudioClip();
         
         if (ai.escortingAlien == null && target != null && target.TryGetComponent<AlienAI>(out var escortingAlien))
             ai.escortingAlien = escortingAlien;

@@ -48,11 +48,6 @@ public class VisionSystem : MonoBehaviour
         {
             GameObject obj = pair.Key;
 
-            if (obj.isStatic)
-            {
-                continue;
-            }
-
             if (Time.time - pair.Value > memoryDuration)
             {
                 toRemove.Add(obj);

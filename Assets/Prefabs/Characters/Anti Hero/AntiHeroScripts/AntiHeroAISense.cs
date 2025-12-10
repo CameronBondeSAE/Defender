@@ -1,5 +1,6 @@
 using Anthill.AI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum AntiHeroAIScenario
 {
@@ -9,7 +10,7 @@ public enum AntiHeroAIScenario
 public class AntiHeroAISense : MonoBehaviour, ISense
 {
     [SerializeField] private VisionSystem visionSystem;
-    [SerializeField] private GameObject targetAlien;
+    public GameObject latestSeenAlien;
     private void Awake()
     {
         visionSystem = GetComponent<VisionSystem>();
@@ -22,7 +23,7 @@ public class AntiHeroAISense : MonoBehaviour, ISense
 
     private bool IsSeeAlien()
     {
-         return visionSystem.GetClosestVisibleObjectWithTag("Alien", out targetAlien);
+         return visionSystem.GetClosestVisibleObjectWithTag("Alien", out latestSeenAlien);
     }
 
     private bool IsAlienKilled()
