@@ -7176,7 +7176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1646717810702857394, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.82
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 1646717810702857394, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7196,7 +7196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2297896688699043524, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5084507992911832263, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
       propertyPath: m_Name
@@ -7209,6 +7209,30 @@ PrefabInstance:
     - target: {fileID: 6229882113527044669, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
       propertyPath: checkDistance.x
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229882113527044669, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: checkDistance.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229882113527044669, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: showVisualisations
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229882113527044669, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: showVisualisationAir
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229882113527044669, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: showVisualisationStairs
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229882113527044669, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: showVisualisationWalkable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6229882113527044669, guid: 33f1c5f9e47ef8449bf50ff1527fb174, type: 3}
+      propertyPath: showVisualisationUnwalkable
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
