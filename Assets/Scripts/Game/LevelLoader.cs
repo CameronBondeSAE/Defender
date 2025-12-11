@@ -124,55 +124,83 @@ public class LevelLoader : NetworkBehaviour
    {
       LevelInfo_SO[] levels = GetLevels();
       if (levels == null || levels.Length == 0)
-      {
-         Debug.LogWarning("No levels configured.");
          return;
-      }
+
       int currentIndex = (gameManager != null) ? gameManager.currentLevelIndex : 0;
       int nextIndex = currentIndex + 1;
-      Debug.Log($"DoLoadNext: current={currentIndex}, next={nextIndex}, levels={levels?.Length}");
-      // check for completion and go to main menu
-      if (nextIndex >= levels.Length) 
+      if (nextIndex >= levels.Length)
       {
-         // when the whole game finishes, could go to credits or main menu
-         Debug.Log("All levels completed!");
+         Debug.Log("All levels completed");
          LoadMainMenuRpc();
          return;
       }
-
       var next = levels[nextIndex];
       if (next == null || string.IsNullOrEmpty(next.sceneName))
       {
          Debug.LogError("LevelInfo is missing or sceneName is empty.");
          return;
       }
-      if (gameManager != null) gameManager.currentLevelIndex = nextIndex;
-      
-      // hide UI screens before loading
+
+      if (gameManager != null)
+         gameManager.currentLevelIndex = nextIndex;
       if (uiManager != null)
          uiManager.HideAllScreensRpc();
-      
-      // unload all level scenes save the manager scene
-      UnloadAllLevelScenes();
-        
-      // load next level additively & mark to set active scene when done
       pendingSetActiveSceneName = next.sceneName;
+      Debug.Log($"Loading next level scene '{next.sceneName}' additively");
       NetworkManager.SceneManager.LoadScene(next.sceneName, LoadSceneMode.Additive);
-     
-      // // unload current additive
-      // if (!string.IsNullOrEmpty(currentAdditiveSceneName))
+      
+      // LevelInfo_SO[] levels = GetLevels();
+      // if (levels == null || levels.Length == 0)
       // {
-      //    var toUnload = SceneManager.GetSceneByName(currentAdditiveSceneName);
-      //    if(toUnload.IsValid() && toUnload.isLoaded)
-      //    {
-      //       NetworkManager.SceneManager.UnloadScene(toUnload);
-      //    }
+      //    Debug.LogWarning("No levels configured.");
+      //    return;
+      // }
+      // int currentIndex = (gameManager != null) ? gameManager.currentLevelIndex : 0;
+      // int nextIndex = currentIndex + 1;
+      // Debug.Log($"DoLoadNext: current={currentIndex}, next={nextIndex}, levels={levels?.Length}");
+      // // check for completion and go to main menu
+      // if (nextIndex >= levels.Length) 
+      // {
+      //    // when the whole game finishes, could go to credits or main menu
+      //    Debug.Log("All levels completed!");
+      //    LoadMainMenuRpc();
+      //    return;
       // }
       //
+      // var next = levels[nextIndex];
+      // Debug.Log($"[LevelLoader] next.sceneName = {next.sceneName}");
+      // if (next == null || string.IsNullOrEmpty(next.sceneName))
+      // {
+      //    Debug.LogError("LevelInfo is missing or sceneName is empty.");
+      //    return;
+      // }
+      // if (gameManager != null) gameManager.currentLevelIndex = nextIndex;
+      //
+      // // hide UI screens before loading
+      // if (uiManager != null)
+      //    uiManager.HideAllScreensRpc();
+      //
+      // // unload all level scenes save the manager scene
+      // UnloadAllLevelScenes();
+      //   
       // // load next level additively & mark to set active scene when done
       // pendingSetActiveSceneName = next.sceneName;
       // NetworkManager.SceneManager.LoadScene(next.sceneName, LoadSceneMode.Additive);
-      // // don't set active here, wait fot event (below)
+      //
+      // // // unload current additive
+      // // if (!string.IsNullOrEmpty(currentAdditiveSceneName))
+      // // {
+      // //    var toUnload = SceneManager.GetSceneByName(currentAdditiveSceneName);
+      // //    if(toUnload.IsValid() && toUnload.isLoaded)
+      // //    {
+      // //       NetworkManager.SceneManager.UnloadScene(toUnload);
+      // //    }
+      // // }
+      // //
+      // // // load next level additively & mark to set active scene when done
+      // // pendingSetActiveSceneName = next.sceneName;
+      // // NetworkManager.SceneManager.LoadScene(next.sceneName, LoadSceneMode.Additive);
+      // // // don't set active here, wait fot event (below)
    }
    private void DoLoadFirst()
    {
