@@ -1921,9 +1921,21 @@ PrefabInstance:
       propertyPath: field of view
       value: 35.67532
       objectReference: {fileID: 0}
+    - target: {fileID: 1315557630997633878, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadNextLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1675461332228786245, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2331930386131601299, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 800051824
+      objectReference: {fileID: 0}
+    - target: {fileID: 2581725381148977199, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 236.67
       objectReference: {fileID: 0}
     - target: {fileID: 2869976773265373781, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -2040,7 +2052,11 @@ PrefabInstance:
     - target: {fileID: 6987871113563512461, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
       propertyPath: 'levelOrder.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: a144af696ef241241bae4fda6a190546, type: 2}
+      objectReference: {fileID: 11400000, guid: 5d1b16645c958854bbca0107b7c47a5c, type: 2}
+    - target: {fileID: 6987871113563512461, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
+      propertyPath: 'levelOrder.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 20c9ad02ee961304ab9fe0c48679df70, type: 2}
     - target: {fileID: 8252729606240833830, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
       propertyPath: m_Name
       value: Setup

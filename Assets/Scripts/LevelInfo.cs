@@ -9,10 +9,7 @@ namespace mothershipScripts
 		[Range(0, 100)]
 		[Tooltip("percentage of civilians that must be alive at the end of the level to win")]
 		public int percentCiviliansAliveToWin = 50;
-
-		[Header("Spawners")]
-		[Tooltip("all spawner GOs in this level that implement ISpawner (motherships)")]
-		public List<ISpawner> spawnerComponents = new List<ISpawner>();
+		public Transform playerSpawnPoint;
 
 		[Header("Alien & Wave Settings")]
 		[Tooltip("motherships in this level.")]

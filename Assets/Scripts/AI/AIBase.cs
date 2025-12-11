@@ -13,6 +13,7 @@ public class AIBase : CharacterBase
 {
 	[Header("References")]
 	public NavMeshAgent agent; // Movement agent
+	public bool isPatrollingNpc = false;
 
 	private Health    health; //  health system
 	private Transform player; // Player reference (can be assigned later)
@@ -114,8 +115,11 @@ public class AIBase : CharacterBase
 			agent.enabled = false;
 			path = new NavMeshPath();
 		}
-
-		patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(patrolPointsCount);
+		if (isPatrollingNpc)
+		{
+			SetupLevelPatrolPoints();
+		}
+		// patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(patrolPointsCount);
 		// Subscribe to health events
 		health.OnHealthChanged += HandleHit;
 		health.OnDeath         += HandleDeath;
@@ -389,6 +393,33 @@ public class AIBase : CharacterBase
 	public void ClearPreviousState() // ok this is added for when we DONT want to return to previous state
 	{
 		previousState = null;
+	}
+	
+	private void SetupLevelPatrolPoints()
+	{
+		GameObject root = GameObject.Find("PatrolPoints"); // expo day hack xD but WORKS
+		if (root == null)
+			return;
+		Transform rootTransform = root.transform;
+		int childCount = rootTransform.childCount;
+
+		if (childCount == 0)
+			return;
+		// count matches children
+		patrolPointsCount = childCount;
+		patrolPoints = new Transform[childCount];
+		for (int i = 0; i < childCount; i++)
+		{
+			patrolPoints[i] = rootTransform.GetChild(i);
+		}
+		// randomised order
+		for (int i = 0; i < patrolPoints.Length - 1; i++)
+		{
+			int randomIndex = UnityEngine.Random.Range(i, patrolPoints.Length);
+			Transform temp = patrolPoints[i];
+			patrolPoints[i] = patrolPoints[randomIndex];
+			patrolPoints[randomIndex] = temp;
+		}
 	}
 
 	private void OnDrawGizmos()

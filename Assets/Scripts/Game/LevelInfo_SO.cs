@@ -9,10 +9,6 @@ namespace DanniLi
 	{
 		[Header("Scene")] 
 		public string sceneName;
-		[Header("Level Items")]
-		[SerializeField]
-		public List<ItemSO> availableItems = new List<ItemSO>();
-		public Object scene;
 		[Header("Crate Objects")]
 		[SerializeField] public GameObject cratePrefab;
 		[SerializeField] public int crateSpawnCount = 5;
