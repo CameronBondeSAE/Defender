@@ -21,7 +21,7 @@ public class AttackStateScript : AntAIState
     public override void Enter()
     {
         laserEyes.enabled = true;
-        laserEyes.targetAlien = antiHeroAISense.latestSeenAlien;
+        laserEyes.targetToDestroy = antiHeroAISense.targetObjectToDestroy;
         animator.Play("Attack");
         if (_soundController != null && !_attackSoundPlayed)
         {
@@ -32,11 +32,11 @@ public class AttackStateScript : AntAIState
 
     public override void Execute(float aDeltaTime, float aTimeScale)
     {
-        if (laserEyes.targetAlien != null)
+        if (laserEyes.targetToDestroy != null)
         {
-            laserEyes.targetAlien.GetComponent<Health>().TakeDamage(1);
+            laserEyes.targetToDestroy.GetComponent<Health>().TakeDamage(1);
 
-            if (laserEyes.targetAlien.GetComponent<Health>().isDead)
+            if (laserEyes.targetToDestroy.GetComponent<Health>().isDead)
             {
                 laserEyes.DisableBeams();
                 
@@ -51,7 +51,7 @@ public class AttackStateScript : AntAIState
 
     public override void Exit()
     {
-        laserEyes.targetAlien = null;
+        laserEyes.targetToDestroy = null;
         laserEyes.DisableBeams();
         laserEyes.enabled = false;
 

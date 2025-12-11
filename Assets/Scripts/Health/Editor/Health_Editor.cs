@@ -13,7 +13,12 @@ namespace mothershipScripts.Health.Editor
 			if (GUILayout.Button("Take Damage"))
 			{
 				global::Health health = target as global::Health;
-				health.TakeDamage(10);
+				health.TakeDamage(5);
+			}
+			if (GUILayout.Button("Take Damage Server RPC"))
+			{
+				global::Health health = target as global::Health;
+				health.TakeDamage_ServerRpc(5);
 			}
 			if (GUILayout.Button("Kill"))
 			{

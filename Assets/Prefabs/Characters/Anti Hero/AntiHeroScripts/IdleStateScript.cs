@@ -20,8 +20,8 @@ public class IdleStateScript : AntAIState
 
     public override void Execute(float aDeltaTime, float aTimeScale)
     {
-        GameObject targetAlien;
-        bool sawAlien = visionSystem.GetClosestVisibleObjectWithTag("Alien", out targetAlien);
+        GameObject targetObj;
+        bool sawAlien = visionSystem.GetClosestVisibleObjectWithTag("Alien", out targetObj);
 
         if (sawAlien == true)
         {

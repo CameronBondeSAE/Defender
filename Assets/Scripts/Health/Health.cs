@@ -54,4 +54,12 @@ public class Health : NetworkBehaviour
       isDead = true;
       OnDeath?.Invoke();
    }
+   
+   
+   // WILAYAT: need to add this method so that clients can request server to apply damage to anything that has health component
+   [Rpc(SendTo.Server, RequireOwnership = false, Delivery = RpcDelivery.Reliable)]
+   public void TakeDamage_ServerRpc(float amount)
+   {
+      TakeDamage(amount);
+   }
 }
