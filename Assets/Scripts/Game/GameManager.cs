@@ -70,10 +70,8 @@ namespace DanniLi
 		private Coroutine startFlowCoroutine;
 		
 		[Header("Crates")]
-		[SerializeField] private List<CrateSpawn> crateSpawnpointsInScene = new List<CrateSpawn>();
-		private List<NetworkObject> spawnedCrates = new(); 
-		private int cratesSpawnedCount = 0;                         
-		private int nextCrateSpawnIndex = 0; 
+		private readonly List<NetworkObject> spawnedCrates = new(); // all crates spawned in this level
+		private int cratesSpawnedCount = 0; // crates that's been spawned in THIS level
 		
 		[Header("Alien Eggs")]
 		[SerializeField] private List<Transform> eggSpawnPos = new List<Transform>();
@@ -256,14 +254,12 @@ namespace DanniLi
 				enemyMult  = levelInfo.enemyMult;
 				waveMult   = levelInfo.waveMult;
 
-				// Crates
-				if (levelInfo.crateSpawns != null && levelInfo.crateSpawns.Count > 0)
-				{
-					crateSpawnpointsInScene = new List<CrateSpawn>(levelInfo.crateSpawns);
-				}
-				cratesSpawnedCount  = 0;
-				nextCrateSpawnIndex = 0;
-				spawnedCrates.Clear();
+				// // Crates
+				// if (levelInfo.crateSpawns != null && levelInfo.crateSpawns.Count > 0)
+				// {
+				// 	crateSpawnpointsInScene = new List<CrateSpawn>(levelInfo.crateSpawns);
+				// }
+				
 				// Motherships
 				if (levelInfo.mothershipBases != null && levelInfo.mothershipBases.Length > 0)
 				{
@@ -280,17 +276,19 @@ namespace DanniLi
 			}
 		
 			//--------------------------------------------------CRATES & ITEMS-------------------------------------------------------------
-			crateSpawnpointsInScene = FindObjectsByType<CrateSpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
+			cratesSpawnedCount = 0;
+			spawnedCrates.Clear();
+
 			Crate[] crates = FindObjectsByType<Crate>(FindObjectsSortMode.None);
-			// if (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
-			// 	foreach (Crate crate in crates)
-			// 	{
-			// 		LevelInfo_SO levelSO                         = levelLoader.levelOrder[currentLevelIndex];
-			// 		if (levelSO != null) crate.availableItems = levelSO.availableItems;
-			// 	}
-			// else
-			// {
-			// }
+			if (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
+			{
+				foreach (Crate crate in crates)
+				{
+					LevelInfo_SO levelSO = levelLoader.levelOrder[currentLevelIndex];
+					// if (levelSO != null)
+					// 	crate.availableItems = levelSO.availableItems;
+				}
+			}
 			//--------------------------------------------------MOTHERSHIP & ALIENS-------------------------------------------------------------
 			mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 			// aliensIncomingFromAllShips = 0;
@@ -690,90 +688,78 @@ namespace DanniLi
 
 		private Vector3 GetRandomSpawnPosition()
 		{
-			return new Vector3(Random.Range(-50, 50), -0.5f, Random.Range(-50, 50)); // adjust these based on level size
+			return new Vector3(Random.Range(-50, 50), -0.5f, Random.Range(-50, 50)); 
 		}
 		#endregion
 		
 		#region Crates
-	private void SpawnInitialCrateForHost()
-	{
-	    if (!IsServer)
-	        return;
+		private void SpawnInitialCrateForHost()
+		{
+			if (!IsServer || currentlevelInfoSo == null) return;
+			if (levelInfo == null)
+			{
+				levelInfo = FindAnyObjectByType<LevelInfo>();
+			}
 
-	    if (currentlevelInfoSo == null)
-	    {
-	        Debug.LogWarning("currentlevelInfoSo is null");
-	        return;
-	    }
+			int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
 
-	    if (currentlevelInfoSo.cratePrefab == null)
-	    {
-	        Debug.LogWarning("cratePrefab is null on LevelInfo_SO.");
-	        return;
-	    }
-	    
-	    cratesSpawnedCount   = 0;
-	    spawnedCrates.Clear();
-	    nextCrateSpawnIndex  = 0;
+			int connectedClients = NetworkManager.Singleton != null
+				? NetworkManager.Singleton.ConnectedClientsIds.Count
+				: 1;
+			int desiredTotal = Mathf.Min(maxCrates, connectedClients);
 
-	    int maxCrates        = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
-	    int connectedClients = NetworkManager.Singleton != null
-	        ? NetworkManager.Singleton.ConnectedClientsIds.Count
-	        : 1;
+			// only spawn missing crates
+			int toSpawnNow = desiredTotal - cratesSpawnedCount;
+			if (toSpawnNow <= 0) return;
 
-	    // one crate per client (up to maxCrates)
-	    int desired = Mathf.Min(maxCrates, connectedClients);
-
-	    for (int i = 0; i < desired; i++)
-	    {
-	        TrySpawnCrateForNewClient();
-	    }
-	}
-
-	// if no spawn points exist, use random position
+			for (int i = 0; i < toSpawnNow; i++)
+			{
+				TrySpawnCrateForNewClient();
+			}
+		}
+		
 	private void TrySpawnCrateForNewClient()
 	{
-	    if (!IsServer)
-	        return;
+		if (!IsServer || currentlevelInfoSo == null) return;
 
-	    if (currentlevelInfoSo == null)
-	        return;
+		if (levelInfo == null)
+		{
+			levelInfo = FindAnyObjectByType<LevelInfo>();
+		}
 
-	    if (currentlevelInfoSo.cratePrefab == null)
-	        return;
+		int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
+		if (cratesSpawnedCount >= maxCrates) return;
 
-	    int maxCrates = Mathf.Max(0, currentlevelInfoSo.crateSpawnCount);
-	    if (cratesSpawnedCount >= maxCrates)
-	        return;
-	    
-	    Transform spawnPos = null;
-	    
-	    if (crateSpawnpointsInScene != null && crateSpawnpointsInScene.Count > 0)
-	    {
-	        int index = nextCrateSpawnIndex % crateSpawnpointsInScene.Count;
-	        spawnPos  = crateSpawnpointsInScene[index].transform;
-	        nextCrateSpawnIndex++;
-	    }
-	    else if (levelInfo != null && levelInfo.crateSpawns != null && levelInfo.crateSpawns.Count > 0)
-	    {
-	        int index = nextCrateSpawnIndex % levelInfo.crateSpawns.Count;
-	        spawnPos  = levelInfo.crateSpawns[index].transform;
-	        nextCrateSpawnIndex++;
-	    }
+		if (currentlevelInfoSo.cratePrefab == null) return;
 
-	    Vector3 position = spawnPos != null ? spawnPos.position : GetRandomSpawnPosition();
-	    Quaternion rotation = spawnPos != null ? spawnPos.rotation : Quaternion.identity;
+		Transform spawnPos = null;
+		if (levelInfo != null &&
+		    levelInfo.crateSpawns != null &&
+		    levelInfo.crateSpawns.Count > 0)
+		{
+			int index = Mathf.Min(cratesSpawnedCount, levelInfo.crateSpawns.Count - 1);
 
-	    // actually spawn the crate
-	    GameObject crateInstance = Instantiate(currentlevelInfoSo.cratePrefab, position, rotation, levelContainer);
-	    NetworkObject crateNetObj = crateInstance.GetComponent<NetworkObject>();
-	    if (crateNetObj != null)
-	    {
-	        crateNetObj.Spawn();
-	        spawnedCrates.Add(crateNetObj);
-	    }
+			CrateSpawn spawnComponent = levelInfo.crateSpawns[index];
+			if (spawnComponent != null)
+			{
+				spawnPos = spawnComponent.transform;
+			}
+		}
 
-	    cratesSpawnedCount++;
+		Vector3 position = spawnPos != null ? spawnPos.position : GetRandomSpawnPosition();
+		Quaternion rotation = spawnPos != null ? spawnPos.rotation : Quaternion.identity;
+
+		GameObject crateGO = Instantiate(currentlevelInfoSo.cratePrefab, position, rotation, levelContainer);
+		NetworkObject netObj = crateGO.GetComponent<NetworkObject>();
+		if (netObj == null)
+		{
+			Destroy(crateGO);
+			return;
+		}
+
+		netObj.Spawn();
+		spawnedCrates.Add(netObj);
+		cratesSpawnedCount++;
 	}
 		#endregion
 		
