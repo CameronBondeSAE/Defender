@@ -17,10 +17,12 @@ public class Health : NetworkBehaviour
    [Header("Health related animation Params")] 
    public float deathAnimDuration;
    //public float hitAnimDuration;
-   
-   protected virtual void Awake()
+
+   protected override void OnNetworkPostSpawn()
    {
-      currentHealth.Value = maxHealth;
+	   base.OnNetworkPostSpawn();
+
+	   currentHealth.Value = maxHealth;
    }
 
    public virtual void TakeDamage(float amount)

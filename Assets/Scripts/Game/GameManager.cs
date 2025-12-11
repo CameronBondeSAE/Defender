@@ -135,7 +135,8 @@ namespace DanniLi
 				if (mothershipBases != null)
 				{
 					foreach (var mothershipBase in mothershipBases)
-						mothershipBase.AlienSpawned_Event -= MothershipBaseOnAlienSpawned_Event;
+						if (mothershipBase != null)
+							mothershipBase.AlienSpawned_Event -= MothershipBaseOnAlienSpawned_Event;
 				}
 
 				if (civilians != null)

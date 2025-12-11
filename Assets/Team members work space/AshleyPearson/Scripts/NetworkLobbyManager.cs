@@ -29,7 +29,7 @@ namespace AshleyPearson
             StartRelayHost();
         }
 
-        private async Task StartRelayHost()
+        public async Task StartRelayHost()
         {
             string joinCode = await relayManager.StartHostWithReservedRelay("udp");
 

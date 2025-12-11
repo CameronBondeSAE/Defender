@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CameronBonde;
 using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -20,6 +21,8 @@ public class RelayManager : MonoBehaviour
 
 	public string reservedRelayJoinCode;
 	public Allocation reservedRelayAllocation;
+	
+	public LobbyManager lobbyManager;
 	
 	public void ActivateButtons()
 	{
@@ -70,44 +73,53 @@ public class RelayManager : MonoBehaviour
 	// This is just a middleman for UI buttons/events etc
 	public void InitialiseHostWithRelay()
 	{
-		StartHostWithRelay(4, "udp");
+		// StartHostWithRelay(4, "udp");
 	}
 
-	public async Task<string> StartHostWithRelay(int maxConnections, string connectionType)
-	{
-		// await UnityServices.InitializeAsync();
-		// if (!AuthenticationService.Instance.IsSignedIn)
-		// {
-		// 	await AuthenticationService.Instance.SignInAnonymouslyAsync();
-		// }
-		//
-		Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
-		NetworkManager.Singleton.GetComponent<UnityTransport>()
-		              .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
-		joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-		Debug.Log(joinCode);
-		joinCodeDisplay.text = joinCode; // HACK
-		if (NetworkManager.Singleton.StartHost())
-		{
-			// OnJoinCodeGenerated_Event?.Invoke(joinCode);
-			
-			return joinCode;
-		}
-		else
-		{
-			return null;
-		}
-	}
+	// public async Task<string> StartHostWithRelay(int maxConnections, string connectionType)
+	// {
+	// 	// await UnityServices.InitializeAsync();
+	// 	// if (!AuthenticationService.Instance.IsSignedIn)
+	// 	// {
+	// 	// 	await AuthenticationService.Instance.SignInAnonymouslyAsync();
+	// 	// }
+	// 	//
+	// 	Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+	// 	NetworkManager.Singleton.GetComponent<UnityTransport>()
+	// 	              .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
+	// 	joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+	// 	Debug.Log(joinCode);
+	// 	joinCodeDisplay.text = joinCode; // HACK
+	// 	if (NetworkManager.Singleton.StartHost())
+	// 	{
+	// 		// OnJoinCodeGenerated_Event?.Invoke(joinCode);
+	// 		
+	// 		return joinCode;
+	// 	}
+	// 	else
+	// 	{
+	// 		return null;
+	// 	}
+	// }
 
 	public async Task<string> StartHostWithReservedRelay(string connectionType)
 	{
+		// CAM HACK
+		await GetRelayCode();
+
+		//Update the lobby data class with relevant info
+		await lobbyManager.InitialLobbyUpdate(lobbyManager.lobby);
+
 		if (reservedRelayAllocation == null)
 		{
 			Debug.LogError("RelayManager: No reserved allocation to start host with");
 			return null;
 		}
 		
+
 		NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(AllocationUtils.ToRelayServerData(reservedRelayAllocation, connectionType));
+
+		Debug.Log("*****************   Start host at : "+Time.time);
 
 		if (NetworkManager.Singleton.StartHost())
 		{
@@ -157,6 +169,7 @@ public class RelayManager : MonoBehaviour
 	//Separating out lobby and relay allocation for lobby
 	public async Task GetRelayCode()
 	{
+		Debug.Log("****************   Getting relay code at : "+Time.time);
 		reservedRelayAllocation = await RelayService.Instance.CreateAllocationAsync(4); //max players is 4
 		reservedRelayJoinCode = await RelayService.Instance.GetJoinCodeAsync(reservedRelayAllocation.AllocationId);
 	}
