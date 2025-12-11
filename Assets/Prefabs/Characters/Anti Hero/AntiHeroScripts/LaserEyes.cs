@@ -5,7 +5,7 @@ public class LaserEyes : MonoBehaviour
     [Header("Setup")]
     public Transform leftEye;
     public Transform rightEye;
-    public GameObject targetAlien; 
+    public GameObject targetToDestroy; 
     private LineRenderer leftLR;
     private LineRenderer rightLR;
     private VisionSystem visionSystem;
@@ -46,10 +46,10 @@ public class LaserEyes : MonoBehaviour
             return;
         }
 
-        if (targetAlien != null)
+        if (targetToDestroy != null)
         {
-            target = targetAlien.transform.position + Vector3.up * targetHeightOffset;
-            if (visionSystem.CanSeeObject(targetAlien))
+            target = targetToDestroy.transform.position + Vector3.up * targetHeightOffset;
+            if (visionSystem.CanSeeObject(targetToDestroy))
             {
                 CastLaser(leftLR, leftEye.position, target);
                 CastLaser(rightLR, rightEye.position, target);
