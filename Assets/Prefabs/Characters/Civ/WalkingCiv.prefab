@@ -87,10 +87,8 @@ MonoBehaviour:
   moveSpeed: 1
   defaultSpeed: 1
   agent: {fileID: 0}
-  isPatrollingNpc: 0
+  isPatrollingNpc: 1
   patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -350,7 +348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   audioSource: {fileID: 1113259370518621024}
-  abductedScreamClip: {fileID: 8300000, guid: e82625ecebd86e443b7234c1474b1658, type: 3}
+  audioClips: []
 --- !u!82 &1113259370518621024
 AudioSource:
   m_ObjectHideFlags: 0

@@ -279,19 +279,16 @@ namespace DanniLi
 		
 			//--------------------------------------------------CRATES & ITEMS-------------------------------------------------------------
 			crateSpawnpointsInScene = FindObjectsByType<CrateSpawn>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).ToList();
-			
 			Crate[] crates = FindObjectsByType<Crate>(FindObjectsSortMode.None);
-			if (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
-				foreach (Crate crate in crates)
-				{
-					LevelInfo_SO levelSO                         = levelLoader.levelOrder[currentLevelIndex];
-					if (levelSO != null) crate.availableItems = levelSO.availableItems;
-				}
-			else
-			{
-				Debug.LogWarning("gameManager: no level info!");
-			}
-
+			// if (levelLoader.levelOrder != null && levelLoader.levelOrder.Length > 0)
+			// 	foreach (Crate crate in crates)
+			// 	{
+			// 		LevelInfo_SO levelSO                         = levelLoader.levelOrder[currentLevelIndex];
+			// 		if (levelSO != null) crate.availableItems = levelSO.availableItems;
+			// 	}
+			// else
+			// {
+			// }
 			//--------------------------------------------------MOTHERSHIP & ALIENS-------------------------------------------------------------
 			mothershipBases = FindObjectsByType<MothershipBase>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 			// aliensIncomingFromAllShips = 0;

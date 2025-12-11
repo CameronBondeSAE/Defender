@@ -130,6 +130,7 @@ public class LevelLoader : NetworkBehaviour
       }
       int currentIndex = (gameManager != null) ? gameManager.currentLevelIndex : 0;
       int nextIndex = currentIndex + 1;
+      Debug.Log($"DoLoadNext: current={currentIndex}, next={nextIndex}, levels={levels?.Length}");
       // check for completion and go to main menu
       if (nextIndex >= levels.Length) 
       {
