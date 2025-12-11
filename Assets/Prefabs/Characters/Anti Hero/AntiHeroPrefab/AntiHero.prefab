@@ -34,8 +34,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 236784053692626768}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.70710665, z: -0, w: 0.707107}
-  m_LocalPosition: {x: -0.81, y: -0.635, z: 2.72}
+  m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -12.76, y: -0.70814514, z: 23.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftEye: {fileID: 7376821248881128386}
   rightEye: {fileID: 2607608597851038611}
-  targetAlien: {fileID: 0}
+  targetToDestroy: {fileID: 0}
   targetHeightOffset: 1.5
 --- !u!114 &-1763910268116446154
 MonoBehaviour:
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionSystem: {fileID: 1615384581181008181}
-  latestSeenAlien: {fileID: 0}
+  targetObjectToDestroy: {fileID: 0}
 --- !u!114 &-2572321515520732225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,13 +195,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 3616120248
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 3616120248
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
+  SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -221,7 +221,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   audioSource: {fileID: -93617082758372379}
-  audioClips: []
+  audioClips:
+  - {fileID: 8300000, guid: f5987cfc47713fc4e8653c059a53ef9e, type: 3}
+  - {fileID: 8300000, guid: ec8167f6ba1f08741bf4880b3fe8f35b, type: 3}
+  - {fileID: 8300000, guid: 90609615b23406b4bacbc44f9d919a4b, type: 3}
+  - {fileID: 8300000, guid: 788667e2bba5beb4b9a6e07324323f65, type: 3}
+  - {fileID: 8300000, guid: b2deddbba20ba9a4e9eb0cebed593bde, type: 3}
+  - {fileID: 8300000, guid: 7d17f9e3c5d099a4a97a1bf370df01ea, type: 3}
+  - {fileID: 8300000, guid: 4a29ac8342e8ace499628924da0db979, type: 3}
+  - {fileID: 8300000, guid: 7fab1c8c8f1fb8c429d82b4b70c49ba5, type: 3}
+  - {fileID: 8300000, guid: b18fe3bd98ca3b94397b45ce666deef2, type: 3}
+  laserLoopClip: {fileID: 8300000, guid: d4f582fc9f30a704fae5fde428bbd54c, type: 3}
+  defaultFadeOutDuration: 0.4
 --- !u!82 &-93617082758372379
 AudioSource:
   m_ObjectHideFlags: 0
@@ -234,17 +245,17 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 3
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 2
-  MaxDistance: 30
+  MinDistance: 1
+  MaxDistance: 15
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

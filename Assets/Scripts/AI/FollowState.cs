@@ -27,7 +27,7 @@ public class FollowState : IAIState
         {
             _networkedSoundController = ai.gameObject.GetComponent<NetworkedSoundController>();
         }
-        _networkedSoundController.PlayAudioClip();
+        _networkedSoundController.PlayVoicelinesAudioClip();
         
         if (ai.escortingAlien == null && target != null && target.TryGetComponent<AlienAI>(out var escortingAlien))
             ai.escortingAlien = escortingAlien;

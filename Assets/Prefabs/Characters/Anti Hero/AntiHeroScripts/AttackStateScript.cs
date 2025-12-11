@@ -8,7 +8,8 @@ public class AttackStateScript : AntAIState
     private Animator animator;
     private NetworkedSoundController _soundController;
 
-    private bool _attackSoundPlayed = false;
+    [Header("Audio")]
+    [SerializeField] private float laserSfxFadeOutDuration = 0.4f; // tweak in Inspector
 
     public override void Create(GameObject aGameObject)
     {
@@ -22,11 +23,13 @@ public class AttackStateScript : AntAIState
     {
         laserEyes.enabled = true;
         laserEyes.targetToDestroy = antiHeroAISense.targetObjectToDestroy;
+
         animator.Play("Attack");
-        if (_soundController != null && !_attackSoundPlayed)
+
+        // Turn ON looping laser SFX (networked)
+        if (_soundController != null)
         {
-            _soundController.PlayAudioClip();
-            _attackSoundPlayed = true;
+            _soundController.StartLaserLoop();
         }
     }
 
@@ -34,12 +37,21 @@ public class AttackStateScript : AntAIState
     {
         if (laserEyes.targetToDestroy != null)
         {
-            laserEyes.targetToDestroy.GetComponent<Health>().TakeDamage(1);
-
-            if (laserEyes.targetToDestroy.GetComponent<Health>().isDead)
+            Health targetHealth = laserEyes.targetToDestroy.GetComponent<Health>();
+            if (targetHealth != null)
             {
+                targetHealth.TakeDamage(1f);
+
+                if (targetHealth.isDead)
+                {
+                    laserEyes.DisableBeams();
+                    Finish();
+                }
+            }
+            else
+            {
+                // No health component, just finish
                 laserEyes.DisableBeams();
-                
                 Finish();
             }
         }
@@ -51,11 +63,15 @@ public class AttackStateScript : AntAIState
 
     public override void Exit()
     {
+        // Stop laser beams
         laserEyes.targetToDestroy = null;
         laserEyes.DisableBeams();
         laserEyes.enabled = false;
 
-        // reset for next time we enter Attack
-        _attackSoundPlayed = false;
+        // Fade OUT laser SFX (networked)
+        if (_soundController != null)
+        {
+            _soundController.StopLaserLoop(laserSfxFadeOutDuration);
+        }
     }
 }
