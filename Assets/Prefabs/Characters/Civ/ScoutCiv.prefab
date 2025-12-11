@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5085391778498778146}
   - component: {fileID: 4282479196436245083}
-  - component: {fileID: 578344747468370844}
+  - component: {fileID: 4801332541502851954}
   - component: {fileID: 2293536551349021963}
   - component: {fileID: 3867679240588694092}
   - component: {fileID: 5598249675942781008}
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 356577785
+  GlobalObjectIdHash: 3368260089
   InScenePlacedSourceGlobalObjectIdHash: 4095787409
   DeferredDespawnTick: 0
   Ownership: 1
@@ -72,7 +72,7 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &578344747468370844
+--- !u!114 &4801332541502851954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -81,26 +81,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 468782042391114676}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56e34582212c45b449cac00211765880, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bed84e7a67191d4699089784e0a5bee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  moveSpeed: 1
-  defaultSpeed: 1
-  agent: {fileID: 0}
+  moveSpeed: 2
+  defaultSpeed: 2
+  agent: {fileID: 3867679240588694092}
   patrolPoints: []
-  patrolPointsCount: 0
-  rotationSpeed: 40
-  maxSpeed: 10
-  forwardForce: 400
-  followDistance: 2
+  patrolPointsCount: 3
+  rotationSpeed: 5
+  maxSpeed: 8
+  forwardForce: 50
+  followDistance: 10
   IsAbducted: 0
   escortingAlien: {fileID: 0}
   useRigidbody: 1
   rb: {fileID: 1198581524587882374}
   navMeshObstacle: {fileID: 8289037530859334116}
   debug: 1
-  cornerThreshold: 1
+  cornerThreshold: 0.75
   cornerIndex: 0
   stuckTime: 0
   maxStuckTime: 2
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  animator: {fileID: 0}
+  animator: {fileID: 3252683364797701811}
   networkAnimator: {fileID: 3610845311785406197}
 --- !u!114 &3041347553923978941
 MonoBehaviour:
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectType: 0
   bloodParticles: {fileID: 149532086693909962, guid: f93e78b40e8b922419a32b2b1cc9f8ec, type: 3}
-  alienBloodParticles: {fileID: 0}
+  alienBloodParticles: {fileID: 7003437534623348851, guid: c77e74438bf4f9245a769b623ec023cb, type: 3}
   woodParticles: {fileID: 0}
   metalParticles: {fileID: 0}
   fireParticles: {fileID: 0}

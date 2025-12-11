@@ -14,11 +14,26 @@ namespace AshleyPearson
       [SerializeField] List<Transform> scoutLocationList = new List<Transform>();
       [SerializeField] List<Vector3> scoutNavMeshPointsList = new List<Vector3>();
 
-      //Convert to navmesh points for navigation
-      private void Start()
+      private Vector3 chosenScoutLocation;
+
+      private void Awake()
       {
          //Clear existing list
          scoutNavMeshPointsList.Clear();
+         
+         //Populate initial scout list
+         scoutLocationList.Add(scoutLocationOne);
+         scoutLocationList.Add(scoutLocationTwo);
+         scoutLocationList.Add(scoutLocationThree);
+      }
+      
+      private void Start()
+      {
+         //Convert list to navmesh points for navigation
+         ConvertScoutNavMeshPoints();
+         
+         //Pick an initial scout point
+         PickRandomNavMeshPointToNavigateTo();
       }
 
       private void ConvertScoutNavMeshPoints()
@@ -37,36 +52,29 @@ namespace AshleyPearson
                Debug.LogWarning("[ScoutLocations] " + scoutLocation.name + "is not walkable on navmesh");
             }
          }
-         
          Debug.Log("[ScoutLocations] There are: " + scoutNavMeshPointsList.Count + "scout locations"); //Should be 3 currently
       }
 
-      private Vector3 PickRandomNavMeshPointToNavigateTo()
+      private void PickRandomNavMeshPointToNavigateTo()
       {
          if (scoutNavMeshPointsList.Count > 0)
          {
             int i = Random.Range(0, scoutNavMeshPointsList.Count);
-            Vector3 randomNavMeshPoint = scoutNavMeshPointsList[i];
             
-            Debug.Log("[ScoutLocations] Random scout location picked:  " + randomNavMeshPoint);
-            return randomNavMeshPoint;
+            chosenScoutLocation = scoutNavMeshPointsList[i];
+            Debug.Log("[ScoutLocations] Random scout location picked:  " + chosenScoutLocation);
          }
 
          else
          {
             Debug.Log("[ScoutLocations] No scout locations found on NavMesh point list");
-            return Vector3.zero;
          }
+         
       }
 
-      public List<Vector3> ScoutNavMeshList()
+      public Vector3 ChosenScoutLocation()
       {
-         return scoutNavMeshPointsList;
-      }
-
-      public Vector3 GetRandomScoutNavMeshPoint()
-      {
-         return PickRandomNavMeshPointToNavigateTo();
+         return chosenScoutLocation;;
       }
    }
 }

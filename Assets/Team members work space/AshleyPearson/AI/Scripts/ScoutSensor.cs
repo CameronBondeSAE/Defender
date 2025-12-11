@@ -27,6 +27,9 @@ namespace AshleyPearson
             InfoToReport = 4,
             IsNearEnemy = 5
         }
+        
+        //Variables for scout location movement
+        private ScoutLocations scoutLocations;
 
         private void Awake()
         {
@@ -34,7 +37,12 @@ namespace AshleyPearson
             isAlive = true;
             infoToReport = false;
             hasReportedToPlayer = false;
+            
+            //Check attached scripts
+            scoutLocations = GetComponent<ScoutLocations>();
+            if (scoutLocations == null) {Debug.Log("[ScoutSensor] Scout Locations script not found");}
         }
+        
 
         public void CollectConditions(AntAIAgent aAgent, AntAICondition aWorldState)
         {
@@ -58,14 +66,36 @@ namespace AshleyPearson
             if (isAlive)
             {
                 //Is the scout close to a scout location?
-                
+                CheckScoutLocation();
+
                 //Has the scout seen information?
-                
+
                 //Is the scout near a player?
-                
+
                 //Is the scout near an enemy?
-                
+
                 //Has the scout reported to the player?
+            }
+        }
+
+        private void CheckScoutLocation()
+        {
+            Vector3 targetScoutLocation = scoutLocations.ChosenScoutLocation();
+
+            float distanceTolerance = 2f;
+            float distanceToScoutLocation = Vector3.Distance(transform.position , targetScoutLocation);
+            Debug.Log("[ScoutSensor] Scout is: " + distanceToScoutLocation + "away from target scout location" );
+
+            if (distanceToScoutLocation <= distanceTolerance)
+            {
+                Debug.Log("[ScoutSensor] Scout is near scout location.");
+                isNearScoutLocation = true;
+            }
+
+            else
+            {
+                Debug.Log("[ScoutSensor] Scout is NOT near scout location.");
+                isNearScoutLocation = false;
             }
         }
     }
