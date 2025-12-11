@@ -748,9 +748,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 6077567698208847209}
     m_Modifications:
     - target: {fileID: 98235389728655645, guid: fc5a8c8d5785fd2458af47ccf7cce780, type: 3}
+      propertyPath: gameHudRoot
+      value: 
+      objectReference: {fileID: 3728461006448388010}
+    - target: {fileID: 98235389728655645, guid: fc5a8c8d5785fd2458af47ccf7cce780, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 162159509731898125}
+    - target: {fileID: 98235389728655645, guid: fc5a8c8d5785fd2458af47ccf7cce780, type: 3}
+      propertyPath: civiliansText
+      value: 
+      objectReference: {fileID: 1280383267132098926}
     - target: {fileID: 2725495254372709905, guid: fc5a8c8d5785fd2458af47ccf7cce780, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -996,6 +1004,22 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc5a8c8d5785fd2458af47ccf7cce780, type: 3}
+--- !u!114 &1280383267132098926 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6314583406008525395, guid: fc5a8c8d5785fd2458af47ccf7cce780, type: 3}
+  m_PrefabInstance: {fileID: 5072528634400844605}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &3728461006448388010 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8492410578297801879, guid: fc5a8c8d5785fd2458af47ccf7cce780, type: 3}
+  m_PrefabInstance: {fileID: 5072528634400844605}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5131919377692860960 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 98235389728655645, guid: fc5a8c8d5785fd2458af47ccf7cce780, type: 3}

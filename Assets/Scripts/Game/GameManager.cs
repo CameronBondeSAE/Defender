@@ -261,7 +261,9 @@ namespace DanniLi
 				{
 					crateSpawnpointsInScene = new List<CrateSpawn>(levelInfo.crateSpawns);
 				}
-
+				cratesSpawnedCount  = 0;
+				nextCrateSpawnIndex = 0;
+				spawnedCrates.Clear();
 				// Motherships
 				if (levelInfo.mothershipBases != null && levelInfo.mothershipBases.Length > 0)
 				{
@@ -316,7 +318,6 @@ namespace DanniLi
 					health.OnDeath += OnCivDeath;
 				}
 			}
-			
 			//--------------------------------------------------EGGS-------------------------------------------------------------
 			SpawnEggsForLevel();
 			if (eggHatchCoroutine != null)
@@ -570,7 +571,6 @@ namespace DanniLi
 					TrySpawnCrateForNewClient();
 				}
 			}
-			
 			StartCoroutine(WaitForLocalPlayerAndRegisterCamera(playerID));
 		}
 		
