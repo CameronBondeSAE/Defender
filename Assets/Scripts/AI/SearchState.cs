@@ -86,7 +86,7 @@ public class SearchState : IAIState
         animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
         isGrabbing = false;
         isBusy = false;
-        animController.SetAnimation(AIAnimationController.AnimationState.Walk);
+        animController?.SetAnimation(AIAnimationController.AnimationState.Walk);
         FindNewTarget();
     }
 
