@@ -18,7 +18,7 @@ public class LevelLoader : NetworkBehaviour
    
    [Header("Scene Configs")]
    public string managerSceneName = "ManagerScene";
-   public string mainMenuSceneName = "MainMenu";
+   public string mainMenuSceneName = "Main Menu";
    private List<string> loadedLevelScenes = new List<string>();
 
    private string currentAdditiveSceneName = null;
@@ -106,6 +106,7 @@ public class LevelLoader : NetworkBehaviour
    [Rpc(SendTo.Server, RequireOwnership = false)]
    public void LoadFirstLevelServerRpc()
    {
+	   Debug.Log("**************   LoadFirstLevelServerRpc");
       LoadFirstLevel();
    }
    public void LoadMainMenu()
@@ -116,6 +117,7 @@ public class LevelLoader : NetworkBehaviour
    
    public void LoadFirstLevel()
    {
+	   Debug.Log("**************   LoadFirstLevel");
       if (!IsServer) return;
       DoLoadFirst();
    }
@@ -204,6 +206,8 @@ public class LevelLoader : NetworkBehaviour
    }
    private void DoLoadFirst()
    {
+	   Debug.Log("**************   DoLoadFirst");
+	   
       LevelInfo_SO[] levels = GetLevels();
       if (levels == null || levels.Length == 0)
       {
@@ -230,6 +234,8 @@ public class LevelLoader : NetworkBehaviour
 
       // load the first level additively & mark to set active scene when done
       pendingSetActiveSceneName = first.sceneName;
+      
+      Debug.Log($"*********   Loading first level scene '{first.sceneName}' additively");
       NetworkManager.SceneManager.LoadScene(first.sceneName, LoadSceneMode.Additive);
    }
 
@@ -245,6 +251,10 @@ public class LevelLoader : NetworkBehaviour
          string sceneName = loadedLevelScenes[i];
          if (sceneName == managerSceneName) 
             continue;
+         
+         // CAM HACK
+         if(sceneName == mainMenuSceneName)
+	         continue;
                 
          var scene = SceneManager.GetSceneByName(sceneName);
          if (scene.IsValid() && scene.isLoaded)
@@ -359,6 +369,7 @@ public class LevelLoader : NetworkBehaviour
       if (existingScene.IsValid() && existingScene.isLoaded)
       {
          // unload the existing version first, then load fresh
+         Debug.Log($"Unloading level scene: {existingScene}");
          NetworkManager.SceneManager.UnloadScene(existingScene);
          // remove from tracking temporarily
          loadedLevelScenes.Remove(current.sceneName);

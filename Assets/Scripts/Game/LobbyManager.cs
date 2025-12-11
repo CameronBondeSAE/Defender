@@ -59,39 +59,42 @@ namespace CameronBonde
 			LobbyEvents.OnButtonClicked_JoinGame -= JoinLobbyForBrowser_ButtonWrapper;
 		}
 		
-		// public async void CreateLobby(string inputLobbyName)
-		// {
-		// 	Debug.Log("Creating lobby...");
-		// 	
-		// 	await authenticationManager.SignInAsync();
-		//
-		// 	await relayManager.StartHostWithRelay(maxPlayers, "udp");
-		// 	
-		// 	CreateLobbyOptions options = new CreateLobbyOptions();
-		// 	options.IsPrivate = false;
-		// 	options.IsLocked  = false;
-		// 	options.Data      = new Dictionary<string, DataObject>();
-		// 	options.Data.Add("RelayJoinCode", new DataObject(
-		// 	                                                 visibility: DataObject.VisibilityOptions.Public,
-		// 	                                                 value: relayManager.joinCode));
-		// 	
-		// 	lobby = await LobbyService.Instance.CreateLobbyAsync(inputLobbyName, maxPlayers, options);
-		// 	Debug.Log("LobbyManager: Lobby name is " + lobby.Name);
-		// 	Debug.Log("LobbyManager: Lobby join code is " + lobby.LobbyCode);
-		// 	Debug.Log("LobbyManager: Relay join code is " + relayManager.joinCode);
-		//
-		// 	//Save Player Name
-		// 	await SetPlayerUsername(lobby);
-		// 	
-		// 	//Save lobby join code
-		// 	await SetLobbyJoinCode(lobby);
-		// 	
-		// 	// await SetupLobbyEvents();
-		// 	// await SetAllLobbyData();
-		//
-		// 	// Heartbeat the lobby every 15 seconds.
-		// 	StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, heartBeatDelay));
-		// }
+		public async void CreateLobby(string inputLobbyName)
+		{
+			Debug.Log("Creating lobby... Name = "+inputLobbyName);
+			
+			await authenticationManager.SignInAsync();
+		
+			await relayManager.StartHostWithRelay(maxPlayers, "udp");
+			
+			CreateLobbyOptions options = new CreateLobbyOptions();
+			options.IsPrivate = false;
+			options.IsLocked  = false;
+			options.Data      = new Dictionary<string, DataObject>();
+			options.Data.Add("RelayJoinCode", new DataObject(
+			                                                 visibility: DataObject.VisibilityOptions.Public,
+			                                                 value: relayManager.joinCode));
+			
+			lobby = await LobbyService.Instance.CreateLobbyAsync(inputLobbyName, maxPlayers, options);
+			Debug.Log("LobbyManager: Lobby name is " + lobby.Name);
+			Debug.Log("LobbyManager: Lobby join code is " + lobby.LobbyCode);
+			Debug.Log("LobbyManager: Relay join code is " + relayManager.joinCode);
+		
+			//Save Player Name
+			await SetPlayerUsername(lobby);
+			
+			//Save lobby join code
+			await SetLobbyJoinCode(lobby);
+			
+			// await SetupLobbyEvents();
+			// await SetAllLobbyData();
+		
+			// Heartbeat the lobby every 15 seconds.
+			StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, heartBeatDelay));
+			
+			// HACK CAM
+			FindFirstObjectByType<LevelLoader>().LoadFirstLevelServerRpc();
+		}
 
 		public async void CreateLobbyForBrowser_ButtonWrapper(string inputLobbyName)
 		{
@@ -228,6 +231,8 @@ namespace CameronBonde
     
 			if (response.Results.Count > 0)
 			{
+				Debug.Log("Lobby count = " + response.Results.Count);
+				
 				lobby = await LobbyService.Instance.JoinLobbyByIdAsync(response.Results[0].Id);
 
 				lobby.Data.TryGetValue("RelayJoinCode", out DataObject relayJoinCode);
@@ -236,6 +241,10 @@ namespace CameronBonde
 					relayManager.NewJoinCodeSet(relayJoinCode.Value);
 					relayManager.StartClientWithJoinCode();
 				}
+			}
+			else
+			{
+				Debug.Log("No available lobbies found.");
 			}
 		}
 		

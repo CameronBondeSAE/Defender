@@ -94,6 +94,8 @@ namespace AshleyPearson
 
        public async void OnButtonClick_HostStartedGame()
        {
+	       Debug.Log("**************    LobbyMenuManager: Host started game button clicked");
+	       
 	       // CAM HACK: Is there where the host should start? NO IT NEEDS TIME TO AWAIT
 	       // networkLobbyManager.HostStartGame();
 	       await networkLobbyManager.StartRelayHost();
@@ -106,6 +108,7 @@ namespace AshleyPearson
                NetworkManager.Singleton != null &&
                NetworkManager.Singleton.IsHost)
            {
+	           Debug.Log("***********    LobbyMenuManager: Starting level loading");
                levelLoader.LoadFirstLevelServerRpc();
            } 
        }

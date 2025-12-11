@@ -73,34 +73,34 @@ public class RelayManager : MonoBehaviour
 	// This is just a middleman for UI buttons/events etc
 	public void InitialiseHostWithRelay()
 	{
-		// StartHostWithRelay(4, "udp");
+		StartHostWithRelay(4, "udp");
 	}
 
-	// public async Task<string> StartHostWithRelay(int maxConnections, string connectionType)
-	// {
-	// 	// await UnityServices.InitializeAsync();
-	// 	// if (!AuthenticationService.Instance.IsSignedIn)
-	// 	// {
-	// 	// 	await AuthenticationService.Instance.SignInAnonymouslyAsync();
-	// 	// }
-	// 	//
-	// 	Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
-	// 	NetworkManager.Singleton.GetComponent<UnityTransport>()
-	// 	              .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
-	// 	joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-	// 	Debug.Log(joinCode);
-	// 	joinCodeDisplay.text = joinCode; // HACK
-	// 	if (NetworkManager.Singleton.StartHost())
-	// 	{
-	// 		// OnJoinCodeGenerated_Event?.Invoke(joinCode);
-	// 		
-	// 		return joinCode;
-	// 	}
-	// 	else
-	// 	{
-	// 		return null;
-	// 	}
-	// }
+	public async Task<string> StartHostWithRelay(int maxConnections, string connectionType)
+	{
+		// await UnityServices.InitializeAsync();
+		// if (!AuthenticationService.Instance.IsSignedIn)
+		// {
+		// 	await AuthenticationService.Instance.SignInAnonymouslyAsync();
+		// }
+		//
+		Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+		NetworkManager.Singleton.GetComponent<UnityTransport>()
+		              .SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, connectionType));
+		joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+		Debug.Log(joinCode);
+		joinCodeDisplay.text = joinCode; // HACK
+		if (NetworkManager.Singleton.StartHost())
+		{
+			// OnJoinCodeGenerated_Event?.Invoke(joinCode);
+			
+			return joinCode;
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	public async Task<string> StartHostWithReservedRelay(string connectionType)
 	{

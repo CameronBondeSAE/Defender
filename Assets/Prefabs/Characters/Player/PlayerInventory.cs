@@ -192,6 +192,9 @@ public class PlayerInventory : NetworkBehaviour
 			Vector3 dropPosition = itemHolder.position + transform.forward * 1.5f;
 			// call drop on interface (for sfx)
 			CurrentItem?.Drop();
+
+			currentItemInstance.transform.rotation = transform.rotation;
+			
 			// Use the item base to Drop
 			UsableItem_Base usableItem = CurrentItemInstance.GetComponent<UsableItem_Base>();
 			if (usableItem != null)
