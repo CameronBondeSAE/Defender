@@ -15,7 +15,7 @@ namespace DanniLi
         [SerializeField] private GameObject levelIntroPanel;
         [SerializeField] private Text levelIntroText;
         [SerializeField] private Button levelIntroStartButton;
-        private Text civiliansText;
+        [SerializeField] private Text civiliansText;
 
         [SerializeField] private Text waveText;
         [SerializeField] private Text aliensKilledText;

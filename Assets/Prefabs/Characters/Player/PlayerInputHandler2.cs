@@ -27,6 +27,7 @@ public class PlayerInputHandler2 : NetworkBehaviour
 		{
 			// Debug.Log($"[{gameObject.name}] PlayerInput found!");
 		}
+		DontDestroyOnLoad(this);
 	}
 
 	override public void OnNetworkSpawn()
