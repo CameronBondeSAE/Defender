@@ -50,7 +50,7 @@ public class AIBase : CharacterBase
 		{
 			try
 			{
-				if (escortingAlienData.escortingCivs.Contains(this)) escortingAlienData.escortingCivs.Remove(this);
+				if (escortingAlienData != value && escortingAlienData.escortingCivs.Contains(this)) escortingAlienData.escortingCivs.Remove(this);
 			}
 			finally
 			{
