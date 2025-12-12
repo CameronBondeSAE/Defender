@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using Anthill.AI;
-using Anthill;
 
 namespace AshleyPearson
 {
@@ -19,6 +17,8 @@ namespace AshleyPearson
         public bool hasReportedToPlayer;
 
         public int alienCountToReport;
+        public bool hasChosenPlayerToReportTo;
+        public Transform chosenPlayer;
         
         //Conditional Enums for Planner
         public enum Scout
@@ -38,12 +38,14 @@ namespace AshleyPearson
         {
             ScoutEvents.OnNoInformationFound += ChangeScoutLocation;
             ScoutEvents.OnInformationToReport += InformationToReport;
+            ScoutEvents.OnFoundPlayer += ScoutHasChosenPlayerToReportTo;
         }
 
         private void OnDisable()
         {
             ScoutEvents.OnNoInformationFound -= ChangeScoutLocation;
             ScoutEvents.OnInformationToReport -= InformationToReport;
+            ScoutEvents.OnFoundPlayer -= ScoutHasChosenPlayerToReportTo;
         }
 
         private void Awake()
@@ -53,6 +55,7 @@ namespace AshleyPearson
             infoToReport = false;
             hasReportedToPlayer = false;
             alienCountToReport = 0; //Storing this here so info persists between states
+            hasChosenPlayerToReportTo = false; //To be able to check proximity to chosen player
             
             //Check attached scripts
             scoutLocations = GetComponent<ScoutLocations>();
@@ -82,19 +85,21 @@ namespace AshleyPearson
             if (isAlive)
             {
                 //Is the scout close to a scout location?
-                CheckScoutLocation();
-
-                //Has the scout seen information?
-
-                //Is the scout near a player?
-
+                CheckProximityToScoutLocation();
+                
+                //Is the scout close to the chosen player?
+                if (hasChosenPlayerToReportTo && !hasReportedToPlayer)
+                {
+                    CheckProximityToPlayer(chosenPlayer);
+                }
+                
                 //Is the scout near an enemy?
 
                 //Has the scout reported to the player?
             }
         }
 
-        private void CheckScoutLocation()
+        private void CheckProximityToScoutLocation() //this could be abstracted to check for both nearscout and nearplayer
         {
             Vector3 targetScoutLocation = scoutLocations.ChosenScoutLocation();
 
@@ -120,7 +125,7 @@ namespace AshleyPearson
             //Pick new scout location 
             scoutLocations.PickRandomNavMeshPointToNavigateTo(); //This isn't protected against re-choosing same location
             isNearScoutLocation = false; //Should push AI back into Move To Scout Location action state
-            infoToReport = false; //This should remain false if location is being changed
+            infoToReport = false; //This should remain false as location is changed BECAUSE no info to report
         }
 
         private void InformationToReport(int alienCount) //Could maybe add a dataclass here too for other types of info
@@ -130,6 +135,32 @@ namespace AshleyPearson
             
             //Set sensor to true to switch into find player/report state
             infoToReport = true;
+        }
+
+        private void ScoutHasChosenPlayerToReportTo(Transform player)
+        {
+            hasChosenPlayerToReportTo = true;
+            hasReportedToPlayer = false; //preventative reset
+            chosenPlayer = player;
+        }
+        
+        private void CheckProximityToPlayer(Transform player)
+        {
+            float distanceTolerance = 2f;
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+            if (distanceToPlayer <= distanceTolerance)
+            {
+                Debug.Log("[ScoutSensor] Scout is near chosen player.");
+                isNearPlayer = true;
+            }
+
+            else
+            {
+                Debug.Log("[ScoutSensor] Scout is NOT near chosen player.");
+                isNearPlayer = false;
+            }
+
         }
     }
 }

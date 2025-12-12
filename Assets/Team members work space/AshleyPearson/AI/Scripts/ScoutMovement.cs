@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class ScoutMovement : AIBase
 {
-   
-
    public override void OnNetworkSpawn()
    {
       base.OnNetworkSpawn();
@@ -23,7 +21,7 @@ public class ScoutMovement : AIBase
       MoveSpeed = 5f; //IDK if I should change this from here
       
       //Move scout to location
-      Debug.Log("[ScoutMovement] Moving scout to scout location: " + destination);
+      //Debug.Log("[ScoutMovement] Moving scout to scout location: " + destination);
       base.MoveTo(destination);
    }
 }
