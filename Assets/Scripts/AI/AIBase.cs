@@ -93,7 +93,7 @@ public class AIBase : CharacterBase
 
 	public  float   stuckTime;
 	public  float   maxStuckTime = 2f;
-	private Vector3 lastDestination;
+	protected Vector3 lastDestination;
 		
 	// Initialize AI - getting references
 	protected virtual void Start()
@@ -130,7 +130,7 @@ public class AIBase : CharacterBase
 		CurrentState?.Stay();
 	}
 
-	private void FixedUpdate()
+	protected virtual void FixedUpdate()
 	{
 		if(!IsServer)
 			return;

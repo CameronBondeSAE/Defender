@@ -36,7 +36,7 @@ public class AlienHandOffAI : AlienAI
     {
         base.Update();
     }
-    protected void FixedUpdate()
+    protected override void FixedUpdate()
     {
         if (!IsServer)
             return;
@@ -44,15 +44,15 @@ public class AlienHandOffAI : AlienAI
 
         if (currentState is ReturnState && seenEnemy != null && seenEnemy.currentState is ReturnState)
         {
+            Debug.Log("Seek Other");
             if (!seekOtherEnemy)
             {
                 seekOtherEnemy = true;
-                // originalDestination = lastDestination;
+                originalDestination = lastDestination;
             }
             MoveTo(seenEnemy.transform.position);
         }
-
-        // base.FixedUpdate();
+        base.FixedUpdate();
 
     }
     public virtual void SetCharacterY()
