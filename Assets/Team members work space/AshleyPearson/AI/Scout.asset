@@ -28,10 +28,10 @@ MonoBehaviour:
       name: IsNearEnemy
   actions:
   - name: MoveToScoutLocation
-    isDefault: 0
-    state: {fileID: 0}
+    isDefault: 1
+    state: {fileID: 4128359599459448136, guid: 5bcef82eb84b55a43836b464944c3f26, type: 3}
     cost: 0
-    position: {x: 249, y: 228}
+    position: {x: 249, y: 227}
     pre:
     - id: 4
       value: 0
@@ -42,7 +42,7 @@ MonoBehaviour:
       value: 1
   - name: ScanEnvironment
     isDefault: 0
-    state: {fileID: 0}
+    state: {fileID: 5509429937440850937, guid: 07f43f25e11bdcc478408b76a3263975, type: 3}
     cost: 0
     position: {x: 500, y: 231}
     pre:
@@ -55,7 +55,7 @@ MonoBehaviour:
       value: 1
   - name: FindPlayer
     isDefault: 0
-    state: {fileID: 0}
+    state: {fileID: 5892025850356307662, guid: 9b5bcd1a252b85a4d85822cf463d4eb8, type: 3}
     cost: 0
     position: {x: 736, y: 232}
     pre:
@@ -68,7 +68,7 @@ MonoBehaviour:
       value: 1
   - name: ReportToPlayer
     isDefault: 0
-    state: {fileID: 0}
+    state: {fileID: 5892025850356307662, guid: 9b5bcd1a252b85a4d85822cf463d4eb8, type: 3}
     cost: 0
     position: {x: 975, y: 233}
     pre:
@@ -85,7 +85,7 @@ MonoBehaviour:
       value: 0
   - name: Run
     isDefault: 0
-    state: {fileID: 0}
+    state: {fileID: 5892025850356307662, guid: 9b5bcd1a252b85a4d85822cf463d4eb8, type: 3}
     cost: -1
     position: {x: 1228, y: 234}
     pre:
@@ -122,8 +122,8 @@ MonoBehaviour:
     - id: 2
       value: 0
     - id: 3
-      value: 1
+      value: 0
     - id: 4
-      value: 1
+      value: 0
     - id: 5
-      value: 1
+      value: 0

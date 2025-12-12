@@ -25,15 +25,9 @@ namespace AshleyPearson
          scoutLocationList.Add(scoutLocationOne);
          scoutLocationList.Add(scoutLocationTwo);
          scoutLocationList.Add(scoutLocationThree);
-      }
-      
-      private void Start()
-      {
+         
          //Convert list to navmesh points for navigation
          ConvertScoutNavMeshPoints();
-         
-         //Pick an initial scout point
-         PickRandomNavMeshPointToNavigateTo();
       }
 
       private void ConvertScoutNavMeshPoints()
@@ -55,7 +49,7 @@ namespace AshleyPearson
          Debug.Log("[ScoutLocations] There are: " + scoutNavMeshPointsList.Count + "scout locations"); //Should be 3 currently
       }
 
-      private void PickRandomNavMeshPointToNavigateTo()
+      public void PickRandomNavMeshPointToNavigateTo()
       {
          if (scoutNavMeshPointsList.Count > 0)
          {

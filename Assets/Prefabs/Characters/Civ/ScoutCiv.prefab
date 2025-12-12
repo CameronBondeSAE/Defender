@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5085391778498778146}
   - component: {fileID: 4282479196436245083}
-  - component: {fileID: 4801332541502851954}
   - component: {fileID: 2293536551349021963}
   - component: {fileID: 3867679240588694092}
   - component: {fileID: 5598249675942781008}
@@ -24,6 +23,10 @@ GameObject:
   - component: {fileID: 5996115470389394392}
   - component: {fileID: 6156412217907124335}
   - component: {fileID: -2567114420282507581}
+  - component: {fileID: 5240096265341582351}
+  - component: {fileID: 4801332541502851954}
+  - component: {fileID: 8796141866065587472}
+  - component: {fileID: 7684385393234491}
   m_Layer: 3
   m_Name: ScoutCiv
   m_TagString: Civilian
@@ -60,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 3368260089
-  InScenePlacedSourceGlobalObjectIdHash: 4095787409
+  InScenePlacedSourceGlobalObjectIdHash: 356577785
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -72,39 +75,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &4801332541502851954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 468782042391114676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bed84e7a67191d4699089784e0a5bee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  moveSpeed: 2
-  defaultSpeed: 2
-  agent: {fileID: 3867679240588694092}
-  patrolPoints: []
-  patrolPointsCount: 3
-  rotationSpeed: 5
-  maxSpeed: 8
-  forwardForce: 50
-  followDistance: 10
-  IsAbducted: 0
-  escortingAlien: {fileID: 0}
-  useRigidbody: 1
-  rb: {fileID: 1198581524587882374}
-  navMeshObstacle: {fileID: 8289037530859334116}
-  debug: 1
-  cornerThreshold: 0.75
-  cornerIndex: 0
-  stuckTime: 0
-  maxStuckTime: 2
-  followTarget: {fileID: 0}
 --- !u!114 &2293536551349021963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,6 +427,88 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   audioSource: {fileID: 6156412217907124335}
   abductedScreamClip: {fileID: 8300000, guid: e82625ecebd86e443b7234c1474b1658, type: 3}
+--- !u!114 &5240096265341582351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e724e36405834fa192b36cd6a4e6059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manualUpdate: 0
+  thinkInterval: 0.1
+  scenario: {fileID: 11400000, guid: ac1c7e37e6751ab45a097492efbf4312, type: 2}
+--- !u!114 &4801332541502851954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bed84e7a67191d4699089784e0a5bee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  moveSpeed: 2
+  defaultSpeed: 2
+  agent: {fileID: 3867679240588694092}
+  patrolPoints: []
+  patrolPointsCount: 3
+  rotationSpeed: 5
+  maxSpeed: 8
+  forwardForce: 50
+  followDistance: 10
+  IsAbducted: 0
+  escortingAlien: {fileID: 0}
+  useRigidbody: 1
+  rb: {fileID: 1198581524587882374}
+  navMeshObstacle: {fileID: 8289037530859334116}
+  debug: 1
+  cornerThreshold: 0.75
+  cornerIndex: 0
+  stuckTime: 0
+  maxStuckTime: 2
+--- !u!114 &8796141866065587472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2b28b81f5449704889c8db0658bf883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoutLocationOne: {fileID: 0}
+  scoutLocationTwo: {fileID: 0}
+  scoutLocationThree: {fileID: 0}
+  scoutLocationList: []
+  scoutNavMeshPointsList: []
+--- !u!114 &7684385393234491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468782042391114676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ac826265473dd9488df35d29b1e7b87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 0
+  isNearScoutLocation: 0
+  isNearEnemy: 0
+  isNearPlayer: 0
+  infoToReport: 0
+  hasReportedToPlayer: 0
 --- !u!1001 &7969516783889707945
 PrefabInstance:
   m_ObjectHideFlags: 0

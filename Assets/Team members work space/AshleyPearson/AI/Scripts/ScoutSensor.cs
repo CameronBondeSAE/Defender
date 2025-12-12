@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Anthill.AI;
 using Anthill;
@@ -16,6 +17,8 @@ namespace AshleyPearson
         public bool isNearPlayer;
         public bool infoToReport;
         public bool hasReportedToPlayer;
+
+        public int alienCountToReport;
         
         //Conditional Enums for Planner
         public enum Scout
@@ -31,12 +34,25 @@ namespace AshleyPearson
         //Variables for scout location movement
         private ScoutLocations scoutLocations;
 
+        private void OnEnable()
+        {
+            ScoutEvents.OnNoInformationFound += ChangeScoutLocation;
+            ScoutEvents.OnInformationToReport += InformationToReport;
+        }
+
+        private void OnDisable()
+        {
+            ScoutEvents.OnNoInformationFound -= ChangeScoutLocation;
+            ScoutEvents.OnInformationToReport -= InformationToReport;
+        }
+
         private void Awake()
         {
             //Set default variable values
             isAlive = true;
             infoToReport = false;
             hasReportedToPlayer = false;
+            alienCountToReport = 0; //Storing this here so info persists between states
             
             //Check attached scripts
             scoutLocations = GetComponent<ScoutLocations>();
@@ -84,7 +100,7 @@ namespace AshleyPearson
 
             float distanceTolerance = 2f;
             float distanceToScoutLocation = Vector3.Distance(transform.position , targetScoutLocation);
-            Debug.Log("[ScoutSensor] Scout is: " + distanceToScoutLocation + "away from target scout location" );
+            //Debug.Log("[ScoutSensor] Scout is: " + distanceToScoutLocation + "away from target scout location" );
 
             if (distanceToScoutLocation <= distanceTolerance)
             {
@@ -97,6 +113,23 @@ namespace AshleyPearson
                 Debug.Log("[ScoutSensor] Scout is NOT near scout location.");
                 isNearScoutLocation = false;
             }
+        }
+
+        private void ChangeScoutLocation()
+        {
+            //Pick new scout location 
+            scoutLocations.PickRandomNavMeshPointToNavigateTo(); //This isn't protected against re-choosing same location
+            isNearScoutLocation = false; //Should push AI back into Move To Scout Location action state
+            infoToReport = false; //This should remain false if location is being changed
+        }
+
+        private void InformationToReport(int alienCount) //Could maybe add a dataclass here too for other types of info
+        {
+            //Set alien count to variable
+            alienCountToReport = alienCount;
+            
+            //Set sensor to true to switch into find player/report state
+            infoToReport = true;
         }
     }
 }

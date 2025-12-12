@@ -139,7 +139,6 @@ public class AIBase : CharacterBase
 		{
 			if(path != null && path.corners.Length > 0 && cornerIndex < path.corners.Length)
 			{
-			
 				AgentMovement();
 				
 				// Stuck detector. Recalculates path, eg if player shoves something in its way.
