@@ -50,7 +50,7 @@ public class AIBase : CharacterBase
 		{
 			try
 			{
-				if (escortingAlienData != value && escortingAlienData.escortingCivs.Contains(this)) escortingAlienData.escortingCivs.Remove(this); // Auto removes the civ from the escorting alien's list when the escorting alien is changed for another.
+				if (escortingAlienData != null && escortingAlienData != value && escortingAlienData.escortingCivs.Contains(this)) escortingAlienData.escortingCivs.Remove(this); // Auto removes the civ from the escorting alien's list when the escorting alien is changed for another.
 			}
 			finally
 			{
