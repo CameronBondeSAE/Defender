@@ -91,7 +91,7 @@ public class AlienHandOffAI : AlienAI
                             for (int oppositeX = -opposite; oppositeX <= opposite; oppositeX += 1)
                             {
                                 Vector3 pos = new Vector3(Mathf.FloorToInt(transform.position.x + adjacent * Mathf.Sin(transform.rotation.y)), characterY, Mathf.FloorToInt(transform.position.z + oppositeX * Mathf.Cos(transform.rotation.y)));
-                                if ((!NewUnity.ContainsV3(checkPositions, pos)))
+                                if ((!checkPositions.Contains(pos)))
                                 {
                                     checkPositions.Add(pos);
                                 }
@@ -117,7 +117,7 @@ public class AlienHandOffAI : AlienAI
                     AlienHandOffAI closestSeenEnemy = null;
                     for (int i = 0; i < checkPositions.Count; i++)
                     {
-                        if (!NewUnity.ContainsV3(AIGrid.instance.unwalkableGrid, checkPositions[i])) // Unwalkable can't contain anything or be interacted with, so no need to check
+                        if (!AIGrid.instance.unwalkableGrid.Contains(checkPositions[i])) // Unwalkable can't contain anything or be interacted with, so no need to check
                         {
                             foreach (LayerMask layer in enemyLayers)
                             {
