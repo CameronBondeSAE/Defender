@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Anthill.AI;
 
@@ -19,6 +20,8 @@ namespace AshleyPearson
         public int alienCountToReport;
         public bool hasChosenPlayerToReportTo;
         public Transform chosenPlayer;
+
+        private bool reportRecencyCoroutineIsRunning = false;
         
         //Conditional Enums for Planner
         public enum Scout
@@ -39,6 +42,7 @@ namespace AshleyPearson
             ScoutEvents.OnNoInformationFound += ChangeScoutLocation;
             ScoutEvents.OnInformationToReport += InformationToReport;
             ScoutEvents.OnFoundPlayer += ScoutHasChosenPlayerToReportTo;
+            ScoutEvents.OnReport += ScoutHasReported;
         }
 
         private void OnDisable()
@@ -46,6 +50,7 @@ namespace AshleyPearson
             ScoutEvents.OnNoInformationFound -= ChangeScoutLocation;
             ScoutEvents.OnInformationToReport -= InformationToReport;
             ScoutEvents.OnFoundPlayer -= ScoutHasChosenPlayerToReportTo;
+            ScoutEvents.OnReport -= ScoutHasReported;
         }
 
         private void Awake()
@@ -160,7 +165,47 @@ namespace AshleyPearson
                 Debug.Log("[ScoutSensor] Scout is NOT near chosen player.");
                 isNearPlayer = false;
             }
+        }
 
+        private void ScoutHasReported()
+        {
+            if (!reportRecencyCoroutineIsRunning)
+            {
+                StartCoroutine("ReportRecencyCountdown");
+            }
+
+            else
+            {
+                return;
+            }
+        }
+
+        private IEnumerator ReportRecencyCountdown()
+        {
+            //Acknowledge the report - don't know if this is even really needed, but just in case
+            hasReportedToPlayer = true;
+            
+            yield return new WaitForSeconds(3f);
+            
+            ResetAllVariables();
+        }
+
+        private void ResetAllVariables()
+        {
+            //Only not resetting isAlive
+            
+            infoToReport = false;
+            alienCountToReport = 0;
+            
+            hasChosenPlayerToReportTo = false;
+            chosenPlayer = null;
+            
+            //Not sure if these will mess things up, but want it to reset to move to scout location
+            isNearScoutLocation = false; 
+            isNearPlayer = false;
+            
+            
+            
         }
     }
 }

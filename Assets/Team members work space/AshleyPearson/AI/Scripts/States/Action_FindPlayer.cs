@@ -1,8 +1,9 @@
 using UnityEngine;
+using Anthill.AI;
 
 namespace AshleyPearson
 {
-    public class Action_FindPlayer : Anthill.AI.AntAIState
+    public class Action_FindPlayer : AntAIState
     {
         private GameObject scout;
         private Transform targetPlayer;

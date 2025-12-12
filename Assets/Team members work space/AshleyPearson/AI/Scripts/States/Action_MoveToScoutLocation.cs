@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
+
 using UnityEngine;
 using Anthill.AI;
 
 namespace AshleyPearson
 {
-    public class Action_MoveToScoutLocation : Anthill.AI.AntAIState
+    public class Action_MoveToScoutLocation : AntAIState
     {
         private GameObject scout;
         [SerializeField] private ScoutLocations scoutLocations;
