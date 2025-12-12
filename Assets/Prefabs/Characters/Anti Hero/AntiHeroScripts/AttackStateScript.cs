@@ -22,7 +22,7 @@ public class AttackStateScript : AntAIState
     public override void Enter()
     {
         laserEyes.enabled = true;
-        laserEyes.targetToDestroy = antiHeroAISense.targetObjectToDestroy;
+        laserEyes.SetLaserTarget(antiHeroAISense.targetObjectToDestroy.transform);
 
         animator.Play("Attack");
 
@@ -35,23 +35,22 @@ public class AttackStateScript : AntAIState
 
     public override void Execute(float aDeltaTime, float aTimeScale)
     {
-        if (laserEyes.targetToDestroy != null)
+        if (laserEyes.currentTarget != null)
         {
-            Health targetHealth = laserEyes.targetToDestroy.GetComponent<Health>();
+            Health targetHealth = laserEyes.currentTarget.GetComponent<Health>();
             if (targetHealth != null)
             {
                 targetHealth.TakeDamage(1f);
 
                 if (targetHealth.isDead)
                 {
-                    laserEyes.DisableBeams();
+                    laserEyes.ClearLaserTarget();
                     Finish();
                 }
             }
             else
             {
-                // No health component, just finish
-                laserEyes.DisableBeams();
+                laserEyes.ClearLaserTarget();
                 Finish();
             }
         }
@@ -64,8 +63,7 @@ public class AttackStateScript : AntAIState
     public override void Exit()
     {
         // Stop laser beams
-        laserEyes.targetToDestroy = null;
-        laserEyes.DisableBeams();
+        laserEyes.ClearLaserTarget();
         laserEyes.enabled = false;
 
         // Fade OUT laser SFX (networked)
