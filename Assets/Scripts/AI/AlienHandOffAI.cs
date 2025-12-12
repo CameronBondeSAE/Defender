@@ -24,17 +24,20 @@ public class AlienHandOffAI : AlienAI
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+
     protected override void Start()
     {
+        base.Start();
         scaledViewDistance = new Vector2(Mathf.CeilToInt(viewDistance.x), Mathf.CeilToInt(viewDistance.y));
         StartCoroutine(View()); // Starts the view that contantly runs
-        base.Start();
     }
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+        if (seenEnemy == this) seenEnemy = null;
     }
     protected override void FixedUpdate()
     {
@@ -110,9 +113,6 @@ public class AlienHandOffAI : AlienAI
                     }
 
 
-
-                    bool itemFound = false;
-
                     // Checks if any of the seen cells contained an item
                     AlienHandOffAI closestSeenEnemy = null;
                     float closestSeenEnemyDistance = float.MaxValue;
@@ -129,7 +129,7 @@ public class AlienHandOffAI : AlienAI
                                 if (hitDetction2)
                                 {
                                     AlienHandOffAI seenEnemyTmp = hit2.collider.GetComponent<AlienHandOffAI>();
-                                    if (seenEnemyTmp != null)
+                                    if (seenEnemyTmp != null && seenEnemyTmp != this)
                                     {
                                         float seenEnempyTmpDistance = Vector3.Distance(transform.position, seenEnemyTmp.transform.position);
                                         if (closestSeenEnemy == null || closestSeenEnemyDistance > seenEnempyTmpDistance)

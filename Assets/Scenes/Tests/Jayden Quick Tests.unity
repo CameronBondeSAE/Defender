@@ -7019,7 +7019,7 @@ PrefabInstance:
     - target: {fileID: 1563980846029736457, guid: 3c5d8f7eb1764d544b451d35564b4992, type: 3}
       propertyPath: alienPrefab
       value: 
-      objectReference: {fileID: 8897101158157931101, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
+      objectReference: {fileID: 8897101158157931101, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
     - target: {fileID: 1563980846029736457, guid: 3c5d8f7eb1764d544b451d35564b4992, type: 3}
       propertyPath: spawnDelayBetweenWaves
       value: 20
@@ -7284,84 +7284,6 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2404756377975861105, guid: b3e20067dc650244c8a8e485ae21a8ad, type: 3}
   m_PrefabInstance: {fileID: 999150976}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1010189503
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3054207550848092690, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 639874131
-      objectReference: {fileID: 0}
-    - target: {fileID: 3054207550848092690, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: SceneMigrationSynchronization
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3054207550848092690, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 3159821050
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158157931101, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_Name
-      value: Alien Hand Off
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158157931101, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 25.42979
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.70814323
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 13.057276
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8897101158158421629, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
---- !u!1 &1010189504 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8897101158157931101, guid: e297b5ddc5158a44c946a8ec29595e79, type: 3}
-  m_PrefabInstance: {fileID: 1010189503}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1011198850 stripped
 GameObject:
@@ -9710,8 +9632,6 @@ MonoBehaviour:
     _prefab: Assets/Prefabs/Items/CrateSpawn.prefab
   - _gameObject: {fileID: 562837698}
     _prefab: Assets/Prefabs/Items/CrateSpawn.prefab
-  - _gameObject: {fileID: 1010189504}
-    _prefab: Assets/Prefabs/Characters/Alien - Hand Off/Alien Hand Off.prefab
 --- !u!4 &1664449590
 Transform:
   m_ObjectHideFlags: 11
@@ -12123,4 +12043,3 @@ SceneRoots:
   - {fileID: 562837697}
   - {fileID: 877402396}
   - {fileID: 2138436721}
-  - {fileID: 1010189503}
