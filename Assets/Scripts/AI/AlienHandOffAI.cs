@@ -22,6 +22,8 @@ public class AlienHandOffAI : AlienAI
 
     public bool handingOff = false;
 
+    public bool spinMode = true; // You spin me right round baby right round
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -53,7 +55,12 @@ public class AlienHandOffAI : AlienAI
                 seekOtherEnemy = true;
                 originalDestination = lastDestination;
             }
-            MoveTo(seenEnemy.transform.position);
+            if (spinMode) MoveTo(seenEnemy.transform.position);
+            else
+            {
+                Vector3 midPoint = (transform.position + seenEnemy.transform.position) / 2;
+                MoveTo(midPoint);
+            }
         }
         base.FixedUpdate();
 
@@ -173,6 +180,7 @@ public class AlienHandOffAI : AlienAI
         if (!handingOff)
         {
             handingOff = true;
+            Debug.LogError("I am handing off");
             CalculatedPathData myPathData = AIPathFindingCore.CalculatePathCore(originalDestination, transform.position, 0);
             CalculatedPathData theirPathData = AIPathFindingCore.CalculatePathCore(seenEnemy.originalDestination, seenEnemy.transform.position, 0);
             if (myPathData.cost < theirPathData.cost)

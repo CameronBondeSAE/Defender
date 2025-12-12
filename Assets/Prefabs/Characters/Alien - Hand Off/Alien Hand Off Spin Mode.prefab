@@ -1961,7 +1961,7 @@ GameObject:
   - component: {fileID: 8830621070876474110}
   - component: {fileID: 1319488048951965238}
   m_Layer: 8
-  m_Name: Alien Hand Off
+  m_Name: Alien Hand Off Spin Mode
   m_TagString: Alien
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2059,6 +2059,7 @@ MonoBehaviour:
   cornerIndex: 0
   stuckTime: 0
   maxStuckTime: 2
+  lastDestination: {x: 0, y: 0, z: 0}
   tagDistance: 2.5
   mothership: {fileID: 0}
   isReached: 0
@@ -2075,7 +2076,6 @@ MonoBehaviour:
   originalDestination: {x: 0, y: 0, z: 0}
   seekOtherEnemy: 0
   handingOff: 0
-  spinMode: 0
 --- !u!195 &750841075112867850
 NavMeshAgent:
   m_ObjectHideFlags: 0

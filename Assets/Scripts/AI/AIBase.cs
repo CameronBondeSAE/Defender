@@ -40,7 +40,26 @@ public class AIBase : CharacterBase
 	private bool isCivilian = true;
 
 	[HideInInspector]
-	public AlienAI escortingAlien;
+	public AlienAI escortingAlien 
+	{
+		get
+		{
+			return escortingAlienData;
+        }
+		set
+		{
+			try
+			{
+				if (escortingAlienData.escortingCivs.Contains(this)) escortingAlienData.escortingCivs.Remove(this);
+			}
+			finally
+			{
+				escortingAlienData = value;
+			}
+        }
+	}
+    [HideInInspector]
+    public AlienAI escortingAlienData;
 
 	public bool useRigidbody = true;
 
