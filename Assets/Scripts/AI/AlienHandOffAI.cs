@@ -115,6 +115,7 @@ public class AlienHandOffAI : AlienAI
 
                     // Checks if any of the seen cells contained an item
                     AlienHandOffAI closestSeenEnemy = null;
+                    float closestSeenEnemyDistance = float.MaxValue;
                     for (int i = 0; i < checkPositions.Count; i++)
                     {
                         if (!AIGrid.instance.unwalkableGrid.Contains(checkPositions[i])) // Unwalkable can't contain anything or be interacted with, so no need to check
@@ -130,8 +131,12 @@ public class AlienHandOffAI : AlienAI
                                     AlienHandOffAI seenEnemyTmp = hit2.collider.GetComponent<AlienHandOffAI>();
                                     if (seenEnemyTmp != null)
                                     {
-                                        if (closestSeenEnemy == null) closestSeenEnemy = seenEnemyTmp;
-                                        else if (Vector3.Distance(transform.position, closestSeenEnemy.transform.position) > Vector3.Distance(transform.position, seenEnemyTmp.transform.position)) closestSeenEnemy = seenEnemyTmp;
+                                        float seenEnempyTmpDistance = Vector3.Distance(transform.position, seenEnemyTmp.transform.position);
+                                        if (closestSeenEnemy == null || closestSeenEnemyDistance > seenEnempyTmpDistance)
+                                        {
+                                            closestSeenEnemy = seenEnemyTmp;
+                                            closestSeenEnemyDistance = seenEnempyTmpDistance;
+                                        }
 
                                     }
                                 }
@@ -142,7 +147,7 @@ public class AlienHandOffAI : AlienAI
                         //seenCells[(int)checkPositions[i].x, (int)checkPositions[i].y, (int)checkPositions[i].z] = (checkPositions[i]);
                     }
 
-                    seenEnemy = closestSeenEnemy;
+                    if (closestSeenEnemy!= null) seenEnemy = closestSeenEnemy;
 
                 }
                 catch (Exception e)
@@ -150,13 +155,12 @@ public class AlienHandOffAI : AlienAI
                     Debug.LogError(e);
                 }
 
-                for (int i = 0; i < 10; i++)
-                {
-                    yield return null;  
-                }
                 //Debug.Log("Active");
             }
-            yield return null;  
+            for (int i = 0; i < 10; i++)
+            {
+                yield return null;
+            }
 
 
         }
