@@ -46,6 +46,7 @@ public class RotateView : UsableItem_Base
         yield return new WaitForSeconds(0.5f);
         {
         stoneEmiterRight.Stop();    
+        stoneEmiterLeft.Stop(); 
         }
     }
 }

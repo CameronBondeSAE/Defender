@@ -4842,6 +4842,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1228476931365731668}
+  - component: {fileID: 2366868546965709179}
   m_Layer: 7
   m_Name: View
   m_TagString: Untagged
@@ -4867,6 +4868,38 @@ Transform:
   - {fileID: 2632894297347000051}
   m_Father: {fileID: 2986412653475495803}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2366868546965709179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2952235974384557167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194514caec58a004a8513c51dd032a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  audioSource: {fileID: 0}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
+  expiryDuration: 0
+  activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
+  countdownUIPrefab: {fileID: 0}
+  itemName: 
+  description: 
+  launchForce: 10
+  launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
+  SG: {fileID: 2325821605489312529}
+  slimeImpact: {fileID: 4811106134575458277}
 --- !u!1 &4868229853731165323
 GameObject:
   m_ObjectHideFlags: 0
@@ -5153,7 +5186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3310347482
+  GlobalObjectIdHash: 156275456
   InScenePlacedSourceGlobalObjectIdHash: 156275456
   DeferredDespawnTick: 0
   Ownership: 1
@@ -5257,8 +5290,10 @@ MonoBehaviour:
   description: Slow down enemy in the area
   launchForce: 10
   launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
   slimeParticle: {fileID: 4281521664394520784}
   slimeField: {fileID: 3148075346239589259}
+  SlimeViwer: {fileID: 2366868546965709179}
 --- !u!1001 &8291954244950094857
 PrefabInstance:
   m_ObjectHideFlags: 0

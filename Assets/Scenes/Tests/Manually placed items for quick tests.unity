@@ -1894,13 +1894,52 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2104576460910792644, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 538425174}
   m_SourcePrefab: {fileID: 100100000, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+--- !u!1 &538425170 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2104576460910792644, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+  m_PrefabInstance: {fileID: 538425169}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &538425171 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2430017054364226679, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+  m_PrefabInstance: {fileID: 538425169}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &538425172 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8292696570413303673, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
   m_PrefabInstance: {fileID: 538425169}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &538425173 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -6274315758717229032, guid: d0e9016841755e64584fc8ce11db517b, type: 3}
+  m_PrefabInstance: {fileID: 538425169}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e1b84b348d96f448792507f2ea8750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &538425174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538425170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759de59c3f786834995a8a175ade71a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  alienSfx: {fileID: 538425173}
+  Source: {fileID: 538425171}
 --- !u!4 &541257373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5085391778498778146, guid: e738b699983ba2c4590499f0c294bb9f, type: 3}
@@ -7850,7 +7889,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2217731132639180367, guid: 1649571ea1d51bc4e9a6ea4ac4e4d713, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -8997,13 +9037,64 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2952235974384557167, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1696165609}
   m_SourcePrefab: {fileID: 100100000, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+--- !u!1 &1696165606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2952235974384557167, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+  m_PrefabInstance: {fileID: 1696165605}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1696165607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2325821605489312529, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
+  m_PrefabInstance: {fileID: 1696165605}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0235807faf699534193cbcd7bac60cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1696165608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2986412653475495803, guid: cb1b18165b0a85148a66fb0ef837eeff, type: 3}
   m_PrefabInstance: {fileID: 1696165605}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1696165609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696165606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194514caec58a004a8513c51dd032a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  audioSource: {fileID: 0}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
+  expiryDuration: 0
+  activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
+  countdownUIPrefab: {fileID: 0}
+  itemName: 
+  description: 
+  launchForce: 10
+  launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
+  SG: {fileID: 1696165607}
+  slimeImpact: {fileID: 0}
 --- !u!1001 &1715496361
 PrefabInstance:
   m_ObjectHideFlags: 0
