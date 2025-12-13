@@ -14,6 +14,8 @@ namespace AshleyPearson
         public string LobbyJoinCode;
         public List<string> PlayerNames;
         public bool isHost; //To determine who is host for UI before relay networked
+        
+        public bool   GameStarted;
 
     }
 }

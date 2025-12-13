@@ -67,24 +67,10 @@ public class DangerousAlienControl : CharacterBase
         if (animationController == null)
             animationController = GetComponentInChildren<AIAnimationController>();
 
-        if (playerTransform == null)
-        {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-            playerHealth = playerObj.GetComponent<PlayerHealth>();
-            if (playerObj != null)
-            {
-                playerTransform = playerObj.transform;
-            }
-        }
-
-        if (smartAlly == null)
-            smartAlly = FindObjectOfType<SmartAlienControl>();
-
         if (navMeshAgent != null)
             normalMoveSpeed = navMeshAgent.speed;
         SetupAttackHitboxInstance();
     }
-
     private void SetupAttackHitboxInstance()
     {
         if (attackHitboxInstance != null)
@@ -112,6 +98,17 @@ public class DangerousAlienControl : CharacterBase
 
     private void Update()
     {
+        if (smartAlly == null)
+            smartAlly = FindObjectOfType<SmartAlienControl>();
+        if (playerTransform == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            playerHealth = playerObj.GetComponent<PlayerHealth>();
+            if (playerObj != null)
+            {
+                playerTransform = playerObj.transform;
+            }
+        }
         if (navMeshAgent == null || !navMeshAgent.enabled || animationController == null)
         {
             return;

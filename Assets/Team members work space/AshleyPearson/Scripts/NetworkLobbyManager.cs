@@ -26,7 +26,7 @@ namespace AshleyPearson
             // }
 
             Debug.Log("NetworkLobbyManager: Host starting game, starting relay server...");
-            StartRelayHost();
+            // StartRelayHost();
         }
 
         private async Task StartRelayHost()

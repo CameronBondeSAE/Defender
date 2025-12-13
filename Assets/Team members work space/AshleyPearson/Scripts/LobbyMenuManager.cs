@@ -1,4 +1,5 @@
 using System.Reflection;
+using CameronBonde;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -6,11 +7,12 @@ using UnityEngine.UI;
 using WebSocketSharp;
 using Unity.Netcode;
 using DanniLi;
+using CameronBonde; 
 
 namespace AshleyPearson
 {
     //Used to switch between menu groups
-    public class LobbyMenuManager : MonoBehaviour
+    public class LobbyMenuManager : NetworkBehaviour
     {
        [Header("Lobby Menu Groups")]
        [SerializeField] private GameObject usernameMenuGroup;
@@ -23,6 +25,7 @@ namespace AshleyPearson
        [Header("Level Loading")]
        [SerializeField] private LevelLoader levelLoader;
        [SerializeField] private NetworkLobbyManager networkLobbyManager;
+       [SerializeField] private LobbyManager lobbyManager;
 
        //Used to determine which UI to show after username entered
        private System.Action actionAfterUsernameEntered;
@@ -94,20 +97,30 @@ namespace AshleyPearson
 
        public void OnButtonClick_HostStartedGame()
        {
-	       // CAM HACK: Is there where the host should start?
-	       networkLobbyManager.HostStartGame();
-	       
-	       
-           // //This method doesn't check for host as only the host should have access to the button in the first place
-           LobbyEvents.OnButtonClicked_HostStartedGame?.Invoke();
-
-           // only host can start level loading
-           if (levelLoader != null &&
-               NetworkManager.Singleton != null &&
-               NetworkManager.Singleton.IsHost)
-           {
-               levelLoader.LoadFirstLevelServerRpc();
-           } 
+	       // // CAM HACK: Is there where the host should start?
+	       // networkLobbyManager.HostStartGame();
+	       //
+	       //
+        //    // //This method doesn't check for host as only the host should have access to the button in the first place
+        //    LobbyEvents.OnButtonClicked_HostStartedGame?.Invoke();
+        //
+        //    // only host can start level loading
+        //    if (levelLoader != null &&
+        //        NetworkManager.Singleton != null &&
+        //        NetworkManager.Singleton.IsHost)
+        //    {
+        //        levelLoader.LoadFirstLevelServerRpc();
+        //    } 
+        LobbyEvents.OnButtonClicked_HostStartedGame?.Invoke();
+        // host tells the lobby that the game is starting
+        if (lobbyManager != null)
+        {
+            lobbyManager.HostStartGameFromLobby();
+        }
+        else
+        {
+            Debug.LogError("LobbyMenuManager: LobbyManager reference is missing.");
+        }
        }
        
        private void ShowUsernameScreen()
@@ -129,7 +142,6 @@ namespace AshleyPearson
            usernameMenuGroup.SetActive(false);
            joinGameMenuGroup.SetActive(false);
            waitingForPlayersGroup.SetActive(false);
-           
            //Open host menu
            hostMenuGroup.SetActive(true);
        }

@@ -520,9 +520,6 @@ PrefabInstance:
       addedObject: {fileID: 1563561476995756795}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 206602178159592412}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6630151767160371311}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 07ef3d26b228fa74080631f6b0bc0e57, type: 3}
       insertIndex: -1
@@ -741,24 +738,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   animator: {fileID: 2888160544295006999}
---- !u!114 &206602178159592412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387163446135835622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 365849d26fefa1c4d9116e9b635c4a83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transparentMaterial: {fileID: 2100000, guid: 795bc4943fa13d9448d920f300f13504, type: 2}
-  transparencyAlpha: 0.3
-  blockLayers:
-    serializedVersion: 2
-    m_Bits: 8
-  sphereCastRadius: 1.5
 --- !u!114 &6630151767160371311
 MonoBehaviour:
   m_ObjectHideFlags: 0
