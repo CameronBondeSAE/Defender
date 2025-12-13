@@ -13,6 +13,6 @@ public class AboveHeadDisplay : MonoBehaviour
 
     public void ChangeMessage(string message)
     {
-        messageText.text = message;
+        messageText.text = message; 
     }
 }

@@ -20,12 +20,14 @@ MonoBehaviour:
       name: AtFood
     - id: 2
       name: EatenFood
+    - id: 3
+      name: InFrenzy
   actions:
   - name: GoToFood
     isDefault: 0
     state: {fileID: 1674417238749895464, guid: b0a940d6c0a74e5469a10d880f2491b2, type: 3}
     cost: 0
-    position: {x: 441, y: 183}
+    position: {x: 458, y: 188}
     pre:
     - id: 0
       value: 1
@@ -38,7 +40,7 @@ MonoBehaviour:
     isDefault: 0
     state: {fileID: 6652989674068131733, guid: 95a73e26918483b44baa677edafe1442, type: 3}
     cost: 0
-    position: {x: 635, y: 184}
+    position: {x: 664, y: 186}
     pre:
     - id: 1
       value: 1
@@ -51,8 +53,34 @@ MonoBehaviour:
     isDefault: 1
     state: {fileID: 2775027862409512264, guid: bbe878cdbc99d8b47a62d8ad2fb2a466, type: 3}
     cost: 0
-    position: {x: 245, y: 192}
+    position: {x: 253, y: 187}
     pre:
+    - id: 0
+      value: 0
+    post:
+    - id: 0
+      value: 1
+  - name: FrenzyEat
+    isDefault: 0
+    state: {fileID: 7640918088090010756, guid: 7041beb463efe3144b2a36630609d5a7, type: 3}
+    cost: 0
+    position: {x: 667, y: 397}
+    pre:
+    - id: 3
+      value: 1
+    - id: 2
+      value: 0
+    post:
+    - id: 2
+      value: 1
+  - name: FrenzyLook
+    isDefault: 0
+    state: {fileID: 6246031949758005820, guid: 81e5f16f1bba18744b97f44d8aa9a06d, type: 3}
+    cost: 0
+    position: {x: 253, y: 383}
+    pre:
+    - id: 3
+      value: 1
     - id: 0
       value: 0
     post:
@@ -61,17 +89,19 @@ MonoBehaviour:
   goals:
   - name: EatenFood
     isDefault: 1
-    position: {x: 830, y: 236}
+    position: {x: 879, y: 349}
     conditions:
     - id: 2
       value: 1
   worldStates:
   - position: {x: 251, y: 44}
-    isAutoUpdate: 0
+    isAutoUpdate: 1
     list:
     - id: 0
       value: 0
     - id: 1
       value: 0
     - id: 2
+      value: 0
+    - id: 3
       value: 0

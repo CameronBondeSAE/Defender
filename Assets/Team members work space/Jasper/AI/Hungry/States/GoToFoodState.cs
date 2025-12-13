@@ -3,24 +3,50 @@ using UnityEngine;
 
 namespace Jasper_AI
 {
-    public class GoToFoodState : AntAIState
+    public class GoToFoodState : HungryAIBase
     {
-        private GameObject _parent;
-        private HungryAI _sensor;
-        
-        public override void Create(GameObject go)
-        {
-            _parent = go; 
-            _sensor = go.GetComponent<HungryAI>();
-        }
-
+        private Vector3 lastTargetPosition;
+        private bool _changedSpeed; 
         public override void Enter()
         {
-#if UNITY_EDITOR
-            Debug.Log($"{_parent.name} is going to food");
-#endif
+            Debug.Log($"{parent.name} is going to food");
+
+            //make faster if in a frenzy
+            if (sensor.inFrenzy)
+            {
+                Debug.Log("Frenzy speed");
+                sensor.MoveSpeed += 1; 
+                _changedSpeed = true;
+            }
             
-            _parent.GetComponent<HungryAI>().MoveTo(_sensor.targetFood.transform.position);
+            lastTargetPosition = sensor.targetFood.transform.position;
+            sensor.MoveTo(lastTargetPosition);
         }
+
+        public override void Execute(float aDeltaTime, float aTimeScale)
+        {
+            //if the food has moved recalculate path 
+            if (lastTargetPosition != sensor.targetFood.transform.position)
+            {
+                lastTargetPosition = sensor.targetFood.transform.position;
+                sensor.MoveTo(lastTargetPosition);
+            }
+            //if the food is close enough to reach
+            else if (Vector3.Distance(lastTargetPosition, transform.position) < look.Reach)
+            {
+                Debug.Log("Reached food.");
+                sensor.atFood = true;
+                Finish();
+            }
+        }
+        
+        public override void Exit()
+        {
+            if (_changedSpeed)
+            {
+                sensor.MoveSpeed -= 1;
+            }
+        }
+        
     }
 }
