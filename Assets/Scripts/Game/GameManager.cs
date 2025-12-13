@@ -439,48 +439,53 @@ namespace DanniLi
 		#region Player
 		private void SpawnPlayersForNewLevel()
 		{
-			if (!IsServer) return;
-			if (NetworkManager.Singleton == null) return;
-
-			if (playerPrefab == null)
-				return;
-			
-			
-			Transform spawnPoint = null;
-			if (levelInfo != null && levelInfo.playerSpawnPoint != null)
-			{
-				spawnPoint = levelInfo.playerSpawnPoint;
-			}
-
-			if (spawnPoint == null)
+			if (!IsServer || NetworkManager.Singleton == null)
 				return;
 
 			foreach (var kvp in NetworkManager.Singleton.ConnectedClients)
 			{
 				ulong clientId = kvp.Key;
-				NetworkClient client = kvp.Value;
-				NetworkObject existing = client.PlayerObject;
-				if (existing != null)
-				{
-					existing.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-					continue;
-				}
-				GameObject instance = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
-				if (instance == null)
-				{
-					continue;
-				}
-
-				var netObj = instance.GetComponent<NetworkObject>();
-				if (netObj == null)
-				{
-					Destroy(instance);
-					continue;
-				}
-
-				netObj.SpawnAsPlayerObject(clientId, true);
+				SpawnPlayerForClient(clientId);
 			}
 		}
+		
+		private void SpawnPlayerForClient(ulong clientId)
+		{
+			if (!IsServer || NetworkManager.Singleton == null)
+				return;
+
+			if (playerPrefab == null)
+				return;
+
+			Transform spawnPoint = null;
+			if (levelInfo != null && levelInfo.playerSpawnPoint != null)
+				spawnPoint = levelInfo.playerSpawnPoint;
+
+			if (spawnPoint == null)
+				return;
+
+			if (!NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out var client))
+				return;
+			
+			NetworkObject existing = client.PlayerObject;
+			if (existing != null)
+			{
+				existing.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+				return;
+			}
+			GameObject instance = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+			if (instance == null) return;
+
+			NetworkObject netObj = instance.GetComponent<NetworkObject>();
+			if (netObj == null)
+			{
+				Destroy(instance);
+				return;
+			}
+
+			netObj.SpawnAsPlayerObject(clientId, true);
+		}
+
 
 		#endregion
 		
@@ -564,7 +569,12 @@ namespace DanniLi
 		{
 			if (IsServer && NetworkManager != null)
 			{
-				if (playerID != NetworkManager.ServerClientId) 
+				// spawn this client's player now
+				if (levelInfo != null)
+				{
+					SpawnPlayerForClient(playerID);
+				}
+				if (playerID != NetworkManager.ServerClientId)
 				{
 					TrySpawnCrateForNewClient();
 				}
