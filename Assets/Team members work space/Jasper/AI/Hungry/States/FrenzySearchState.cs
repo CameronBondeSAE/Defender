@@ -6,7 +6,12 @@ namespace Jasper_AI
     {
         public override void Enter()
         {
-         //   Debug.Log($"{parent.name} is frenzy eating");
+            sensor.atFood = false;
+            sensor.targetFood = null; 
+            sensor.seesFood = false;
+            sensor.eatenFood = false;
+            
+            //Debug.Log($"{parent.name} is frenzy eating");
             pathFollow.StartFollowing(true);
             aboveHeadDisplay.ChangeMessage("Frenzied search");
             sensor.health.OnHealthChanged += HealthChanged;
@@ -25,15 +30,17 @@ namespace Jasper_AI
                     sensor.targetIsLiving = false;
                     item.OnItemDestroyed += sensor.TargetDestroyed;
                     Finish();
+                    return;
                 }
-
+                
                 if (hit.transform.gameObject.TryGetComponent(out Health health) && !health.isDead)
                 {
-                    sensor.targetFood = hit.transform.gameObject;
+                    sensor.targetFood = health.gameObject;
                     sensor.seesFood = true;
                     sensor.targetIsLiving = true;
                     health.OnDeath += sensor.TargetDestroyed;
                     Finish();
+                    return;
                 }
             }
         }

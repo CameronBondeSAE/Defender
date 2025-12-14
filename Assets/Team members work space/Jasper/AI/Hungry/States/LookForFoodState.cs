@@ -7,6 +7,13 @@ namespace Jasper_AI
         
         public override void Enter()
         {
+            sensor.atFood = false;
+            sensor.targetFood = null; 
+            sensor.inFrenzy = false;
+            sensor.seesFood = false;
+            sensor.eatenFood = false;
+            sensor.MoveSpeed = sensor.DefaultSpeed;
+            
             //Debug.Log($"{parent.name} is looking for food");
             pathFollow.StartFollowing(true);
             aboveHeadDisplay.ChangeMessage("Looking for food");
@@ -38,6 +45,7 @@ namespace Jasper_AI
 
         private void HealthChanged(float health)
         {
+            Debug.Log("Health changed in ai looking for food");
             if (sensor.FrenzyCheck())
             {
                 sensor.inFrenzy = true;

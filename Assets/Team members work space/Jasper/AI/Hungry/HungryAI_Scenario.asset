@@ -46,6 +46,8 @@ MonoBehaviour:
       value: 1
     - id: 2
       value: 0
+    - id: 3
+      value: 0
     post:
     - id: 2
       value: 1
@@ -57,6 +59,8 @@ MonoBehaviour:
     pre:
     - id: 0
       value: 0
+    - id: 3
+      value: 0
     post:
     - id: 0
       value: 1
@@ -64,13 +68,13 @@ MonoBehaviour:
     isDefault: 0
     state: {fileID: 7640918088090010756, guid: 7041beb463efe3144b2a36630609d5a7, type: 3}
     cost: 0
-    position: {x: 667, y: 397}
+    position: {x: 656, y: 426}
     pre:
     - id: 3
       value: 1
     - id: 2
       value: 0
-    - id: 0
+    - id: 1
       value: 1
     post:
     - id: 2
@@ -79,7 +83,7 @@ MonoBehaviour:
     isDefault: 0
     state: {fileID: 6246031949758005820, guid: 81e5f16f1bba18744b97f44d8aa9a06d, type: 3}
     cost: 0
-    position: {x: 253, y: 383}
+    position: {x: 253, y: 409}
     pre:
     - id: 3
       value: 1

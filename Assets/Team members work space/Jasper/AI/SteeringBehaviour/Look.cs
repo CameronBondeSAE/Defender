@@ -30,7 +30,7 @@ public class Look : MonoBehaviour
                     out RaycastHit hit, sightDistance))
             {
                 inView.Add(hit); 
-                Debug.DrawLine(transform.position, hit.point, Color.cyan);
+                //Debug.DrawLine(transform.position, hit.point, Color.cyan);
             }
             
             _rayAngle += fieldOfView / _rayCount; 
@@ -54,7 +54,7 @@ public class Look : MonoBehaviour
 
         for (int i = 0; i < _rayCount; i++)
         {
-            Debug.DrawRay(transform.position, Quaternion.Euler(0, _rayAngle, 0) * _start, Color.cyan);
+            //Debug.DrawRay(transform.position, Quaternion.Euler(0, _rayAngle, 0) * _start, Color.cyan);
             
             if (Physics.Raycast(transform.position, Quaternion.Euler(0, _rayAngle, 0) * _start, 
                     out RaycastHit hit, sightDistance, observableMask))
@@ -80,5 +80,13 @@ public class Look : MonoBehaviour
     public Collider[] CheckSurroundingArea(Vector3 center, float radius)
     {
         return Physics.OverlapSphere(center, radius);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, reachDistance);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, sightDistance);
     }
 }

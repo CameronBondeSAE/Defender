@@ -13,7 +13,7 @@ namespace Jasper_AI
             InFrenzy = 3
         }
 
-        public int biteStrength; 
+        public int biteStrength = 2; 
         
         public bool seesFood, atFood, eatenFood, inFrenzy;
 

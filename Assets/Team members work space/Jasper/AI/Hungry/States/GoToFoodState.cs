@@ -31,9 +31,11 @@ namespace Jasper_AI
             if (sensor.targetFood is null)
             {
                 Finish();
+                return;
             }
+            
             //if the food has moved recalculate path 
-            else if (lastTargetPosition != sensor.targetFood.transform.position)
+            if (lastTargetPosition != sensor.targetFood.transform.position)
             {
                 lastTargetPosition = sensor.targetFood.transform.position;
                 sensor.MoveTo(lastTargetPosition);

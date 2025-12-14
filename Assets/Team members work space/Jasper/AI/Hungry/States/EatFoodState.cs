@@ -8,8 +8,8 @@ namespace Jasper_AI
         private UsableItem_Base _itemBase;
         public override void Enter()
         {
-
-            Debug.Log($"{parent.name} is eating");
+            sensor.MoveSpeed = 0;
+            aboveHeadDisplay.ChangeMessage("Eating");
             
             _itemBase = sensor.targetFood.GetComponent<UsableItem_Base>();
             

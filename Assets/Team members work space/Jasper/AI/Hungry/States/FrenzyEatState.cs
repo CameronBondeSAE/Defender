@@ -5,10 +5,11 @@ namespace Jasper_AI
 {
     public class FrenzyEatState : HungryAIBase
     {
-        private Health _targetHealth; 
+        private Health _targetHealth;
         
         public override void Enter()
         {
+            sensor.MoveSpeed = 0; 
             aboveHeadDisplay.ChangeMessage("Frenzy eating");
             
             if (!sensor.targetIsLiving)
@@ -38,12 +39,11 @@ namespace Jasper_AI
                         break;
                 }
                 Finish();
+                return;
             }
-            else
-            {
-                _targetHealth = sensor.targetFood.GetComponent<Health>();
-                StartCoroutine(EatAlien());
-            }
+            
+            _targetHealth = sensor.targetFood.GetComponent<Health>();
+            StartCoroutine(EatAlien());
         }
 
         public override void Execute(float aDeltaTime, float aTimeScale)
@@ -51,34 +51,35 @@ namespace Jasper_AI
             Debug.DrawLine(transform.position, sensor.targetFood.transform.position, Color.red);
         }
 
+        public override void Exit()
+        {
+            sensor.MoveSpeed = sensor.DefaultSpeed;
+        }
+
         /// <summary>
         /// Damages target alien every 2 seconds until they move too far away 
         /// </summary>
         private IEnumerator EatAlien()
         {
-            //if alien still close enough then take a bite and wait two seconds again 
-            if (Vector3.Distance(transform.position, sensor.targetFood.transform.position) < look.Reach)
+            //check target still exists 
+            if (sensor.targetFood is null)
             {
-                _targetHealth.TakeDamage(sensor.biteStrength);
-
-                //if the alien is dead we have eaten 
-                if (sensor.targetFood is null)
-                {
-                    sensor.eatenFood = true;
-                    Finish();
-                }
-                else
-                {
-                    yield return new WaitForSeconds(2);
-                }
-            }
-            //otherwise no longer at the food 
-            else
-            {
-                Debug.Log("Alien moved too far away ");
-                sensor.atFood = false; 
+                sensor.eatenFood = true;
                 Finish();
+                yield break;
             }
+            
+            //check food still within reach 
+            if (Vector3.Distance(transform.position, sensor.targetFood.transform.position) > look.Reach)
+            {
+                sensor.atFood = false;
+                Finish();
+                yield break;
+            }
+            
+            _targetHealth.TakeDamage(sensor.biteStrength);
+            sensor.health.Heal(sensor.biteStrength);
+            yield return new WaitForSeconds(2);
         }
     }
 }

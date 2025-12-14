@@ -181,7 +181,7 @@ MonoBehaviour:
   eatenFood: 0
   inFrenzy: 0
   targetFood: {fileID: 0}
-  targetIsAlien: 0
+  targetIsLiving: 0
 --- !u!114 &8256000431269054652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldOfView: 180
   sightDistance: 15
-  reachDistance: 2
+  reachDistance: 3
   maxRays: 6
   floor:
     serializedVersion: 2
