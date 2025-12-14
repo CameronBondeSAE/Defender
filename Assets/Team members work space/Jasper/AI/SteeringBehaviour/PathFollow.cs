@@ -8,13 +8,19 @@ namespace Jasper_AI
     {
         private int currentPoint;
         [SerializeField] private AIBase aiBase;
-        private bool _following; 
+        private bool _following;
+        private bool _random;
 
         public delegate void PathEnd();
         public event PathEnd OnPathEnd;
 
-        public void StartFollowing()
+        public void StartFollowing(bool random = false)
         {
+            if (random)
+            {
+                aiBase.patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(aiBase.patrolPointsCount);
+                _random = true;
+            }
             Debug.Log($"{name} starting path follow");
             currentPoint = 0;
             _following = true;
@@ -37,8 +43,16 @@ namespace Jasper_AI
 
             if (currentPoint > aiBase.patrolPoints.Length)
             {
-                _following = false;
-                OnPathEnd?.Invoke();
+                if (_random)
+                {
+                    currentPoint = 0;
+                    aiBase.patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(aiBase.patrolPointsCount);
+                }
+                else
+                {
+                    _following = false;
+                    OnPathEnd?.Invoke();
+                }
             }
                 
             aiBase.MoveTo(aiBase.patrolPoints[currentPoint].position);

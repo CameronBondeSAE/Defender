@@ -1,40 +1,43 @@
 using System;
 using UnityEngine;
 
-public class TestPatient : MonoBehaviour
+namespace Jasper_AI
 {
-    [SerializeField] private Material healedMat;
-    [SerializeField] private Material unhealedMat;
-
-    private Health _health;
-    private Renderer _renderer;
-    
-    private void OnEnable()
+    public class TestPatient : MonoBehaviour
     {
-        _health = gameObject.GetComponent<Health>();
-        _renderer = GetComponent<Renderer>();
-        _health.currentHealth.OnValueChanged += HealthChanged;
-    }
+        [SerializeField] private Material healedMat;
+        [SerializeField] private Material unhealedMat;
 
-    private void Start()
-    {
-        _health.TakeDamage(7);
-    }
+        private Health _health;
+        private Renderer _renderer;
 
-    private void OnDisable()
-    {
-        _health.currentHealth.OnValueChanged -= HealthChanged;
-    }
-
-    private void HealthChanged(float previousHealth, float newHealth)
-    {
-        if (newHealth >= _health.maxHealth)
+        private void OnEnable()
         {
-            _renderer.material = healedMat; 
+            _health = gameObject.GetComponent<Health>();
+            _renderer = GetComponent<Renderer>();
+            _health.currentHealth.OnValueChanged += HealthChanged;
         }
-        else
+
+        private void Start()
         {
-            _renderer.material = unhealedMat;
+            _health.TakeDamage(7);
+        }
+
+        private void OnDisable()
+        {
+            _health.currentHealth.OnValueChanged -= HealthChanged;
+        }
+
+        private void HealthChanged(float previousHealth, float newHealth)
+        {
+            if (newHealth >= _health.maxHealth)
+            {
+                _renderer.material = healedMat;
+            }
+            else
+            {
+                _renderer.material = unhealedMat;
+            }
         }
     }
 }

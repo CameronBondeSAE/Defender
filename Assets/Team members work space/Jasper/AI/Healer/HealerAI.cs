@@ -6,10 +6,12 @@ namespace Jasper_AI
     public class HealerAI : AIBase, ISense
     {
         [SerializeField] private GameObject healPrefab;
+        public LayerMask healLayer;
         public int healStrength;
         public float longDistanceThreshold;
         public GameObject patient;
         public float healCooldown;
+        public Health patientHealth;
         
         public enum HealerAIScenario
         {

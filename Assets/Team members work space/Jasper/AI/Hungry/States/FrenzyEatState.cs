@@ -5,18 +5,13 @@ namespace Jasper_AI
 {
     public class FrenzyEatState : HungryAIBase
     {
-        private AlienAI _alien; 
+        private Health _targetHealth; 
         
         public override void Enter()
         {
-#if UNITY_EDITOR
-            Debug.Log($"{parent.name} is frenzy eating");
-#endif
+            aboveHeadDisplay.ChangeMessage("Frenzy eating");
             
-#if UNITY_EDITOR
-            Debug.Log($"{parent.name} is eating");
-#endif
-            if (!sensor.targetIsAlien)
+            if (!sensor.targetIsLiving)
             {
                 UsableItem_Base itemBase = sensor.targetFood.GetComponent<UsableItem_Base>();
                 UsableItem_Base.ItemRoleForAI role = itemBase.RoleForAI;
@@ -46,9 +41,14 @@ namespace Jasper_AI
             }
             else
             {
-                _alien = sensor.targetFood.GetComponent<AlienAI>();
+                _targetHealth = sensor.targetFood.GetComponent<Health>();
                 StartCoroutine(EatAlien());
             }
+        }
+
+        public override void Execute(float aDeltaTime, float aTimeScale)
+        {
+            Debug.DrawLine(transform.position, sensor.targetFood.transform.position, Color.red);
         }
 
         /// <summary>
@@ -59,12 +59,11 @@ namespace Jasper_AI
             //if alien still close enough then take a bite and wait two seconds again 
             if (Vector3.Distance(transform.position, sensor.targetFood.transform.position) < look.Reach)
             {
-                _alien.health.TakeDamage(sensor.biteStrength);
+                _targetHealth.TakeDamage(sensor.biteStrength);
 
                 //if the alien is dead we have eaten 
-                if (_alien.health.isDead)
+                if (sensor.targetFood is null)
                 {
-                    sensor.targetFood = null;
                     sensor.eatenFood = true;
                     Finish();
                 }

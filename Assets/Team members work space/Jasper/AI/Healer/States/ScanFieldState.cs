@@ -6,24 +6,30 @@ namespace Jasper_AI
     {
         public override void Enter()
         {
+            sensor.seesInjured = false;
+            sensor.patient = null;
+            sensor.atPatient = false;
+            sensor.healed = false; 
+            
             //Debug.Log($"{parent.name} is looking for patients");
-            ResetPatrolPoints();
-            pathFollow.OnPathEnd += ResetPatrolPoints;
             aboveHeadDisplay.ChangeMessage("Looking for patients");
+            pathFollow.StartFollowing(true);
+
+            sensor.MoveSpeed = sensor.DefaultSpeed; 
         }
 
         public override void Execute(float aDeltaTime, float aTimeScale)
         {
+            
             //see if any objects in view are usable and consumable 
-            foreach (RaycastHit hit in look.LookAround())
+            foreach (RaycastHit hit in look.LookAround(sensor.healLayer))
             {
-                //if the hit has an alien tag and health component
-                if (!hit.collider.gameObject.CompareTag("Alien") ||
-                    !hit.collider.gameObject.TryGetComponent(out Health health))
+                //if the hit doesnt have a health component
+                if (!hit.collider.gameObject.TryGetComponent(out Health health))
                 {
                     continue;
                 }
-                //if the health is below 70% of its max health 
+                //if the health is above 70% of its max health 
                 if (health.currentHealth.Value > health.maxHealth * .7f)
                 {
                     continue;
@@ -38,20 +44,14 @@ namespace Jasper_AI
                 }
                 
                 sensor.patient = hit.collider.gameObject;
-                pathFollow.StopFollowing();
+                sensor.patientHealth = health;
                 Finish();
             }
         }
 
         public override void Exit()
         {
-            pathFollow.OnPathEnd -= ResetPatrolPoints;
-        }
-
-        private void ResetPatrolPoints()
-        {
-            sensor.patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(sensor.patrolPointsCount);
-            pathFollow.StartFollowing(); 
+            pathFollow.StopFollowing();
         }
     }
 }

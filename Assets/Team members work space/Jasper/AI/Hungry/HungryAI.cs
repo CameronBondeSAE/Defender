@@ -18,7 +18,7 @@ namespace Jasper_AI
         public bool seesFood, atFood, eatenFood, inFrenzy;
 
         public GameObject targetFood;
-        public bool targetIsAlien; 
+        public bool targetIsLiving; 
 
         public void CollectConditions(AntAIAgent aAgent, AntAICondition aWorldState)
         {
@@ -28,36 +28,15 @@ namespace Jasper_AI
             aWorldState.Set(HungryAIScenario.InFrenzy, inFrenzy);
         }
 
-        protected override void Start()
-        {
-            base.Start();
-            health.OnHealthChanged += HealthChanged;
-        }
-
-        private void OnDisable()
-        {
-            health.OnHealthChanged -= HealthChanged;
-        }
-
-        private void HealthChanged(float amount)
+        public bool FrenzyCheck()
         {
             //if has less than 30% of their max health left, put in frenzy 
             if (health.currentHealth.Value < health.maxHealth * .3f) 
             {
-                inFrenzy = true; 
+                return true; 
             }
-            else
-            {
-                inFrenzy = false;
-                //if seeing or at food and tracking a target alien don't track it anymore 
-                if (targetIsAlien && (seesFood || atFood))
-                {
-                    atFood = false; 
-                    seesFood = false;
-                    targetFood = null;
-                    targetIsAlien = false;
-                }
-            }
+            return false;
+            
         }
 
         //call when target is destroyed 

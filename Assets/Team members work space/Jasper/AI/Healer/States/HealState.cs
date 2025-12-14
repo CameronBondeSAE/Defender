@@ -42,6 +42,9 @@ namespace Jasper_AI
             else //otherwise they are healed
             {
                 sensor.healed = true;
+                sensor.atPatient = false;
+                sensor.patient = null;
+                sensor.seesInjured = false;
                 Finish();
             }
         }

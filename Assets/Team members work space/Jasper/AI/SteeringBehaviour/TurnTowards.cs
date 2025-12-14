@@ -23,7 +23,7 @@ namespace Jasper_AI
             _angle = Vector3.SignedAngle(transform.forward, _targetDirection, transform.up);
 
             //if the angle is too small return 
-            if (Mathf.Abs(_angle) < 5) return;
+            if (Mathf.Abs(_angle) < 1) return;
 
             //rotate the appropriate way based on the angle 
             rb.AddTorque(_angle >= 0 ? new Vector3(0, turnSpeed, 0) : new Vector3(0, -turnSpeed, 0));

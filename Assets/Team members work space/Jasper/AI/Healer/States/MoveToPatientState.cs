@@ -12,13 +12,23 @@ namespace Jasper_AI
             _lastTargetPosition = sensor.patient.transform.position;
             sensor.MoveTo(_lastTargetPosition);
             aboveHeadDisplay.ChangeMessage("Moving to patient");
+            sensor.MoveSpeed = sensor.DefaultSpeed;
         }
 
         public override void Execute(float aDeltaTime, float aTimeScale)
         {
+            //check patient still needs healing 
+            if (sensor.patientHealth.currentHealth.Value >= sensor.patientHealth.maxHealth)
+            {
+                sensor.seesInjured = false;
+                Finish();
+                return;
+            }
+            
             //if the patient is within reach
             if (Vector3.Distance(sensor.patient.transform.position, transform.position) < look.Reach)
             {
+                sensor.MoveSpeed = 0;
                 sensor.atPatient = true;
                 Finish();
             }

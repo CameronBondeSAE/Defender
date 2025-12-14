@@ -17,7 +17,7 @@ namespace Jasper_AI
             if (sensor.inFrenzy)
             {
                 Debug.Log("Frenzy speed");
-                sensor.MoveSpeed += 1; 
+                sensor.MoveSpeed += 2; 
                 _changedSpeed = true;
             }
             
@@ -51,7 +51,7 @@ namespace Jasper_AI
         {
             if (_changedSpeed)
             {
-                sensor.MoveSpeed -= 1;
+                sensor.MoveSpeed -= 2;
             }
         }
 

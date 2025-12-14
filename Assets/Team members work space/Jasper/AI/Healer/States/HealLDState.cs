@@ -16,6 +16,8 @@ namespace Jasper_AI
             turnTowards.ChangeTarget(_lastPatientPosition);
             StartCoroutine(ShootHealing());
             aboveHeadDisplay.ChangeMessage("Healing long distance patient");
+
+            sensor.MoveSpeed = 0;
         }
 
         public override void Exit()
@@ -51,8 +53,6 @@ namespace Jasper_AI
             else //otherwise done healing
             {
                 sensor.healed = true;
-                sensor.longDistance = false;
-                sensor.seesInjured = false;
                 Finish();
             }
         }

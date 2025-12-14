@@ -8,10 +8,9 @@ namespace Jasper_AI
         public override void Enter()
         {
             //Debug.Log($"{parent.name} is looking for food");
-            sensor.patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(sensor.patrolPointsCount);
-            pathFollow.StartFollowing();
-            pathFollow.OnPathEnd += ResetPatrolPoints;
+            pathFollow.StartFollowing(true);
             aboveHeadDisplay.ChangeMessage("Looking for food");
+            sensor.health.OnHealthChanged += HealthChanged; 
         }
 
         public override void Execute(float aDeltaTime, float aTimeScale)
@@ -31,16 +30,19 @@ namespace Jasper_AI
                 }
             }
         }
-        
+
         public override void Exit()
         {
-            pathFollow.OnPathEnd -= ResetPatrolPoints;
+            sensor.health.OnHealthChanged -= HealthChanged;
         }
 
-        private void ResetPatrolPoints()
+        private void HealthChanged(float health)
         {
-            sensor.patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(sensor.patrolPointsCount);
-            pathFollow.StartFollowing(); 
+            if (sensor.FrenzyCheck())
+            {
+                sensor.inFrenzy = true;
+                Finish();
+            }
         }
     }
 }
