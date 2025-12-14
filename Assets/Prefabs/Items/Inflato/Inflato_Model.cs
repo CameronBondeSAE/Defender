@@ -2,6 +2,7 @@ using System;
 using Defender;
 using DG.Tweening;
 using Unity.Cinemachine;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Inflato_Model : UsableItem_Base
@@ -9,6 +10,18 @@ public class Inflato_Model : UsableItem_Base
 	public Renderer       renderer;
 	public Rigidbody      rb;
 	public ParticleSystem ps;
+	
+	private NetworkVariable<Color> networkColour = new NetworkVariable<Color>(Color.white, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+	void Awake()
+	{
+		networkColour.OnValueChanged += OnColourChanged;
+	}
+
+	private void OnColourChanged(Color previous, Color current)
+	{
+		renderer.material.color = current;
+	}
 
 	public override void Pickup(CharacterBase whoIsPickupMeUp)
 	{
@@ -54,6 +67,9 @@ public class Inflato_Model : UsableItem_Base
 
 	public void ChangeColour(Color colour)
 	{
-		renderer.material.color = colour;
+		if (IsServer)
+		{
+			networkColour.Value = colour;
+		}
 	}
 }
