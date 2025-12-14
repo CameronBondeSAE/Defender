@@ -9,7 +9,8 @@ namespace AshleyPearson
         public static Action OnNoInformationFound;
         public static Action<int> OnInformationToReport;
         public static Action<Transform> OnFoundPlayer;
-        public static Action OnReport;
+        public static Action<int> OnReport;
+        public static Action OnScoutAbducted;
 
     }
 }

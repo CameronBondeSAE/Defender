@@ -38,7 +38,7 @@ namespace CameronBonde
 			while (!authenticationManager.AreServicesInitialized() && Application.isPlaying)
 			{
 				await Task.Yield();
-				Debug.Log("LobbyManager: Services initialized. Lobby Manager can act now.");
+				//Debug.Log("LobbyManager: Services initialized. Lobby Manager can act now.");
 			}
 			
 			//This is being called in authentication manager already.

@@ -29,5 +29,6 @@ namespace AshleyPearson
          //Debug.Log("[ScoutMovement] Moving scout to scout location: " + destination);
          base.MoveTo(destination);
       }
+      
    }
 }

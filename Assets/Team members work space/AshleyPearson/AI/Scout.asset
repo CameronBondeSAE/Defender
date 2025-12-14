@@ -17,7 +17,7 @@ MonoBehaviour:
     - id: 0
       name: IsNearScoutLocation
     - id: 1
-      name: IsNearAPlayer
+      name: IsNearPlayer
     - id: 2
       name: HasReportedToPlayer
     - id: 3
@@ -26,6 +26,8 @@ MonoBehaviour:
       name: InfoToReport
     - id: 5
       name: IsNearEnemy
+    - id: 6
+      name: IsAbducted
   actions:
   - name: MoveToScoutLocation
     isDefault: 1
@@ -36,6 +38,10 @@ MonoBehaviour:
     - id: 4
       value: 0
     - id: 0
+      value: 0
+    - id: 3
+      value: 1
+    - id: 6
       value: 0
     post:
     - id: 0
@@ -50,6 +56,10 @@ MonoBehaviour:
       value: 1
     - id: 4
       value: 0
+    - id: 3
+      value: 1
+    - id: 6
+      value: 0
     post:
     - id: 4
       value: 1
@@ -62,6 +72,10 @@ MonoBehaviour:
     - id: 4
       value: 1
     - id: 1
+      value: 0
+    - id: 3
+      value: 1
+    - id: 6
       value: 0
     post:
     - id: 1
@@ -78,6 +92,10 @@ MonoBehaviour:
       value: 1
     - id: 2
       value: 0
+    - id: 3
+      value: 1
+    - id: 6
+      value: 0
     post:
     - id: 2
       value: 1
@@ -85,7 +103,7 @@ MonoBehaviour:
       value: 0
   - name: Run
     isDefault: 0
-    state: {fileID: 5892025850356307662, guid: 9b5bcd1a252b85a4d85822cf463d4eb8, type: 3}
+    state: {fileID: 5477087498372791095, guid: 1585a0efceb318242a9676559c26417b, type: 3}
     cost: -1
     position: {x: 1228, y: 234}
     pre:
@@ -93,9 +111,22 @@ MonoBehaviour:
       value: 1
     - id: 5
       value: 1
+    - id: 6
+      value: 0
     post:
     - id: 5
       value: 0
+  - name: Abducted
+    isDefault: 0
+    state: {fileID: 9179332252463089890, guid: 04323b93554aaa8419f2ad0fb0d461e0, type: 3}
+    cost: 0
+    position: {x: 1452, y: 237}
+    pre:
+    - id: 6
+      value: 1
+    - id: 3
+      value: 1
+    post: []
   goals:
   - name: MakeScoutReports
     isDefault: 1
@@ -112,7 +143,7 @@ MonoBehaviour:
     - id: 3
       value: 1
   worldStates:
-  - position: {x: 247, y: 581}
+  - position: {x: 247, y: 578}
     isAutoUpdate: 1
     list:
     - id: 0
@@ -122,8 +153,10 @@ MonoBehaviour:
     - id: 2
       value: 0
     - id: 3
-      value: 0
+      value: 1
     - id: 4
       value: 0
     - id: 5
       value: 0
+    - id: 6
+      value: 1

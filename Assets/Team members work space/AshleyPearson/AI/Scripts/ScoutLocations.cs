@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 namespace AshleyPearson
 {
 
-   public class ScoutLocations : MonoBehaviour
+   public class ScoutLocations : NetworkBehaviour
    {
       [SerializeField] private Transform scoutLocationOne;
       [SerializeField] private Transform scoutLocationTwo;
@@ -16,8 +19,21 @@ namespace AshleyPearson
 
       private Vector3 chosenScoutLocation;
 
-      private void Awake()
+      private void OnEnable()
       {
+         ScoutEvents.OnScoutReady += SetScoutLocations;
+      }
+
+      private void OnDisable()
+      {
+         ScoutEvents.OnScoutReady -= SetScoutLocations;
+      }
+
+      private void SetScoutLocations()
+      {
+         //Kick out if not server
+         if (!IsServer) return;
+         
          //Clear existing list
          scoutNavMeshPointsList.Clear();
          
@@ -32,6 +48,9 @@ namespace AshleyPearson
 
       private void ConvertScoutNavMeshPoints()
       {
+         //Kick out if not server
+         if (!IsServer) return;
+         
          foreach (Transform scoutLocation in scoutLocationList)
          {
             //Add point to list if position is walkable
@@ -51,6 +70,9 @@ namespace AshleyPearson
 
       public void PickRandomNavMeshPointToNavigateTo()
       {
+         //Kick out if not server
+         if (!IsServer) return;
+         
          if (scoutNavMeshPointsList.Count > 0)
          {
             int i = Random.Range(0, scoutNavMeshPointsList.Count);
