@@ -1,4 +1,3 @@
-using System;
 using Anthill.AI;
 using UnityEngine;
 
@@ -59,6 +58,14 @@ namespace Jasper_AI
                     targetIsAlien = false;
                 }
             }
+        }
+
+        //call when target is destroyed 
+        public void TargetDestroyed()
+        {
+            targetFood = null;
+            seesFood = false;
+            atFood = false;
         }
     }
 }

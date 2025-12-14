@@ -1,3 +1,4 @@
+using System;
 using Anthill.AI;
 using UnityEngine;
 
@@ -9,7 +10,8 @@ namespace Jasper_AI
         private bool _changedSpeed; 
         public override void Enter()
         {
-            Debug.Log($"{parent.name} is going to food");
+            //Debug.Log($"{parent.name} is going to food");
+            aboveHeadDisplay.ChangeMessage("Going to food");
 
             //make faster if in a frenzy
             if (sensor.inFrenzy)
@@ -25,8 +27,13 @@ namespace Jasper_AI
 
         public override void Execute(float aDeltaTime, float aTimeScale)
         {
+            //make sure food still exists 
+            if (sensor.targetFood is null)
+            {
+                Finish();
+            }
             //if the food has moved recalculate path 
-            if (lastTargetPosition != sensor.targetFood.transform.position)
+            else if (lastTargetPosition != sensor.targetFood.transform.position)
             {
                 lastTargetPosition = sensor.targetFood.transform.position;
                 sensor.MoveTo(lastTargetPosition);
@@ -47,6 +54,14 @@ namespace Jasper_AI
                 sensor.MoveSpeed -= 1;
             }
         }
-        
+
+        private void OnDrawGizmos()
+        {
+            if (sensor.targetFood is null) return; 
+            
+            //pink line to target food
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(transform.position, sensor.targetFood.transform.position);
+        }
     }
 }

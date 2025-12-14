@@ -15,99 +15,82 @@ MonoBehaviour:
   conditions:
     list:
     - id: 0
-      name: SeesInjured
+      name: SeesPatient
     - id: 1
-      name: AbleToHeal
+      name: Healed
     - id: 2
-      name: HealedInjured
+      name: PatientLongDistance
     - id: 3
-      name: InjuredSurrounded
-    - id: 4
-      name: InjuredLongDistance
+      name: AtPatient
   actions:
   - name: Heal
     isDefault: 0
     state: {fileID: 3654026662863293872, guid: f58f59c4e2bebe048b8fbf215d8aa770, type: 3}
     cost: 0
-    position: {x: 634, y: 490}
+    position: {x: 642, y: 238}
     pre:
     - id: 1
-      value: 1
-    - id: 2
       value: 0
+    - id: 3
+      value: 1
     post:
-    - id: 2
+    - id: 1
       value: 1
   - name: MoveToPatient
     isDefault: 0
     state: {fileID: 1305778940907630476, guid: 7e7ddf62c68280746b29a3b35bb7a714, type: 3}
     cost: 0
-    position: {x: 463, y: 242}
+    position: {x: 430, y: 238}
     pre:
     - id: 0
       value: 1
     - id: 1
       value: 0
+    - id: 2
+      value: 0
     post:
-    - id: 1
+    - id: 3
       value: 1
   - name: ScanField
     isDefault: 1
     state: {fileID: 1147648544171053021, guid: dc40e97f8b7cabb41842a70e8c57ecb4, type: 3}
     cost: 0
-    position: {x: 249, y: 252}
+    position: {x: 228, y: 363}
     pre:
     - id: 0
       value: 0
     post:
     - id: 0
       value: 1
-  - name: ClearSurrounded
-    isDefault: 0
-    state: {fileID: 1801257226676430018, guid: d7a03587d72b8934889102a2a38a9e7d, type: 3}
-    cost: 0
-    position: {x: 676, y: 247}
-    pre:
-    - id: 3
-      value: 1
-    - id: 0
-      value: 1
-    - id: 1
-      value: 0
-    post:
-    - id: 3
-      value: 0
   - name: HealLongDistance
     isDefault: 0
     state: {fileID: 2487397288237356102, guid: db6d2750290c1ca4c91b18fb88723f61, type: 3}
     cost: 0
-    position: {x: 910, y: 482}
+    position: {x: 430, y: 476}
     pre:
     - id: 1
-      value: 1
-    - id: 2
       value: 0
-    - id: 4
+    - id: 2
+      value: 1
+    - id: 0
       value: 1
     post:
-    - id: 2
+    - id: 1
       value: 1
   goals:
   - name: Healed
     isDefault: 1
-    position: {x: 886, y: 340}
+    position: {x: 852, y: 399}
     conditions:
-    - id: 2
+    - id: 1
       value: 1
   worldStates:
-  - position: {x: 249, y: 60}
+  - position: {x: 252, y: 60}
     isAutoUpdate: 0
     list:
     - id: 0
       value: 0
     - id: 1
-      value: 0
-    - id: 2
       value: 0
     - id: 2
       value: 0

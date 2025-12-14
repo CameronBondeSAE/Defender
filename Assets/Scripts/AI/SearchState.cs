@@ -231,7 +231,7 @@ public class SearchState : IAIState
         }
         ai.StopMoving();
         ai.currentTargetCiv.StopMoving();
-        animController.SetAnimation(AIAnimationController.AnimationState.Grab);
+        animController?.SetAnimation(AIAnimationController.AnimationState.Grab);
         yield return new WaitForSeconds(0.8f); // Simulate grab duration
 
         // only grab if not already abducted or escorted by another alien,

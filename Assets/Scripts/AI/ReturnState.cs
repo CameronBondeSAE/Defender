@@ -41,7 +41,7 @@ public class ReturnState : IAIState
 
     public void Stay()
     {
-        animController.SetAnimation(AIAnimationController.AnimationState.Walk);
+        animController?.SetAnimation(AIAnimationController.AnimationState.Walk);
         if (ai.mothership == null)
         {
             Debug.Log("missing mothership reference");

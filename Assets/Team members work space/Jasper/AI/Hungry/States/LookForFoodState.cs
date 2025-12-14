@@ -1,15 +1,17 @@
-using Anthill.AI;
 using UnityEngine;
 
 namespace Jasper_AI
 {
     public class LookForFoodState : HungryAIBase
     {
+        
         public override void Enter()
         {
-            #if UNITY_EDITOR
-            Debug.Log($"{parent.name} is looking for food");
-            #endif
+            //Debug.Log($"{parent.name} is looking for food");
+            sensor.patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(sensor.patrolPointsCount);
+            pathFollow.StartFollowing();
+            pathFollow.OnPathEnd += ResetPatrolPoints;
+            aboveHeadDisplay.ChangeMessage("Looking for food");
         }
 
         public override void Execute(float aDeltaTime, float aTimeScale)
@@ -20,11 +22,25 @@ namespace Jasper_AI
                 if (hit.transform.gameObject.TryGetComponent(out UsableItem_Base item) && item.IsConsumable)
                 {
                     sensor.targetFood = item.gameObject;
-                    sensor.targetIsAlien = false;
                     sensor.seesFood = true;
+                    avoid.AddException(sensor.targetFood);
+
+                    item.OnItemDestroyed += sensor.TargetDestroyed;
+                    pathFollow.StopFollowing();
                     Finish();
                 }
             }
+        }
+        
+        public override void Exit()
+        {
+            pathFollow.OnPathEnd -= ResetPatrolPoints;
+        }
+
+        private void ResetPatrolPoints()
+        {
+            sensor.patrolPoints = WaypointManager.Instance.GetUniqueWaypoints(sensor.patrolPointsCount);
+            pathFollow.StartFollowing(); 
         }
     }
 }

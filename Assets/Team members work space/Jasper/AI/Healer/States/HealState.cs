@@ -5,25 +5,43 @@ namespace Jasper_AI
 {
     public class HealState : HealerAIBase
     {
-        private Health patientHealth; 
-        
-        IEnumerator Heal()
+        private Health _patientHealth;
+
+
+        public override void Enter()
         {
+            //Debug.Log($"{name} healing patient");
+            _patientHealth = sensor.patient.gameObject.GetComponent<Health>();
+            StartCoroutine(Heal());
+            aboveHeadDisplay.ChangeMessage("Healing patient");
+        }
+
+        public override void Exit()
+        {
+            StopAllCoroutines();
+        }
+
+        private IEnumerator Heal()
+        {
+            //check patient is still within reach 
             if (Vector3.Distance(transform.position, sensor.patient.transform.position) > look.Reach)
             {
-                sensor.ableToHeal = false; 
+                sensor.atPatient = false; 
+                Finish();
                 yield return null;
             }
             
-            patientHealth.Heal(sensor.healStrength);
+            _patientHealth.Heal(sensor.healStrength);
 
-            if (patientHealth.currentHealth.Value < patientHealth.maxHealth)
+            //check the patients health is still below their max health 
+            if (_patientHealth.currentHealth.Value < _patientHealth.maxHealth)
             {
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(sensor.healCooldown); //cooldown before healing again 
+                StartCoroutine(Heal());
             }
-            else
+            else //otherwise they are healed
             {
-                sensor.healedInjured = true;
+                sensor.healed = true;
                 Finish();
             }
         }

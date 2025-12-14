@@ -98,8 +98,8 @@ public class AIBase : CharacterBase
 	// Initialize AI - getting references
 	protected virtual void Start()
 	{
-		// if(!IsServer)
-		// 	return;
+		if(!IsServer)
+		 	return;
 			
 		health = GetComponent<AIHealth>();
 		agent  = GetComponent<NavMeshAgent>();
@@ -130,10 +130,10 @@ public class AIBase : CharacterBase
 		CurrentState?.Stay();
 	}
 
-	private void FixedUpdate()
+	protected virtual void FixedUpdate()
 	{
-		// if(!IsServer)
-		// 	return;
+		if(!IsServer)
+		 	return;
 		
 		if (useRigidbody)
 		{
