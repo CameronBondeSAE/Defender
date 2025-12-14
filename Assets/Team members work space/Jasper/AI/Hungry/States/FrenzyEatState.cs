@@ -14,6 +14,7 @@ namespace Jasper_AI
             
             if (!sensor.targetIsLiving)
             {
+                Debug.Log("Target not living.");
                 UsableItem_Base itemBase = sensor.targetFood.GetComponent<UsableItem_Base>();
                 UsableItem_Base.ItemRoleForAI role = itemBase.RoleForAI;
 
@@ -25,17 +26,12 @@ namespace Jasper_AI
                         itemBase.DestroyItem();
                         sensor.eatenFood = true;
                         break;
-                    //if the food is a threat then throw it away 
-                    case UsableItem_Base.ItemRoleForAI.Threat:
-                        itemBase.Launch(transform.forward, 5);
+                    //otherwise use it 
+                    default:
+                        itemBase.Use(parent.GetComponent<Defender.CharacterBase>());
                         sensor.targetFood = null;
                         sensor.seesFood = false;
                         sensor.atFood = false; 
-                        break;
-                    default:
-                        sensor.targetFood = null;
-                        sensor.seesFood = false;
-                        sensor.atFood = false;
                         break;
                 }
                 Finish();
@@ -70,16 +66,18 @@ namespace Jasper_AI
             }
             
             //check food still within reach 
-            if (Vector3.Distance(transform.position, sensor.targetFood.transform.position) > look.Reach)
+            if (Vector3.Distance(transform.position, sensor.targetFood.transform.position) < look.Reach)
             {
-                sensor.atFood = false;
-                Finish();
-                yield break;
+                _targetHealth.TakeDamage(sensor.biteStrength);
+                sensor.health.Heal(sensor.biteStrength);
+                yield return new WaitForSeconds(2);
+                EatAlien(); 
             }
-            
-            _targetHealth.TakeDamage(sensor.biteStrength);
-            sensor.health.Heal(sensor.biteStrength);
-            yield return new WaitForSeconds(2);
+            else
+            {
+                sensor.atFood = false; 
+                Finish();
+            }
         }
     }
 }

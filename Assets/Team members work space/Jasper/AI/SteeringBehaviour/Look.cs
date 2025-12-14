@@ -56,7 +56,7 @@ public class Look : MonoBehaviour
         {
             //Debug.DrawRay(transform.position, Quaternion.Euler(0, _rayAngle, 0) * _start, Color.cyan);
             
-            if (Physics.Raycast(transform.position, Quaternion.Euler(0, _rayAngle, 0) * _start, 
+            if (Physics.Raycast(transform.position + (transform.up * .1f), Quaternion.Euler(0, _rayAngle, 0) * _start, 
                     out RaycastHit hit, sightDistance, observableMask))
             {
                 inView.Add(hit); 
@@ -82,11 +82,11 @@ public class Look : MonoBehaviour
         return Physics.OverlapSphere(center, radius);
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, reachDistance);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, sightDistance);
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.green;
+    //     Gizmos.DrawWireSphere(transform.position, reachDistance);
+    //     Gizmos.color = Color.yellow;
+    //     Gizmos.DrawWireSphere(transform.position, sightDistance);
+    // }
 }

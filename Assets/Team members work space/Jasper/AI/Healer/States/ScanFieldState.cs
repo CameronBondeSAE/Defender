@@ -20,8 +20,6 @@ namespace Jasper_AI
 
         public override void Execute(float aDeltaTime, float aTimeScale)
         {
-            
-            //see if any objects in view are usable and consumable 
             foreach (RaycastHit hit in look.LookAround(sensor.healLayer))
             {
                 //if the hit doesnt have a health component
@@ -45,6 +43,7 @@ namespace Jasper_AI
                 
                 sensor.patient = hit.collider.gameObject;
                 sensor.patientHealth = health;
+                avoid.AddException(sensor.patient);
                 Finish();
             }
         }
