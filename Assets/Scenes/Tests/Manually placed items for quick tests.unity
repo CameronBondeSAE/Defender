@@ -9193,6 +9193,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0759c79f9edd9a498c07382620b408b, type: 3}
+--- !u!82 &1584648364 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1695998492100750487, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+  m_PrefabInstance: {fileID: 1963740080}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1591022367 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8252729606240833830, guid: a0eab46f01e41c34f9a5316fc5cfeb2e, type: 3}
@@ -10274,6 +10279,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: dropClip
+      value: 
+      objectReference: {fileID: 8300000, guid: f4641afa04c97564ca84a55a081f1d19, type: 3}
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: pickupClip
+      value: 
+      objectReference: {fileID: 8300000, guid: a78985b0cabc0754481d85269b679726, type: 3}
+    - target: {fileID: -3419492860965861618, guid: 143773804ea04414082cdf610ca51e25, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 1584648364}
     - target: {fileID: 1455124744344949864, guid: 143773804ea04414082cdf610ca51e25, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1641168863
