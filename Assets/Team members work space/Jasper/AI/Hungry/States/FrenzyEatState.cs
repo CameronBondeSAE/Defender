@@ -49,6 +49,7 @@ namespace Jasper_AI
 
         public override void Exit()
         {
+            StopAllCoroutines();
             sensor.MoveSpeed = sensor.DefaultSpeed;
         }
 
@@ -70,6 +71,7 @@ namespace Jasper_AI
             {
                 _targetHealth.TakeDamage(sensor.biteStrength);
                 sensor.health.Heal(sensor.biteStrength);
+                Debug.Log("Taking bite");
                 yield return new WaitForSeconds(2);
                 EatAlien(); 
             }

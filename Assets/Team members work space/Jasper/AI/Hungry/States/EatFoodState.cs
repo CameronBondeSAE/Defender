@@ -21,16 +21,13 @@ namespace Jasper_AI
                 case UsableItem_Base.ItemRoleForAI.Snack:
                     sensor.health.Heal(1);
                     _itemBase.DestroyItem();
-                    sensor.eatenFood = true;
                     break;
-                case UsableItem_Base.ItemRoleForAI.Threat:
-                    _itemBase.Launch(transform.forward, 115);
+                default: //anything else throw it
+                    _itemBase.Launch(transform.forward, 100);
                     break;
             }
-            
-            sensor.targetFood = null;
-            sensor.seesFood = false;
-            sensor.atFood = false; 
+
+            sensor.eatenFood = true;
             Finish();
         }
     }

@@ -47,6 +47,7 @@ namespace Jasper_AI
 
         public override void Exit()
         {
+            pathFollow.StopFollowing();
             sensor.health.OnHealthChanged -= HealthChanged;
             sensor.MoveSpeed -= 2;
         }
