@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4349978320406501920}
   - component: {fileID: 7524784167182594079}
   - component: {fileID: 5594779111536057787}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: particleEffectsRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4844,7 +4844,7 @@ GameObject:
   - component: {fileID: 3039262030524310010}
   - component: {fileID: 2338052195955933606}
   - component: {fileID: 5508840665316308687}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: particleEffectsLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9675,9 +9675,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1248185204362853287}
-  - component: {fileID: 4562647287080600231}
   - component: {fileID: 6606778433103349039}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9701,40 +9700,6 @@ Transform:
   - {fileID: 4349978320406501920}
   m_Father: {fileID: 1204918852336673379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4562647287080600231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3567017632709765714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f149a16d22ffad94b9e89c53c21779fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  audioSource: {fileID: 0}
-  pickupClip: {fileID: 0}
-  dropClip: {fileID: 0}
-  useClip: {fileID: 8300000, guid: 683b947e6f26ff94a9618199757f4fe8, type: 3}
-  timerBeepClip: {fileID: 0}
-  timerActivatedClip: {fileID: 0}
-  isConsumable: 1
-  expiryDuration: 0
-  activationCountdown: 0
-  activationTrigger: 0
-  allowMultipleActivations: 0
-  countdownUIPrefab: {fileID: 0}
-  itemName: 
-  description: 
-  launchForce: 10
-  launchDirection: {x: 0, y: 0, z: 1}
-  itemRoleForAI: 0
-  stoneMove: {fileID: 6481289075033855671}
-  stoneEmiterRight: {fileID: 7524784167182594079}
-  stoneEmiterLeft: {fileID: 2338052195955933606}
-  stoneSound: {fileID: 6606778433103349039}
 --- !u!82 &6606778433103349039
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9843,7 +9808,7 @@ GameObject:
   - component: {fileID: 3086117509970869880}
   - component: {fileID: 6537601173308099451}
   - component: {fileID: 2942680818291406080}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9896,7 +9861,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 5cb3043c17c7f78469ba891579427a72, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9932,9 +9897,11 @@ GameObject:
   - component: {fileID: 6481289075033855671}
   - component: {fileID: 681928839496197254}
   - component: {fileID: 8040003912934487627}
+  - component: {fileID: 4202875133552442293}
+  - component: {fileID: 8961389457520183207}
   m_Layer: 0
   m_Name: Rotate90
-  m_TagString: Untagged
+  m_TagString: Damageable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9989,7 +9956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2855716495
+  GlobalObjectIdHash: 3749651479
   InScenePlacedSourceGlobalObjectIdHash: 2855716495
   DeferredDespawnTick: 0
   Ownership: 1
@@ -10015,7 +9982,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  view: {fileID: 4562647287080600231}
+  health: {fileID: 4202875133552442293}
+  view: {fileID: 0}
+  wallRenderer: {fileID: 0}
+  healthyColor: {r: 0, g: 0.381132, b: 0, a: 1}
+  yellowColor: {r: 0.6981132, g: 0.64248663, b: 0, a: 1}
+  orangeColor: {r: 0.79622644, g: 0.39967448, b: 0, a: 1}
+  redColor: {r: 0.6981132, g: 0, b: 0, a: 1}
 --- !u!208 &681928839496197254
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -10078,3 +10051,56 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &4202875133552442293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5718072675847045956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2449ebed012f5644965e8e6c3e45f85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  maxHealth: 50
+  revivedHealth: 0
+  currentHealth:
+    m_InternalValue: 0
+  isDead: 0
+  deathAnimDuration: 0
+--- !u!114 &8961389457520183207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5718072675847045956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c47ee025db5ddaf4cadd81082d82abdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  audioSource: {fileID: 0}
+  pickupClip: {fileID: 0}
+  dropClip: {fileID: 0}
+  useClip: {fileID: 0}
+  timerBeepClip: {fileID: 0}
+  timerActivatedClip: {fileID: 0}
+  isConsumable: 1
+  expiryDuration: 0
+  activationCountdown: 0
+  activationTrigger: 0
+  allowMultipleActivations: 0
+  countdownUIPrefab: {fileID: 0}
+  itemName: 
+  description: 
+  launchForce: 10
+  launchDirection: {x: 0, y: 0, z: 1}
+  itemRoleForAI: 0
+  stoneMove: {fileID: 0}
+  stoneEmiterRight: {fileID: 0}
+  stoneEmiterLeft: {fileID: 0}
+  stoneSound: {fileID: 0}

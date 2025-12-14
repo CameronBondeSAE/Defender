@@ -17,10 +17,12 @@ public class Health : NetworkBehaviour
    [Header("Health related animation Params")] 
    public float deathAnimDuration;
    //public float hitAnimDuration;
-   
-   protected virtual void Awake()
+
+   protected override void OnNetworkPostSpawn()
    {
-      currentHealth.Value = maxHealth;
+	   base.OnNetworkPostSpawn();
+
+	   currentHealth.Value = maxHealth;
    }
 
    public virtual void TakeDamage(float amount)
@@ -53,5 +55,13 @@ public class Health : NetworkBehaviour
       if(isDead) return;
       isDead = true;
       OnDeath?.Invoke();
+   }
+   
+   
+   // WILAYAT: need to add this method so that clients can request server to apply damage to anything that has health component
+   [Rpc(SendTo.Server, RequireOwnership = false, Delivery = RpcDelivery.Reliable)]
+   public void TakeDamage_ServerRpc(float amount)
+   {
+      TakeDamage(amount);
    }
 }

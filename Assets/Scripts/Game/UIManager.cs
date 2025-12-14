@@ -377,6 +377,7 @@ namespace DanniLi
         [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
         public void HideAllScreensRpc()
         {
+	        Debug.Log("Hiding all screens");
             HideAllScreens();
         }
 
