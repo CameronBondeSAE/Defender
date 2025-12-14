@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using Anthill.AI;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 
 namespace AshleyPearson
 {
@@ -27,8 +26,8 @@ namespace AshleyPearson
         private bool reportRecencyCoroutineIsRunning = false;
         
         //Enemy variables
-        private float enemyDetectionRadius = 3f;
-        private LayerMask enemyLayer;
+        private float enemyDetectionRadius = 6f;
+        [SerializeField] private LayerMask enemyLayer;
         
         //Conditional Enums for Planner
         public enum Scout
@@ -122,27 +121,27 @@ namespace AshleyPearson
             //Kick out if scout is dead or abducted
             if (!isAlive || isAbducted) return;
             
-            if (isAlive & !isAbducted)
+            if (isAlive && !isAbducted)
             {
                 //Is the scout close to a scout location?
+                Debug.Log("[ScoutSensor] Checking proximity to scout location");
                 CheckProximityToScoutLocation();
                 
                 //Is the scout close to the chosen player?
                 if (hasChosenPlayerToReportTo && !hasReportedToPlayer)
                 {
                     CheckProximityToPlayer(chosenPlayer);
+                    Debug.Log("[ScoutSensor] Checking proximity to scout location");
                 }
                 
                 //Is the scout near an enemy?
                 CheckProximityToEnemy();
+                Debug.Log("[ScoutSensor] Checking proximity to scout location");
             }
         }
 
         private void CheckProximityToScoutLocation() //this could be abstracted to check for both nearscout and nearplayer
         {
-            //Kick out if not server
-            if (!IsServer) return;
-            
             Vector3 targetScoutLocation = scoutLocations.ChosenScoutLocation();
 
             float distanceTolerance = 2f;
@@ -197,8 +196,6 @@ namespace AshleyPearson
         
         private void CheckProximityToPlayer(Transform player)
         {
-            //Kick out if not server
-            if (!IsServer) return;
             
             float distanceTolerance = 2f;
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -218,8 +215,6 @@ namespace AshleyPearson
 
         private void CheckProximityToEnemy()
         {
-            if (!IsServer) return;
-            
             Debug.Log("[ScoutSensor] Checking scout proximity to enemy");
 
             Collider[] hits = Physics.OverlapSphere(transform.position, enemyDetectionRadius, enemyLayer);

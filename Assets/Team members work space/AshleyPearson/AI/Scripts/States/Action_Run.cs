@@ -51,7 +51,7 @@ namespace AshleyPearson
             if (scout.transform.position != targetRunLocation)
             {
                 scoutMovement.MoveScout(targetRunLocation);
-                Debug.Log("[Action_Run] Moving to scout location: " + targetRunLocation);
+                Debug.Log("[Action_Run] Moving to run location: " + targetRunLocation);
             }
         }
 

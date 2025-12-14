@@ -18,69 +18,79 @@ namespace AshleyPearson
         [SerializeField] private List<Vector3> runNavMeshPointsList = new List<Vector3>() ;
 
         private Vector3 chosenRunLocation;
-       
-    private void SetScoutLocations()
-      {
-         //Kick out if not server
-         if (!IsServer) return;
-         
-         //Clear existing list
-         runNavMeshPointsList.Clear();
-         
-         //Populate initial scout list
-         runLocationList.Add(runLocationOne);
-         runLocationList.Add(runLocationTwo);
-         runLocationList.Add(runLocationThree);
-         
-         //Convert list to navmesh points for navigation
-         ConvertRunNavMeshPoints();
-      }
 
-      private void ConvertRunNavMeshPoints()
-      {
-         //Kick out if not server
-         if (!IsServer) return;
-         
-         foreach (Transform runLocation in runLocationList)
+        private void OnEnable()
+        {
+           ScoutEvents.OnScoutReady += SetRunLocations;
+        }
+
+        private void OnDisable()
+        {
+           ScoutEvents.OnScoutReady -= SetRunLocations;
+        }
+       
+       private void SetRunLocations()
          {
-            //Add point to list if position is walkable
-            if (NavMesh.SamplePosition(runLocation.position, out NavMeshHit navMeshHit, 5f, NavMesh.AllAreas))
+            //Kick out if not server
+            if (!IsServer) return;
+            
+            //Clear existing list
+            runNavMeshPointsList.Clear();
+            
+            //Populate initial scout list
+            runLocationList.Add(runLocationOne);
+            runLocationList.Add(runLocationTwo);
+            runLocationList.Add(runLocationThree);
+            
+            //Convert list to navmesh points for navigation
+            ConvertRunNavMeshPoints();
+         }
+
+         private void ConvertRunNavMeshPoints()
+         {
+            //Kick out if not server
+            if (!IsServer) return;
+            
+            foreach (Transform runLocation in runLocationList)
             {
-               Debug.Log("[RunLocations] Run navmesh point has been added");
-               runNavMeshPointsList.Add(navMeshHit.position);
+               //Add point to list if position is walkable
+               if (NavMesh.SamplePosition(runLocation.position, out NavMeshHit navMeshHit, 5f, NavMesh.AllAreas))
+               {
+                  Debug.Log("[RunLocations] Run navmesh point has been added");
+                  runNavMeshPointsList.Add(navMeshHit.position);
+               }
+
+               else
+               {
+                  Debug.LogWarning("[RunLocations] " + runLocation.name + "is not walkable on navmesh");
+               }
+            }
+            Debug.Log("[RunLocations] There are: " + runNavMeshPointsList.Count + "run locations"); //Should be 3 currently
+         }
+
+         public void PickRandomNavMeshPointToRunTo()
+         {
+            //Kick out if not server
+            if (!IsServer) return;
+            
+            if (runNavMeshPointsList.Count > 0)
+            {
+               int i = Random.Range(0, runNavMeshPointsList.Count);
+               
+               chosenRunLocation = runNavMeshPointsList[i];
+               Debug.Log("[RUnLocations] Random run location picked:  " + chosenRunLocation);
             }
 
             else
             {
-               Debug.LogWarning("[RunLocations] " + runLocation.name + "is not walkable on navmesh");
+               Debug.Log("[RunLocations] No run locations found on NavMesh point list");
             }
-         }
-         Debug.Log("[RunLocations] There are: " + runNavMeshPointsList.Count + "run locations"); //Should be 3 currently
-      }
-
-      public void PickRandomNavMeshPointToRunTo()
-      {
-         //Kick out if not server
-         if (!IsServer) return;
-         
-         if (runNavMeshPointsList.Count > 0)
-         {
-            int i = Random.Range(0, runNavMeshPointsList.Count);
             
-            chosenRunLocation = runNavMeshPointsList[i];
-            Debug.Log("[RUnLocations] Random run location picked:  " + chosenRunLocation);
          }
 
-         else
+         public Vector3 ChosenRunLocation()
          {
-            Debug.Log("[RunLocations] No run locations found on NavMesh point list");
+            return chosenRunLocation;;
          }
-         
-      }
-
-      public Vector3 ChosenRunLocation()
-      {
-         return chosenRunLocation;;
-      }
     }
 }

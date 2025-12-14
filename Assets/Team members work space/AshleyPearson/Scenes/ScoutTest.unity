@@ -2574,7 +2574,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619876823}
   m_Layer: 0
-  m_Name: LocationOne
+  m_Name: RunLocationOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2589,7 +2589,7 @@ Transform:
   m_GameObject: {fileID: 619876822}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -30.3, y: 0, z: 0.19}
+  m_LocalPosition: {x: -29.3, y: 0, z: 0.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7537,7 +7537,7 @@ Transform:
   m_GameObject: {fileID: 1158961031}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.44, y: 0, z: 1.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8712,7 +8712,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1464174725}
   m_Layer: 0
-  m_Name: LocationThree
+  m_Name: RunLocationThree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8727,7 +8727,7 @@ Transform:
   m_GameObject: {fileID: 1464174724}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -37, y: 0, z: 33.6}
+  m_LocalPosition: {x: -23, y: 0, z: 27.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10166,7 +10166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1791511801}
   m_Layer: 0
-  m_Name: LocationTwo
+  m_Name: RunLocationTwo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10181,7 +10181,7 @@ Transform:
   m_GameObject: {fileID: 1791511800}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -35.7, y: 0, z: 24.5}
+  m_LocalPosition: {x: -37.47, y: 0, z: 17.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11051,6 +11051,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1158961032}
     m_Modifications:
+    - target: {fileID: 7684385393234491, guid: 64511edb6d2e51b448ef8c451fe74244, type: 3}
+      propertyPath: enemyLayer.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 468782042391114676, guid: 64511edb6d2e51b448ef8c451fe74244, type: 3}
       propertyPath: m_Name
       value: ScoutCiv

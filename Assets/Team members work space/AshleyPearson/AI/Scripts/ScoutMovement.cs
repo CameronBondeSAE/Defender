@@ -23,7 +23,7 @@ namespace AshleyPearson
       public void MoveScout(Vector3 destination)
       {
          //Scout to be a bit faster than normal civs
-         MoveSpeed = 5f; //IDK if I should change this from here
+         MoveSpeed = 7f; //IDK if I should change this from here
 
          //Move scout to location
          //Debug.Log("[ScoutMovement] Moving scout to scout location: " + destination);
