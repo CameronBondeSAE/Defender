@@ -53,7 +53,7 @@ public class LevelLoader : NetworkBehaviour
       for (int i = 0; i < SceneManager.sceneCount; i++)
       {
          Scene scene = SceneManager.GetSceneAt(i);
-         if (scene.isLoaded && scene.name != managerSceneName && !scene.name.Contains("DontDestroyOnLoad"))
+         if (scene.isLoaded && !IsManagerScene(scene.name) && !scene.name.Contains("DontDestroyOnLoad"))
          {
             if (!loadedLevelScenes.Contains(scene.name))
             {
@@ -85,6 +85,13 @@ public class LevelLoader : NetworkBehaviour
    {
      if(!IsServer) return;
      // DoReloadCurrent();
+   }
+
+   private bool IsManagerScene(string sceneName)
+   {
+      if (string.IsNullOrEmpty(sceneName))
+         return false;
+      return sceneName == managerSceneName;
    }
 
    private DanniLi.LevelInfo_SO[] GetLevels()
@@ -293,18 +300,17 @@ public class LevelLoader : NetworkBehaviour
       // pendingSetActiveSceneName = scenename;
       var loadedScene = SceneManager.GetSceneByName(sceneName);
       if (!loadedScene.IsValid() || !loadedScene.isLoaded) return;
-      if (sceneName != managerSceneName && !loadedLevelScenes.Contains(sceneName))
+      if (!IsManagerScene(sceneName) && !loadedLevelScenes.Contains(sceneName))
       {
          loadedLevelScenes.Add(sceneName);
       }
-      if (!string.IsNullOrEmpty(pendingSetActiveSceneName) && 
+      if (!string.IsNullOrEmpty(pendingSetActiveSceneName) &&
           string.Equals(sceneName, pendingSetActiveSceneName))
       {
-         if (sceneName != managerSceneName)
+         if (!IsManagerScene(sceneName))
          {
             SceneManager.SetActiveScene(loadedScene);
             UnloadOldLevelScenes(sceneName);
-            // notify manager
             if (gameManager != null)
             {
                gameManager.OnLevelLoaded();
@@ -312,16 +318,16 @@ public class LevelLoader : NetworkBehaviour
          }
          pendingSetActiveSceneName = null;
       }
+
    }
    private void UnloadOldLevelScenes(string keepSceneName)
    {
-      // unload all tracked level scenes except the one we want to keep and the manager
       for (int i = loadedLevelScenes.Count - 1; i >= 0; i--)
       {
          string sceneName = loadedLevelScenes[i];
-         if (sceneName == managerSceneName || sceneName == keepSceneName) 
+         if (IsManagerScene(sceneName) || sceneName == keepSceneName)
             continue;
-                
+
          var scene = SceneManager.GetSceneByName(sceneName);
          if (scene.IsValid() && scene.isLoaded)
          {

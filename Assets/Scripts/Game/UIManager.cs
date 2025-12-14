@@ -253,6 +253,17 @@ namespace DanniLi
                 }
             }
         }
+        
+        [Rpc(SendTo.ClientsAndHost, Delivery = RpcDelivery.Reliable)]
+        private void StartLevelIntroHideAndShowHudRpc()
+        {
+            if (levelIntroPanel != null)
+                levelIntroPanel.SetActive(false);
+
+            if (gameHudRoot != null)
+                gameHudRoot.SetActive(true);
+        }
+
 
         #endregion
 
@@ -496,23 +507,18 @@ namespace DanniLi
         /// called locally when the player clicks the "Start Game" button on the intro panel
         private void OnLevelIntroStartClicked()
         {
+            // host only
+            if (NetworkManager.Singleton == null || !NetworkManager.Singleton.IsHost)
+                return;
+
             if (gameManager != null)
             {
                 gameManager.BeginLevelServerRpc();
             }
-            
-            if (levelIntroPanel != null)
-                levelIntroPanel.SetActive(false);
 
-            if (gameHudRoot != null)
-                gameHudRoot.SetActive(true);
+            // hide intro + show HUD on ALL clients
+            StartLevelIntroHideAndShowHudRpc();
         }
-        public void SetGameHudVisible(bool visible)
-        {
-            if (gameHudRoot != null)
-                gameHudRoot.SetActive(visible);
-        }
-
 
         private void QuitGame()
             #endregion

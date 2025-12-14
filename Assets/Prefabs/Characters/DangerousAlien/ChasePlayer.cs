@@ -1,7 +1,10 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
-
+/// <summary>
+/// This script functions as its name suggests:). Basically, when he's in this state, he'll move to the player by repathing
+/// to him every 0.3 sec and finish once close enough to attack
+/// </summary>
 public class ChasePlayer : AntAIState
 {
     private DangerousAlienControl control;

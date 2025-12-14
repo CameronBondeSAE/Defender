@@ -2,7 +2,14 @@ using AIAnimation;
 using Defender;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// This script holds all the inspector settings for his state settings for dodging, cooldown, chase, animation switching etc.
+/// One thing I'd like to add tho: I'm currently doing FindObjectOfType and FindGameObjectWithTag in Update() -
+/// this is because I am testing it as an existing prefab I dragged into the scene who currently exist BEFORE player is spawned/joins game locally.
+/// In the actual game tho, the player will always exist before he does because he will be born from the Egg when the player is already in the scene.
+/// I am leaving it as is for easier testing/marking so you don't have to wait for eggs hatching everytime you hit Play. but when you implement him into
+/// actual gameplay, just move all the FInd/Getcomponent code from Update() to Start() :)
+/// </summary>
 public class DangerousAlienControl : CharacterBase
 {
     public NavMeshAgent navMeshAgent;
@@ -287,6 +294,7 @@ public class DangerousAlienControl : CharacterBase
             return false;
         }
 
+        // team behaviour: reading ally's currentCrateTarget and mirror it so he can coordinate around the same crate
         crate = smartAlly.currentCrateTarget;
         allyCrateTarget = crate;
 

@@ -1,10 +1,19 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Persistence : NetworkBehaviour
+public class Persistence : MonoBehaviour
 {
-    void Update()
+    private static Persistence instance;
+
+    private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 }
