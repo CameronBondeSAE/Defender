@@ -106,28 +106,28 @@ public class RelayManager : MonoBehaviour
 	{
 		// CAM HACK
 		await GetRelayCode();
-
+	
 		//Update the lobby data class with relevant info
-		await lobbyManager.InitialLobbyUpdate(lobbyManager.lobby);
-
+		await lobbyManager.InitialLobbyUpdate(lobbyManager.lobby, true);
+	
 		if (reservedRelayAllocation == null)
 		{
 			Debug.LogError("RelayManager: No reserved allocation to start host with");
 			return null;
 		}
 		
-
+	
 		NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(AllocationUtils.ToRelayServerData(reservedRelayAllocation, connectionType));
-
+	
 		Debug.Log("*****************   Start host at : "+Time.time);
-
+	
 		if (NetworkManager.Singleton.StartHost())
 		{
 			joinCode = reservedRelayJoinCode;
 			Debug.Log("Host Relay Join Code (reserved) : " + joinCode);
 			return joinCode;
 		}
-
+	
 		else
 		{
 			Debug.LogError("RelayManager: Failed to start host with reserved relay code");

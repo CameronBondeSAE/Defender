@@ -338,7 +338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &117915294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -941,7 +941,7 @@ RectTransform:
   m_Father: {fileID: 471221308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.0054, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1113,6 +1113,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameScenePrefix: Level
+--- !u!114 &1385008081 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7645251101809303678, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+  m_PrefabInstance: {fileID: 1826514275632470207}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385008073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c92bb71f20e3faa40a07c754d1c37097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1446696843
 GameObject:
   m_ObjectHideFlags: 0
@@ -2120,14 +2131,14 @@ PrefabInstance:
     - target: {fileID: 77983669892865845, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 949156154}
+      objectReference: {fileID: 1385008081}
     - target: {fileID: 77983669892865845, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: JoinFirstAvailableLobby
+      value: OnButtonClick_LobbyBrowser
       objectReference: {fileID: 0}
     - target: {fileID: 77983669892865845, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CameronBonde.LobbyManager, Assembly-CSharp
+      value: AshleyPearson.LobbyMenuManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1384212231368121144, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2167,19 +2178,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3080603246970613777, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3080603246970613777, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 949156154}
+      objectReference: {fileID: 1385008081}
     - target: {fileID: 3080603246970613777, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CreateLobby
+      value: OnButtonClick_CreateLobby
       objectReference: {fileID: 0}
     - target: {fileID: 3080603246970613777, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CameronBonde.LobbyManager, Assembly-CSharp
+      value: AshleyPearson.LobbyMenuManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3080603246970613777, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -2245,6 +2256,10 @@ PrefabInstance:
       propertyPath: networkLobbyManager
       value: 
       objectReference: {fileID: 1061478171}
+    - target: {fileID: 7690111323027100923, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8215845189017088116, guid: fe496047fab17b6458d3b0f0b0fedc7d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.399559

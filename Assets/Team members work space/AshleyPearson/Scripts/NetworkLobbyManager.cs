@@ -32,7 +32,7 @@ namespace AshleyPearson
         public async Task StartRelayHost()
         {
             string joinCode = await relayManager.StartHostWithReservedRelay("udp");
-
+        
             //Pass join code and tell clients to start on their side
             Debug.Log("NetworkLobbyManager: Using reserved join code"  + joinCode);
             ReceiveJoinCodeClient_ClientRpc(joinCode);
