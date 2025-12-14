@@ -2,7 +2,10 @@ using Anthill.AI;
 using Defender;       
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// In this state he'll pause and wait for the civ group to bunch up near him
+/// once enough civs are within follow radius, the state will finish so the planner can move on to EscortCivsToMothership
+/// </summary>
 public class WaitForCivsToFollow : AntAIState
 {
     private SmartAlienControl control;

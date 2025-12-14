@@ -2,7 +2,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
 using AIAnimation;
-
+/// <summary>
+/// makes him run to a defensive spot near the crate his ally picked,
+/// this state Finish() once he's reached the defend position
+/// </summary>
 public class DefendCrate : AntAIState
 {
     private DangerousAlienControl control;

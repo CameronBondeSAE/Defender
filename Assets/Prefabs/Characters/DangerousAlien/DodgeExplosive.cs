@@ -2,7 +2,12 @@ using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
 using AIAnimation;
-
+/// <summary>
+/// In this state, he'll grab the dodge point that was picked during sensing,
+/// temporarily crank up speed & sprint to the dodge point, then clear the dodge flags
+/// This state is a bit hard to test tho because I dound it extremely hard to aim the grenade at himxD
+/// but when I succeeded he did move out of the way
+/// </summary>
 public class DodgeExplosive : AntAIState
 {
     private DangerousAlienControl control;

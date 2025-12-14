@@ -1,6 +1,9 @@
 using UnityEngine;
 using Anthill.AI;
-
+/// <summary>
+/// basically copying SmartAlien's scan state; he'll wait for scanDuration and clears the needsScan bool.
+/// The point is mostly to satisfy the planner condition so it can treat scanning as a completed action and move on
+/// </summary>
 public class ScanEnvironment : AntAIState
 {
     private DangerousAlienControl control;

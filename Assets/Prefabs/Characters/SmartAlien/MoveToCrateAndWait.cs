@@ -1,7 +1,9 @@
 using Anthill.AI;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// in this state he will go to the mothership drop zone, chill there for a moment so the planner can re-evaluate
+/// </summary>
 public class MoveToCrateAndWait : AntAIState
 {
     private SmartAlienControl control;

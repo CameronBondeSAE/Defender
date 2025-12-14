@@ -1,7 +1,9 @@
 using Anthill.AI;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// Bridge for converting what he knows per tick to the bools in AI workbench, similar set up to smart alien
+/// </summary>
 public class DangerousAlienSense : MonoBehaviour, ISense
 {
      private DangerousAlienControl control;
@@ -119,7 +121,7 @@ public class DangerousAlienSense : MonoBehaviour, ISense
         }
     }
 
-    // ally/crate
+    // ally/crate (here he senses what his smartAlly is doing( (crate target, distance, turret assist) and turn it into planner booleans.)
     bool allyAtCrate    = false;
     bool defendingCrate = control.isDefendingCrate;
 

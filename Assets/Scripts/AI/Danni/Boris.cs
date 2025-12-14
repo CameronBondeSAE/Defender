@@ -102,7 +102,7 @@ Do NOT explain this tag to the player or mention you are adding a tag; it is for
     public void BeginConversation()
     {
         Debug.Log("activate panel");
-        // lazy init OpenAI client
+        // init OpenAI client
         if (client == null)
         {
             client = new OpenAIClient(); 

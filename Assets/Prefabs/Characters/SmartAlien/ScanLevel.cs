@@ -1,7 +1,11 @@
 using Anthill.AI;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// this srtate basically performs an idle scan to refresh the planner
+/// I'm also clearing the civsAtMothership bool so the delivery goal doesn’t stay permanently satisfied
+/// and that he comes back for more/indefinitely when a group is delivered
+/// </summary>
 public class ScanLevel : AntAIState
 {
     private SmartAlienControl control;

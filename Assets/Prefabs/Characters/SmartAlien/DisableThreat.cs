@@ -2,7 +2,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
 using NicholasScripts;  
-
+/// <summary>
+/// in this state he goes up to the current threat item and call disarm on it.
+/// if it’s a turret, the code does a special shutdown so it stops firing visuall (due to how nick is handling the visuals seperately to item base)
+/// </summary>
 public class DisableThreat : AntAIState
 {
     private SmartAlienControl control;

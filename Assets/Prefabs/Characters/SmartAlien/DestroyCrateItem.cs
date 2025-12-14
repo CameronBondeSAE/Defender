@@ -1,7 +1,10 @@
 using Anthill.AI;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// This state takes whatever he is holding (as long as it’s not a snack),
+/// walk to a dispose spot near the crate, then delete the item and start a new scan cycle
+/// </summary>
 public class DestroyCrateItem : AntAIState
 {
     private SmartAlienControl control;

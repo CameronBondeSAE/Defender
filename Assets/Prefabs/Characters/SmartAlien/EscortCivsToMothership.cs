@@ -1,7 +1,10 @@
 using Anthill.AI;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// once the snack has pulled a civ crowd together, he'll take them to the mothership drop zone,
+/// mark them as delivered, then wipe the group + snack so the escort flag resets
+/// </summary>
 public class EscortCivsToMothership : AntAIState
 {
     private SmartAlienControl control;

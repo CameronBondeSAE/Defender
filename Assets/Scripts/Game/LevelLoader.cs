@@ -242,6 +242,8 @@ public class LevelLoader : NetworkBehaviour
 
    private void UnloadAllLevelScenes()
    {
+      if (!IsServer || NetworkManager == null)
+         return;
       // check if we have enough scenes to safely unload
       int totalScenes = SceneManager.sceneCount;
       int scenesToUnload = 0;
@@ -250,9 +252,9 @@ public class LevelLoader : NetworkBehaviour
       for (int i = loadedLevelScenes.Count - 1; i >= 0; i--)
       {
          string sceneName = loadedLevelScenes[i];
-         if (sceneName == managerSceneName) 
-            continue;
-                
+         if (IsManagerScene(sceneName)) 
+            continue; 
+
          var scene = SceneManager.GetSceneByName(sceneName);
          if (scene.IsValid() && scene.isLoaded)
          {
@@ -267,13 +269,13 @@ public class LevelLoader : NetworkBehaviour
          return;
       }
       
-      // process unloading
+      // unload non-manager level scenes
       for (int i = loadedLevelScenes.Count - 1; i >= 0; i--)
       {
          string sceneName = loadedLevelScenes[i];
-         if (sceneName == managerSceneName) 
+         if (IsManagerScene(sceneName))
             continue;
-                
+
          var scene = SceneManager.GetSceneByName(sceneName);
          if (scene.IsValid() && scene.isLoaded)
          {
@@ -281,23 +283,14 @@ public class LevelLoader : NetworkBehaviour
             NetworkManager.SceneManager.UnloadScene(scene);
          }
       }
-        
-      // clear list but keep manager if it was tracked
-      loadedLevelScenes.RemoveAll(sceneName => sceneName != managerSceneName);
+
+      // keep only manager scene in tracking list
+      loadedLevelScenes.RemoveAll(sceneName => !IsManagerScene(sceneName));
    }
    
    private void OnLoadEventCompleted(string sceneName, LoadSceneMode loadscenemode, List<ulong> clientscompleted, List<ulong> clientstimedout)
    {
       if (loadscenemode != LoadSceneMode.Additive) return;
-      // if (string.IsNullOrEmpty(pendingSetActiveSceneName)) return;
-      // if (!string.Equals(scenename, pendingSetActiveSceneName)) return;
-      // var loaded = SceneManager.GetSceneByName(scenename);
-      // if (loaded.IsValid() && loaded.isLoaded)
-      // {
-      //    SceneManager.SetActiveScene(loaded); // set active after load completes
-      //    currentAdditiveSceneName = scenename; // this is now the current additive
-      // }
-      // pendingSetActiveSceneName = scenename;
       var loadedScene = SceneManager.GetSceneByName(sceneName);
       if (!loadedScene.IsValid() || !loadedScene.isLoaded) return;
       if (!IsManagerScene(sceneName) && !loadedLevelScenes.Contains(sceneName))
@@ -307,31 +300,41 @@ public class LevelLoader : NetworkBehaviour
       if (!string.IsNullOrEmpty(pendingSetActiveSceneName) &&
           string.Equals(sceneName, pendingSetActiveSceneName))
       {
-         if (!IsManagerScene(sceneName))
+         if (IsServer)
          {
             SceneManager.SetActiveScene(loadedScene);
             UnloadOldLevelScenes(sceneName);
+
             if (gameManager != null)
             {
                gameManager.OnLevelLoaded();
             }
          }
+
          pendingSetActiveSceneName = null;
       }
-
    }
    private void UnloadOldLevelScenes(string keepSceneName)
    {
+      // server only
+      if (!IsServer || NetworkManager == null)
+         return;
+
       for (int i = loadedLevelScenes.Count - 1; i >= 0; i--)
       {
          string sceneName = loadedLevelScenes[i];
-         if (IsManagerScene(sceneName) || sceneName == keepSceneName)
+
+         // not unload the manager/main-menu scene here now
+         if (sceneName == managerSceneName || sceneName == mainMenuSceneName)
+            continue;
+
+         if (sceneName == keepSceneName)
             continue;
 
          var scene = SceneManager.GetSceneByName(sceneName);
          if (scene.IsValid() && scene.isLoaded)
          {
-            Debug.Log($"Unloading old level scene: {sceneName}");
+            Debug.Log($"[LevelLoader] Unloading old level scene (server): {sceneName}");
             NetworkManager.SceneManager.UnloadScene(scene);
             loadedLevelScenes.RemoveAt(i);
          }

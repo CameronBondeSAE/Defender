@@ -1,7 +1,10 @@
 using Anthill.AI;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// in this state, if he is outside accompanyDistance to his ally, he'll pick a spot near them and move there,
+/// and once he's close enough he'll Finish() & planner'll choose what to do next
+/// </summary>
 public class FollowAlly : AntAIState
 {
     private DangerousAlienControl control;

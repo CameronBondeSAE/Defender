@@ -6,7 +6,10 @@ using Defender;
 using mothershipScripts;
 using Unity.Netcode;
 using AIAnimation;
-
+/// <summary>
+/// Standard controller: stores all the planner flags/targets, handle holding items (including the netobj parenting),
+/// and contains helper functions to find snacks, threats, crates, civ crowds, and a reachable mothership drop position
+/// </summary>
 public class SmartAlienControl : CharacterBase
 {
     public NavMeshAgent agent;

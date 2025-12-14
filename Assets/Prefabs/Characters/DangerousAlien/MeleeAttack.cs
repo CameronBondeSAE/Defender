@@ -4,7 +4,9 @@ using AIAnimation;
 using UnityEngine.AI;
 using System.Collections;
 using Defender;
-
+/// <summary>
+/// In this state he will stop moving, play the attack animation, enable the hitbox for the swing window, then disable it again and wait out the cooldown.
+/// </summary>
 public class MeleeAttack : AntAIState
 {
     private DangerousAlienControl control;
@@ -48,6 +50,7 @@ public class MeleeAttack : AntAIState
         attackCoroutine = host.StartCoroutine(AttackRoutine());
     }
 
+    // I'm starting the coroutine through control because AntAIState itself isn’t a MonoBehaviour
     private IEnumerator AttackRoutine()
     {
         animationController.SetAnimation(AIAnimationController.AnimationState.Attack);

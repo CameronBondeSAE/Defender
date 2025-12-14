@@ -2,7 +2,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using Anthill.AI;
 using Defender;
-
+/// <summary>
+/// in this state he'll run to the nearest snack (picked by SmartAlienSense), and once close enough
+/// call SmartAlienControl.OnItemPickedUp on the snack
+/// </summary>
 public class GetSnack : AntAIState
 {
     private SmartAlienControl control;

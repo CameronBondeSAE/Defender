@@ -2,7 +2,9 @@ using Anthill.AI;
 using Defender;
 using UnityEngine;
 using UnityEngine.AI;
-
+/// <summary>
+/// When in this state, he'll walk to the civ crowd center, use the snack item when in range, then set the escort bools so the planner transitions into the escort
+/// </summary>
 public class UseSnackAtCrowd : AntAIState
 {
     private SmartAlienControl control;

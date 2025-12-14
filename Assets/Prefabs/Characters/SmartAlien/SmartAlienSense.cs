@@ -3,7 +3,10 @@ using UnityEngine;
 using Anthill.AI;
 using Defender;
 using UnityEngine.AI;
-
+/// <summary>
+/// World state updater for the planner. Every cycle he'll look for snacks/threats/crates/crowds,
+/// stash those targets into SmartAlienControl, then set all the condition flags (plus the 'ignore anything else while escorting' logic)
+/// </summary>
 public class SmartAlienSense : MonoBehaviour, ISense
 {
    private SmartAlienControl control;

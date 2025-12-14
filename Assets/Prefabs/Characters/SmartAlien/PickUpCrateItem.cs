@@ -2,7 +2,9 @@ using Anthill.AI;
 using UnityEngine;
 using UnityEngine.AI;
 using Defender;
-
+/// <summary>
+/// In this state he'll walk up to the target crate, ask it to hand him an item, and when he gets one he'll attach it to his hold point via SmartAlienControl.OnItemPickedUp
+/// </summary>
 public class PickupCrateItem : AntAIState
 {
     private SmartAlienControl control;
