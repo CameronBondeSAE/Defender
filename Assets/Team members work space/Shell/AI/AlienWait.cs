@@ -12,8 +12,6 @@ namespace Shell_AI
     public class AlienWait : MonoBehaviour
     {
         public AlienWaitState state = AlienWaitState.Waiting;
-
-        [Header("Movement")]
         public float moveSpeed = 3f;
 
         private Rigidbody rb;
@@ -33,40 +31,36 @@ namespace Shell_AI
 
         void FixedUpdate()
         {
-            switch (state)
+            if (state == AlienWaitState.Attacking && target != null)
+                MoveTowards(target.transform.position);
+
+            if (state == AlienWaitState.Returning)
             {
-                case AlienWaitState.Attacking:
-                    if (target != null)
-                        MoveTowards(target.transform.position);
-                    break;
+                MoveTowards(
+                    AlienWaitCoordinator.Instance.mothership.position
+                );
 
-                case AlienWaitState.Returning:
-                    MoveTowards(
-                        AlienWaitCoordinator.Instance.mothership.position
-                    );
-
-                    // Rejoin group once cooldown finishes
-                    if (cooldown != null && !cooldown.IsCoolingDown)
-                    {
-                        state = AlienWaitState.Waiting;
-                        RegisterIfReady();
-                    }
-                    break;
+                if (cooldown != null && !cooldown.IsCoolingDown)
+                {
+                    state = AlienWaitState.Waiting;
+                    RegisterIfReady();
+                }
             }
         }
 
         void MoveTowards(Vector3 destination)
         {
-            Vector3 direction = (destination - transform.position).normalized;
+            Vector3 dir =
+                (destination - transform.position).normalized;
+
             rb.MovePosition(
-                rb.position + direction * moveSpeed * Time.fixedDeltaTime
+                rb.position + dir * moveSpeed * Time.fixedDeltaTime
             );
         }
 
         void RegisterIfReady()
         {
             if (cooldown != null && cooldown.IsCoolingDown) return;
-
             AlienWaitCoordinator.Instance.RegisterAlien(this);
         }
 
@@ -82,7 +76,8 @@ namespace Shell_AI
         {
             if (state != AlienWaitState.Attacking) return;
 
-            if (other.CompareTag("Civilian") || other.CompareTag("Player"))
+            if (other.CompareTag("Civilian") ||
+                other.CompareTag("Player"))
             {
                 BeginReturn();
             }
@@ -91,10 +86,7 @@ namespace Shell_AI
         void BeginReturn()
         {
             state = AlienWaitState.Returning;
-
-            if (cooldown != null)
-                cooldown.StartCooldown();
-
+            cooldown?.StartCooldown();
             AlienWaitCoordinator.Instance.ResetAttack();
         }
     }

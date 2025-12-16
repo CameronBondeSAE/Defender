@@ -4,7 +4,6 @@ namespace Shell_AI
 {
     public class AlienCooldown : MonoBehaviour
     {
-        [Header("Cooldown Settings")]
         public float cooldownDuration = 5f;
 
         private float timer;
@@ -24,9 +23,7 @@ namespace Shell_AI
 
             timer -= Time.deltaTime;
             if (timer <= 0f)
-            {
                 coolingDown = false;
-            }
         }
     }
 }

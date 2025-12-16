@@ -11,29 +11,38 @@ namespace Shell_AI
         public int requiredAliens = 3;
         public Transform mothership;
 
-        private List<AlienWait> waitingAliens = new List<AlienWait>();
-        private bool attackInProgress = false;
+        private List<AlienWait> waitingAliens = new();
+        private bool attackInProgress;
+
+        private AlienGPTService gpt;
 
         void Awake()
         {
-            if (Instance == null)
-                Instance = this;
-            else
-                Destroy(gameObject);
+            Instance = this;
+            gpt = GetComponent<AlienGPTService>();
         }
 
         public void RegisterAlien(AlienWait alien)
         {
             if (attackInProgress) return;
-            if (waitingAliens.Contains(alien)) return;
+            if (!waitingAliens.Contains(alien))
+                waitingAliens.Add(alien);
 
-            waitingAliens.Add(alien);
             TryStartAttack();
         }
 
-        void TryStartAttack()
+        async void TryStartAttack()
         {
             if (waitingAliens.Count < requiredAliens) return;
+
+            string context =
+                $"Aliens nearby: {waitingAliens.Count}\n" +
+                $"Cooling down: {AnyCoolingDown()}";
+
+            GPTDecision decision =
+                await gpt.QueryDecisionAsync(context);
+
+            if (decision != GPTDecision.Attack) return;
 
             GameObject target = FindTarget();
             if (target == null) return;
@@ -41,18 +50,26 @@ namespace Shell_AI
             attackInProgress = true;
 
             foreach (AlienWait alien in waitingAliens)
-            {
                 alien.StartAttack(target);
-            }
 
             waitingAliens.Clear();
+        }
+
+        bool AnyCoolingDown()
+        {
+            foreach (var alien in waitingAliens)
+            {
+                var cd = alien.GetComponent<AlienCooldown>();
+                if (cd != null && cd.IsCoolingDown)
+                    return true;
+            }
+            return false;
         }
 
         GameObject FindTarget()
         {
             GameObject civ = GameObject.FindWithTag("Civilian");
             if (civ != null) return civ;
-
             return GameObject.FindWithTag("Player");
         }
 
