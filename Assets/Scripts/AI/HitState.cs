@@ -20,7 +20,7 @@ public class HitState : MonoBehaviour, IAIState
     {
         animController = ai.gameObject.GetComponentInChildren<AIAnimationController>();
         ai.StopMoving();
-        animController.SetAnimation(AIAnimationController.AnimationState.GetHit);
+        animController?.SetAnimation(AIAnimationController.AnimationState.GetHit);
         ai.StartCoroutine(ReturnToPreviousState());
     }
 

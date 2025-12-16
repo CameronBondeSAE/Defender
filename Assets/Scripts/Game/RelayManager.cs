@@ -50,12 +50,12 @@ public class RelayManager : MonoBehaviour
 
 	private void OnEnable()
 	{
-		joinCodeInput.onValueChanged.AddListener(OnSubmit);
+		joinCodeInput?.onValueChanged.AddListener(OnSubmit);
 	}
 
 	private void OnDisable()
 	{
-		joinCodeInput.onValueChanged.RemoveListener(OnSubmit);
+		joinCodeInput?.onValueChanged.RemoveListener(OnSubmit);
 	}
 
 	private void OnSubmit(string _joinCode)

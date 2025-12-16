@@ -128,6 +128,10 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
         Threat = 2
         // can be extended later
     }
+    
+    //destruction events
+    public delegate void ItemDestroyed();
+    public event ItemDestroyed OnItemDestroyed;
 
     #region Lifecycle
     protected virtual void Awake()
@@ -764,6 +768,9 @@ public class UsableItem_Base : NetworkBehaviour, IPickup, IUsable, IDescribable
         {
             Debug.Log($"[DestroyItem_Server] Despawning NO={no.NetworkObjectId} (pool-friendly).");
             no.Despawn(true); // destruction point
+            OnItemDestroyed?.Invoke();
+            
+            
         }
         else
         {
