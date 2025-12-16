@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Shell_AI
 {
@@ -14,35 +13,67 @@ namespace Shell_AI
     {
         public AlienWaitState state = AlienWaitState.Waiting;
 
-        private NavMeshAgent agent;
+        [Header("Movement")]
+        public float moveSpeed = 3f;
+
+        private Rigidbody rb;
+        private AlienCooldown cooldown;
         private GameObject target;
 
         void Awake()
         {
-            agent = GetComponent<NavMeshAgent>();
+            rb = GetComponent<Rigidbody>();
+            cooldown = GetComponent<AlienCooldown>();
         }
 
         void Start()
         {
-            AlienWaitCoordinator.Instance.RegisterAlien(this);
+            RegisterIfReady();
         }
 
-        void Update()
+        void FixedUpdate()
         {
-            if (state == AlienWaitState.Attacking && target != null)
+            switch (state)
             {
-                agent.SetDestination(target.transform.position);
+                case AlienWaitState.Attacking:
+                    if (target != null)
+                        MoveTowards(target.transform.position);
+                    break;
+
+                case AlienWaitState.Returning:
+                    MoveTowards(
+                        AlienWaitCoordinator.Instance.mothership.position
+                    );
+
+                    // Rejoin group once cooldown finishes
+                    if (cooldown != null && !cooldown.IsCoolingDown)
+                    {
+                        state = AlienWaitState.Waiting;
+                        RegisterIfReady();
+                    }
+                    break;
             }
-            else if (state == AlienWaitState.Returning)
-            {
-                agent.SetDestination(
-                    AlienWaitCoordinator.Instance.mothership.position
-                );
-            }
+        }
+
+        void MoveTowards(Vector3 destination)
+        {
+            Vector3 direction = (destination - transform.position).normalized;
+            rb.MovePosition(
+                rb.position + direction * moveSpeed * Time.fixedDeltaTime
+            );
+        }
+
+        void RegisterIfReady()
+        {
+            if (cooldown != null && cooldown.IsCoolingDown) return;
+
+            AlienWaitCoordinator.Instance.RegisterAlien(this);
         }
 
         public void StartAttack(GameObject attackTarget)
         {
+            if (cooldown != null && cooldown.IsCoolingDown) return;
+
             target = attackTarget;
             state = AlienWaitState.Attacking;
         }
@@ -53,14 +84,17 @@ namespace Shell_AI
 
             if (other.CompareTag("Civilian") || other.CompareTag("Player"))
             {
-                // Attack / capture logic goes here
-                ReturnToMothership();
+                BeginReturn();
             }
         }
 
-        void ReturnToMothership()
+        void BeginReturn()
         {
             state = AlienWaitState.Returning;
+
+            if (cooldown != null)
+                cooldown.StartCooldown();
+
             AlienWaitCoordinator.Instance.ResetAttack();
         }
     }

@@ -7,27 +7,27 @@ namespace Shell_AI
     {
         public static AlienWaitCoordinator Instance;
 
-        [Header("Alien Wait Settings")]
+        [Header("Group Settings")]
         public int requiredAliens = 3;
         public Transform mothership;
 
         private List<AlienWait> waitingAliens = new List<AlienWait>();
-        private bool attackStarted = false;
+        private bool attackInProgress = false;
 
         void Awake()
         {
-            Instance = this;
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
         }
 
         public void RegisterAlien(AlienWait alien)
         {
-            if (attackStarted) return;
+            if (attackInProgress) return;
+            if (waitingAliens.Contains(alien)) return;
 
-            if (!waitingAliens.Contains(alien))
-            {
-                waitingAliens.Add(alien);
-            }
-
+            waitingAliens.Add(alien);
             TryStartAttack();
         }
 
@@ -38,7 +38,7 @@ namespace Shell_AI
             GameObject target = FindTarget();
             if (target == null) return;
 
-            attackStarted = true;
+            attackInProgress = true;
 
             foreach (AlienWait alien in waitingAliens)
             {
@@ -58,7 +58,7 @@ namespace Shell_AI
 
         public void ResetAttack()
         {
-            attackStarted = false;
+            attackInProgress = false;
         }
     }
 }
