@@ -3307,6 +3307,14 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2042676726
       objectReference: {fileID: 0}
+    - target: {fileID: 3054207550848092690, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
+      propertyPath: SceneMigrationSynchronization
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3054207550848092690, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 3307400642
+      objectReference: {fileID: 0}
     - target: {fileID: 8897101158157931101, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
       propertyPath: m_Name
       value: Alien
@@ -13827,7 +13835,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9656b285ea77b4e66aa2f524b409195c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiKey: 
+  systemMessage: You are an alien NPC in a sci-fi game. Based on the situation, decide
+    whether to ATTACK or WAIT. Only respond with ATTACK or WAIT.
+  apiKey: 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
 --- !u!1001 &2037060707
 PrefabInstance:
   m_ObjectHideFlags: 0

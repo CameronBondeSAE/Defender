@@ -1,8 +1,9 @@
-using System;
-using System.Text;
+using OpenAI;
+using OpenAI.Chat;
+using OpenAI.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Shell_AI
 {
@@ -15,71 +16,76 @@ namespace Shell_AI
 
     public class AlienGPTService : MonoBehaviour
     {
+        [Header("GPT Setup")]
+        [TextArea(6, 12)]
+        public string systemMessage =
+            "You are an alien NPC in a sci-fi game. " +
+            "Based on the situation, decide whether to ATTACK or WAIT. " +
+            "Only respond with ATTACK or WAIT.";
+
         [Tooltip("REMOVE BEFORE SUBMISSION")]
         public string apiKey;
 
-        const string apiUrl = "https://api.openai.com/v1/chat/completions";
+        OpenAIClient api;
+        List<Message> messages = new();
 
+        void Awake()
+        {
+            api = new OpenAIClient(apiKey);
+
+            messages.Add(new Message(Role.System, systemMessage));
+        }
+
+        /// <summary>
+        /// High-level decision request for AI coordination
+        /// </summary>
         public async Task<GPTDecision> QueryDecisionAsync(string context)
         {
-            string prompt =
-                "Respond with ATTACK or WAIT only.\n\n" + context;
+            messages.Add(new Message(Role.User, context));
 
-            string json = JsonUtility.ToJson(new GPTRequest
-            {
-                model = "gpt-3.5-turbo",
-                messages = new[]
-                {
-                    new GPTMessage
-                    {
-                        role = "user",
-                        content = prompt
-                    }
-                }
-            });
-
-            using UnityWebRequest req =
-                new UnityWebRequest(apiUrl, "POST");
-
-            req.uploadHandler =
-                new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
-            req.downloadHandler =
-                new DownloadHandlerBuffer();
-
-            req.SetRequestHeader(
-                "Authorization",
-                $"Bearer {apiKey}"
-            );
-            req.SetRequestHeader(
-                "Content-Type",
-                "application/json"
+            ChatRequest request = new ChatRequest(
+                messages,
+                Model.GPT4oMini
             );
 
-            var op = req.SendWebRequest();
-            while (!op.isDone)
-                await Task.Yield();
+            ChatResponse response =
+                await api.ChatEndpoint.GetCompletionAsync(request);
 
-            if (req.result != UnityWebRequest.Result.Success)
-                return GPTDecision.Unknown;
+            string reply =
+                response.FirstChoice.Message.Content
+                .ToString()
+                .ToUpper();
 
-            if (req.downloadHandler.text.Contains("ATTACK"))
+            messages.Add(new Message(Role.Assistant, reply));
+
+            if (reply.Contains("ATTACK"))
                 return GPTDecision.Attack;
 
-            return GPTDecision.Wait;
+            if (reply.Contains("WAIT"))
+                return GPTDecision.Wait;
+
+            return GPTDecision.Unknown;
         }
 
-        [Serializable]
-        class GPTRequest
+    
+        public async void AskAlien(string playerInput)
         {
-            public string model;
-            public GPTMessage[] messages;
-        }
+            messages.Add(new Message(Role.User, playerInput));
 
-        [Serializable]
-        class GPTMessage
-        {
-            public string role;
-            public string content;
+            ChatRequest request = new ChatRequest(
+                messages,
+                Model.GPT4oMini
+            );
+
+            ChatResponse response =
+                await api.ChatEndpoint.GetCompletionAsync(request);
+
+            string reply =
+                response.FirstChoice.Message.Content.ToString();
+
+            Debug.Log("Alien says: " + reply);
+
+            messages.Add(new Message(Role.Assistant, reply));
         }
     }
 }
