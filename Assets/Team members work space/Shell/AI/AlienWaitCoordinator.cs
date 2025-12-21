@@ -8,11 +8,14 @@ namespace Shell_AI
         public static AlienWaitCoordinator Instance;
 
         [Header("Group Settings")]
-        public int requiredAliens = 3;
+        public int requiredAliens = 1;
         public Transform mothership;
 
+        [Header("GPT (Optional)")]
+        public bool useGPT = false;
+
         private List<AlienWait> waitingAliens = new();
-        private bool attackInProgress;
+        private bool attackInProgress = false;
 
         private AlienGPTService gpt;
 
@@ -25,55 +28,66 @@ namespace Shell_AI
         public void RegisterAlien(AlienWait alien)
         {
             if (attackInProgress) return;
-            if (!waitingAliens.Contains(alien))
-                waitingAliens.Add(alien);
+            if (waitingAliens.Contains(alien)) return;
+
+            waitingAliens.Add(alien);
+            Debug.Log($"Alien registered. Count = {waitingAliens.Count}");
 
             TryStartAttack();
         }
 
         async void TryStartAttack()
         {
-            if (waitingAliens.Count < requiredAliens) return;
-
-            string context =
-                $"Aliens nearby: {waitingAliens.Count}\n" +
-                $"Cooling down: {AnyCoolingDown()}";
-
-            GPTDecision decision =
-                await gpt.QueryDecisionAsync(context);
-
-            if (decision != GPTDecision.Attack) return;
+            if (waitingAliens.Count < requiredAliens)
+                return;
 
             GameObject target = FindTarget();
-            if (target == null) return;
+            if (target == null)
+            {
+                Debug.Log("No target found");
+                return;
+            }
 
             attackInProgress = true;
 
+            if (useGPT && gpt != null)
+            {
+                Debug.Log("Calling GPT...");
+                GPTDecision decision =
+                    await gpt.QueryDecisionAsync(
+                        $"Aliens waiting: {waitingAliens.Count}"
+                    );
+
+                Debug.Log("GPT decision: " + decision);
+
+                if (decision != GPTDecision.Attack)
+                {
+                    attackInProgress = false;
+                    return;
+                }
+            }
+            else
+            {
+                Debug.Log("GPT bypassed → ATTACK");
+            }
+
             foreach (AlienWait alien in waitingAliens)
+            {
                 alien.StartAttack(target);
+            }
 
             waitingAliens.Clear();
-        }
-
-        bool AnyCoolingDown()
-        {
-            foreach (var alien in waitingAliens)
-            {
-                var cd = alien.GetComponent<AlienCooldown>();
-                if (cd != null && cd.IsCoolingDown)
-                    return true;
-            }
-            return false;
         }
 
         GameObject FindTarget()
         {
             GameObject civ = GameObject.FindWithTag("Civilian");
             if (civ != null) return civ;
+
             return GameObject.FindWithTag("Player");
         }
 
-        public void ResetAttack()
+        public void ResetCoordinator()
         {
             attackInProgress = false;
         }

@@ -4,7 +4,7 @@ namespace Shell_AI
 {
     public class AlienCooldown : MonoBehaviour
     {
-        public float cooldownDuration = 5f;
+        public float cooldownDuration = 3f;
 
         private float timer;
         private bool coolingDown;
@@ -15,6 +15,7 @@ namespace Shell_AI
         {
             coolingDown = true;
             timer = cooldownDuration;
+            Debug.Log("Cooldown started");
         }
 
         void Update()
@@ -23,7 +24,10 @@ namespace Shell_AI
 
             timer -= Time.deltaTime;
             if (timer <= 0f)
+            {
                 coolingDown = false;
+                Debug.Log("Cooldown finished");
+            }
         }
     }
 }

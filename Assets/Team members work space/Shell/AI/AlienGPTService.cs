@@ -16,12 +16,10 @@ namespace Shell_AI
 
     public class AlienGPTService : MonoBehaviour
     {
-        [Header("GPT Setup")]
-        [TextArea(6, 12)]
+        [TextArea(5, 10)]
         public string systemMessage =
-            "You are an alien NPC in a sci-fi game. " +
-            "Based on the situation, decide whether to ATTACK or WAIT. " +
-            "Only respond with ATTACK or WAIT.";
+            "You are an alien commander in a game. " +
+            "Only reply with ATTACK or WAIT.";
 
         [Tooltip("REMOVE BEFORE SUBMISSION")]
         public string apiKey;
@@ -32,13 +30,9 @@ namespace Shell_AI
         void Awake()
         {
             api = new OpenAIClient(apiKey);
-
             messages.Add(new Message(Role.System, systemMessage));
         }
 
-        /// <summary>
-        /// High-level decision request for AI coordination
-        /// </summary>
         public async Task<GPTDecision> QueryDecisionAsync(string context)
         {
             messages.Add(new Message(Role.User, context));
@@ -56,36 +50,15 @@ namespace Shell_AI
                 .ToString()
                 .ToUpper();
 
+            Debug.Log("GPT raw reply: " + reply);
+
             messages.Add(new Message(Role.Assistant, reply));
 
-            if (reply.Contains("ATTACK"))
-                return GPTDecision.Attack;
-
-            if (reply.Contains("WAIT"))
-                return GPTDecision.Wait;
+            if (reply.Contains("ATTACK")) return GPTDecision.Attack;
+            if (reply.Contains("WAIT")) return GPTDecision.Wait;
 
             return GPTDecision.Unknown;
         }
-
-    
-        public async void AskAlien(string playerInput)
-        {
-            messages.Add(new Message(Role.User, playerInput));
-
-            ChatRequest request = new ChatRequest(
-                messages,
-                Model.GPT4oMini
-            );
-
-            ChatResponse response =
-                await api.ChatEndpoint.GetCompletionAsync(request);
-
-            string reply =
-                response.FirstChoice.Message.Content.ToString();
-
-            Debug.Log("Alien says: " + reply);
-
-            messages.Add(new Message(Role.Assistant, reply));
-        }
     }
 }
+ 
