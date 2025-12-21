@@ -11,14 +11,16 @@ namespace Shell_AI
 
     public class AlienWait : MonoBehaviour
     {
-        public float moveSpeed = 3f;
+        public float moveSpeed = 6f;
+        public float stopDistance = 0.8f;
+
         public AlienState state = AlienState.Waiting;
 
-        private Rigidbody rb;
-        private AlienCooldown cooldown;
-        private GameObject target;
+        Rigidbody rb;
+        AlienCooldown cooldown;
+        GameObject target;
 
-        private bool hasRegistered = false;
+        bool hasRegistered;
 
         void Awake()
         {
@@ -28,39 +30,54 @@ namespace Shell_AI
 
         void Start()
         {
-            Debug.Log("AlienWait STARTED on " + gameObject.name);
             TryRegister();
         }
 
         void FixedUpdate()
         {
-            switch (state)
+            if (state == AlienState.Attacking && target != null)
             {
-                case AlienState.Attacking:
-                    if (target != null)
-                        MoveTowards(target.transform.position);
-                    break;
-
-                case AlienState.Returning:
-                    MoveTowards(
-                        AlienWaitCoordinator.Instance.mothership.position
-                    );
-
-                    if (cooldown != null && !cooldown.IsCoolingDown)
-                    {
-                        state = AlienState.Waiting;
-                        TryRegister();
-                    }
-                    break;
+                MoveTo(target.transform.position);
+                return;
             }
+
+            if (state == AlienState.Returning)
+            {
+                MoveTo(AlienWaitCoordinator.Instance.mothership.position);
+
+                if (Vector3.Distance(
+                        transform.position,
+                        AlienWaitCoordinator.Instance.mothership.position
+                    ) < stopDistance)
+                {
+                    FinishReturn();
+                }
+
+                return;
+            }
+
+            // Waiting state → DO NOTHING
         }
 
-        void MoveTowards(Vector3 destination)
+        void MoveTo(Vector3 destination)
         {
-            Vector3 dir = (destination - transform.position).normalized;
-            rb.MovePosition(
-                rb.position + dir * moveSpeed * Time.fixedDeltaTime
+            Vector3 flatDest = new Vector3(
+                destination.x,
+                transform.position.y,
+                destination.z
             );
+
+            float dist = Vector3.Distance(transform.position, flatDest);
+
+            if (dist < stopDistance)
+            {
+                rb.linearVelocity = Vector3.zero;
+                return;
+            }
+
+            Vector3 dir = (flatDest - transform.position).normalized;
+
+            rb.linearVelocity = dir * moveSpeed;
         }
 
         void TryRegister()
@@ -77,17 +94,14 @@ namespace Shell_AI
             hasRegistered = false;
             target = attackTarget;
             state = AlienState.Attacking;
-            Debug.Log("Alien attacking target");
         }
 
         void OnTriggerEnter(Collider other)
         {
             if (state != AlienState.Attacking) return;
 
-            if (other.CompareTag("Civilian") ||
-                other.CompareTag("Player"))
+            if (other.CompareTag("Civilian") || other.CompareTag("Player"))
             {
-                Debug.Log("Alien hit target → returning");
                 BeginReturn();
             }
         }
@@ -95,9 +109,17 @@ namespace Shell_AI
         void BeginReturn()
         {
             state = AlienState.Returning;
+            rb.linearVelocity = Vector3.zero;
             cooldown?.StartCooldown();
             AlienWaitCoordinator.Instance.ResetCoordinator();
+        }
+
+        void FinishReturn()
+        {
+            rb.linearVelocity = Vector3.zero;
+            state = AlienState.Waiting;
             hasRegistered = false;
+            TryRegister();
         }
     }
 }

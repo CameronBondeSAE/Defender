@@ -3323,6 +3323,18 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 3307400642
       objectReference: {fileID: 0}
+    - target: {fileID: 5728813376443442653, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5728813376443442653, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6648492308910950093, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
+      propertyPath: moveSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6834610644936913233, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -3381,7 +3393,7 @@ PrefabInstance:
       objectReference: {fileID: 471152344}
     - target: {fileID: 9006036892352818721, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9006036892352818721, guid: e51e9a8be897eb246896c98056a0f3d9, type: 3}
       propertyPath: mothership
