@@ -15,7 +15,7 @@ public class AIBase : CharacterBase
 	public NavMeshAgent agent; // Movement agent
 	public bool isPatrollingNpc = false;
 
-	private Health    health; //  health system
+	public Health    health; //  health system
 	private Transform player; // Player reference (can be assigned later)
 
 	[Header("Patrolling")]
@@ -100,7 +100,7 @@ public class AIBase : CharacterBase
 	protected virtual void Start()
 	{
 		if(!IsServer)
-			return;
+		 	return;
 			
 		health = GetComponent<AIHealth>();
 		agent  = GetComponent<NavMeshAgent>();
@@ -134,10 +134,10 @@ public class AIBase : CharacterBase
 		CurrentState?.Stay();
 	}
 
-	private void FixedUpdate()
+	protected virtual void FixedUpdate()
 	{
 		if(!IsServer)
-			return;
+		 	return;
 		
 		if (useRigidbody)
 		{
@@ -207,7 +207,7 @@ public class AIBase : CharacterBase
 		previousState = currentState;
 		CurrentState?.Exit();
 		currentState = newState;
-		CurrentState.Enter();
+		CurrentState?.Enter();
 	}
 
 	
@@ -216,8 +216,8 @@ public class AIBase : CharacterBase
 	// Move AI to a target position smoothly
 	public void MoveTo(Vector3 destination)
 	{
-		if(!IsServer)
-			return;
+		// if(!IsServer)
+		// 	return;
 
 		// OLD CODE
 		/*// Debug.Log("		Moving to " + destination);

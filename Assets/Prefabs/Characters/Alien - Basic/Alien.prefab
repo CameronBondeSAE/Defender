@@ -1960,6 +1960,8 @@ GameObject:
   - component: {fileID: 9050013571413473896}
   - component: {fileID: 8830621070876474110}
   - component: {fileID: 1319488048951965238}
+  - component: {fileID: 6648492308910950093}
+  - component: {fileID: 6198490532732700125}
   m_Layer: 8
   m_Name: Alien
   m_TagString: Alien
@@ -2043,6 +2045,7 @@ MonoBehaviour:
   moveSpeed: 1
   defaultSpeed: 1
   agent: {fileID: 0}
+  isPatrollingNpc: 0
   patrolPoints: []
   patrolPointsCount: 3
   rotationSpeed: 80
@@ -2063,6 +2066,7 @@ MonoBehaviour:
   mothership: {fileID: 0}
   isReached: 0
   currentTargetCiv: {fileID: 0}
+  escortingCivs: []
   returnCount: 0
 --- !u!195 &750841075112867850
 NavMeshAgent:
@@ -2248,3 +2252,30 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &6648492308910950093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897101158157931101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22f3c550d59f4da2ba349083a47ea07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  moveSpeed: 3
+--- !u!114 &6198490532732700125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8897101158157931101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11412a1843a41469bb164d47e5d20bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownDuration: 5

@@ -125,7 +125,10 @@ namespace mothershipScripts
                 alienSpawned.GetComponent<NetworkObject>().Spawn(true);
 
                 // TODO: Make abstract
-                alienSpawned.GetComponent<AlienAI>().mothership = transform;
+                if (alienSpawned.TryGetComponent(out AlienAI alienAI))
+                {
+                    alienAI.mothership = transform;
+                }
                 AlienSpawned_Event?.Invoke(alienSpawned);
 
                 OnAlienSpawned?.Invoke(alienSpawned);

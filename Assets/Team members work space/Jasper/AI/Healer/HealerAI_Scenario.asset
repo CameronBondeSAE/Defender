@@ -1,0 +1,98 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f22e7053ea04ed0922308786facc8c, type: 3}
+  m_Name: HealerAI_Scenario
+  m_EditorClassIdentifier: 
+  conditions:
+    list:
+    - id: 0
+      name: SeesPatient
+    - id: 1
+      name: Healed
+    - id: 2
+      name: PatientLongDistance
+    - id: 3
+      name: AtPatient
+  actions:
+  - name: Heal
+    isDefault: 0
+    state: {fileID: 3654026662863293872, guid: f58f59c4e2bebe048b8fbf215d8aa770, type: 3}
+    cost: 0
+    position: {x: 642, y: 238}
+    pre:
+    - id: 1
+      value: 0
+    - id: 3
+      value: 1
+    post:
+    - id: 1
+      value: 1
+  - name: MoveToPatient
+    isDefault: 0
+    state: {fileID: 1305778940907630476, guid: 7e7ddf62c68280746b29a3b35bb7a714, type: 3}
+    cost: 0
+    position: {x: 430, y: 238}
+    pre:
+    - id: 0
+      value: 1
+    - id: 1
+      value: 0
+    - id: 2
+      value: 0
+    post:
+    - id: 3
+      value: 1
+  - name: ScanField
+    isDefault: 1
+    state: {fileID: 1147648544171053021, guid: dc40e97f8b7cabb41842a70e8c57ecb4, type: 3}
+    cost: 0
+    position: {x: 228, y: 363}
+    pre:
+    - id: 0
+      value: 0
+    post:
+    - id: 0
+      value: 1
+  - name: HealLongDistance
+    isDefault: 0
+    state: {fileID: 2487397288237356102, guid: db6d2750290c1ca4c91b18fb88723f61, type: 3}
+    cost: 0
+    position: {x: 430, y: 476}
+    pre:
+    - id: 1
+      value: 0
+    - id: 2
+      value: 1
+    - id: 0
+      value: 1
+    post:
+    - id: 1
+      value: 1
+  goals:
+  - name: Healed
+    isDefault: 1
+    position: {x: 852, y: 399}
+    conditions:
+    - id: 1
+      value: 1
+  worldStates:
+  - position: {x: 252, y: 60}
+    isAutoUpdate: 0
+    list:
+    - id: 0
+      value: 0
+    - id: 1
+      value: 0
+    - id: 2
+      value: 0
+    - id: 3
+      value: 0
